@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A1FF6F81DC3857F00A43A04 /* TPSStripeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A1FF6F71DC3857F00A43A04 /* TPSStripeManager.m */; };
+		3A228EB21DC52E54007BB9D0 /* PassKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A228EB11DC52E54007BB9D0 /* PassKit.framework */; };
 		3A3A7F1F1DC27B520030F9DC /* TPSStripe.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3A7F1E1DC27B520030F9DC /* TPSStripe.m */; };
 		3A3A7F201DC27B520030F9DC /* TPSStripe.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3A3A7F1D1DC27B520030F9DC /* TPSStripe.h */; };
 /* End PBXBuildFile section */
@@ -25,6 +27,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3A1FF6F61DC3857F00A43A04 /* TPSStripeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPSStripeManager.h; sourceTree = "<group>"; };
+		3A1FF6F71DC3857F00A43A04 /* TPSStripeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPSStripeManager.m; sourceTree = "<group>"; };
+		3A228EB11DC52E54007BB9D0 /* PassKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PassKit.framework; path = System/Library/Frameworks/PassKit.framework; sourceTree = SDKROOT; };
 		3A3A7F1A1DC27B520030F9DC /* libTPSStripe.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libTPSStripe.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A3A7F1D1DC27B520030F9DC /* TPSStripe.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TPSStripe.h; sourceTree = "<group>"; };
 		3A3A7F1E1DC27B520030F9DC /* TPSStripe.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TPSStripe.m; sourceTree = "<group>"; };
@@ -35,17 +40,27 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A228EB21DC52E54007BB9D0 /* PassKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3A228EB01DC52E54007BB9D0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3A228EB11DC52E54007BB9D0 /* PassKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		3A3A7F111DC27B520030F9DC = {
 			isa = PBXGroup;
 			children = (
 				3A3A7F1C1DC27B520030F9DC /* TPSStripe */,
 				3A3A7F1B1DC27B520030F9DC /* Products */,
+				3A228EB01DC52E54007BB9D0 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -62,6 +77,8 @@
 			children = (
 				3A3A7F1D1DC27B520030F9DC /* TPSStripe.h */,
 				3A3A7F1E1DC27B520030F9DC /* TPSStripe.m */,
+				3A1FF6F61DC3857F00A43A04 /* TPSStripeManager.h */,
+				3A1FF6F71DC3857F00A43A04 /* TPSStripeManager.m */,
 			);
 			path = TPSStripe;
 			sourceTree = "<group>";
@@ -123,6 +140,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A1FF6F81DC3857F00A43A04 /* TPSStripeManager.m in Sources */,
 				3A3A7F1F1DC27B520030F9DC /* TPSStripe.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -267,6 +285,7 @@
 				3A3A7F251DC27B520030F9DC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
