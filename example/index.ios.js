@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
   TouchableHighlight,
 } from 'react-native'
-import Stripe from 'tipsi-stripe'
+import Stripe, { PaymentCardTextField } from 'tipsi-stripe'
 
 Stripe.init({
   publishableKey: '<PUBLISHABLE_KEY>',
@@ -47,6 +47,8 @@ export default class example extends Component {
     token: null,
     loadingButton: null,
     applePayIsAllowed: false,
+    valid: false,
+    params: {},
   }
 
   async componentWillMount() {
@@ -141,13 +143,20 @@ export default class example extends Component {
     }
   }
 
+  handleFieldParamsChange = (valid, params) => {
+    this.setState({
+      valid,
+      params,
+    })
+  }
+
   render() {
-    const { loadingButton, applePayIsAllowed, token } = this.state
+    const { loadingButton, applePayIsAllowed, token, valid, params } = this.state
 
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
-          Stripe Example
+          Stripe Example (Methods)
         </Text>
         <TouchableHighlight
           style={styles.pay}
@@ -210,6 +219,34 @@ export default class example extends Component {
         </TouchableHighlight>
         <Text style={styles.instructions}>
           Token: {token || '-'}
+        </Text>
+        <Text style={styles.welcome}>
+          Stripe Example (PaymentCardTextField)
+        </Text>
+        <PaymentCardTextField
+          style={{
+            width: 300,
+            color: '#449aeb',
+            borderColor: '#dc534a',
+            borderWidth: 2,
+            borderRadius: 10,
+          }}
+          onParamsChange={this.handleFieldParamsChange}
+        />
+        <Text style={styles.instructions}>
+          Valid: {valid ? 'true' : 'false'}
+        </Text>
+        <Text style={styles.instructions}>
+          Number: {params.number || '-'}
+        </Text>
+        <Text style={styles.instructions}>
+          Month: {params.expMonth || '-'}
+        </Text>
+        <Text style={styles.instructions}>
+          Year: {params.expYear || '-'}
+        </Text>
+        <Text style={styles.instructions}>
+          CVC: {params.cvc || '-'}
         </Text>
       </View>
     )

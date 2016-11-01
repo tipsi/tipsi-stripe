@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		3A1FF6F81DC3857F00A43A04 /* TPSStripeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A1FF6F71DC3857F00A43A04 /* TPSStripeManager.m */; };
 		3A228EB21DC52E54007BB9D0 /* PassKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A228EB11DC52E54007BB9D0 /* PassKit.framework */; };
-		3A3A7F1F1DC27B520030F9DC /* TPSStripe.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3A7F1E1DC27B520030F9DC /* TPSStripe.m */; };
-		3A3A7F201DC27B520030F9DC /* TPSStripe.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3A3A7F1D1DC27B520030F9DC /* TPSStripe.h */; };
+		3A4EF3251DC8F90100A7C0BD /* TPSCardFieldManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4EF3241DC8F90100A7C0BD /* TPSCardFieldManager.m */; };
+		3A4EF3281DC8FD4600A7C0BD /* TPSCardField.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4EF3271DC8FD4600A7C0BD /* TPSCardField.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -20,7 +20,6 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				3A3A7F201DC27B520030F9DC /* TPSStripe.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -31,8 +30,10 @@
 		3A1FF6F71DC3857F00A43A04 /* TPSStripeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPSStripeManager.m; sourceTree = "<group>"; };
 		3A228EB11DC52E54007BB9D0 /* PassKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PassKit.framework; path = System/Library/Frameworks/PassKit.framework; sourceTree = SDKROOT; };
 		3A3A7F1A1DC27B520030F9DC /* libTPSStripe.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libTPSStripe.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		3A3A7F1D1DC27B520030F9DC /* TPSStripe.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TPSStripe.h; sourceTree = "<group>"; };
-		3A3A7F1E1DC27B520030F9DC /* TPSStripe.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TPSStripe.m; sourceTree = "<group>"; };
+		3A4EF3231DC8F90100A7C0BD /* TPSCardFieldManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPSCardFieldManager.h; sourceTree = "<group>"; };
+		3A4EF3241DC8F90100A7C0BD /* TPSCardFieldManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPSCardFieldManager.m; sourceTree = "<group>"; };
+		3A4EF3261DC8FD4600A7C0BD /* TPSCardField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPSCardField.h; sourceTree = "<group>"; };
+		3A4EF3271DC8FD4600A7C0BD /* TPSCardField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPSCardField.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,10 +76,12 @@
 		3A3A7F1C1DC27B520030F9DC /* TPSStripe */ = {
 			isa = PBXGroup;
 			children = (
-				3A3A7F1D1DC27B520030F9DC /* TPSStripe.h */,
-				3A3A7F1E1DC27B520030F9DC /* TPSStripe.m */,
 				3A1FF6F61DC3857F00A43A04 /* TPSStripeManager.h */,
 				3A1FF6F71DC3857F00A43A04 /* TPSStripeManager.m */,
+				3A4EF3231DC8F90100A7C0BD /* TPSCardFieldManager.h */,
+				3A4EF3241DC8F90100A7C0BD /* TPSCardFieldManager.m */,
+				3A4EF3261DC8FD4600A7C0BD /* TPSCardField.h */,
+				3A4EF3271DC8FD4600A7C0BD /* TPSCardField.m */,
 			);
 			path = TPSStripe;
 			sourceTree = "<group>";
@@ -140,8 +143,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A4EF3251DC8F90100A7C0BD /* TPSCardFieldManager.m in Sources */,
 				3A1FF6F81DC3857F00A43A04 /* TPSStripeManager.m in Sources */,
-				3A3A7F1F1DC27B520030F9DC /* TPSStripe.m in Sources */,
+				3A4EF3281DC8FD4600A7C0BD /* TPSCardField.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
