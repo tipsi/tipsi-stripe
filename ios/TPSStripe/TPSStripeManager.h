@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import <PassKit/PassKit.h>
+#import <Stripe/Stripe.h>
 #import "RCTBridgeModule.h"
 
-@interface TPSStripeManager : NSObject <RCTBridgeModule, PKPaymentAuthorizationViewControllerDelegate>
+@interface TPSStripeManager : NSObject <RCTBridgeModule, PKPaymentAuthorizationViewControllerDelegate, STPAddCardViewControllerDelegate>
 
 @end
