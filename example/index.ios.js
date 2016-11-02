@@ -159,6 +159,8 @@ export default class example extends Component {
           Stripe Example (Methods)
         </Text>
         <TouchableHighlight
+          accessible
+          accessibilityLabel={'applePayButton'}
           style={styles.pay}
           underlayColor="rgba(0,0,0,0.5)"
           onPress={this.handleApplePayPress}>
