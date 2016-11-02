@@ -7,7 +7,6 @@
 //
 
 #import "TPSCardFieldManager.h"
-#import "RCTBridge.h"
 #import "TPSCardField.h"
 #import "RCTFont.h"
 

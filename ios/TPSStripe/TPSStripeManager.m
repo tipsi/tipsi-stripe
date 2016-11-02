@@ -7,7 +7,6 @@
 //
 
 #import "TPSStripeManager.h"
-#import "RCTLog.h"
 
 @implementation TPSStripeManager
 {
@@ -31,12 +30,12 @@
     return self;
 }
 
-RCT_EXPORT_MODULE();
-
-RCT_EXPORT_METHOD(printMessage:(NSString *)mesage)
+- (dispatch_queue_t)methodQueue
 {
-    RCTLogInfo(mesage);
+    return dispatch_get_main_queue();
 }
+
+RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(init:(NSDictionary *)options)
 {
