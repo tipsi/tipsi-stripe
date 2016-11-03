@@ -18,4 +18,6 @@ test('Test if user can see welcome message', async (t) => {
     idFromXPath('//android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.widget.TextView[3]'),
     120000
   )
+
+  console.log(await driver.getSource())
 })
