@@ -1,5 +1,11 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
+ext {
+    travisBuild = System.getenv("TRAVIS") == "true"
+    // allows for -Dpre-dex=false to be set
+    preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
+}
+
 buildscript {
     repositories {
         jcenter()

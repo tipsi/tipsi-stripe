@@ -1,53 +1,37 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   AppRegistry,
   StyleSheet,
-  Text,
-  View
-} from 'react-native';
+  View,
+  Picker,
+} from 'react-native'
+
+const styles = StyleSheet.create({
+  Picker: {
+    margin: 25,
+    width: 156,
+    borderRadius: 20,
+    backgroundColor: '#AAAAAA',
+  },
+})
 
 export default class example extends Component {
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.android.js
-        </Text>
-        <Text style={styles.instructions}>
-          Double tap R on your keyboard to reload,{'\n'}
-          Shake or press menu button for dev menu
-        </Text>
+      <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+        <Picker
+          style={styles.Picker}
+          selectedValue="one"
+          onChange={this.handleChange}
+          onValueChange={this.handleValueChange}>
+          <Picker.Item label="One" value="one" />
+          <Picker.Item label="Two" value="two" />
+          <Picker.Item label="Three" value="three" />
+          <Picker.Item label="Four" value="four" />
+        </Picker>
       </View>
-    );
+    )
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
-
-AppRegistry.registerComponent('example', () => example);
+AppRegistry.registerComponent('example', () => example)
