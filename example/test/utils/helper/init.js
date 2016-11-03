@@ -12,14 +12,14 @@ export default async function (config) {
       platformVersion: config.platformVersion,
       app: config.app,
       noReset: config.noReset,
-      // automationName: config.automationName,
-      // newCommandTimeout: 60000,
+      automationName: config.automationName,
+      newCommandTimeout: 60000,
     },
     logLevel: 'debug',
     path: '/wd/hub',
     host: config.appiumHost,
     port: config.appiumPort,
-    // connectionRetryTimeout: 1200000, // 20 min
+    connectionRetryTimeout: 1200000, // 20 min
   })
   await this.driver.init()
 }
