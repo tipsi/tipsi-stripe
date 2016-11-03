@@ -12,7 +12,7 @@ test('Test if user can see welcome message', async (t) => {
 
   console.log('SOURCE1:', await driver.getSource())
 
-  await driver.waitForVisible(welcomeMessageId, 120000)
+  await driver.waitForVisible(welcomeMessageId, 240000)
 
   t.pass('User should see welcome message')
 
