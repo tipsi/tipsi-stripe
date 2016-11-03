@@ -10,14 +10,11 @@ test('Test if user can see welcome message', async (t) => {
     android.widget.TextView[1]
   `)
 
+  console.log('SOURCE1:', await driver.getSource())
+
   await driver.waitForVisible(welcomeMessageId, 120000)
 
   t.pass('User should see welcome message')
 
-  await driver.waitForVisible(
-    idFromXPath('//android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.widget.TextView[3]'),
-    120000
-  )
-
-  console.log(await driver.getSource())
+  console.log('SOURCE2:', await driver.getSource())
 })
