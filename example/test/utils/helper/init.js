@@ -13,7 +13,7 @@ export default async function (config) {
       app: config.app,
       noReset: config.noReset,
       automationName: 'xcuitest',
-      newCommandTimeout: 360,
+      newCommandTimeout: 60000,
     },
     logLevel: 'debug',
     path: '/wd/hub',
