@@ -3,9 +3,9 @@
 case "${TRAVIS_OS_NAME}" in
   osx)
     $HOME/.nvm/nvm.sh
-    nvm install stable
+    nvm install 6
     gem install cocoapods --pre # Since Travis is not always on latest version
-    pod repo update
+    travis_wait pod repo update --silent
   ;;
   linux)
     $HOME/.nvm/nvm.sh
