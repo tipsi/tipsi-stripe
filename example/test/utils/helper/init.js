@@ -12,7 +12,7 @@ export default async function (config) {
       platformVersion: config.platformVersion,
       app: config.app,
       noReset: config.noReset,
-      automationName: 'xcuitest',
+      automationName: config.automationName,
       newCommandTimeout: 60000,
     },
     logLevel: 'debug',

@@ -10,6 +10,7 @@ const {
   APP_PATH,
   PLATFORM_NAME,
   NO_RESET,
+  AUTOMATION_NAME,
 } = process.env
 
 let DEVICE_NAME = process.env.DEVICE_NAME
@@ -68,6 +69,7 @@ const allowedPlatformNames = ['ios', 'android'];
       platformVersion: PLATFORM_VERSION,
       app: APP_PATH,
       noReset: !!NO_RESET,
+      automationName: AUTOMATION_NAME,
     })
 
     // Run Tape tests
