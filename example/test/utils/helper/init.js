@@ -19,6 +19,9 @@ export default async function (config) {
     path: '/wd/hub',
     host: config.appiumHost,
     port: config.appiumPort,
+
+    waitforTimeout: 1200000,
+    connectionRetryTimeout: 1200000, // 20 min
   })
   await this.driver.init()
 }
