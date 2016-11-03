@@ -4,7 +4,7 @@ import runTapeTests from './run-tape-tests'
 import helper from './helper'
 
 const {
-  APPIUM_HOST = '127.0.0.1',
+  APPIUM_HOST = '0.0.0.0',
   APPIUM_PORT = '4723',
   TESTS_PATH = 'test/*_test_*.js',
   APP_PATH,

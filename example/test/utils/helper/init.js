@@ -7,7 +7,6 @@ export default async function (config) {
   this.config = config
   this.driver = remote({
     desiredCapabilities: {
-      appiumVersion: '1.5.3',
       deviceName: config.deviceName,
       platformName: config.platformName,
       platformVersion: config.platformVersion,
