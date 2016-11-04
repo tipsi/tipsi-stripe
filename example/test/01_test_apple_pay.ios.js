@@ -22,27 +22,34 @@ test('Test if user can see use Apple Pay', async (t) => {
     XCUIElementTypeStaticText
   `)
 
-  await driver.waitForVisible(applePayTabId, 60000)
+  try {
+    await driver.waitForVisible(applePayTabId, 60000)
 
-  await driver.click(applePayTabId)
+    await driver.click('234')
 
-  await driver.waitForVisible(applePayButtonId, 5000)
+    await driver.waitForVisible(applePayButtonId, 5000)
 
-  t.pass('User should see `Pay with Pay` button')
+    t.pass('User should see `Pay with Pay` button')
 
-  await driver.click(applePayButtonId)
+    await driver.click(applePayButtonId)
 
-  t.pass('User should be able to tap on `Pay with Pay` button')
+    t.pass('User should be able to tap on `Pay with Pay` button')
 
-  await driver.waitForVisible(payWithPasscodeButtonId, 10000)
+    await driver.waitForVisible(payWithPasscodeButtonId, 10000)
 
-  t.pass('User should see Pay form')
+    t.pass('User should see Pay form')
 
-  await driver.click(payWithPasscodeButtonId)
+    await driver.click(payWithPasscodeButtonId)
 
-  t.pass('User should accept Pay payment')
+    t.pass('User should accept Pay payment')
 
-  await driver.waitForVisible(tokenId, 20000)
+    await driver.waitForVisible(tokenId, 20000)
 
-  t.pass('User should see token')
+    t.pass('User should see token')
+  } catch (error) {
+    await helper.screenshot()
+    await helper.source()
+
+    throw error
+  }
 })

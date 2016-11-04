@@ -11,6 +11,7 @@ const {
   PLATFORM_NAME,
   NO_RESET,
   AUTOMATION_NAME,
+  IMGUR_CLIENT_ID,
 } = process.env
 
 let DEVICE_NAME = process.env.DEVICE_NAME
@@ -70,6 +71,7 @@ const allowedPlatformNames = ['ios', 'android'];
       app: APP_PATH,
       noReset: !!NO_RESET,
       automationName: AUTOMATION_NAME,
+      imgur: IMGUR_CLIENT_ID,
     })
 
     // Run Tape tests
