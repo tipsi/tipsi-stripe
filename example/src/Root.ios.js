@@ -44,14 +44,6 @@ const styles = StyleSheet.create({
 })
 
 export default class Root extends Component {
-
-  static title = 'Scrollable top bar';
-  static appbarElevation = 0;
-
-  static propTypes = {
-    style: View.propTypes.style,
-  };
-
   state = {
     index: 0,
     routes: [
@@ -79,16 +71,12 @@ export default class Root extends Component {
   renderScene = ({ route }) => {
     switch (route.key) {
     case '1':
-      // return <View style={[styles.page, { backgroundColor: '#ff4081' }]} />
       return <ApplePayScreen />
     case '2':
-      // return <View style={[styles.page, { backgroundColor: '#673ab7' }]} />
       return <CardFormScreen />
     case '3':
-      // return <View style={[styles.page, { backgroundColor: '#8bc34a' }]} />
       return <CustomCardScreen />
     case '4':
-      // return <View style={[styles.page, { backgroundColor: '#2196f3' }]} />
       return <CardTextFieldScreen />
     default:
       return null
@@ -100,7 +88,7 @@ export default class Root extends Component {
       <View style={styles.container}>
         <View style={styles.statusbar} />
         <TabViewAnimated
-          style={[styles.tabsContainer, this.props.style]}
+          style={styles.tabsContainer}
           navigationState={this.state}
           renderScene={this.renderScene}
           renderHeader={this.renderHeader}
