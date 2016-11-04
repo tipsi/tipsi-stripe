@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { View, Text, /* TextInput, */ StyleSheet } from 'react-native'
+import { KeyboardAvoidingView, View, Text, StyleSheet } from 'react-native'
+import dismissKeyboard from 'react-native/Libraries/Utilities/dismissKeyboard'
 import { PaymentCardTextField } from 'tipsi-stripe'
 
 const styles = StyleSheet.create({
@@ -47,12 +48,12 @@ export default class CardTextFieldScreen extends Component {
   state = {
     valid: false,
     params: {
-      number: '4242424242424242',
-      expMonth: 11,
-      expYear: 17,
-      cvc: '223',
-      name: 'Test User',
-      currency: 'usd',
+      number: null,
+      expMonth: null,
+      expYear: null,
+      cvc: null,
+      name: null,
+      currency: null,
     },
   }
 
@@ -68,49 +69,40 @@ export default class CardTextFieldScreen extends Component {
     const { valid, params } = this.state
 
     return (
-      <View
+      <KeyboardAvoidingView
+        behavior="padding"
         style={styles.container}
+        onResponderGrant={dismissKeyboard}
         onStartShouldSetResponder={() => true}>
-        <Text style={styles.header}>
-          PaymentCardTextField Component Example
-        </Text>
-        {/* <TextInput
-          multiline={false}
-          onChangeText={(text) => {
-            this.setState({ text: text.replace(/\s/g, '') })
-          }}
-          style={{
-            height: 26,
-            borderWidth: 0.5,
-            borderColor: '#0f0f0f',
-            // flex: 1,
-            fontSize: 13,
-            padding: 4,
-          }}
-          value={this.state.text}
-        /> */}
-        <PaymentCardTextField
-          style={styles.field}
-          onParamsChange={this.handleFieldParamsChange}
-        />
-        <View style={styles.params}>
-          <Text style={styles.instruction}>
-            Valid: {valid ? 'true' : 'false'}
+        <View>
+          <Text style={styles.header}>
+            PaymentCardTextField Example
           </Text>
-          <Text style={styles.instruction}>
-            Number: {params.number || '-'}
-          </Text>
-          <Text style={styles.instruction}>
-            Month: {params.expMonth || '-'}
-          </Text>
-          <Text style={styles.instruction}>
-            Year: {params.expYear || '-'}
-          </Text>
-          <Text style={styles.instruction}>
-            CVC: {params.cvc || '-'}
-          </Text>
+          <PaymentCardTextField
+            accessible
+            accessibilityLabel="cardTextField"
+            style={styles.field}
+            onParamsChange={this.handleFieldParamsChange}
+          />
+          <View style={styles.params}>
+            <Text style={styles.instruction}>
+              Valid: {valid ? 'true' : 'false'}
+            </Text>
+            <Text style={styles.instruction}>
+              Number: {params.number || '-'}
+            </Text>
+            <Text style={styles.instruction}>
+              Month: {params.expMonth || '-'}
+            </Text>
+            <Text style={styles.instruction}>
+              Year: {params.expYear || '-'}
+            </Text>
+            <Text style={styles.instruction}>
+              CVC: {params.cvc || '-'}
+            </Text>
+          </View>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     )
   }
 }

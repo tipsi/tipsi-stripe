@@ -7,8 +7,12 @@
 //
 
 #import "TPSCardField.h"
+#import "RCTLog.h"
 
 @implementation TPSCardField
+{
+    BOOL _jsRequestingFirstResponder;
+}
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -16,6 +20,29 @@
         self.delegate = self;
     }
     return self;
+}
+
+- (void)reactWillMakeFirstResponder
+{
+    _jsRequestingFirstResponder = YES;
+}
+
+- (BOOL)canBecomeFirstResponder
+{
+    return _jsRequestingFirstResponder;
+}
+
+- (void)reactDidMakeFirstResponder
+{
+    _jsRequestingFirstResponder = NO;
+}
+
+- (void)didMoveToWindow
+{
+    if (_jsRequestingFirstResponder) {
+        [self becomeFirstResponder];
+        [self reactDidMakeFirstResponder];
+    }
 }
 
 - (void)onChange {

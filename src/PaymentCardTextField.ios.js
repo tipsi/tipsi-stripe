@@ -1,7 +1,9 @@
 import React, { Component, PropTypes } from 'react'
-import { requireNativeComponent, StyleSheet, View, TouchableWithoutFeedback } from 'react-native'
+import { requireNativeComponent, findNodeHandle, StyleSheet, View, TouchableWithoutFeedback } from 'react-native'
 import StyleSheetPropType from 'react-native/Libraries/StyleSheet/StyleSheetPropType'
 import ViewStylePropTypes from 'react-native/Libraries/Components/View/ViewStylePropTypes'
+
+import TextInputState from 'react-native/Libraries/Components/TextInput/TextInputState'
 
 const FieldStylePropType = {
   ...ViewStylePropTypes,
@@ -34,7 +36,29 @@ export default class PaymentCardTextField extends Component {
     cvc: '',
   }
 
-  onChange = (event) => {
+  componentWillUnmount() {
+    if (this.isFocused()) {
+      this.blur()
+    }
+  }
+
+  isFocused = () => (
+    TextInputState.currentlyFocusedField() === findNodeHandle(this)
+  )
+
+  focus = () => {
+    TextInputState.focusTextInput(findNodeHandle(this))
+  }
+
+  blur = () => {
+    TextInputState.blurTextInput(findNodeHandle(this))
+  }
+
+  handlePress = () => {
+    this.focus()
+  }
+
+  handleChange = (event) => {
     const { onChange, onParamsChange } = this.props
     const { nativeEvent } = event
 
@@ -68,6 +92,11 @@ export default class PaymentCardTextField extends Component {
 
     return (
       <TouchableWithoutFeedback
+        onPress={this.handlePress}
+        testID={rest.testID}
+        accessible={rest.accessible}
+        accessibilityLabel={rest.accessibilityLabel}
+        accessibilityTraits={rest.accessibilityTraits}
         rejectResponderTermination>
         <NativePaymentCardTextField
           style={[styles.field, fieldStyles]}
@@ -81,7 +110,7 @@ export default class PaymentCardTextField extends Component {
           fontSize={fontSize}
           enabled={!disabled}
           {...rest}
-          onChange={this.onChange}
+          onChange={this.handleChange}
         />
       </TouchableWithoutFeedback>
     )
@@ -94,6 +123,7 @@ const styles = StyleSheet.create({
     // have to set the component's height explicitly on the
     // surrounding view to ensure it gets rendered.
     height: 44,
+    // Set default background color to prevent transparent background
     backgroundColor: '#ffffff',
   },
 })
@@ -110,5 +140,5 @@ const NativePaymentCardTextField = requireNativeComponent('TPSCardField', Paymen
     fontSize: true,
     enabled: true,
     onChange: true,
-  },
+  }
 })
