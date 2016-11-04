@@ -18,7 +18,9 @@
   },
   "dependencies": {
     "react": "15.3.2",
+    "react-addons-shallow-compare": "^15.3.2",
     "react-native": "0.36.0",
+    "react-native-tab-view": "0.0.37",
     "tipsi-stripe": "../"
   },
   "devDependencies": {

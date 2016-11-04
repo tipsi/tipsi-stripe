@@ -1,17 +1,17 @@
 import React, { Component, PropTypes } from 'react'
-import { requireNativeComponent, StyleSheet, View } from 'react-native'
+import { requireNativeComponent, StyleSheet, View, TouchableWithoutFeedback } from 'react-native'
 import StyleSheetPropType from 'react-native/Libraries/StyleSheet/StyleSheetPropType'
 import ViewStylePropTypes from 'react-native/Libraries/Components/View/ViewStylePropTypes'
 
 const FieldStylePropType = {
   ...ViewStylePropTypes,
-  color: PropTypes.string
+  color: PropTypes.string,
 }
 
 export default class PaymentCardTextField extends Component {
   static propTypes = {
     ...View.propTypes,
-    style: StyleSheetPropType(FieldStylePropType),
+    style: StyleSheetPropType(FieldStylePropType), // eslint-disable-line new-cap
     cursorColor: PropTypes.string,
     textErrorColor: PropTypes.string,
     placeholderColor: PropTypes.string,
@@ -26,20 +26,20 @@ export default class PaymentCardTextField extends Component {
     onValueChange: PropTypes.func,
   }
 
-  valid = false
+  valid = false // eslint-disable-line react/sort-comp
   params = {
     number: '',
     expMonth: 0,
     expYear: 0,
-    cvc: ''
+    cvc: '',
   }
 
-  onChange = event => {
+  onChange = (event) => {
     const { onChange, onParamsChange } = this.props
     const { nativeEvent } = event
 
-    this.valid = nativeEvent.valid;
-    this.params = nativeEvent.params;
+    this.valid = nativeEvent.valid
+    this.params = nativeEvent.params
 
     if (onChange) {
       onChange(event)
@@ -53,7 +53,7 @@ export default class PaymentCardTextField extends Component {
   }
 
   render() {
-    const { style, disabled, ...rest } = this.props;
+    const { style, disabled, ...rest } = this.props
     const {
       borderColor,
       borderWidth,
@@ -64,23 +64,26 @@ export default class PaymentCardTextField extends Component {
       fontSize,
       color,
       ...fieldStyles
-    } = style;
+    } = StyleSheet.flatten(style)
 
     return (
-      <NativePaymentCardTextField
-        style={[styles.field, fieldStyles]}
-        borderColor={borderColor}
-        borderWidth={borderWidth}
-        cornerRadius={borderRadius}
-        textColor={color}
-        fontFamily={fontFamily}
-        fontWeight={fontWeight}
-        fontStyle={fontStyle}
-        fontSize={fontSize}
-        enabled={!disabled}
-        {...rest}
-        onChange={this.onChange}
-      />
+      <TouchableWithoutFeedback
+        rejectResponderTermination>
+        <NativePaymentCardTextField
+          style={[styles.field, fieldStyles]}
+          borderColor={borderColor}
+          borderWidth={borderWidth}
+          cornerRadius={borderRadius}
+          textColor={color}
+          fontFamily={fontFamily}
+          fontWeight={fontWeight}
+          fontStyle={fontStyle}
+          fontSize={fontSize}
+          enabled={!disabled}
+          {...rest}
+          onChange={this.onChange}
+        />
+      </TouchableWithoutFeedback>
     )
   }
 }
@@ -107,5 +110,5 @@ const NativePaymentCardTextField = requireNativeComponent('TPSCardField', Paymen
     fontSize: true,
     enabled: true,
     onChange: true,
-  }
+  },
 })
