@@ -25,7 +25,7 @@ test('Test if user can see use Apple Pay', async (t) => {
   try {
     await driver.waitForVisible(applePayTabId, 60000)
 
-    await driver.click('234')
+    await driver.click(applePayTabId)
 
     await driver.waitForVisible(applePayButtonId, 5000)
 
@@ -43,7 +43,7 @@ test('Test if user can see use Apple Pay', async (t) => {
 
     t.pass('User should accept Pay payment')
 
-    await driver.waitForVisible(tokenId, 20000)
+    await driver.waitForVisible(tokenId, 30000)
 
     t.pass('User should see token')
   } catch (error) {
