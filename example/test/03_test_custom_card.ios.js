@@ -21,19 +21,26 @@ test('Test if user can use Custom Card params', async (t) => {
     XCUIElementTypeStaticText
   `)
 
-  await driver.waitForVisible(cardFormTabId, 60000)
+  try {
+    await driver.waitForVisible(cardFormTabId, 60000)
 
-  await driver.click(cardFormTabId)
+    await driver.click(cardFormTabId)
 
-  await driver.waitForVisible(cardFormButtonId, 5000)
+    await driver.waitForVisible(cardFormButtonId, 5000)
 
-  t.pass('User should see `Pay with custom params` button')
+    t.pass('User should see `Pay with custom params` button')
 
-  await driver.click(cardFormButtonId)
+    await driver.click(cardFormButtonId)
 
-  t.pass('User should be able to tap on `Pay with custom params` button')
+    t.pass('User should be able to tap on `Pay with custom params` button')
 
-  await driver.waitForVisible(tokenId, 20000)
+    await driver.waitForVisible(tokenId, 20000)
 
-  t.pass('User should see token')
+    t.pass('User should see token')
+  } catch (error) {
+    await helper.screenshot()
+    await helper.source()
+
+    throw error
+  }
 })

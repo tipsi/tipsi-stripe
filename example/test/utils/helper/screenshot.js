@@ -13,8 +13,10 @@ export default async function () {
       console.log('---------------------------------------------------')
       return json.data
     })
-    .catch((err) => {
-      console.error('Failed to load screenshot:', err.message)
+    .catch((error) => {
+      console.log('---------------------------------------------------')
+      console.error('Failed to save screenshot:', error.message)
+      console.log('---------------------------------------------------')
     })
     /* eslint-enable no-console */
 }

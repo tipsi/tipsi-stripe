@@ -21,27 +21,34 @@ test('Test if user can use PaymentCardTextField component', async (t) => {
     XCUIElementTypeOther[2]/XCUIElementTypeStaticText
   `)
 
-  await driver.waitForVisible(cardTextFieldTabId, 60000)
+  try {
+    await driver.waitForVisible(cardTextFieldTabId, 60000)
 
-  await driver.click(cardTextFieldTabId)
+    await driver.click(cardTextFieldTabId)
 
-  await driver.waitForVisible(cardTextFieldId, 5000)
+    await driver.waitForVisible(cardTextFieldId, 5000)
 
-  t.pass('User should see `PaymentCardTextField` component')
+    t.pass('User should see `PaymentCardTextField` component')
 
-  await driver.click(cardTextFieldId)
+    await driver.click(cardTextFieldId)
 
-  t.pass('User should be able focus on `PaymentCardTextField` component')
+    t.pass('User should be able focus on `PaymentCardTextField` component')
 
-  await driver.keys('4242424242424242')
-  await driver.keys('1234')
-  await driver.keys('123')
+    await driver.keys('4242424242424242')
+    await driver.keys('1234')
+    await driver.keys('123')
 
-  const [valid, number, month, year, cvc] = await driver.getText(fieldsId)
+    const [valid, number, month, year, cvc] = await driver.getText(fieldsId)
 
-  t.equal(valid, 'Valid: true', 'Field should be valid')
-  t.equal(number, 'Number: 4242424242424242', 'Number should be 4242424242424242')
-  t.equal(month, 'Month: 12', 'Month should be 12')
-  t.equal(year, 'Year: 34', 'Year should be 34')
-  t.equal(cvc, 'CVC: 123', 'CVC should be 123')
+    t.equal(valid, 'Valid: true', 'Field should be valid')
+    t.equal(number, 'Number: 4242424242424242', 'Number should be 4242424242424242')
+    t.equal(month, 'Month: 12', 'Month should be 12')
+    t.equal(year, 'Year: 34', 'Year should be 34')
+    t.equal(cvc, 'CVC: 123', 'CVC should be 123')
+  } catch (error) {
+    await helper.screenshot()
+    await helper.source()
+
+    throw error
+  }
 })

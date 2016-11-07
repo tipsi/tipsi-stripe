@@ -35,48 +35,55 @@ test('Test if user can use Card Form', async (t) => {
     XCUIElementTypeStaticText
   `)
 
-  await driver.waitForVisible(cardFormTabId, 60000)
+  try {
+    await driver.waitForVisible(cardFormTabId, 60000)
 
-  await driver.click(cardFormTabId)
+    await driver.click(cardFormTabId)
 
-  await driver.waitForVisible(cardFormButtonId, 5000)
+    await driver.waitForVisible(cardFormButtonId, 5000)
 
-  t.pass('User should see `Enter you card and pay` button')
+    t.pass('User should see `Enter you card and pay` button')
 
-  await driver.click(cardFormButtonId)
+    await driver.click(cardFormButtonId)
 
-  t.pass('User should be able to tap on `Enter you card and pay` button')
+    t.pass('User should be able to tap on `Enter you card and pay` button')
 
-  await driver.waitForVisible(numberInputId, 10000)
-  await driver.click(numberInputId)
-  await driver.setValue(numberInputId, '4242424242424242')
+    await driver.waitForVisible(numberInputId, 10000)
+    await driver.click(numberInputId)
+    await driver.setValue(numberInputId, '4242424242424242')
 
-  t.pass('User should be able to enter card number')
+    t.pass('User should be able to enter card number')
 
-  await driver.waitForVisible(dateInputId, 10000)
-  await driver.click(dateInputId)
-  await driver.setValue(dateInputId, '1234')
+    await driver.waitForVisible(dateInputId, 10000)
+    await driver.click(dateInputId)
+    await driver.setValue(dateInputId, '1234')
 
-  t.pass('User should be able to enter expiration date')
+    t.pass('User should be able to enter expiration date')
 
-  await driver.waitForVisible(cvcInputId, 10000)
-  await driver.click(cvcInputId)
-  await driver.setValue(cvcInputId, '123')
+    await driver.waitForVisible(cvcInputId, 10000)
+    await driver.click(cvcInputId)
+    await driver.setValue(cvcInputId, '123')
 
-  t.pass('User should be able to enter CVC code')
+    t.pass('User should be able to enter CVC code')
 
-  await driver.waitForVisible(emailInputId, 10000)
-  await driver.click(emailInputId)
-  await driver.keys('test@test.com')
+    await driver.waitForVisible(emailInputId, 10000)
+    await driver.click(emailInputId)
+    await driver.keys('test@test.com')
 
-  t.pass('User should be able to enter email')
+    t.pass('User should be able to enter email')
 
-  await driver.waitForVisible(doneButtonId, 10000)
-  await driver.click(doneButtonId)
+    await driver.waitForVisible(doneButtonId, 10000)
+    await driver.click(doneButtonId)
 
-  t.pass('User should be able to tap on `Done` button')
+    t.pass('User should be able to tap on `Done` button')
 
-  await driver.waitForVisible(tokenId, 20000)
+    await driver.waitForVisible(tokenId, 20000)
 
-  t.pass('User should see token')
+    t.pass('User should see token')
+  } catch (error) {
+    await helper.screenshot()
+    await helper.source()
+
+    throw error
+  }
 })

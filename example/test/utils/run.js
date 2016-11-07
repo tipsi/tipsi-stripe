@@ -12,6 +12,7 @@ const {
   NO_RESET,
   AUTOMATION_NAME,
   IMGUR_CLIENT_ID,
+  PASTEBIN_DEV_KEY,
 } = process.env
 
 let DEVICE_NAME = process.env.DEVICE_NAME
@@ -72,6 +73,7 @@ const allowedPlatformNames = ['ios', 'android'];
       noReset: !!NO_RESET,
       automationName: AUTOMATION_NAME,
       imgur: IMGUR_CLIENT_ID,
+      pastebin: PASTEBIN_DEV_KEY,
     })
 
     // Run Tape tests
