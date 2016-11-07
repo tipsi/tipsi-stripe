@@ -9,6 +9,6 @@ case "${TRAVIS_OS_NAME}" in
   linux)
     cd example
     npm run build:android
-    # npm run test:android
+    npm run test:android
   ;;
 esac
