@@ -6,6 +6,7 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "clean": "rm -rf android/app/release.keystore",
     "appium": "appium",
+    "configure": "./configure.sh",
     "build:android:key": "keytool -genkey -v -keystore android/app/release.keystore -storepass android -alias androidreleasekey -keypass android -dname 'CN=Android Debug,O=Android,C=US'",
     "build:android:release": "cd android && ./gradlew assembleRelease --console=plain -S",
     "build:android": "npm-run-all clean build:android:*",
