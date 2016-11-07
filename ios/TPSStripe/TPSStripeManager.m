@@ -44,7 +44,7 @@ RCT_EXPORT_METHOD(init:(NSDictionary *)options)
     
     rootViewController = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
     
-    [Stripe setDefaultPublishableKey:@"pk_test_m3kEfDWERg2qNxwlikeKzeEI"];
+    [Stripe setDefaultPublishableKey:publishableKey];
 }
 
 RCT_EXPORT_METHOD(deviceSupportsApplePay:(RCTPromiseResolveBlock)resolve
@@ -126,12 +126,26 @@ RCT_EXPORT_METHOD(paymentRequestWithCardForm:(NSString *)amount
     promiseResolver = resolve;
     promiseRejector = reject;
     
-    STPAddCardViewController *addCardViewController = [[STPAddCardViewController alloc] init];
+    NSUInteger requiredBillingAddressFields = [self getBillingType:options[@"requiredBillingAddressFields"]];
+    NSString *companyName = options[@"companyName"] ? options[@"companyName"] : @"";
+    BOOL smsAutofillDisabled = [options[@"smsAutofillDisabled"] boolValue];
+    NSString *nextPublishableKey = options[@"publishableKey"] ? options[@"publishableKey"] : publishableKey;
+    UIModalPresentationStyle formPresentation = [self getFormPresentation:options[@"presentation"]];
+    STPTheme *theme = [self getFormTheme:options[@"theme"]];
+    
+    STPPaymentConfiguration *configuration = [[STPPaymentConfiguration alloc] init];
+    [configuration setRequiredBillingAddressFields:requiredBillingAddressFields];
+    [configuration setCompanyName:companyName];
+    [configuration setSmsAutofillDisabled:smsAutofillDisabled];
+    [configuration setPublishableKey:nextPublishableKey];
+    
+    
+    STPAddCardViewController *addCardViewController = [[STPAddCardViewController alloc] initWithConfiguration:configuration theme:theme];
     addCardViewController.delegate = self;
     // STPAddCardViewController must be shown inside a UINavigationController.
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:addCardViewController];
+    [navigationController setModalPresentationStyle:formPresentation];
     [rootViewController presentViewController:navigationController animated:YES completion:nil];
-    rootViewController.navigationItem.rightBarButtonItem.title = @"Test";
 }
 
 RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
@@ -153,9 +167,9 @@ RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
     promiseResolver = resolve;
     promiseRejector = reject;
     
-    NSUInteger requiredShippingAddressFields = options[@"requiredShippingAddressFields"] ? [options[@"requiredShippingAddressFields"] integerValue] : 0;
-    NSUInteger requiredBillingAddressFields = options[@"requiredBillingAddressFields"] ? [options[@"requiredBillingAddressFields"] integerValue] : 0;
-    PKShippingType shippingType = options[@"shippingType"] ? [self getShippingType:options[@"shippingType"]] : PKShippingTypeShipping;
+    NSUInteger requiredShippingAddressFields = [self getApplePayAddressFields:options[@"requiredShippingAddressFields"]];
+    NSUInteger requiredBillingAddressFields = [self getApplePayAddressFields:options[@"requiredBillingAddressFields"]];
+    PKShippingType shippingType = [self getApplePayShippingType:options[@"shippingType"]];
     NSMutableArray *shippingMethodsItems = options[@"shippingMethods"] ? options[@"shippingMethods"] : [NSMutableArray array];
     NSString* currencyCode = options[@"currencyCode"] ? options[@"currencyCode"] : @"USD";
     
@@ -203,7 +217,8 @@ RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
 
 - (void)addCardViewController:(STPAddCardViewController *)controller
                didCreateToken:(STPToken *)token
-                   completion:(STPErrorBlock)completion {
+                   completion:(STPErrorBlock)completion
+{
         [rootViewController dismissViewControllerAnimated:YES completion:nil];
 
         requestIsCompleted = YES;
@@ -211,7 +226,8 @@ RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
         promiseResolver(@{ @"token": token.tokenId });
 }
 
-- (void)addCardViewControllerDidCancel:(STPAddCardViewController *)addCardViewController {
+- (void)addCardViewControllerDidCancel:(STPAddCardViewController *)addCardViewController
+{
     [rootViewController dismissViewControllerAnimated:YES completion:nil];
     
     if (!requestIsCompleted) {
@@ -229,7 +245,8 @@ RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
 
 - (void)paymentAuthorizationViewController:(PKPaymentAuthorizationViewController *)controller
                        didAuthorizePayment:(PKPayment *)payment
-                                completion:(void (^)(PKPaymentAuthorizationStatus))completion {\
+                                completion:(void (^)(PKPaymentAuthorizationStatus))completion
+{
     // Save for deffered call
     applePayCompletion = completion;
 
@@ -251,7 +268,8 @@ RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
 }
 
 
-- (void)paymentAuthorizationViewControllerDidFinish:(PKPaymentAuthorizationViewController *)controller {
+- (void)paymentAuthorizationViewControllerDidFinish:(PKPaymentAuthorizationViewController *)controller
+{
     [rootViewController dismissViewControllerAnimated:YES completion:nil];
     
     if (!requestIsCompleted) {
@@ -265,7 +283,8 @@ RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
 }
 
 
-- (NSDictionary *)getContactDetails:(PKContact*)inputContact {
+- (NSDictionary *)getContactDetails:(PKContact*)inputContact
+{
     NSMutableDictionary *contactDetails = [[NSMutableDictionary alloc] init];
 
     if (inputContact.name)
@@ -286,7 +305,8 @@ RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
     return contactDetails;
 }
 
-- (NSDictionary *)getShippingDetails:(PKShippingMethod*)inputShipping {
+- (NSDictionary *)getShippingDetails:(PKShippingMethod*)inputShipping
+{
     NSMutableDictionary *shippingDetails = [[NSMutableDictionary alloc] init];
 
     if (inputShipping.label)
@@ -303,7 +323,24 @@ RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
     return shippingDetails;
 }
 
-- (PKShippingType *)getShippingType:(NSString*)inputType {
+- (PKAddressField *)getApplePayAddressFields:(NSString*)inputType
+{
+    if ([inputType isEqualToString:@"postal_address"])
+        return PKAddressFieldPostalAddress;
+    if ([inputType isEqualToString:@"phone"])
+        return PKAddressFieldPhone;
+    if ([inputType isEqualToString:@"email"])
+        return PKAddressFieldEmail;
+    if ([inputType isEqualToString:@"name"])
+        return PKAddressFieldName;
+    if ([inputType isEqualToString:@"all"])
+        return PKAddressFieldAll;
+    
+    return PKAddressFieldNone;
+}
+
+- (PKShippingType *)getApplePayShippingType:(NSString*)inputType
+{
     if ([inputType isEqualToString:@"delivery"])
         return PKShippingTypeDelivery;
     if ([inputType isEqualToString:@"store_pickup"])
@@ -312,6 +349,40 @@ RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
         return PKShippingTypeServicePickup;
 
     return PKShippingTypeShipping;
+}
+
+- (STPBillingAddressFields *)getBillingType:(NSString*)inputType {
+    if ([inputType isEqualToString:@"zip"])
+        return STPBillingAddressFieldsZip;
+    if ([inputType isEqualToString:@"full"])
+        return STPBillingAddressFieldsFull;
+    
+    return STPBillingAddressFieldsNone;
+}
+
+- (STPTheme *)getFormTheme:(NSDictionary*)options
+{
+    STPTheme *theme = [[STPTheme alloc] init];
+    
+    [theme setPrimaryBackgroundColor:[RCTConvert UIColor:options[@"primaryBackgroundColor"]]];
+    [theme setSecondaryBackgroundColor:[RCTConvert UIColor:options[@"secondaryBackgroundColor"]]];
+    [theme setPrimaryForegroundColor:[RCTConvert UIColor:options[@"primaryForegroundColor"]]];
+    [theme setSecondaryForegroundColor:[RCTConvert UIColor:options[@"secondaryForegroundColor"]]];
+    [theme setAccentColor:[RCTConvert UIColor:options[@"accentColor"]]];
+    [theme setErrorColor:[RCTConvert UIColor:options[@"errorColor"]]];
+    [theme setErrorColor:[RCTConvert UIColor:options[@"errorColor"]]];
+    // TODO: process font vars
+    
+    return theme;
+}
+
+- (UIModalPresentationStyle *)getFormPresentation:(NSString*)inputType {
+    if ([inputType isEqualToString:@"pageSheet"])
+        return UIModalPresentationPageSheet;
+    if ([inputType isEqualToString:@"formSheet"])
+        return UIModalPresentationFormSheet;
+    
+    return UIModalPresentationFullScreen;
 }
 
 @end

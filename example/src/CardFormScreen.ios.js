@@ -41,7 +41,10 @@ export default class CardFormScreen extends Component {
         loading: true,
         token: null,
       })
-      const result = await Stripe.paymentRequestWithCardForm('110', {})
+      const result = await Stripe.paymentRequestWithCardForm('110', {
+        // smsAutofillDisabled: true,
+        // requiredBillingAddressFields: 'full',
+      })
       console.log('Result:', result)
       this.setState({
         loading: false,

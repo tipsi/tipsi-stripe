@@ -10,6 +10,7 @@
 #import <PassKit/PassKit.h>
 #import <Stripe/Stripe.h>
 #import "RCTBridgeModule.h"
+#import "RCTConvert.h"
 
 @interface TPSStripeManager : NSObject <RCTBridgeModule, PKPaymentAuthorizationViewControllerDelegate, STPAddCardViewControllerDelegate>
 

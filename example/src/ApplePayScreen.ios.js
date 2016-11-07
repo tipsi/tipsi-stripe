@@ -57,13 +57,13 @@ export default class ApplePayScreen extends Component {
         label: 'Tipsi',
         amount: '110.00',
       }], {
-        // requiredBillingAddressFields: true,
-        // requiredShippingAddressFields: true,
+        // requiredBillingAddressFields: 'all',
+        // requiredShippingAddressFields: 'all',
         shippingMethods: [{
-          id: 'test',
-          label: 'Test',
+          id: 'fedex',
+          label: 'FedEX',
           detail: 'Test @ 10',
-          amount: '10.01',
+          amount: '10.00',
         }],
       })
       console.log('Result:', result)
