@@ -1,0 +1,297 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3A1FF6F81DC3857F00A43A04 /* TPSStripeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A1FF6F71DC3857F00A43A04 /* TPSStripeManager.m */; };
+		3A228EB21DC52E54007BB9D0 /* PassKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A228EB11DC52E54007BB9D0 /* PassKit.framework */; };
+		3A4EF3251DC8F90100A7C0BD /* TPSCardFieldManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4EF3241DC8F90100A7C0BD /* TPSCardFieldManager.m */; };
+		3A4EF3281DC8FD4600A7C0BD /* TPSCardField.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4EF3271DC8FD4600A7C0BD /* TPSCardField.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		3A3A7F181DC27B520030F9DC /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		3A1FF6F61DC3857F00A43A04 /* TPSStripeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPSStripeManager.h; sourceTree = "<group>"; };
+		3A1FF6F71DC3857F00A43A04 /* TPSStripeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPSStripeManager.m; sourceTree = "<group>"; };
+		3A228EB11DC52E54007BB9D0 /* PassKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PassKit.framework; path = System/Library/Frameworks/PassKit.framework; sourceTree = SDKROOT; };
+		3A3A7F1A1DC27B520030F9DC /* libTPSStripe.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libTPSStripe.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		3A4EF3231DC8F90100A7C0BD /* TPSCardFieldManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPSCardFieldManager.h; sourceTree = "<group>"; };
+		3A4EF3241DC8F90100A7C0BD /* TPSCardFieldManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPSCardFieldManager.m; sourceTree = "<group>"; };
+		3A4EF3261DC8FD4600A7C0BD /* TPSCardField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPSCardField.h; sourceTree = "<group>"; };
+		3A4EF3271DC8FD4600A7C0BD /* TPSCardField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPSCardField.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		3A3A7F171DC27B520030F9DC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3A228EB21DC52E54007BB9D0 /* PassKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		3A228EB01DC52E54007BB9D0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3A228EB11DC52E54007BB9D0 /* PassKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		3A3A7F111DC27B520030F9DC = {
+			isa = PBXGroup;
+			children = (
+				3A3A7F1C1DC27B520030F9DC /* TPSStripe */,
+				3A3A7F1B1DC27B520030F9DC /* Products */,
+				3A228EB01DC52E54007BB9D0 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		3A3A7F1B1DC27B520030F9DC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3A3A7F1A1DC27B520030F9DC /* libTPSStripe.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3A3A7F1C1DC27B520030F9DC /* TPSStripe */ = {
+			isa = PBXGroup;
+			children = (
+				3A1FF6F61DC3857F00A43A04 /* TPSStripeManager.h */,
+				3A1FF6F71DC3857F00A43A04 /* TPSStripeManager.m */,
+				3A4EF3231DC8F90100A7C0BD /* TPSCardFieldManager.h */,
+				3A4EF3241DC8F90100A7C0BD /* TPSCardFieldManager.m */,
+				3A4EF3261DC8FD4600A7C0BD /* TPSCardField.h */,
+				3A4EF3271DC8FD4600A7C0BD /* TPSCardField.m */,
+			);
+			path = TPSStripe;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		3A3A7F191DC27B520030F9DC /* TPSStripe */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3A3A7F231DC27B520030F9DC /* Build configuration list for PBXNativeTarget "TPSStripe" */;
+			buildPhases = (
+				3A3A7F161DC27B520030F9DC /* Sources */,
+				3A3A7F171DC27B520030F9DC /* Frameworks */,
+				3A3A7F181DC27B520030F9DC /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TPSStripe;
+			productName = TPSStripe;
+			productReference = 3A3A7F1A1DC27B520030F9DC /* libTPSStripe.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		3A3A7F121DC27B520030F9DC /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0800;
+				ORGANIZATIONNAME = Tipsi;
+				TargetAttributes = {
+					3A3A7F191DC27B520030F9DC = {
+						CreatedOnToolsVersion = 8.0;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 3A3A7F151DC27B520030F9DC /* Build configuration list for PBXProject "TPSStripe" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 3A3A7F111DC27B520030F9DC;
+			productRefGroup = 3A3A7F1B1DC27B520030F9DC /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				3A3A7F191DC27B520030F9DC /* TPSStripe */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3A3A7F161DC27B520030F9DC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3A4EF3251DC8F90100A7C0BD /* TPSCardFieldManager.m in Sources */,
+				3A1FF6F81DC3857F00A43A04 /* TPSStripeManager.m in Sources */,
+				3A4EF3281DC8FD4600A7C0BD /* TPSCardField.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		3A3A7F211DC27B520030F9DC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../../React/**",
+					"$(SRCROOT)/../../react-native/React/**",
+					"${SRCROOT}/../../../ios/Pods/Headers/Public/**",
+					"${SRCROOT}/../../../ios/Pods/Headers/Public/TPSDropDown/**",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		3A3A7F221DC27B520030F9DC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../../React/**",
+					"$(SRCROOT)/../../react-native/React/**",
+					"${SRCROOT}/../../../ios/Pods/Headers/Public/**",
+					"${SRCROOT}/../../../ios/Pods/Headers/Public/TPSDropDown/**",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		3A3A7F241DC27B520030F9DC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		3A3A7F251DC27B520030F9DC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3A3A7F151DC27B520030F9DC /* Build configuration list for PBXProject "TPSStripe" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3A3A7F211DC27B520030F9DC /* Debug */,
+				3A3A7F221DC27B520030F9DC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3A3A7F231DC27B520030F9DC /* Build configuration list for PBXNativeTarget "TPSStripe" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3A3A7F241DC27B520030F9DC /* Debug */,
+				3A3A7F251DC27B520030F9DC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 3A3A7F121DC27B520030F9DC /* Project object */;
+}

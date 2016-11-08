@@ -1,0 +1,43 @@
+{
+  "name": "tipsi-stripe",
+  "version": "0.0.1",
+  "description": "React Native Stripe binding for Andriod/iOS planforms",
+  "main": "src/index.js",
+  "scripts": {
+    "ci": "scripts/local-ci.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tipsi/tipsi-stripe.git"
+  },
+  "keywords": [
+    "react",
+    "react-native",
+    "stripe",
+    "ios",
+    "android"
+  ],
+  "author": "Tipsi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tipsi/tipsi-stripe/issues"
+  },
+  "homepage": "https://github.com/tipsi/tipsi-stripe#readme",
+  "rnpm": {
+    "commands": {
+      "prelink": "node_modules/tipsi-stripe/scripts/pre-link.sh",
+      "postlink": "node_modules/tipsi-stripe/scripts/post-link.sh"
+    }
+  },
+  "peerDependencies": {
+    "react-native": "*"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.0.0",
+    "eslint": "^3.7.1",
+    "eslint-config-airbnb": "^12.0.0",
+    "eslint-plugin-import": "^1.16.0",
+    "eslint-plugin-jsx-a11y": "^2.2.2",
+    "eslint-plugin-react": "^6.3.0"
+  }
+}
