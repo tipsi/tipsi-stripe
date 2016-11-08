@@ -140,5 +140,5 @@ const NativePaymentCardTextField = requireNativeComponent('TPSCardField', Paymen
     fontSize: true,
     enabled: true,
     onChange: true,
-  }
+  },
 })

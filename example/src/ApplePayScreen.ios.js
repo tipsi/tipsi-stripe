@@ -66,15 +66,15 @@ export default class ApplePayScreen extends Component {
           amount: '10.00',
         }],
       })
-      console.log('Result:', result)
+      console.log('Result:', result) // eslint-disable-line no-console
       await Stripe.completeApplePayRequest()
-      console.log('Apple Pay payment completed')
+      console.log('Apple Pay payment completed') // eslint-disable-line no-console
       this.setState({
         loading: false,
         token: result.token,
       })
     } catch (error) {
-      console.log('Error:', error)
+      console.log('Error:', error) // eslint-disable-line no-console
       this.setState({
         loading: false,
       })

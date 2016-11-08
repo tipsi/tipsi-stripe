@@ -45,13 +45,13 @@ export default class CardFormScreen extends Component {
         // smsAutofillDisabled: true,
         // requiredBillingAddressFields: 'full',
       })
-      console.log('Result:', result)
+      console.log('Result:', result) // eslint-disable-line no-console
       this.setState({
         loading: false,
         token: result.token,
       })
     } catch (error) {
-      console.log('Error:', error)
+      console.log('Error:', error) // eslint-disable-line no-console
       this.setState({
         loading: false,
       })
