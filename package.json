@@ -4,7 +4,7 @@
   "description": "React Native Stripe binding for Andriod/iOS planforms",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "ci": "scripts/local-ci.sh"
   },
   "repository": {
     "type": "git",
