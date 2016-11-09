@@ -14,6 +14,7 @@ export default class PaymentCardTextField extends Component {
   static propTypes = {
     ...View.propTypes,
     style: StyleSheetPropType(FieldStylePropType), // eslint-disable-line new-cap
+
     cursorColor: PropTypes.string,
     textErrorColor: PropTypes.string,
     placeholderColor: PropTypes.string,
@@ -54,6 +55,10 @@ export default class PaymentCardTextField extends Component {
     TextInputState.blurTextInput(findNodeHandle(this))
   }
 
+  setParams = (params) => {
+    this.field.setNativeProps({ params })
+  }
+
   handlePress = () => {
     this.focus()
   }
@@ -77,7 +82,17 @@ export default class PaymentCardTextField extends Component {
   }
 
   render() {
-    const { style, disabled, ...rest } = this.props
+    const {
+      style,
+      disabled,
+      cursorColor,
+      textErrorColor,
+      placeholderColor,
+      numberPlaceholder,
+      expirationPlaceholder,
+      cvcPlaceholder,
+      ...rest,
+    } = this.props
     const {
       borderColor,
       borderWidth,
@@ -99,6 +114,7 @@ export default class PaymentCardTextField extends Component {
         accessibilityTraits={rest.accessibilityTraits}
         rejectResponderTermination>
         <NativePaymentCardTextField
+          ref={field => this.field = field}
           style={[styles.field, fieldStyles]}
           borderColor={borderColor}
           borderWidth={borderWidth}
@@ -109,7 +125,12 @@ export default class PaymentCardTextField extends Component {
           fontStyle={fontStyle}
           fontSize={fontSize}
           enabled={!disabled}
-          {...rest}
+          cursorColor={cursorColor}
+          textErrorColor={textErrorColor}
+          placeholderColor={placeholderColor}
+          numberPlaceholder={numberPlaceholder}
+          expirationPlaceholder={expirationPlaceholder}
+          cvcPlaceholder={cvcPlaceholder}
           onChange={this.handleChange}
         />
       </TouchableWithoutFeedback>
@@ -139,6 +160,7 @@ const NativePaymentCardTextField = requireNativeComponent('TPSCardField', Paymen
     fontStyle: true,
     fontSize: true,
     enabled: true,
+    params: true,
     onChange: true,
   },
 })

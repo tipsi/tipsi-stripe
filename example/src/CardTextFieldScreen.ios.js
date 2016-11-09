@@ -48,20 +48,29 @@ export default class CardTextFieldScreen extends Component {
   state = {
     valid: false,
     params: {
-      number: null,
-      expMonth: null,
-      expYear: null,
-      cvc: null,
-      name: null,
-      currency: null,
+      number: '',
+      expMonth: 0,
+      expYear: 0,
+      cvc: '',
     },
   }
 
+  componentDidMount() {
+    setTimeout(() => {
+      this.refs.test.setParams({
+        number: '4242424242424242',
+        expMonth: 12,
+        expYear: 16,
+        cvc: '123',
+      })
+    }, 5000)
+  }
+
   handleFieldParamsChange = (valid, params) => {
+    console.log('123', params)
     this.setState({
       valid,
       params,
-      text: '123',
     })
   }
 
@@ -79,6 +88,7 @@ export default class CardTextFieldScreen extends Component {
             PaymentCardTextField Example
           </Text>
           <PaymentCardTextField
+            ref="test"
             accessible
             accessibilityLabel="cardTextField"
             style={styles.field}
