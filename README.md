@@ -2,7 +2,7 @@
 
 [![build status](https://img.shields.io/travis/itsmepetrov/redux-entities/master.svg?style=flat-square)](https://travis-ci.org/tipsi/tipsi-stripe)
 
-React Native Stripe binding for Andriod/iOS platforms 
+React Native Stripe binding for Andriod/iOS platforms
 
 ## Requirements
 
@@ -64,7 +64,7 @@ const options = {
   shippingMethods,
 }
 
-const result = await Stripe.paymentRequestWithApplePay(items, options)
+const result = await stripe.paymentRequestWithApplePay(items, options)
 
 // Client specific code
 // api.sendTokenToBackend(result.token)
