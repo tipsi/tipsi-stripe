@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
-import Stripe from 'tipsi-stripe'
+import stripe from 'tipsi-stripe'
 import Button from './Button'
 
 const styles = StyleSheet.create({
@@ -56,7 +56,7 @@ export default class CustomCardScreen extends Component {
         loading: true,
         token: null,
       })
-      const result = await Stripe.createTokenWithCard(
+      const result = await stripe.createTokenWithCard(
         this.state.params,
         {}
       )

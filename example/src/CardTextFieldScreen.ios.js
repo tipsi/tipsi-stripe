@@ -55,19 +55,7 @@ export default class CardTextFieldScreen extends Component {
     },
   }
 
-  componentDidMount() {
-    setTimeout(() => {
-      this.refs.test.setParams({
-        number: '4242424242424242',
-        expMonth: 12,
-        expYear: 16,
-        cvc: '123',
-      })
-    }, 5000)
-  }
-
   handleFieldParamsChange = (valid, params) => {
-    console.log('123', params)
     this.setState({
       valid,
       params,
@@ -88,7 +76,6 @@ export default class CardTextFieldScreen extends Component {
             PaymentCardTextField Example
           </Text>
           <PaymentCardTextField
-            ref="test"
             accessible
             accessibilityLabel="cardTextField"
             style={styles.field}
