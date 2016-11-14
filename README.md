@@ -93,6 +93,8 @@ After `requiredBillingAddressFields` you should complete the operation by callin
 
 #### Example
 
+![](https://cloud.githubusercontent.com/assets/1177226/20272773/008e5994-aaa0-11e6-8c24-b4bedf245741.gif)
+
 ```js
 const items = [{
   label: 'Whisky',
