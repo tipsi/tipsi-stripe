@@ -187,7 +187,7 @@ An object with the following keys:
 * `name` _String_ (Optional) - The cardholder’s name.
 * `currency` _String_ (Optional) - Three-letter ISO currency code representing the currency paid out to the bank account. This is only applicable when tokenizing debit cards to issue payouts to managed accounts. You should not set it otherwise. The card can then be used as a transfer destination for funds in this currency.
 
-##### `Example`
+##### Example
 
 ![Card Params](https://cloud.githubusercontent.com/assets/1177226/20275232/cf0f8e3e-aaa8-11e6-85bf-5e093706ea0a.gif)
 
@@ -205,18 +205,45 @@ const result = await stripe.createTokenWithCard(params)
 // api.sendTokenToBackend(result.token)
 ```
 
-#### PaymentCardTextField component (iOS only)
+### PaymentCardTextField component (iOS only)
+
+A text field component specialized for collecting credit/debit card information. It manages multiple text fields under the hood to collect this information. It’s designed to fit on a single line.
+
+##### Props
+* `styles` Object - Accepts all `View` styles, also support `color` param.
+* `cursorColor` String - The cursor color for the field.
+* `textErrorColor` String - The text color to be used when the user has entered invalid information, such as an invalid card number.
+* `placeholderColor` String - The text placeholder color used in each child field.
+
+* `numberPlaceholder` String - The placeholder for the card number field.
+* `expirationPlaceholder` String - The placeholder for the expiration field.
+* `cvcPlaceholder` String - The placeholder for the cvc field.
+
+* `disabled` Bool - Enable/disable selecting or editing the field. Useful when submitting card details to Stripe.
+
+* `onChange` Func - This function will be called each input change.
+* `onValueChange` Func - This function will be called each input change, it takes two argumants:
+  * `valid` Bool - Whether or not the form currently contains a valid card number, expiration date, and CVC.
+  * `params` Object - Contains entered card params: `number`, `expMonth`, `expYear` and `cvc`.
+
+##### Example
+
+![PaymentCardTextField](https://cloud.githubusercontent.com/assets/1177226/20276457/60680ee8-aaad-11e6-834f-007909ce6814.gif)
 
 ```js
+import React, { Component } from 'react'
+import { StyleSheet } from 'react-native'
 import { PaymentCardTextField } from 'tipsi-stripe'
 
-const style = {
-  width: 300,
-  color: '#449aeb',
-  borderColor: '#000',
-  borderWidth: 1,
-  borderRadius: 5,
-}
+const styles = StyleSheet.create({
+  field: {
+    width: 300,
+    color: '#449aeb',
+    borderColor: '#000',
+    borderWidth: 1,
+    borderRadius: 5,
+  }
+})
 
 const handleFieldParamsChange = (valid, params) => {
   console.log(`
@@ -228,17 +255,33 @@ const handleFieldParamsChange = (valid, params) => {
   `)
 }
 
-<PaymentCardTextField
-  style={style}
-  cursorColor={...}
-  textErrorColor={...}
-  placeholderColor={...}
-  numberPlaceholder={...}
-  expirationPlaceholder={...}
-  cvcPlaceholder={...},
-  disabled={false},
-  onParamsChange={handleFieldParamsChange}
-/>
+class FieldExample extends Component {
+  handleFieldParamsChange = (valid, params) => {
+    console.log(`
+      Valid: ${valid}
+      Number: ${params.number || '-'}
+      Month: ${params.expMonth || '-'}
+      Year: ${params.expYear || '-'}
+      CVC: ${params.cvc || '-'}
+    `)
+  }
+
+  render() {
+    return (
+      <PaymentCardTextField
+        style={styles.field}
+        cursorColor={...}
+        textErrorColor={...}
+        placeholderColor={...}
+        numberPlaceholder={...}
+        expirationPlaceholder={...}
+        cvcPlaceholder={...},
+        disabled={false},
+        onParamsChange={this.handleFieldParamsChange}
+      />
+    )
+  }
+}
 ```
 
 ## Tests
