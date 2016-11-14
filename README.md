@@ -55,11 +55,50 @@ stripe.init({
 })
 ```
 
-#### Apple Pay (iOS only)
+### Apple Pay (iOS only)
+
+#### `paymentRequestWithApplePay(items, [options]) -> Promise`
+
+Launch the Apple Pay view to to accept payment.
+
+##### `items`
+
+An array of object with the following keys:
+
+* `label` _String_ - A short, localized description of the item.
+* `amount` _String_ - The summary item’s amount.
+
+_NOTE_: The final item should represent your company; it'll be prepended with the word "Pay" (i.e. "Pay Tipsi, Inc $50")
+
+##### `options`
+
+An object with the following keys:
+
+* `requiredBillingAddressFields` _String_ - A bit field of billing address fields that you need in order to process the transaction. Can be one of: `all`|`name`|`email`|`phone`|`postal_address` or not specify to disable.
+* `requiredShippingAddressFields` _String_ - A bit field of shipping address fields that you need in order to process the transaction. Can be one of: `all`|`name`|`email`|`phone`|`postal_address` or not specify to disable.
+* `shippingMethods` _Array_ - An array of `shippingMethod` objects that describe the supported shipping methods.
+
+##### `shippingMethod`
+
+An object with the following keys:
+
+* `id` _String_ - A unique identifier for the shipping method, used by the app.
+* `label` _String_ - A short, localized description of the shipping method.
+* `detail` _String_ - A user-readable description of the shipping method.
+* `amount` _String_ - The shipping method’s amount.
+
+#### `completeApplePayRequest()/cancelApplePayRequest() -> Promise`
+
+After `requiredBillingAddressFields` you should complete the operation by calling `completeApplePayRequest` or cancel if an error occurred.
+
+#### Example
 
 ```js
 const items = [{
   label: 'Whisky',
+  amount: '50.00',
+}, {
+  label: 'Tipsi, Inc'
   amount: '50.00',
 }]
 
@@ -71,8 +110,8 @@ const shippingMethods = [{
 }]
 
 const options = {
-  requiredBillingAddressFields: 'all', // all|name|email|phone|postal_address or not specify to disable
-  requiredShippingAddressFields: 'all', // all|name|email|phone|postal_address or not specify to disable
+  requiredBillingAddressFields: 'all',
+  requiredShippingAddressFields: 'all',
   shippingMethods,
 }
 
@@ -81,7 +120,7 @@ const result = await stripe.paymentRequestWithApplePay(items, options)
 // Client specific code
 // api.sendTokenToBackend(result.token)
 
-// You must complete the operation by calling
+// You should complete the operation by calling
 stripe.completeApplePayRequest()
 
 // Or cancel if an error occurred
@@ -157,10 +196,6 @@ const handleFieldParamsChange = (valid, params) => {
   onParamsChange={handleFieldParamsChange}
 />
 ```
-
-## API
-
-Coming soon...
 
 ## Tests
 
