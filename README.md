@@ -156,7 +156,7 @@ An object with the following keys:
 
 #### Example
 
-![Card Form](https://cloud.githubusercontent.com/assets/1177226/20274370/63ac4cb6-aaa5-11e6-8e6a-fb8f436b7bae.gif)
+![Card Form](https://cloud.githubusercontent.com/assets/1177226/20274560/1432abf2-aaa6-11e6-8505-0cdc3017fe22.gif)
 
 ```js
 const options = {
