@@ -170,7 +170,26 @@ const result = await stripe.paymentRequestWithCardForm(options)
 // api.sendTokenToBackend(result.token)
 ```
 
-#### Request with card params object
+### Request with card params object
+
+#### `createTokenWithCard(params) -> Promise`
+
+Creates token based on passed card params.
+
+##### `params`
+
+An object with the following keys:
+
+* `number` _String_ - The card’s number.
+* `expMonth` _Number_ - The card’s expiration month.
+* `expYear` _Number_ - The card’s expiration year.
+* `cvc` _String_ - The card’s security code, found on the back.
+* `name` _String_ (Optional) - The cardholder’s name.
+* `currency` _String_ (Optional) - Three-letter ISO currency code representing the currency paid out to the bank account. This is only applicable when tokenizing debit cards to issue payouts to managed accounts. You should not set it otherwise. The card can then be used as a transfer destination for funds in this currency.
+
+##### `Example`
+
+![Card Params](https://cloud.githubusercontent.com/assets/1177226/20275232/cf0f8e3e-aaa8-11e6-85bf-5e093706ea0a.gif)
 
 ```js
 const params = {
@@ -178,8 +197,6 @@ const params = {
   expMonth: 11,
   expYear: 17,
   cvc: '223',
-  name: 'Test User', // Optional
-  currency: 'usd', // Optional
 }
 
 const result = await stripe.createTokenWithCard(params)
