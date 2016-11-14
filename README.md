@@ -59,7 +59,7 @@ stripe.init({
 
 #### `paymentRequestWithApplePay(items, [options]) -> Promise`
 
-Launch the Apple Pay view to to accept payment.
+Launch the `Apple Pay` view to to accept payment.
 
 ##### `items`
 
@@ -93,7 +93,7 @@ After `requiredBillingAddressFields` you should complete the operation by callin
 
 #### Example
 
-![](https://cloud.githubusercontent.com/assets/1177226/20272773/008e5994-aaa0-11e6-8c24-b4bedf245741.gif)
+![Apple Pay](https://cloud.githubusercontent.com/assets/1177226/20272773/008e5994-aaa0-11e6-8c24-b4bedf245741.gif)
 
 ```js
 const items = [{
@@ -129,17 +129,42 @@ stripe.completeApplePayRequest()
 // stripe.cancelApplePayRequest()
 ```
 
-#### Request with Card Form
+### Request with Card Form
+
+#### `paymentRequestWithCardForm(options) -> Promise`
+
+Launch `Add Card` view to to accept payment.
+
+##### `options`
+
+An object with the following keys:
+
+* `requiredBillingAddressFields` _String_ - The billing address fields the user must fill out when prompted for their payment details. Can be one of: `full`|`zip` or not specify to disable.
+* `smsAutofillDisabled` _Bool_ - When entering their payment information, users who have a saved card with Stripe will be prompted to autofill it by entering an SMS code. Set this property to `true` to disable this feature.
+* `theme` _Object_ - Can be used to visually style Stripe-provided UI.
+
+##### `theme`
+
+An object with the following keys:
+
+* `primaryBackgroundColor` _String_ - The primary background color of the theme.
+* `secondaryBackgroundColor` _String_ - The secondary background color of this theme.
+* `primaryForegroundColor` _String_ - The primary foreground color of this theme. This will be used as the text color for any important labels in a view with this theme (such as the text color for a text field that the user needs to fill out).
+* `secondaryForegroundColor` _String_ - The secondary foreground color of this theme. This will be used as the text color for any supplementary labels in a view with this theme (such as the placeholder color for a text field that the user needs to fill out).
+* `accentColor` _String_ - The accent color of this theme - it will be used for any buttons and other elements on a view that are important to highlight.
+* `errorColor` _String_ - The error color of this theme - it will be used for rendering any error messages or view.
+
+#### Example
+
+![Card Form](https://cloud.githubusercontent.com/assets/1177226/20274370/63ac4cb6-aaa5-11e6-8e6a-fb8f436b7bae.gif)
 
 ```js
-const total = '110.00'
-
 const options = {
   smsAutofillDisabled: true,
-  requiredBillingAddressFields: 'full', // full|zip or not specify to disable
+  requiredBillingAddressFields: 'full',
 }
 
-const result = await stripe.paymentRequestWithCardForm(total, options)
+const result = await stripe.paymentRequestWithCardForm(options)
 
 // Client specific code
 // api.sendTokenToBackend(result.token)
