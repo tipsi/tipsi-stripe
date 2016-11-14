@@ -214,17 +214,19 @@ A text field component specialized for collecting credit/debit card information.
 * `cursorColor` String - The cursor color for the field.
 * `textErrorColor` String - The text color to be used when the user has entered invalid information, such as an invalid card number.
 * `placeholderColor` String - The text placeholder color used in each child field.
-
 * `numberPlaceholder` String - The placeholder for the card number field.
 * `expirationPlaceholder` String - The placeholder for the expiration field.
 * `cvcPlaceholder` String - The placeholder for the cvc field.
-
 * `disabled` Bool - Enable/disable selecting or editing the field. Useful when submitting card details to Stripe.
-
 * `onChange` Func - This function will be called each input change.
 * `onValueChange` Func - This function will be called each input change, it takes two argumants:
   * `valid` Bool - Whether or not the form currently contains a valid card number, expiration date, and CVC.
   * `params` Object - Contains entered card params: `number`, `expMonth`, `expYear` and `cvc`.
+  
+##### Initial params
+
+To set inital params you can use `<instance>.setParams(params)` method which is available via `ref`.
+For example, if you’re using another library to scan your user’s credit card with a camera, you can assemble that data into an object and set this property to that object to prefill the fields you’ve collected.
 
 ##### Example
 
@@ -244,16 +246,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   }
 })
-
-const handleFieldParamsChange = (valid, params) => {
-  console.log(`
-    Valid: ${valid}
-    Number: ${params.number || '-'}
-    Month: ${params.expMonth || '-'}
-    Year: ${params.expYear || '-'}
-    CVC: ${params.cvc || '-'}
-  `)
-}
 
 class FieldExample extends Component {
   handleFieldParamsChange = (valid, params) => {
