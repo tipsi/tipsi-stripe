@@ -46,7 +46,7 @@ Let's require `tipsi-stripe` module:
 import stripe from 'tipsi-stripe'
 ```
 
-And initialize it with your Stripe credentials that you can get from [dashboard](https://dashboard.stripe.com). If you want to use Apple Pay you must provide your Merchant ID.
+And initialize it with your Stripe credentials that you can get from [dashboard](https://dashboard.stripe.com). If you want to use `Apple Pay` you must provide your `Merchant ID`.
 
 ```js
 stripe.init({
