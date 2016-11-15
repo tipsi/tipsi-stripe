@@ -313,13 +313,13 @@ RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
 
     [card setValue:token.card.cardId forKey:@"cardId"];
 
-    [card setValue:@(token.card.brand) forKey:@"brand"];
-    [card setValue:token.card.country forKey:@"country"];
+    [card setValue:[self getCardBrand:token.card.brand] forKey:@"brand"];
+    [card setValue:[self getCardFunding:token.card.funding] forKey:@"funding"];
     [card setValue:token.card.last4 forKey:@"last4"];
     [card setValue:token.card.dynamicLast4 forKey:@"dynamicLast4"];
     [card setValue:@(token.card.expMonth) forKey:@"expMonth"];
     [card setValue:@(token.card.expYear) forKey:@"expYear"];
-    [card setValue:@(token.card.funding) forKey:@"funding"];
+    [card setValue:token.card.country forKey:@"country"];
     [card setValue:token.card.currency forKey:@"currency"];
 
     [card setValue:token.card.name forKey:@"name"];
@@ -333,6 +333,41 @@ RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
     return result;
 }
 
+- (NSString *)getCardBrand:(STPCardBrand)inputBrand
+{
+    switch (inputBrand) {
+        case STPCardBrandJCB:
+            return @"JCB";
+        case STPCardBrandAmex:
+            return @"American Express";
+        case STPCardBrandVisa:
+            return @"Visa";
+        case STPCardBrandDiscover:
+            return @"Discover";
+        case STPCardBrandDinersClub:
+            return @"Diners Club";
+        case STPCardBrandMasterCard:
+            return @"MasterCard";
+        case STPCardBrandUnknown:
+        default:
+            return @"Unknown";
+    }
+}
+
+- (NSString *)getCardFunding:(STPCardFundingType)inputFunding
+{
+    switch (inputFunding) {
+        case STPCardFundingTypeDebit:
+            return @"debit";
+        case STPCardFundingTypeCredit:
+            return @"credit";
+        case STPCardFundingTypePrepaid:
+            return @"prepaid";
+        case STPCardFundingTypeOther:
+        default:
+            return @"unknown";
+    }
+}
 
 - (NSDictionary *)getContactDetails:(PKContact*)inputContact
 {

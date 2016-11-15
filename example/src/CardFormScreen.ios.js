@@ -42,8 +42,8 @@ export default class CardFormScreen extends Component {
         token: null,
       })
       const result = await stripe.paymentRequestWithCardForm({
-        smsAutofillDisabled: true,
-        requiredBillingAddressFields: 'zip',
+        // smsAutofillDisabled: true,
+        // requiredBillingAddressFields: 'full',
       })
       console.log('Result:', result) // eslint-disable-line no-console
       this.setState({
