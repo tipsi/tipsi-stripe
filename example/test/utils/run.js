@@ -59,7 +59,7 @@ const allowedPlatformNames = ['ios', 'android'];
     }
     if (deviceNotSpecified && PLATFORM_NAME === 'ios') {
       DEVICE_NAME = 'iPhone 6'
-      PLATFORM_VERSION = '10.0'
+      PLATFORM_VERSION = '' // Using latest version Xcode supports
     }
 
     // Initialize Helper

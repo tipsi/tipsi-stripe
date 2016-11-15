@@ -12,12 +12,6 @@ test('Test if user can use Card Form', async (t) => {
     XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[2]
   `)
   const cardFormButtonId = idFromAccessId('cardFormButton')
-  const emailInputId = idFromXPath(`
-    //XCUIElementTypeApplication/XCUIElementTypeWindow/
-    XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/
-    XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeTable/
-    XCUIElementTypeCell/XCUIElementTypeTextField
-  `)
   const numberInputId = idFromAccessId('card number')
   const dateInputId = idFromAccessId('expiration date')
   const cvcInputId = idFromAccessId('CVC')
@@ -65,12 +59,6 @@ test('Test if user can use Card Form', async (t) => {
     await driver.setValue(cvcInputId, '123')
 
     t.pass('User should be able to enter CVC code')
-
-    await driver.waitForVisible(emailInputId, 10000)
-    await driver.click(emailInputId)
-    await driver.keys('test@test.com')
-
-    t.pass('User should be able to enter email')
 
     await driver.waitForVisible(doneButtonId, 10000)
     await driver.click(doneButtonId)

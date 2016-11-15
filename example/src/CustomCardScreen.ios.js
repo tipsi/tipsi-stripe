@@ -56,11 +56,11 @@ export default class CustomCardScreen extends Component {
         loading: true,
         token: null,
       })
-      const result = await stripe.createTokenWithCard(this.state.params)
-      console.log('Result:', result) // eslint-disable-line no-console
+      const token = await stripe.createTokenWithCard(this.state.params)
+      console.log('Result:', token) // eslint-disable-line no-console
       this.setState({
         loading: false,
-        token: result.tokenId,
+        token,
       })
     } catch (error) {
       console.log('Error:', error) // eslint-disable-line no-console
@@ -112,7 +112,7 @@ export default class CustomCardScreen extends Component {
         <View style={styles.token}>
           {token &&
             <Text style={styles.instruction}>
-              Token: {token}
+              Token: {token.tokenId}
             </Text>
           }
         </View>

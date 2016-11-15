@@ -41,14 +41,14 @@ export default class CardFormScreen extends Component {
         loading: true,
         token: null,
       })
-      const result = await stripe.paymentRequestWithCardForm({
-        // smsAutofillDisabled: true,
+      const token = await stripe.paymentRequestWithCardForm({
+        smsAutofillDisabled: true,
         // requiredBillingAddressFields: 'full',
       })
-      console.log('Result:', result) // eslint-disable-line no-console
+      console.log('Result:', token) // eslint-disable-line no-console
       this.setState({
         loading: false,
-        token: result.tokenId,
+        token,
       })
     } catch (error) {
       console.log('Error:', error) // eslint-disable-line no-console
@@ -80,7 +80,7 @@ export default class CardFormScreen extends Component {
         <View style={styles.token}>
           {token &&
             <Text style={styles.instruction}>
-              Token: {token}
+              Token: {token.tokenId}
             </Text>
           }
         </View>
