@@ -7,6 +7,7 @@
 //
 
 #import "TPSStripeManager.h"
+#import <RCTLog.h>
 
 @implementation TPSStripeManager
 {
@@ -54,7 +55,7 @@ RCT_EXPORT_METHOD(deviceSupportsApplePay:(RCTPromiseResolveBlock)resolve
 }
 
 RCT_EXPORT_METHOD(completeApplePayRequest:(RCTPromiseResolveBlock)resolve
-                         rejecter:(RCTPromiseRejectBlock)reject)
+                                 rejecter:(RCTPromiseRejectBlock)reject)
 {
     if (applePayCompletion) {
         applePayCompletion(PKPaymentAuthorizationStatusSuccess);
@@ -63,7 +64,7 @@ RCT_EXPORT_METHOD(completeApplePayRequest:(RCTPromiseResolveBlock)resolve
 }
 
 RCT_EXPORT_METHOD(cancelApplePayRequest:(RCTPromiseResolveBlock)resolve
-                       rejecter:(RCTPromiseRejectBlock)reject)
+                               rejecter:(RCTPromiseRejectBlock)reject)
 {
     if (applePayCompletion) {
         applePayCompletion(PKPaymentAuthorizationStatusFailure);
@@ -72,9 +73,8 @@ RCT_EXPORT_METHOD(cancelApplePayRequest:(RCTPromiseResolveBlock)resolve
 }
 
 RCT_EXPORT_METHOD(createTokenWithCard:(NSDictionary *)params
-                  withOptions:(NSDictionary *)options
-                  resolver:(RCTPromiseResolveBlock)resolve
-                  rejecter:(RCTPromiseRejectBlock)reject)
+                             resolver:(RCTPromiseResolveBlock)resolve
+                             rejecter:(RCTPromiseRejectBlock)reject)
 {
     if(!requestIsCompleted) {
         reject(
@@ -88,12 +88,23 @@ RCT_EXPORT_METHOD(createTokenWithCard:(NSDictionary *)params
     requestIsCompleted = NO;
     
     STPCardParams *cardParams = [[STPCardParams alloc] init];
-    cardParams.number = params[@"number"];
-    cardParams.expMonth = [params[@"expMonth"] integerValue];
-    cardParams.expYear = [params[@"expYear"] integerValue];
-    cardParams.cvc = params[@"cvc"];
-    cardParams.name = params[@"name"];
-    cardParams.currency = params[@"currency"];
+    
+    [cardParams setNumber: params[@"number"]];
+    [cardParams setExpMonth: [params[@"expMonth"] integerValue]];
+    [cardParams setExpYear: [params[@"expYear"] integerValue]];
+    [cardParams setCvc: params[@"cvc"]];
+    [cardParams setCurrency: params[@"currency"]];
+    
+    [cardParams setName: params[@"name"]];
+    [cardParams setAddressLine1: params[@"addressLine1"]];
+    [cardParams setAddressLine2: params[@"addressLine2"]];
+    [cardParams setAddressCity: params[@"addressCity"]];
+    [cardParams setAddressState: params[@"addressState"]];
+    [cardParams setAddressCountry: params[@"addressCountry"]];
+    [cardParams setAddressZip: params[@"addressZip"]];
+
+    // cardParams.expMonth = [params[@"expMonth"] integerValue];
+    // cardParams.expYear = [params[@"expYear"] integerValue];
     
     [[STPAPIClient sharedClient] createTokenWithCard:cardParams completion:^(STPToken *token, NSError *error) {
         requestIsCompleted = YES;
@@ -101,16 +112,15 @@ RCT_EXPORT_METHOD(createTokenWithCard:(NSDictionary *)params
         if (error) {
             reject(nil, nil, error);
         } else {
-            resolve(@{ @"token": token.tokenId });
+            resolve([self convertTokenObject:token]);
         }
     }];
 }
 
 
-RCT_EXPORT_METHOD(paymentRequestWithCardForm:(NSString *)amount
-                            withOptions:(NSDictionary *)options
-                               resolver:(RCTPromiseResolveBlock)resolve
-                               rejecter:(RCTPromiseRejectBlock)reject)
+RCT_EXPORT_METHOD(paymentRequestWithCardForm:(NSDictionary *)options
+                                    resolver:(RCTPromiseResolveBlock)resolve
+                                    rejecter:(RCTPromiseRejectBlock)reject)
 {
     if(!requestIsCompleted) {
         reject(
@@ -219,11 +229,11 @@ RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
                didCreateToken:(STPToken *)token
                    completion:(STPErrorBlock)completion
 {
-        [rootViewController dismissViewControllerAnimated:YES completion:nil];
+    [rootViewController dismissViewControllerAnimated:YES completion:nil];
 
-        requestIsCompleted = YES;
-        completion(nil);
-        promiseResolver(@{ @"token": token.tokenId });
+    requestIsCompleted = YES;
+    completion(nil);
+    promiseResolver([self convertTokenObject:token]);
 }
 
 - (void)addCardViewControllerDidCancel:(STPAddCardViewController *)addCardViewController
@@ -257,12 +267,16 @@ RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
             completion(PKPaymentAuthorizationStatusFailure);
             promiseRejector(nil, nil, error);
         } else {
-            promiseResolver(@{
-                @"token": token.tokenId,
+            NSDictionary *result = [self convertTokenObject:token];
+            NSDictionary *extra = @{
                 @"billingContact": [self getContactDetails:payment.billingContact],
                 @"shippingContact": [self getContactDetails:payment.shippingContact],
                 @"shippingMethod": [self getShippingDetails:payment.shippingMethod]
-            });
+            };
+
+            [result setValue:extra forKey:@"extra"];
+
+            promiseResolver(result);
         }
     }];
 }
@@ -271,7 +285,7 @@ RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
 - (void)paymentAuthorizationViewControllerDidFinish:(PKPaymentAuthorizationViewController *)controller
 {
     [rootViewController dismissViewControllerAnimated:YES completion:nil];
-    
+
     if (!requestIsCompleted) {
         requestIsCompleted = YES;
         promiseRejector(
@@ -280,6 +294,43 @@ RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
             [[NSError alloc] initWithDomain:@"StripeNative" code:2 userInfo:@{NSLocalizedDescriptionKey:@"User canceled Apple Pay"}]
         );
     }
+}
+
+- (NSDictionary *)convertTokenObject:(STPToken*)token
+{
+    NSDictionary *result = [[NSMutableDictionary alloc] init];
+    NSDictionary *card = [[NSMutableDictionary alloc] init];
+
+    [result setValue:card forKey:@"card"];
+
+    // Token
+
+    [result setValue:token.tokenId forKey:@"tokenId"];
+    [result setValue:token.created forKey:@"created"];
+    [result setValue:@(token.livemode) forKey:@"livemode"];
+
+    // Card
+
+    [card setValue:token.card.cardId forKey:@"cardId"];
+
+    [card setValue:@(token.card.brand) forKey:@"brand"];
+    [card setValue:token.card.country forKey:@"country"];
+    [card setValue:token.card.last4 forKey:@"last4"];
+    [card setValue:token.card.dynamicLast4 forKey:@"dynamicLast4"];
+    [card setValue:@(token.card.expMonth) forKey:@"expMonth"];
+    [card setValue:@(token.card.expYear) forKey:@"expYear"];
+    [card setValue:@(token.card.funding) forKey:@"funding"];
+    [card setValue:token.card.currency forKey:@"currency"];
+
+    [card setValue:token.card.name forKey:@"name"];
+    [card setValue:token.card.addressLine1 forKey:@"addressLine1"];
+    [card setValue:token.card.addressLine2 forKey:@"addressLine2"];
+    [card setValue:token.card.addressCity forKey:@"addressCity"];
+    [card setValue:token.card.addressState forKey:@"addressState"];
+    [card setValue:token.card.addressCountry forKey:@"addressCountry"];
+    [card setValue:token.card.addressZip forKey:@"addressZip"];
+
+    return result;
 }
 
 

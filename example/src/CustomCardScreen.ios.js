@@ -56,14 +56,11 @@ export default class CustomCardScreen extends Component {
         loading: true,
         token: null,
       })
-      const result = await stripe.createTokenWithCard(
-        this.state.params,
-        {}
-      )
+      const result = await stripe.createTokenWithCard(this.state.params)
       console.log('Result:', result) // eslint-disable-line no-console
       this.setState({
         loading: false,
-        token: result.token,
+        token: result.tokenId,
       })
     } catch (error) {
       console.log('Error:', error) // eslint-disable-line no-console

@@ -71,7 +71,7 @@ export default class ApplePayScreen extends Component {
       console.log('Apple Pay payment completed') // eslint-disable-line no-console
       this.setState({
         loading: false,
-        token: result.token,
+        token: result.tokenId,
       })
     } catch (error) {
       console.log('Error:', error) // eslint-disable-line no-console
