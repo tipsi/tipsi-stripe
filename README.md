@@ -55,6 +55,67 @@ stripe.init({
 })
 ```
 
+### Token
+
+A token object returned from submitting payment details (via `paymentRequestWithApplePay`, `paymentRequestWithCardForm` and `createTokenWithCard`) to the Stripe API.
+
+##### `token`
+
+An object with the following keys:
+
+* `tokenId` _String_ - The value of the token. You can store this value on your server and use it to make charges and customers. 
+* `created` _Number_ - When the token was created.
+* `livemode` _Number_ - Whether or not this token was created in livemode. Will be `1` if you used your `Live Publishable Key`, and `0` if you used your `Test Publishable Key`.
+* `card` _Object_ - The credit card details object that were used to create the token.
+* `extra` _Object_ - An additional information that method can provide.
+
+##### `card`
+
+An object with the following keys:
+
+* `cardId` _String_ - The Stripe ID for the card.
+* `brand` _String_ - The card’s brand. Can be one of: `JCB`|`American Express`|`Visa`|`Discover`|`Diners Club`|`MasterCard`|`Unknown`.
+* `funding` _String_ - The card’s funding. Can be one of: `debit`|`credit`|`prepaid`|`unknown`.
+* `last4` _String_ - The last 4 digits of the card.
+* `dynamicLast4` _String_ (iOS only) - For cards made with `Apple Pay`, this refers to the last 4 digits of the `Device Account Number` for the tokenized card.
+* `expMonth` _Number_ - The card’s expiration month. 1-indexed (i.e. 1 == January)
+* `expYear` _Number_ - The card’s expiration year.
+* `country` _String_ - Two-letter ISO code representing the issuing country of the card.
+* `currency` _String_ - This is only applicable when tokenizing debit cards to issue payouts to managed accounts. The card can then be used as a transfer destination for funds in this currency.
+* `name` _String_ - The cardholder’s name.
+* `addressLine1` _String_ - The cardholder’s first address line.
+* `addressLine2` _String_ - The cardholder’s second address line.
+* `addressCity` _String_ - The cardholder’s city.
+* `addressState` _String_ - The cardholder’s city.
+* `addressCountry` _String_ - The cardholder’s country.
+* `addressZip` _String_ - The cardholder’s zip code.
+
+#### Example
+
+```js
+{
+  tokenId: 'tok_19GCAQI5NuVQgnjeKNE32K0p',
+  created: 1479236426,
+  livemode: 0,
+  card: {
+    cardId: 'card_19GCAQI5NuVQgnjeRZizG4U3',
+    brand: 'Visa',
+    funding: 'credit',
+    last4: '4242',
+    expMonth: 4,
+    expYear: 2024,
+    country: 'US',
+    name: 'Eugene Grissom',
+    addressLine1: 'Green Street',
+    addressLine2: '3380',
+    addressCity: 'Nashville',
+    addressState: 'Tennessee',
+    addressCountry: 'US',
+    addressZip: '37211'
+  }
+}
+```
+
 ### Apple Pay (iOS only)
 
 #### `paymentRequestWithApplePay(items, [options]) -> Promise`
@@ -91,6 +152,33 @@ An object with the following keys:
 
 After `requiredBillingAddressFields` you should complete the operation by calling `completeApplePayRequest` or cancel if an error occurred.
 
+#### Extra info
+
+Token's `extra` field
+
+##### `extra`
+
+An object with the following keys:
+
+* `shippingMethod` _Object_ - Selected `shippingMethod` object.
+* `billingContact` _Object_ - The user's billing `contact` object.
+* `shippingContact` _Object_ - The user's shipping `contact` object.
+
+##### `contact`
+
+An object with the following keys:
+
+* `name` _String_ - The contact’s name.
+* `phoneNumber` _String_ - The contact’s phone number.
+* `emailAddress` _String_ - The contact’s email address.
+* `street` _String_ - The street name in a postal address.
+* `city` _String_ - The city name in a postal address.
+* `state` _String_ - The state name in a postal address.
+* `country` _String_ - The country name in a postal address.
+* `ISOCountryCode` _String_ - The ISO country code for the country in a postal address.
+* `postalCode` _String_ - The postal code in a postal address.
+* `supplementarySubLocality` _String_ - The contact’s sublocality.
+
 #### Example
 
 ![Apple Pay](https://cloud.githubusercontent.com/assets/1177226/20272773/008e5994-aaa0-11e6-8c24-b4bedf245741.gif)
@@ -117,10 +205,10 @@ const options = {
   shippingMethods,
 }
 
-const result = await stripe.paymentRequestWithApplePay(items, options)
+const token = await stripe.paymentRequestWithApplePay(items, options)
 
 // Client specific code
-// api.sendTokenToBackend(result.token)
+// api.sendTokenToBackend(token)
 
 // You should complete the operation by calling
 stripe.completeApplePayRequest()
@@ -164,10 +252,10 @@ const options = {
   requiredBillingAddressFields: 'full',
 }
 
-const result = await stripe.paymentRequestWithCardForm(options)
+const token = await stripe.paymentRequestWithCardForm(options)
 
 // Client specific code
-// api.sendTokenToBackend(result.token)
+// api.sendTokenToBackend(token)
 ```
 
 ### Request with card params object
@@ -199,10 +287,10 @@ const params = {
   cvc: '223',
 }
 
-const result = await stripe.createTokenWithCard(params)
+const token = await stripe.createTokenWithCard(params)
 
 // Client specific code
-// api.sendTokenToBackend(result.token)
+// api.sendTokenToBackend(token)
 ```
 
 ### PaymentCardTextField component (iOS only)
@@ -280,7 +368,7 @@ class FieldExample extends Component {
 
 #### Local CI
 
-To run e2e tests for all platforms you can use `npm run ci` command. Before run this command you need to specify `PUBLISHABLE_KEY` and `MERCHANT_ID` environment variables:
+To run `example` app e2e tests for all platforms you can use `npm run ci` command. Before run this command you need to specify `PUBLISHABLE_KEY` and `MERCHANT_ID` environment variables:
 
 ```bash
 PUBLISHABLE_KEY=<...> MERCHANT_ID=<...> npm run ci
