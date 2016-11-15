@@ -8,8 +8,8 @@ import CustomCardScreen from './CustomCardScreen'
 import CardTextFieldScreen from './CardTextFieldScreen'
 
 stripe.init({
-  publishableKey: 'pk_test_m3kEfDWERg2qNxwlikeKzeEI',
-  merchantId: 'merchant.com.tipsi.applepaytest',
+  publishableKey: '<PUBLISHABLE_KEY>',
+  merchantId: '<MERCHANT_ID>',
 })
 
 const styles = StyleSheet.create({

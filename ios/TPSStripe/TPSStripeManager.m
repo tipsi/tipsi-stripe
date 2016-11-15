@@ -306,7 +306,7 @@ RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
     // Token
 
     [result setValue:token.tokenId forKey:@"tokenId"];
-    [result setValue:token.created forKey:@"created"];
+    [result setValue:@([token.created timeIntervalSince1970]) forKey:@"created"];
     [result setValue:@(token.livemode) forKey:@"livemode"];
 
     // Card
