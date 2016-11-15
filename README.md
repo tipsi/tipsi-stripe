@@ -316,6 +316,8 @@ A text field component specialized for collecting credit/debit card information.
 To set inital params you can use `<instance>.setParams(params)` method which is available via `ref`.
 For example, if you’re using another library to scan your user’s credit card with a camera, you can assemble that data into an object and set this property to that object to prefill the fields you’ve collected.
 
+You can also access to `valid` and `params` info via `<instance>.valid` and `<instance>.params` respectively.
+
 ##### Example
 
 ![PaymentCardTextField](https://cloud.githubusercontent.com/assets/1177226/20276457/60680ee8-aaad-11e6-834f-007909ce6814.gif)
