@@ -34,6 +34,7 @@
     "better-pastebin": "^0.2.1",
     "glob": "^7.1.0",
     "imgur": "^0.1.7",
+    "node-simctl": "^3.4.4",
     "npm-run-all": "^3.1.1",
     "tap-diff": "^0.1.1",
     "tape": "^4.6.2",
