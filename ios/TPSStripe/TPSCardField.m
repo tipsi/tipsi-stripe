@@ -12,14 +12,28 @@
 @implementation TPSCardField
 {
     BOOL _jsRequestingFirstResponder;
+    BOOL _isFirstResponder;
+    NSUInteger _changeViaSetCardParamsCounter;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
     if ((self = [super initWithFrame:frame])) {
         self.delegate = self;
+        _isFirstResponder = NO;
+        _changeViaSetCardParamsCounter = 0;
+        [[NSNotificationCenter defaultCenter]
+            addObserver:self
+               selector:@selector(keyboardWillShow:)
+                   name:UIKeyboardWillShowNotification
+                 object:self.window];
     }
     return self;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)reactWillMakeFirstResponder
@@ -45,9 +59,39 @@
     }
 }
 
+- (void)keyboardWillShow:(NSNotification *)n
+{
+    if (!_jsRequestingFirstResponder && !_isFirstResponder) {
+        [self resignFirstResponder];
+    }
+}
+
+- (BOOL)becomeFirstResponder
+{
+    _isFirstResponder = YES;
+    return [super becomeFirstResponder];
+}
+
+- (BOOL)resignFirstResponder
+{
+    _isFirstResponder = NO;
+    return [super resignFirstResponder];
+}
+
+- (void)setCardParams:(STPCardParams *)cardParams
+{
+    _changeViaSetCardParamsCounter = 2;
+    [super setCardParams:cardParams];
+}
+
 - (void)onChange {
-    if (!_onChange)
+    if (_changeViaSetCardParamsCounter > 0) {
+        _changeViaSetCardParamsCounter--;
         return;
+    }
+    if (!_onChange) {
+        return;
+    }
 
     @try {
         _onChange(@{

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
-import Stripe from 'tipsi-stripe'
+import stripe from 'tipsi-stripe'
 import Button from './Button'
 
 const styles = StyleSheet.create({
@@ -37,7 +37,7 @@ export default class ApplePayScreen extends Component {
   }
 
   async componentWillMount() {
-    const allowed = await Stripe.deviceSupportsApplePay()
+    const allowed = await stripe.deviceSupportsApplePay()
     this.setState({ allowed })
   }
 
@@ -47,7 +47,7 @@ export default class ApplePayScreen extends Component {
         loading: true,
         token: null,
       })
-      const result = await Stripe.paymentRequestWithApplePay([{
+      const token = await stripe.paymentRequestWithApplePay([{
         label: 'Whisky',
         amount: '50.00',
       }, {
@@ -66,12 +66,12 @@ export default class ApplePayScreen extends Component {
           amount: '10.00',
         }],
       })
-      console.log('Result:', result) // eslint-disable-line no-console
-      await Stripe.completeApplePayRequest()
+      console.log('Result:', token) // eslint-disable-line no-console
+      await stripe.completeApplePayRequest()
       console.log('Apple Pay payment completed') // eslint-disable-line no-console
       this.setState({
         loading: false,
-        token: result.token,
+        token,
       })
     } catch (error) {
       console.log('Error:', error) // eslint-disable-line no-console
@@ -105,7 +105,7 @@ export default class ApplePayScreen extends Component {
         <View style={styles.token}>
           {token &&
             <Text style={styles.instruction}>
-              Token: {token}
+              Token: {token.tokenId}
             </Text>
           }
         </View>

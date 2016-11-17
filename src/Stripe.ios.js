@@ -16,14 +16,14 @@ class Stripe {
   completeApplePayRequest = () => (
     TPSStripeManager.completeApplePayRequest()
   )
-  paymentRequestWithCardForm = (price = '0', options = {}) => (
-    TPSStripeManager.paymentRequestWithCardForm(price, {
+  paymentRequestWithCardForm = (options = {}) => (
+    TPSStripeManager.paymentRequestWithCardForm({
       ...options,
       theme: processTheme(options.theme),
     })
   )
-  createTokenWithCard = (params = {}, options = {}) => (
-    TPSStripeManager.createTokenWithCard(params, options)
+  createTokenWithCard = (params = {}) => (
+    TPSStripeManager.createTokenWithCard(params)
   )
 }
 

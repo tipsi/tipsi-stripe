@@ -48,12 +48,10 @@ export default class CardTextFieldScreen extends Component {
   state = {
     valid: false,
     params: {
-      number: null,
-      expMonth: null,
-      expYear: null,
-      cvc: null,
-      name: null,
-      currency: null,
+      number: '',
+      expMonth: 0,
+      expYear: 0,
+      cvc: '',
     },
   }
 
@@ -61,7 +59,6 @@ export default class CardTextFieldScreen extends Component {
     this.setState({
       valid,
       params,
-      text: '123',
     })
   }
 

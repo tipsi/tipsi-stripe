@@ -1,4 +1,5 @@
 import findAndroidDevice from './find-android-device'
+import findiOSDevice from './find-ios-device'
 import appiumIsRunning from './appium-is-running'
 import runTapeTests from './run-tape-tests'
 import helper from './helper'
@@ -13,6 +14,10 @@ const {
   AUTOMATION_NAME,
   IMGUR_CLIENT_ID,
   PASTEBIN_DEV_KEY,
+  IOS_DEVICE_NAME,
+  IOS_PLATFORM_VERSION,
+  ANDROID_DEVICE_NAME,
+  ANDROID_PLATFORM_VERSION,
 } = process.env
 
 let DEVICE_NAME = process.env.DEVICE_NAME
@@ -49,17 +54,28 @@ const allowedPlatformNames = ['ios', 'android'];
       return
     }
 
+    if (PLATFORM_NAME === 'android') {
+      DEVICE_NAME = ANDROID_DEVICE_NAME || DEVICE_NAME
+      PLATFORM_VERSION = ANDROID_PLATFORM_VERSION || PLATFORM_VERSION
+    }
+    if (PLATFORM_NAME === 'ios') {
+      DEVICE_NAME = IOS_DEVICE_NAME || DEVICE_NAME
+      PLATFORM_VERSION = IOS_PLATFORM_VERSION || PLATFORM_VERSION
+    }
+
     // Check Device Name
     const deviceNotSpecified = !DEVICE_NAME || !PLATFORM_VERSION
     if (deviceNotSpecified && PLATFORM_NAME === 'android') {
       const device = await findAndroidDevice()
-      console.log(`Found next android device: ${device.id}, version: ${device.version}`)
+      console.log(`Found next Android device: ${device.id}, version: ${device.version}`)
       DEVICE_NAME = device.id
       PLATFORM_VERSION = device.version
     }
-    if (deviceNotSpecified && PLATFORM_NAME === 'ios') {
-      DEVICE_NAME = 'iPhone 6'
-      PLATFORM_VERSION = '10.0'
+    if (PLATFORM_NAME === 'ios') {
+      const device = await findiOSDevice(DEVICE_NAME, PLATFORM_VERSION)
+      console.log(`Found next iOS device: ${device.type}, version: ${device.version}`)
+      DEVICE_NAME = device.type
+      PLATFORM_VERSION = device.version
     }
 
     // Initialize Helper

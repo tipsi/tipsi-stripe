@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { TabViewAnimated, TabBarTop } from 'react-native-tab-view'
-import Stripe from 'tipsi-stripe'
+import stripe from 'tipsi-stripe'
 import ApplePayScreen from './ApplePayScreen'
 import CardFormScreen from './CardFormScreen'
 import CustomCardScreen from './CustomCardScreen'
 import CardTextFieldScreen from './CardTextFieldScreen'
 
-Stripe.init({
+stripe.init({
   publishableKey: '<PUBLISHABLE_KEY>',
   merchantId: '<MERCHANT_ID>',
 })
