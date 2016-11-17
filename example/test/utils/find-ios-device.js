@@ -3,7 +3,13 @@ import { getDevices } from 'node-simctl'
 export default async function findiOSDevice(type = 'iPhone 6', version) {
   const result = await getDevices()
 
+  console.log(type, version)
+
+  console.log(result)
+
   const sdks = Object.keys(result)
+  console.log('sdks:', sdks)
+
   const devices = sdks.reduce(
     (memo, sdk) => {
       const nextDevices = result[sdk].map(
@@ -28,6 +34,9 @@ export default async function findiOSDevice(type = 'iPhone 6', version) {
     }
 
     const sdk = Math.max(...sdks)
+
+    console.log('MAX sdk:', sdk)
+    console.log('MAX devices:', result[sdk])
 
     const best = result[sdk].find(
       device => device.name === type
