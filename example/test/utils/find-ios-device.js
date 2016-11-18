@@ -27,8 +27,7 @@ export default async function findiOSDevice(type = 'iPhone 6', version) {
       }
     }
 
-    const sdk = Math.max(...sdks)
-
+    const sdk = sdks[sdks.length - 1] // Last version of SDK
     const best = result[sdk].find(
       device => device.name === type
     )
