@@ -1,6 +1,6 @@
 # tipsi-stripe
 
-[![build status](https://img.shields.io/travis/itsmepetrov/redux-entities/master.svg?style=flat-square)](https://travis-ci.org/tipsi/tipsi-stripe)
+[![build status](https://img.shields.io/travis/tipsi/tipsi-stripe/master.svg?style=flat-square)](https://travis-ci.org/tipsi/tipsi-stripe)
 
 React Native Stripe binding for iOS/Andriod platforms
 
