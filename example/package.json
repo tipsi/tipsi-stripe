@@ -12,7 +12,7 @@
     "build:android": "npm-run-all clean build:android:*",
     "build:ios": "cd ios && xcodebuild build -workspace example.xcworkspace -scheme example -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO -destination 'platform=iOS Simulator,name=iPhone 6' -configuration Release -derivedDataPath build",
     "build": "npm-run-all build:*",
-    "test:android": "PLATFORM_NAME=android APP_PATH=`pwd`/android/app/build/outputs/apk/app-release.apk TESTS_PATH=test/*_test_*.android.js babel-node ./test/utils/run.js",
+    "test:android": "PLATFORM_NAME=android APP_PATH=`pwd`/android/app/build/outputs/apk/app-debug.apk TESTS_PATH=test/*_test_*.android.js babel-node ./test/utils/run.js",
     "test:ios": "PLATFORM_NAME=ios NO_RESET=true AUTOMATION_NAME=xcuitest APP_PATH=`pwd`/ios/build/Build/Products/Release-iphonesimulator/example.app TESTS_PATH=test/*_test_*.ios.js babel-node ./test/utils/run.js",
     "test": "npm-run-all test:*"
   },
@@ -21,6 +21,7 @@
     "react-addons-shallow-compare": "^15.3.2",
     "react-native": "0.36.0",
     "react-native-tab-view": "0.0.37",
+    "react-native-button": "^1.7.1",
     "tipsi-stripe": "../"
   },
   "devDependencies": {
