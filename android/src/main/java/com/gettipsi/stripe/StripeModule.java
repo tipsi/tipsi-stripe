@@ -38,7 +38,7 @@ import com.stripe.android.model.Card;
 import com.stripe.android.model.Token;
 import com.stripe.exception.AuthenticationException;
 
-public class StripeModule extends ReactContextBaseJavaModule implements AddCardDialogFragmentTwo.StripeListener{
+public class StripeModule extends ReactContextBaseJavaModule {
 
   private static final String TAG = StripeModule.class.getSimpleName();
   private static final String MODULE_NAME = "StripeModule";
@@ -106,7 +106,6 @@ public class StripeModule extends ReactContextBaseJavaModule implements AddCardD
       }
     }
   };
-  private Promise cardFormPromise;
 
 
   public StripeModule(ReactApplicationContext reactContext) {
@@ -170,9 +169,8 @@ public class StripeModule extends ReactContextBaseJavaModule implements AddCardD
   @ReactMethod
   public void paymentRequestWithCardForm(ReadableMap unused, final Promise promise) {
     if (getCurrentActivity() != null) {
-      cardFormPromise = promise;
       final AddCardDialogFragmentTwo cardDialog = AddCardDialogFragmentTwo.newInstance(publicKey);
-      cardDialog.setListener(this);
+      cardDialog.setPromise(promise);
       cardDialog.show(getCurrentActivity().getFragmentManager(), "AddNewCard");
     }
   }
@@ -266,17 +264,5 @@ public class StripeModule extends ReactContextBaseJavaModule implements AddCardD
       .setCurrencyCode(currencyCode)
       .build();
     return maskedWalletRequest;
-  }
-
-  @Override
-  public void resolve(WritableMap newToken) {
-    Log.d(TAG, "resolve: fromListener");
-    cardFormPromise.resolve(newToken);
-  }
-
-  @Override
-  public void reject(String error) {
-    Log.d(TAG, "reject: fromListener");
-    cardFormPromise.reject(error);
   }
 }

@@ -261,6 +261,7 @@ stripe.completeApplePayRequest()
 ```
 
 ### Android Pay (Android only)
+(Under active development)
 
 #### `paymentRequestWithAndroidPay(item) -> Promise`
 

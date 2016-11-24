@@ -53,11 +53,10 @@ public class AddCardDialogFragmentTwo extends DialogFragment {
   @BindView(R2.id.imageFlippedCardBack)
   ImageView imageFlipedCardBack;
 
-  //    private volatile Promise promise;
+  private volatile Promise promise;
   private boolean succesful;
   private CardFlipAnimator cardFlipAnimator;
   private Button doneButton;
-  private StripeListener listener;
 
   public static AddCardDialogFragmentTwo newInstance(final String PUBLISHABLE_KEY) {
     Bundle args = new Bundle();
@@ -71,12 +70,8 @@ public class AddCardDialogFragmentTwo extends DialogFragment {
     return new AddCardDialogFragmentTwo();
   }
 
-//    public void setPromise(Promise promise) {
-//        this.promise = promise;
-//    }
-
-  public void setListener(StripeListener listener) {
-    this.listener = listener;
+  public void setPromise(Promise promise) {
+    this.promise = promise;
   }
 
   @Override
@@ -118,20 +113,11 @@ public class AddCardDialogFragmentTwo extends DialogFragment {
     return dialog;
   }
 
-//    @Override
-//    public void onDismiss(DialogInterface dialog) {
-//        if (!succesful && promise != null) {
-//            promise.reject("User cancel dialog. No card added!");
-//            promise = null;
-//        }
-//        super.onDismiss(dialog);
-//    }
-
   @Override
   public void onDismiss(DialogInterface dialog) {
-    if (!succesful && listener != null) {
-      listener.reject("User cancel dialog. No card added!");
-      listener = null;
+    if (!succesful && promise != null) {
+      promise.reject("User cancel dialog. No card added!");
+      promise = null;
     }
     super.onDismiss(dialog);
   }
@@ -200,13 +186,9 @@ public class AddCardDialogFragmentTwo extends DialogFragment {
             newToken.putString("token", token.getId());
             newToken.putBoolean("live_mode", token.getLivemode());
             newToken.putBoolean("user", token.getUsed());
-//                            if (promise != null) {
-//                                promise.resolve(newToken);
-//                                promise = null;
-//                            }
-            if (listener != null) {
-              listener.resolve(newToken);
-              listener = null;
+            if (promise != null) {
+              promise.resolve(newToken);
+              promise = null;
             }
             succesful = true;
             dismiss();
@@ -234,10 +216,5 @@ public class AddCardDialogFragmentTwo extends DialogFragment {
       return "The CVC code that you entered is invalid";
     }
     return null;
-  }
-
-  public interface StripeListener {
-    void resolve(final WritableMap newToken);
-    void reject(final String error);
   }
 }
