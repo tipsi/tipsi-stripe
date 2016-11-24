@@ -50,18 +50,17 @@ test('05 Test Card Form', async(t) => {
 //
   //  t.pass('test for ccvEdit')
 
-    // Wait for keyboard
-    await driver.pause(2000)
-
     const doneButton = idFromResourceId('android:id/button1')
     await driver.waitForEnabled(doneButton, 20000)
 
     await driver.click(doneButton)
 
     try {
-      await driver.click(doneButton)
+      const progress = idFromResourceId('com.example:id/buttonProgress')
+      await driver.waitForVisible(progress, 10000)
     } catch (error) {
-      console.log('click twice not possible')
+      // Fix Travis temporary issue
+      await driver.click(doneButton)
     }
 
     t.pass('test for doneButton')
