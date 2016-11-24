@@ -12,6 +12,10 @@ React Native Stripe binding for iOS/Andriod platforms
 * iOS 10+
 * [CocoaPods](https://cocoapods.org) 1.1.1+
 
+### Android
+
+* Minimum SDK 16
+
 ## Installation
 
 Run `npm install --save tipsi-stripe` to add the package to your app's dependencies.
