@@ -21,38 +21,15 @@ test('05 Test Card Form', async(t) => {
 
     t.pass('test for cardFromButton')
 
-
     const cardNumberEdit = idFromResourceId('com.example:id/cc_card')
 
     await driver.waitForVisible(cardNumberEdit, 10000)
 
     await driver.click(cardNumberEdit)
 
-    // await driver.setValue(cardNumberEdit, '4242424242424242218123')
-
     await driver.keys('4242424242424242 1234 123')
 
     t.pass('test for cardDataEdit')
-
-
-  //  const expEdit = idFromResourceId('com.example:id/cc_exp')
-//
-  //  await driver.waitForVisible(expEdit, 10000)
-//
-  //  await driver.setValue(expEdit, '222')
-//
-  //  t.pass('test for expEdit')
-//
-//
-  //  const ccvEdit = idFromResourceId('com.example:id/cc_ccv')
-//
-  //  await driver.waitForVisible(ccvEdit, 10000)
-//
-  //  await driver.setValue(ccvEdit, '123')
-//
-  //  await driver.hideDeviceKeyboard()
-//
-  //  t.pass('test for ccvEdit')
 
     const doneButton = idFromResourceId('android:id/button1')
     await driver.waitForEnabled(doneButton, 20000)
