@@ -1,63 +1,68 @@
 import test from 'tape-async'
 import helper from './utils/helper'
 
-       const { driver, idFromXPath, idFromAccessId, idFromResourceId } = helper
+const { driver, idFromAccessId } = helper
 
-       test('04 Test Card Text Filed', async(t) => {
+test('04 Test Card Text Filed', async(t) => {
+  try {
+    const tabCardForm = idFromAccessId('headerTab_3')
 
-         try {
-           const tabCardForm = idFromAccessId('headerTab_3')
+    await driver.waitForVisible(tabCardForm, 70000)
 
-           await driver.waitForVisible(tabCardForm, 70000)
+    await driver.click(tabCardForm)
 
-           await driver.click(tabCardForm)
+    t.pass('test for tabCardForm')
 
-           t.pass('test for tabCardForm')
+    const cardTextFieldId = idFromAccessId('cardTextField')
 
+    await driver.waitForVisible(cardTextFieldId, 5000)
 
-           const cardTextFieldId = idFromAccessId('cardTextField')
+    t.pass('User should see `PaymentCardTextField` component')
 
-               await driver.waitForVisible(cardTextFieldId, 5000)
+    await driver.click(cardTextFieldId)
 
-               t.pass('User should see `PaymentCardTextField` component')
+    t.pass('User should be able focus on `PaymentCardTextField` component')
 
-               await driver.click(cardTextFieldId)
+    await driver.keys('4242424242424242 1234 123')
 
-               t.pass('User should be able focus on `PaymentCardTextField` component')
+    t.pass('User should be able write card data on `PaymentCardTextField` component')
 
-               await driver.keys('4242424242424242 1234 123')
+    const fieldsId = idFromAccessId('fieldsId')
 
-               t.pass('User should be able write card data on `PaymentCardTextField` component')
+    await driver.waitForVisible(fieldsId, 15000)
 
+    t.pass('User should see view with id fieldsId')
 
-               const fieldsId = idFromAccessId('fieldsId')
+    const valid = idFromAccessId('valid')
 
-               await driver.waitForVisible(fieldsId, 15000)
+    await driver.waitForVisible(valid, 15000)
 
-               t.pass('User should see view with id fieldsId')
+    const number = idFromAccessId('number')
 
-               const valid = idFromAccessId('valid')
+    const expMonth = idFromAccessId('expMonth')
 
-               await driver.waitForVisible(valid, 15000)
+    const expYear = idFromAccessId('expYear')
 
-               const number = idFromAccessId('number')
+    const cvc = idFromAccessId('cvc')
 
-               const expMonth = idFromAccessId('expMonth')
+    const resultValid = await driver.getText(valid)
+    t.equal(resultValid, 'Valid: true', 'Field should be valid')
 
-               const expYear = idFromAccessId('expYear')
+    const resultNumber = await driver.getText(number)
+    t.equal(resultNumber, 'Number: 4242 4242 4242 4242', 'Number should be 4242 4242 4242 4242')
 
-               const cvc = idFromAccessId('cvc')
-//
-               t.equal(await driver.getText(valid), 'Valid: true', 'Field should be valid')
-               t.equal(await driver.getText(number), 'Number: 4242 4242 4242 4242', 'Number should be 4242 4242 4242 4242')
-               t.equal(await driver.getText(expMonth), 'Month: 12', 'Month should be 12')
-               t.equal(await driver.getText(expYear), 'Year: 34', 'Year should be 34')
-               t.equal(await driver.getText(cvc), 'CVC: 123', 'CVC should be 123')
+    const resultExpMonth = await driver.getText(expMonth)
+    t.equal(resultExpMonth, 'Month: 12', 'Month should be 12')
 
-             } catch (error) {
-               await helper.screenshot()
-               await helper.source()
+    const resultExpYear = await driver.getText(expYear)
+    t.equal(resultExpYear, 'Year: 34', 'Year should be 34')
 
-               throw error
-             }
-       })
+    const resultCvc = await driver.getText(cvc)
+    t.equal(resultCvc, 'CVC: 123', 'CVC should be 123')
+  } catch (error) {
+    await helper.screenshot()
+    await helper.source()
+
+    throw error
+  }
+})
