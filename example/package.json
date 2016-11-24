@@ -8,7 +8,7 @@
     "appium": "appium",
     "configure": "./configure.sh",
     "build:android:key": "keytool -genkey -v -keystore android/app/release.keystore -storepass android -alias androidreleasekey -keypass android -dname 'CN=Android Debug,O=Android,C=US'",
-    "build:android:release": "cd android && ./gradlew assembleRelease --console=plain -S",
+    "build:android:release": "cd android && chmod +x ./gradlew && ./gradlew assembleRelease --console=plain -S",
     "build:android": "npm-run-all clean build:android:*",
     "build:ios": "cd ios && xcodebuild build -workspace example.xcworkspace -scheme example -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO -destination 'platform=iOS Simulator,name=iPhone 6' -configuration Release -derivedDataPath build",
     "build": "npm-run-all build:*",
