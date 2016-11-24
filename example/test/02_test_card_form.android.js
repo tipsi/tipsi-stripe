@@ -36,17 +36,20 @@ test('02 Test Card Form', async(t) => {
 
     await driver.click(doneButton)
 
+    t.pass('test for doneButton')
+
     try {
       const progress = idFromResourceId('com.example:id/buttonProgress')
-      await driver.waitForVisible(progress, 10000)
+      await driver.waitForVisible(progress, 15000)
+      t.pass('progress is visible')
     } catch (error) {
       // Fix Travis temporary issue
       try {
+        t.pass('progress no visible')
         await driver.click(doneButton)
+        t.pass('test for second click doneButton')
       } catch (error) {} // eslint-disable-line no-shadow, no-empty
     }
-
-    t.pass('test for doneButton')
 
     try {
       const tokenId = idFromAccessId('cardFormToken')
