@@ -3,7 +3,7 @@ import helper from './utils/helper'
 
 const { driver, idFromAccessId, idFromResourceId } = helper
 
-test('06 Test Card Form', async(t) => {
+test('06  Test Card Form', async(t) => {
   try {
     const tabCardForm = idFromAccessId('headerTab_1')
 
