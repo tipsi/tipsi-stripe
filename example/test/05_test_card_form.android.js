@@ -26,7 +26,13 @@ test('03 Test Card Form', async(t) => {
 
     await driver.waitForVisible(cardNumberEdit, 10000)
 
-    await driver.setValue(cardNumberEdit, '4242424242424242218123')
+    t.pass('test for cardTextField')
+
+    await driver.click(cardNumberEdit)
+
+    await driver.keys('4242424242424242')
+    await driver.keys('1234')
+    await driver.keys('123')
 
     t.pass('test for cardDataEdit')
 
