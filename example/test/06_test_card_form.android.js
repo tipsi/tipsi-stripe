@@ -51,7 +51,11 @@ test('05 Test Card Form', async(t) => {
   //  t.pass('test for ccvEdit')
 
     // Wait for keyboard
-    await driver.hideDeviceKeyboard('pressKey', 'Done')
+    try {
+      await driver.hideDeviceKeyboard()
+    } catch (error) {
+      console.log('Soft keyboard not present, cannot hide keyboard')
+    }
 
     const doneButton = idFromResourceId('android:id/button1')
     await driver.waitForEnabled(doneButton, 20000)
