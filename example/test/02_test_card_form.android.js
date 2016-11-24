@@ -21,42 +21,30 @@ test('05 Test Card Form', async(t) => {
 
     t.pass('test for cardFromButton')
 
-
     const cardNumberEdit = idFromResourceId('com.example:id/cc_card')
 
     await driver.waitForVisible(cardNumberEdit, 10000)
 
-    await driver.setValue(cardNumberEdit, '4242424242424242218123')
+    await driver.click(cardNumberEdit)
+
+    await driver.keys('4242424242424242 1234 123')
 
     t.pass('test for cardDataEdit')
-
-
-  //  const expEdit = idFromResourceId('com.example:id/cc_exp')
-//
-  //  await driver.waitForVisible(expEdit, 10000)
-//
-  //  await driver.setValue(expEdit, '222')
-//
-  //  t.pass('test for expEdit')
-//
-//
-  //  const ccvEdit = idFromResourceId('com.example:id/cc_ccv')
-//
-  //  await driver.waitForVisible(ccvEdit, 10000)
-//
-  //  await driver.setValue(ccvEdit, '123')
-//
-  //  await driver.hideDeviceKeyboard()
-//
-  //  t.pass('test for ccvEdit')
-
-    // Wait for keyboard
-    await driver.pause(2000)
 
     const doneButton = idFromResourceId('android:id/button1')
     await driver.waitForEnabled(doneButton, 20000)
 
     await driver.click(doneButton)
+
+    try {
+      const progress = idFromResourceId('com.example:id/buttonProgress')
+      await driver.waitForVisible(progress, 10000)
+    } catch (error) {
+      // Fix Travis temporary issue
+      try {
+        await driver.click(doneButton)
+      } catch (error) {} // eslint-disable-line no-shadow, no-empty
+    }
 
     t.pass('test for doneButton')
 
