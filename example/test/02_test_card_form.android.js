@@ -58,6 +58,12 @@ test('05 Test Card Form', async(t) => {
 
     await driver.click(doneButton)
 
+    try {
+      await driver.click(doneButton)
+    } catch (error) {
+      console.log('click twice not possible')
+    }
+
     t.pass('test for doneButton')
 
     try {
