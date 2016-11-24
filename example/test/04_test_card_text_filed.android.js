@@ -59,6 +59,10 @@ test('04 Test Card Text Filed', async(t) => {
 
     const resultCvc = await driver.getText(cvc)
     t.equal(resultCvc, 'CVC: 123', 'CVC should be 123')
+
+    // Temp
+    await helper.screenshot()
+    await helper.source()
   } catch (error) {
     await helper.screenshot()
     await helper.source()
