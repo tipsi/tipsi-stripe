@@ -40,7 +40,14 @@ Run `react-native link tipsi-stripe` so your project is linked against your Xcod
 
 ### Android
 
-1. In your android/app/build.gradle add:
+#### react-native cli
+
+Run `react-native link tipsi-stripe` so your project is linked against your Android project
+
+#### Manual
+
+In your `android/app/build.gradle` add:
+
 ```gradle
 ...
 dependencies {
@@ -48,14 +55,17 @@ dependencies {
  compile project(':tipsi-stripe')
 }
 ```
-2. In your android/settings.gradle add:
+
+In your `android/settings.gradle` add:
+
 ```gradle
 ...
 include ':tipsi-stripe'
 project(':tipsi-stripe').projectDir = new File(rootProject.projectDir, '../node_modules/tipsi-stripe/android')
 ```
 
-3. In your android/build.gradle add:
+In your `android/build.gradle` add:
+
 ```gradle
 ...
 allprojects {
@@ -66,10 +76,10 @@ allprojects {
 }
 ```
 
-4. Ensure that you have Google Play Services installed:
+Ensure that you have Google Play Services installed:
 
-For Genymotion you can follow [these instructions](http://stackoverflow.com/questions/20121883/how-to-install-google-play-services-in-a-genymotion-vm-with-no-drag-and-drop-su/20137324#20137324).
-For a physical device you need to search on Google for 'Google Play Services'. There will be a link that takes you to the Play Store and from there you will see a button to update it (do not search within the Play Store).
+For `Genymotion` you can follow [these instructions](http://stackoverflow.com/questions/20121883/how-to-install-google-play-services-in-a-genymotion-vm-with-no-drag-and-drop-su/20137324#20137324).
+For a physical device you need to search on Google for 'Google Play Services'. There will be a link that takes you to the `Play Store` and from there you will see a button to update it (do not search within the `Play Store`).
 
 ## Usage
 
@@ -299,9 +309,10 @@ An object with the following keys:
 * `accentColor` _String_ - The accent color of this theme - it will be used for any buttons and other elements on a view that are important to highlight.
 * `errorColor` _String_ - The error color of this theme - it will be used for rendering any error messages or view.
 
-#### Example IOS
+#### Example
 
-![Card Form](https://cloud.githubusercontent.com/assets/1177226/20274560/1432abf2-aaa6-11e6-8505-0cdc3017fe22.gif)
+![Card Form iOS](https://cloud.githubusercontent.com/assets/1177226/20274560/1432abf2-aaa6-11e6-8505-0cdc3017fe22.gif)
+![Card Form Android](https://cloud.githubusercontent.com/assets/1177226/20572150/54192810-b1bb-11e6-9df6-5c068bf69904.gif)
 
 ```js
 const options = {
@@ -313,15 +324,6 @@ const token = await stripe.paymentRequestWithCardForm(options)
 
 // Client specific code
 // api.sendTokenToBackend(token)
-```
-
-##### Example Android
-
-![Card Form](https://cloud.githubusercontent.com/assets/1177226/20572150/54192810-b1bb-11e6-9df6-5c068bf69904.gif)
-
-```js
-
-const token = await stripe.paymentRequestWithCardForm({...})
 ```
 
 ### Request with card params object
@@ -343,7 +345,8 @@ An object with the following keys:
 
 ##### Example
 
-![Card Params](https://cloud.githubusercontent.com/assets/1177226/20275232/cf0f8e3e-aaa8-11e6-85bf-5e093706ea0a.gif)
+![Card Params iOS](https://cloud.githubusercontent.com/assets/1177226/20275232/cf0f8e3e-aaa8-11e6-85bf-5e093706ea0a.gif)
+![Card Params Android](https://cloud.githubusercontent.com/assets/1177226/20572183/7a0a4824-b1bb-11e6-82f2-9b3f7038b1a9.gif)
 
 ```js
 const params = {
@@ -385,8 +388,9 @@ For example, if you’re using another library to scan your user’s credit card
 
 You can also access to `valid` and `params` info via `<instance>.valid` and `<instance>.params` respectively.
 
-##### Example IOS
-![PaymentCardTextField](https://cloud.githubusercontent.com/assets/1177226/20276457/60680ee8-aaad-11e6-834f-007909ce6814.gif)
+##### Example
+![PaymentCardTextField iOS](https://cloud.githubusercontent.com/assets/1177226/20276457/60680ee8-aaad-11e6-834f-007909ce6814.gif)
+![PaymentCardTextField Android](https://cloud.githubusercontent.com/assets/1177226/20572188/82ae5bf0-b1bb-11e6-97fe-fce360208130.gif)
 
 ```js
 import React, { Component } from 'react'
@@ -425,49 +429,6 @@ class FieldExample extends Component {
         expirationPlaceholder={...}
         cvcPlaceholder={...},
         disabled={false},
-        onParamsChange={this.handleFieldParamsChange}
-      />
-    )
-  }
-}
-```
-
-##### Example Android
-![PaymentCardTextField](https://cloud.githubusercontent.com/assets/1177226/20572188/82ae5bf0-b1bb-11e6-97fe-fce360208130.gif)
-
-```js
-import React, { Component } from 'react'
-import { StyleSheet } from 'react-native'
-import { PaymentCardTextField } from 'tipsi-stripe'
-
-const styles = StyleSheet.create({
-  field: {
-    width: 300,
-    borderColor: '#000',
-    borderWidth: 1,
-    borderRadius: 5,
-  }
-})
-
-class FieldExample extends Component {
-  handleFieldParamsChange = (valid, params) => {
-    console.log(`
-      Valid: ${valid}
-      Number: ${params.number || '-'}
-      Month: ${params.expMonth || '-'}
-      Year: ${params.expYear || '-'}
-      CVC: ${params.cvc || '-'}
-    `)
-  }
-
-  render() {
-    return (
-      <PaymentCardTextField
-        style={styles.field}
-        numberPlaceholder={...}
-        expirationPlaceholder={...}
-        cvcPlaceholder={...},
-        enabled={true},
         onParamsChange={this.handleFieldParamsChange}
       />
     )

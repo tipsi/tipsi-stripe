@@ -3,7 +3,7 @@ import helper from './utils/helper'
 
        const { driver, idFromXPath, idFromAccessId, idFromResourceId } = helper
 
-       test('03 Test Card Text Filed', async(t) => {
+       test('04 Test Card Text Filed', async(t) => {
 
          try {
            const tabCardForm = idFromAccessId('headerTab_3')
