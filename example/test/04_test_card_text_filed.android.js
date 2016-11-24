@@ -23,9 +23,7 @@ test('04 Test Card Text Filed', async(t) => {
 
     t.pass('User should be able focus on `PaymentCardTextField` component')
 
-    await driver.keys('4242424242424242')
-    await driver.keys('1234')
-    await driver.keys('123')
+    await driver.keys('4242424242424242 1234 123')
 
     t.pass('User should be able write card data on `PaymentCardTextField` component')
 

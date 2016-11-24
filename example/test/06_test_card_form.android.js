@@ -3,7 +3,7 @@ import helper from './utils/helper'
 
 const { driver, idFromAccessId, idFromResourceId } = helper
 
-test('06 Test Card Form', async(t) => {
+test('05 Test Card Form', async(t) => {
   try {
     const tabCardForm = idFromAccessId('headerTab_1')
 
@@ -50,29 +50,15 @@ test('06 Test Card Form', async(t) => {
 //
   //  t.pass('test for ccvEdit')
 
+    // Wait for keyboard
+    await driver.hideDeviceKeyboard('pressKey', 'Done')
+
     const doneButton = idFromResourceId('android:id/button1')
-    await driver.waitForVisible(doneButton, 20000)
+    await driver.waitForEnabled(doneButton, 20000)
 
     await driver.click(doneButton)
 
     t.pass('test for doneButton')
-
-    const progress = idFromResourceId('com.example:id/buttonProgress')
-
-    try {
-
-    await driver.waitForVisible(progress, 30000)
-
-    t.pass('test for progress is visible')
-
-    } catch (error) {
-
-    t.pass('test for progress no visible')
-
-    await driver.click(doneButton)
-
-    t.pass('test for doneButton 2')
-    }
 
     try {
       const tokenId = idFromAccessId('cardFormToken')
