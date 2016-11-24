@@ -57,7 +57,7 @@ test('05 Test Card Form', async(t) => {
   //  t.pass('test for ccvEdit')
 
     const doneButton = idFromResourceId('android:id/button1')
-    await driver.waitForVisible(doneButton, 20000)
+    await driver.waitForEnabled(doneButton, 20000)
 
     await driver.click(doneButton)
 
