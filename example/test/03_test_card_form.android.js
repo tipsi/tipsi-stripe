@@ -60,7 +60,7 @@ test('03 Test Card Form', async(t) => {
     try {
       const tokenId = idFromAccessId('cardFormToken')
 
-      await driver.waitForVisible(tokenId, 500000)
+      await driver.waitForVisible(tokenId, 180000)
 
       t.pass('test for tokenId')
     } catch (error) {

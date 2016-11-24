@@ -38,7 +38,7 @@ import com.stripe.android.model.Card;
 import com.stripe.android.model.Token;
 import com.stripe.exception.AuthenticationException;
 
-public class StripeModule extends ReactContextBaseJavaModule {
+public class StripeModule extends ReactContextBaseJavaModule implements AddCardDialogFragmentTwo.StripeListener{
 
   private static final String TAG = StripeModule.class.getSimpleName();
   private static final String MODULE_NAME = "StripeModule";
@@ -66,19 +66,19 @@ public class StripeModule extends ReactContextBaseJavaModule {
             MaskedWallet maskedWallet = data.getParcelableExtra(WalletConstants.EXTRA_MASKED_WALLET);
 
             FullWalletRequest fullWalletRequest = FullWalletRequest.newBuilder()
-                    .setCart(Cart.newBuilder()
-                            .setCurrencyCode("USD")
-                            .setTotalPrice("20.00")
-                            .addLineItem(LineItem.newBuilder() // Identify item being purchased
-                                    .setCurrencyCode("USD")
-                                    .setQuantity("1")
-                                    .setDescription("Premium Llama Food")
-                                    .setTotalPrice("20.00")
-                                    .setUnitPrice("20.00")
-                                    .build())
-                            .build())
-                    .setGoogleTransactionId(maskedWallet.getGoogleTransactionId())
-                    .build();
+              .setCart(Cart.newBuilder()
+                .setCurrencyCode("USD")
+                .setTotalPrice("20.00")
+                .addLineItem(LineItem.newBuilder() // Identify item being purchased
+                  .setCurrencyCode("USD")
+                  .setQuantity("1")
+                  .setDescription("Premium Llama Food")
+                  .setTotalPrice("20.00")
+                  .setUnitPrice("20.00")
+                  .build())
+                .build())
+              .setGoogleTransactionId(maskedWallet.getGoogleTransactionId())
+              .build();
             Wallet.Payments.loadFullWallet(googleApiClient, fullWalletRequest, LOAD_FULL_WALLET_REQUEST_CODE);
           } else {
             payPromise.reject(PURCHASE_CANCELLED, "Purchase was cancelled");
@@ -92,7 +92,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
             //i.e. WalletConstants.ENVIRONMENT_PRODUCTION
             if (mEnvironment == WalletConstants.ENVIRONMENT_PRODUCTION) {
               com.stripe.model.Token token = com.stripe.model.Token.GSON.fromJson(
-                      tokenJSON, com.stripe.model.Token.class);
+                tokenJSON, com.stripe.model.Token.class);
 
               Log.d(TAG, "onActivityResult: Stripe Token: " + token.toString());
 
@@ -106,6 +106,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
       }
     }
   };
+  private Promise cardFormPromise;
 
 
   public StripeModule(ReactApplicationContext reactContext) {
@@ -134,34 +135,34 @@ public class StripeModule extends ReactContextBaseJavaModule {
   public void createTokenWithCard(ReadableMap cardData, final Promise promise) {
 //  public void createTokenWithCard(ReadableMap cardData, final Callback successCallback, final Callback errorCallback) {
     Card card = new Card(
-            cardData.getString("number"),
-            cardData.getInt("expMonth"),
-            cardData.getInt("expYear"),
-            cardData.getString("cvc"));
+      cardData.getString("number"),
+      cardData.getInt("expMonth"),
+      cardData.getInt("expYear"),
+      cardData.getString("cvc"));
 
     stripe.createToken(card,
-            publicKey,
-            new TokenCallback() {
-              public void onSuccess(Token token) {
-                WritableMap newToken = Arguments.createMap();
-                newToken.putString("tokenId", token.getId());
-                newToken.putBoolean("livemode", token.getLivemode());
-                newToken.putBoolean("user", token.getUsed());
-                promise.resolve(newToken);
-              }
+      publicKey,
+      new TokenCallback() {
+        public void onSuccess(Token token) {
+          WritableMap newToken = Arguments.createMap();
+          newToken.putString("tokenId", token.getId());
+          newToken.putBoolean("livemode", token.getLivemode());
+          newToken.putBoolean("user", token.getUsed());
+          promise.resolve(newToken);
+        }
 
-              public void onError(Exception error) {
-                error.printStackTrace();
-                promise.reject(error.getMessage());
-              }
-            });
+        public void onError(Exception error) {
+          error.printStackTrace();
+          promise.reject(error.getMessage());
+        }
+      });
   }
 
   @ReactMethod
   public void addCard() {
     if (getCurrentActivity() != null) {
       AddCardDialogFragment.newInstance()
-              .show(getCurrentActivity().getFragmentManager(), "AddNewCard");
+        .show(getCurrentActivity().getFragmentManager(), "AddNewCard");
     }
   }
 
@@ -169,8 +170,9 @@ public class StripeModule extends ReactContextBaseJavaModule {
   @ReactMethod
   public void paymentRequestWithCardForm(ReadableMap unused, final Promise promise) {
     if (getCurrentActivity() != null) {
+      cardFormPromise = promise;
       final AddCardDialogFragmentTwo cardDialog = AddCardDialogFragmentTwo.newInstance(publicKey);
-      cardDialog.setPromise(promise);
+      cardDialog.setListener(this);
       cardDialog.show(getCurrentActivity().getFragmentManager(), "AddNewCard");
     }
   }
@@ -189,54 +191,54 @@ public class StripeModule extends ReactContextBaseJavaModule {
     final String estimatedTotalPrice = map.getString("price");
     final String currencyCode = map.getString("currency");
     googleApiClient = new GoogleApiClient.Builder(activity)
-            .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+      .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+        @Override
+        public void onConnected(@Nullable Bundle bundle) {
+          Log.d(TAG, "onConnected: ");
+          Wallet.Payments.isReadyToPay(googleApiClient).setResultCallback(
+            new ResultCallback<BooleanResult>() {
               @Override
-              public void onConnected(@Nullable Bundle bundle) {
-                Log.d(TAG, "onConnected: ");
-                Wallet.Payments.isReadyToPay(googleApiClient).setResultCallback(
-                        new ResultCallback<BooleanResult>() {
-                          @Override
-                          public void onResult(@NonNull BooleanResult booleanResult) {
-                            Log.d(TAG, "onResult: ");
-                            if (booleanResult.getStatus().isSuccess()) {
-                              Log.d(TAG, "onResult: booleanResult.getStatus().isSuccess()");
-                              if (booleanResult.getValue()) {
-                                //TODO В Ннашей стране не работает! Как тестить не знаю.
-                                Log.d(TAG, "onResult: booleanResult.getValue()");
-                                showAndroidPay(estimatedTotalPrice, currencyCode);
-                              } else {
-                                Log.d(TAG, "onResult: !booleanResult.getValue()");
-                                //TODO: Здесь надо показывать диалог о том что Android Pay не доступна на данном устройстве, но я вызываю showAndroidPay() что бы было видно как она выглядит)
-                                showAndroidPay(estimatedTotalPrice, currencyCode);
-                                // Hide Android Pay buttons, show a message that Android Pay
-                                // cannot be used yet, and display a traditional checkout button
+              public void onResult(@NonNull BooleanResult booleanResult) {
+                Log.d(TAG, "onResult: ");
+                if (booleanResult.getStatus().isSuccess()) {
+                  Log.d(TAG, "onResult: booleanResult.getStatus().isSuccess()");
+                  if (booleanResult.getValue()) {
+                    //TODO В Ннашей стране не работает! Как тестить не знаю.
+                    Log.d(TAG, "onResult: booleanResult.getValue()");
+                    showAndroidPay(estimatedTotalPrice, currencyCode);
+                  } else {
+                    Log.d(TAG, "onResult: !booleanResult.getValue()");
+                    //TODO: Здесь надо показывать диалог о том что Android Pay не доступна на данном устройстве, но я вызываю showAndroidPay() что бы было видно как она выглядит)
+                    showAndroidPay(estimatedTotalPrice, currencyCode);
+                    // Hide Android Pay buttons, show a message that Android Pay
+                    // cannot be used yet, and display a traditional checkout button
 //                                payPromise.reject("Android Pay unavaliable");
-                              }
-                            } else {
-                              // Error making isReadyToPay call
-                              Log.e(TAG, "isReadyToPay:" + booleanResult.getStatus());
-                            }
-                          }
-                        }
-                );
+                  }
+                } else {
+                  // Error making isReadyToPay call
+                  Log.e(TAG, "isReadyToPay:" + booleanResult.getStatus());
+                }
               }
+            }
+          );
+        }
 
-              @Override
-              public void onConnectionSuspended(int i) {
-                Log.d(TAG, "onConnectionSuspended: ");
-              }
-            })
-            .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
-              @Override
-              public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                Log.d(TAG, "onConnectionFailed: ");
-              }
-            })
-            .addApi(Wallet.API, new Wallet.WalletOptions.Builder()
-                    .setEnvironment(WalletConstants.ENVIRONMENT_TEST)
-                    .setTheme(WalletConstants.THEME_LIGHT)
-                    .build())
-            .build();
+        @Override
+        public void onConnectionSuspended(int i) {
+          Log.d(TAG, "onConnectionSuspended: ");
+        }
+      })
+      .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
+        @Override
+        public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+          Log.d(TAG, "onConnectionFailed: ");
+        }
+      })
+      .addApi(Wallet.API, new Wallet.WalletOptions.Builder()
+        .setEnvironment(WalletConstants.ENVIRONMENT_TEST)
+        .setTheme(WalletConstants.THEME_LIGHT)
+        .build())
+      .build();
     googleApiClient.connect();
   }
 
@@ -249,20 +251,32 @@ public class StripeModule extends ReactContextBaseJavaModule {
 
     final MaskedWalletRequest maskedWalletRequest = MaskedWalletRequest.newBuilder()
 
-            // Request credit card tokenization with Stripe by specifying tokenization parameters:
-            .setPaymentMethodTokenizationParameters(PaymentMethodTokenizationParameters.newBuilder()
-                    .setPaymentMethodTokenizationType(PaymentMethodTokenizationType.PAYMENT_GATEWAY)
-                    .addParameter("gateway", "stripe")
-                    .addParameter("stripe:publishableKey", publicKey)
-                    .addParameter("stripe:version", com.stripe.Stripe.VERSION)
-                    .build())
-            // You want the shipping address:
-            .setShippingAddressRequired(true)
+      // Request credit card tokenization with Stripe by specifying tokenization parameters:
+      .setPaymentMethodTokenizationParameters(PaymentMethodTokenizationParameters.newBuilder()
+        .setPaymentMethodTokenizationType(PaymentMethodTokenizationType.PAYMENT_GATEWAY)
+        .addParameter("gateway", "stripe")
+        .addParameter("stripe:publishableKey", publicKey)
+        .addParameter("stripe:version", com.stripe.Stripe.VERSION)
+        .build())
+      // You want the shipping address:
+      .setShippingAddressRequired(true)
 
-            // Price set as a decimal:
-            .setEstimatedTotalPrice(estimatedTotalPrice)
-            .setCurrencyCode(currencyCode)
-            .build();
+      // Price set as a decimal:
+      .setEstimatedTotalPrice(estimatedTotalPrice)
+      .setCurrencyCode(currencyCode)
+      .build();
     return maskedWalletRequest;
+  }
+
+  @Override
+  public void resolve(WritableMap newToken) {
+    Log.d(TAG, "resolve: fromListener");
+    cardFormPromise.resolve(newToken);
+  }
+
+  @Override
+  public void reject(String error) {
+    Log.d(TAG, "reject: fromListener");
+    cardFormPromise.reject(error);
   }
 }
