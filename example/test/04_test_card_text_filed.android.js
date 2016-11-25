@@ -27,38 +27,15 @@ test('04 Test Card Text Filed', async(t) => {
 
     t.pass('User should be able write card data on `PaymentCardTextField` component')
 
-    const fieldsId = idFromAccessId('fieldsId')
+    const fieldsId = idFromAccessId('cardField')
 
-    await driver.waitForVisible(fieldsId, 15000)
+    const [valid, number, month, year, cvc] = await driver.getText(fieldsId)
 
-    t.pass('User should see view with id fieldsId')
-
-    const valid = idFromAccessId('valid')
-
-    await driver.waitForVisible(valid, 15000)
-
-    const number = idFromAccessId('number')
-
-    const expMonth = idFromAccessId('expMonth')
-
-    const expYear = idFromAccessId('expYear')
-
-    const cvc = idFromAccessId('cvc')
-
-    const resultValid = await driver.getText(valid)
-    t.equal(resultValid, 'Valid: true', 'Field should be valid')
-
-    const resultNumber = await driver.getText(number)
-    t.equal(resultNumber, 'Number: 4242 4242 4242 4242', 'Number should be 4242 4242 4242 4242')
-
-    const resultExpMonth = await driver.getText(expMonth)
-    t.equal(resultExpMonth, 'Month: 12', 'Month should be 12')
-
-    const resultExpYear = await driver.getText(expYear)
-    t.equal(resultExpYear, 'Year: 34', 'Year should be 34')
-
-    const resultCvc = await driver.getText(cvc)
-    t.equal(resultCvc, 'CVC: 123', 'CVC should be 123')
+    t.equal(valid, 'Valid: true', 'Field should be valid')
+    t.equal(number, 'Number: 4242 4242 4242 4242', 'Number should be 4242 4242 4242 4242')
+    t.equal(month, 'Month: 12', 'Month should be 12')
+    t.equal(year, 'Year: 34', 'Year should be 34')
+    t.equal(cvc, 'CVC: 123', 'CVC should be 123')
   } catch (error) {
     await helper.screenshot()
     await helper.source()

@@ -82,43 +82,43 @@ export default class CardTextFieldScreen extends Component {
             PaymentCardTextField Example
           </Text>
           <PaymentCardTextField
-             accessible
-             accessibilityLabel="cardTextField"
-             onParamsChange={this.handleFieldParamsChange}
-             style={styles.field}
+            accessible
+            accessibilityLabel="cardTextField"
+            onParamsChange={this.handleFieldParamsChange}
+            style={styles.field}
           />
           <View
-              accessible
-              accessibilityLabel="fieldsId"
-              style={styles.params}>
+            accessible
+            accessibilityLabel="fieldsId"
+            style={styles.params}>
             <Text
-                          accessible
-                          accessibilityLabel="valid"
-            style={styles.instruction}>
-              Valid: {valid ? 'true' : 'false'}
+              accessible
+              accessibilityLabel="cardField"
+              style={styles.instruction}>
+                Valid: {valid ? 'true' : 'false'}
             </Text>
             <Text
-                          accessible
-                          accessibilityLabel="number"
-            style={styles.instruction}>
+              accessible
+              accessibilityLabel="cardField"
+              style={styles.instruction}>
               Number: {params.number || '-'}
             </Text>
             <Text
-                          accessible
-                          accessibilityLabel="expMonth"
-             style={styles.instruction}>
+              accessible
+              accessibilityLabel="cardField"
+              style={styles.instruction}>
               Month: {params.expMonth || '-'}
             </Text>
             <Text
-                          accessible
-                          accessibilityLabel="expYear"
-            style={styles.instruction}>
+              accessible
+              accessibilityLabel="cardField"
+              style={styles.instruction}>
               Year: {params.expYear || '-'}
             </Text>
             <Text
-                          accessible
-                          accessibilityLabel="cvc"
-            style={styles.instruction}>
+              accessible
+              accessibilityLabel="cardField"
+              style={styles.instruction}>
               CVC: {params.cvc || '-'}
             </Text>
           </View>

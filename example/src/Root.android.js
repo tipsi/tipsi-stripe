@@ -8,7 +8,7 @@ import CustomCardScreen from './CustomCardScreen'
 import CardTextFieldScreen from './CardTextFieldScreen'
 
 Stripe.init({
-  publishableKey: 'pk_test_6pRNASCoBOKtIshFeQd4XMUh',
+  publishableKey: '<PUBLISHABLE_KEY>',
 })
 
 const styles = StyleSheet.create({
