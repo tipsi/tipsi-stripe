@@ -116,7 +116,7 @@ public class CustomCardInputReactManager extends SimpleViewManager<CreditCardFor
       @Override
       public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         Log.d(TAG, "onTextChanged: cardNumber = "+charSequence);
-        currentNumber = charSequence.toString();
+        currentNumber = charSequence.toString().replaceAll(" ", "");
         postEvent(view);
       }
 
