@@ -3,32 +3,6 @@ import { View, Text, StyleSheet } from 'react-native'
 import Stripe from 'tipsi-stripe'
 import Button from './Button'
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  header: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instruction: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-  button: {
-    margin: 10,
-    borderWidth: 1,
-  },
-  token: {
-    height: 20,
-  },
-})
-
 export default class CardFormScreen extends Component {
   state = {
     loading: false,
@@ -91,3 +65,29 @@ export default class CardFormScreen extends Component {
     )
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+  },
+  header: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 10,
+  },
+  instruction: {
+    textAlign: 'center',
+    color: '#333333',
+    marginBottom: 5,
+  },
+  button: {
+    margin: 10,
+    borderWidth: 1,
+  },
+  token: {
+    height: 20,
+  },
+})
