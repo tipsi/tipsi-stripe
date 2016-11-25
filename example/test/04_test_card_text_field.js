@@ -33,7 +33,7 @@ test('Test if user can use PaymentCardTextField component', async(t) => {
     const [valid, number, month, year, cvc] = await driver.getText(fieldsId)
 
     t.equal(valid, 'Valid: true', 'Field should be valid')
-    t.equal(number, 'Number: 4242 4242 4242 4242', 'Number should be 4242 4242 4242 4242')
+    t.equal(number, 'Number: 4242424242424242', 'Number should be 4242424242424242')
     t.equal(month, 'Month: 12', 'Month should be 12')
     t.equal(year, 'Year: 34', 'Year should be 34')
     t.equal(cvc, 'CVC: 123', 'CVC should be 123')
