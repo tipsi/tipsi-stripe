@@ -152,10 +152,11 @@ public class StripeModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void addCard() {
+  public void addCard(Promise promise) {
     if (getCurrentActivity() != null) {
-      AddCardDialogFragment.newInstance()
-        .show(getCurrentActivity().getFragmentManager(), "AddNewCard");
+      final AddCardDialogFragment fragment = AddCardDialogFragment.newInstance(publicKey);
+      fragment.setPromise(promise);
+      fragment.show(getCurrentActivity().getFragmentManager(), "AddNewCard");
     }
   }
 
@@ -269,7 +270,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
       .show();
   }
 
-  private void handleLoadMascedWaletRequest(int resultCode, Intent data){
+  private void handleLoadMascedWaletRequest(int resultCode, Intent data) {
     if (resultCode == Activity.RESULT_OK) {
       MaskedWallet maskedWallet = data.getParcelableExtra(WalletConstants.EXTRA_MASKED_WALLET);
 
@@ -278,8 +279,8 @@ public class StripeModule extends ReactContextBaseJavaModule {
         .setTotalPrice(androidPayParams.getString(TOTAL_PRICE));
 
       final ReadableArray lineItems = androidPayParams.getArray(LINE_ITEMS);
-      if(lineItems != null){
-        for(int i = 0; i < lineItems.size(); i++){
+      if (lineItems != null) {
+        for (int i = 0; i < lineItems.size(); i++) {
           final ReadableMap lineItem = lineItems.getMap(i);
           cartBuilder.addLineItem(LineItem.newBuilder() // Identify item being purchased
             .setCurrencyCode(lineItem.getString(CURRENCY_CODE))

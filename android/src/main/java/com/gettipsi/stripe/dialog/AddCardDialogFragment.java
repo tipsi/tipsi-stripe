@@ -18,6 +18,7 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.WritableMap;
 import com.gettipsi.stripe.R;
 import com.gettipsi.stripe.R2;
+import com.gettipsi.stripe.util.Utils;
 import com.stripe.android.Stripe;
 import com.stripe.android.TokenCallback;
 import com.stripe.android.model.Card;
@@ -29,6 +30,7 @@ import butterknife.OnClick;
 
 public class AddCardDialogFragment extends DialogFragment {
 
+  private static final String TAG = AddCardDialogFragment.class.getSimpleName();
   private static final String CURRENCY_UNSPECIFIED = "Unspecified";
   private static final String KEY = "KEY";
   private String PUBLISHABLE_KEY;
@@ -59,9 +61,6 @@ public class AddCardDialogFragment extends DialogFragment {
     return fragment;
   }
 
-  public static AddCardDialogFragment newInstance() {
-    return new AddCardDialogFragment();
-  }
 
   public void setPromise(Promise promise) {
     this.promise = promise;
@@ -86,36 +85,36 @@ public class AddCardDialogFragment extends DialogFragment {
     saveButton.setEnabled(false);
     progressBar.setVisibility(View.VISIBLE);
     final Card card = new Card(
-            number.getText().toString(),
-            getInteger(this.monthSpinner),
-            getInteger(this.yearSpinner),
-            cvc.getText().toString());
+      number.getText().toString(),
+      getInteger(this.monthSpinner),
+      getInteger(this.yearSpinner),
+      cvc.getText().toString());
 
-    String errorMessage = validateCard(card);
+    String errorMessage = Utils.validateCard(card);
     if (errorMessage == null) {
       new Stripe().createToken(
-              card,
-              PUBLISHABLE_KEY,
-              new TokenCallback() {
-                public void onSuccess(Token token) {
-                  final WritableMap newToken = Arguments.createMap();
-                  newToken.putString("token", token.getId());
-                  newToken.putBoolean("live_mode", token.getLivemode());
-                  newToken.putBoolean("user", token.getUsed());
-                  if (promise != null) {
-                    promise.resolve(newToken);
-                    promise = null;
-                  }
-                  succesful = true;
-                  dismiss();
-                }
+        card,
+        PUBLISHABLE_KEY,
+        new TokenCallback() {
+          public void onSuccess(Token token) {
+            final WritableMap newToken = Arguments.createMap();
+            newToken.putString("token", token.getId());
+            newToken.putBoolean("live_mode", token.getLivemode());
+            newToken.putBoolean("user", token.getUsed());
+            if (promise != null) {
+              promise.resolve(newToken);
+              promise = null;
+            }
+            succesful = true;
+            dismiss();
+          }
 
-                public void onError(Exception error) {
-                  saveButton.setEnabled(true);
-                  progressBar.setVisibility(View.GONE);
-                  Toast.makeText(getActivity(), error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-                }
-              });
+          public void onError(Exception error) {
+            saveButton.setEnabled(true);
+            progressBar.setVisibility(View.GONE);
+            Toast.makeText(getActivity(), error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+          }
+        });
     } else {
       saveButton.setEnabled(true);
       progressBar.setVisibility(View.GONE);
@@ -133,27 +132,17 @@ public class AddCardDialogFragment extends DialogFragment {
   @Override
   public void onDismiss(DialogInterface dialog) {
     if (!succesful && promise != null) {
-      promise.reject("User cancel dialog. No card added!");
+      promise.reject(TAG, getString(R.string.user_cancel_dialog));
       promise = null;
     }
     super.onDismiss(dialog);
   }
 
-  private String validateCard(Card card) {
-    if (!card.validateNumber()) {
-      return "The card number that you entered is invalid";
-    } else if (!card.validateExpiryDate()) {
-      return "The expiration date that you entered is invalid";
-    } else if (!card.validateCVC()) {
-      return "The CVC code that you entered is invalid";
-    }
-    return null;
-  }
 
   public String getCurrency() {
     String selected = currencySpinner.getSelectedItem().toString();
     return selected.equals(CURRENCY_UNSPECIFIED) || currencySpinner.getSelectedItemPosition() == 0
-            ? null : selected.toLowerCase();
+      ? null : selected.toLowerCase();
   }
 
   private Integer getInteger(Spinner spinner) {
