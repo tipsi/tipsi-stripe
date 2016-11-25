@@ -13,25 +13,11 @@ test('Test if user can use Card Form', async (t) => {
   `)
   const cardFormButtonId = idFromAccessId('cardFormButton')
   const numberInputId = idFromAccessId('card number')
-  const dateInputId = idFromAccessId('expiration date')
-  const cvcInputId = idFromAccessId('CVC')
-  const doneButtonId = idFromXPath(`
-    //XCUIElementTypeApplication/XCUIElementTypeWindow/
-    XCUIElementTypeOther/XCUIElementTypeOther/
-    XCUIElementTypeNavigationBar/XCUIElementTypeButton[2]
-  `)
-  const tokenId = idFromXPath(`
-    //XCUIElementTypeApplication/XCUIElementTypeWindow/
-    XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/
-    XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/
-    XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther/
-    XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther[2]/
-    XCUIElementTypeStaticText
-  `)
+  const doneButtonId = idFromAccessId('Done')
+  const tokenId = idFromAccessId('cardFormToken')
 
   try {
     await driver.waitForVisible(cardFormTabId, 60000)
-
     await driver.click(cardFormTabId)
 
     await driver.waitForVisible(cardFormButtonId, 5000)
@@ -44,21 +30,8 @@ test('Test if user can use Card Form', async (t) => {
 
     await driver.waitForVisible(numberInputId, 10000)
     await driver.click(numberInputId)
-    await driver.setValue(numberInputId, '4242424242424242')
 
-    t.pass('User should be able to enter card number')
-
-    await driver.waitForVisible(dateInputId, 10000)
-    await driver.click(dateInputId)
-    await driver.setValue(dateInputId, '1234')
-
-    t.pass('User should be able to enter expiration date')
-
-    await driver.waitForVisible(cvcInputId, 10000)
-    await driver.click(cvcInputId)
-    await driver.setValue(cvcInputId, '123')
-
-    t.pass('User should be able to enter CVC code')
+    await driver.keys('4242424242424242 1234 123')
 
     await driver.waitForVisible(doneButtonId, 10000)
     await driver.click(doneButtonId)

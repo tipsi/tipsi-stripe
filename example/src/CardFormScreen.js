@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
-import stripe from 'tipsi-stripe'
+import Stripe from 'tipsi-stripe'
 import Button from './Button'
 
 const styles = StyleSheet.create({
@@ -41,10 +41,10 @@ export default class CardFormScreen extends Component {
         loading: true,
         token: null,
       })
-      const token = await stripe.paymentRequestWithCardForm({
-        smsAutofillDisabled: true,
-        // requiredBillingAddressFields: 'full',
+      const token = await Stripe.paymentRequestWithCardForm({
+        smsAutofillDisabled: true, // iOS only
       })
+
       console.log('Result:', token) // eslint-disable-line no-console
       this.setState({
         loading: false,
@@ -77,7 +77,10 @@ export default class CardFormScreen extends Component {
           accessibilityLabel={'cardFormButton'}
           onPress={this.handleCardPayPress}
         />
-        <View style={styles.token}>
+        <View
+          style={styles.token}
+          accessible
+          accessibilityLabel={'cardFormToken'}>
           {token &&
             <Text style={styles.instruction}>
               Token: {token.tokenId}

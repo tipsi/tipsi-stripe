@@ -3,40 +3,36 @@ import helper from './utils/helper'
 
 const { driver, idFromAccessId, idFromResourceId } = helper
 
-test('02 Test Card Form', async(t) => {
+test('Test if user can use Card Form', async(t) => {
   try {
-    const tabCardForm = idFromAccessId('headerTab_1')
-
-    await driver.waitForVisible(tabCardForm, 70000)
-
-    await driver.click(tabCardForm)
-
-    t.pass('test for tabCardForm')
-
+    const cardFormTabId = idFromAccessId('headerTab_1')
     const cardFromButton = idFromAccessId('cardFormButton')
+    const numberInputId = idFromResourceId('com.example:id/cc_card')
+    const doneButtonId = idFromResourceId('android:id/button1')
+    const tokenId = idFromAccessId('cardFormToken')
+
+    await driver.waitForVisible(cardFormTabId, 70000)
+    await driver.click(cardFormTabId)
 
     await driver.waitForVisible(cardFromButton, 10000)
 
+    t.pass('User should see `Enter you card and pay` button')
+
     await driver.click(cardFromButton)
 
-    t.pass('test for cardFromButton')
+    t.pass('User should be able to tap on `Enter you card and pay` button')
 
-    const cardNumberEdit = idFromResourceId('com.example:id/cc_card')
-
-    await driver.waitForVisible(cardNumberEdit, 10000)
-
-    await driver.click(cardNumberEdit)
+    await driver.waitForVisible(numberInputId, 10000)
+    await driver.click(numberInputId)
 
     await driver.keys('4242424242424242 1234 123')
 
     t.pass('test for cardDataEdit')
 
-    const doneButton = idFromResourceId('android:id/button1')
-    await driver.waitForEnabled(doneButton, 20000)
+    await driver.waitForEnabled(doneButtonId, 20000)
+    await driver.click(doneButtonId)
 
-    await driver.click(doneButton)
-
-    t.pass('test for doneButton')
+    t.pass('User should be able to tap on `Done` button')
 
     try {
       const progress = idFromResourceId('com.example:id/buttonProgress')
@@ -46,14 +42,12 @@ test('02 Test Card Form', async(t) => {
       // Fix Travis temporary issue
       try {
         t.pass('progress no visible')
-        await driver.click(doneButton)
+        await driver.click(doneButtonId)
         t.pass('test for second click doneButton')
       } catch (error) {} // eslint-disable-line no-shadow, no-empty
     }
 
     try {
-      const tokenId = idFromAccessId('cardFormToken')
-
       await driver.waitForVisible(tokenId, 180000)
 
       t.pass('test for tokenId')
