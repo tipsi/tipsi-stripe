@@ -1,6 +1,7 @@
 package com.gettipsi.stripe;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,6 +15,7 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.gettipsi.stripe.dialog.AddCardDialogFragment;
@@ -49,11 +51,22 @@ public class StripeModule extends ReactContextBaseJavaModule {
   public static final int mEnvironment = WalletConstants.ENVIRONMENT_TEST;
   private static final String PURCHASE_CANCELLED = "PURCHASE_CANCELLED";
 
+  //androidPayParams keys:
+  private static final String CURRENCY_CODE = "currency_code";
+  private static final String TOTAL_PRICE = "total_price";
+  private static final String UNIT_PRICE = "unit_price";
+  private static final String LINE_ITEMS = "line_items";
+  private static final String QUANTITY = "quantity";
+  private static final String DESCRIPTION = "description";
+
+
   private Promise payPromise;
 
   private String publicKey;
   private Stripe stripe;
   private GoogleApiClient googleApiClient;
+
+  private ReadableMap androidPayParams;
 
   private final ActivityEventListener mActivityEventListener = new BaseActivityEventListener() {
 
@@ -62,27 +75,9 @@ public class StripeModule extends ReactContextBaseJavaModule {
 
       if (payPromise != null) {
         if (requestCode == LOAD_MASKED_WALLET_REQUEST_CODE) { // Unique, identifying constant
-          if (resultCode == Activity.RESULT_OK) {
-            MaskedWallet maskedWallet = data.getParcelableExtra(WalletConstants.EXTRA_MASKED_WALLET);
 
-            FullWalletRequest fullWalletRequest = FullWalletRequest.newBuilder()
-              .setCart(Cart.newBuilder()
-                .setCurrencyCode("USD")
-                .setTotalPrice("20.00")
-                .addLineItem(LineItem.newBuilder() // Identify item being purchased
-                  .setCurrencyCode("USD")
-                  .setQuantity("1")
-                  .setDescription("Premium Llama Food")
-                  .setTotalPrice("20.00")
-                  .setUnitPrice("20.00")
-                  .build())
-                .build())
-              .setGoogleTransactionId(maskedWallet.getGoogleTransactionId())
-              .build();
-            Wallet.Payments.loadFullWallet(googleApiClient, fullWalletRequest, LOAD_FULL_WALLET_REQUEST_CODE);
-          } else {
-            payPromise.reject(PURCHASE_CANCELLED, "Purchase was cancelled");
-          }
+          handleLoadMascedWaletRequest(resultCode, data);
+
         } else if (requestCode == LOAD_FULL_WALLET_REQUEST_CODE) {
           if (resultCode == Activity.RESULT_OK) {
             FullWallet fullWallet = data.getParcelableExtra(WalletConstants.EXTRA_FULL_WALLET);
@@ -132,7 +127,6 @@ public class StripeModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void createTokenWithCard(ReadableMap cardData, final Promise promise) {
-//  public void createTokenWithCard(ReadableMap cardData, final Callback successCallback, final Callback errorCallback) {
     Card card = new Card(
       cardData.getString("number"),
       cardData.getInt("expMonth"),
@@ -158,10 +152,11 @@ public class StripeModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void addCard() {
+  public void addCard(Promise promise) {
     if (getCurrentActivity() != null) {
-      AddCardDialogFragment.newInstance()
-        .show(getCurrentActivity().getFragmentManager(), "AddNewCard");
+      final AddCardDialogFragment fragment = AddCardDialogFragment.newInstance(publicKey);
+      fragment.setPromise(promise);
+      fragment.show(getCurrentActivity().getFragmentManager(), "AddNewCard");
     }
   }
 
@@ -185,9 +180,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
     }
   }
 
-  private void startAndroidPayNew(final Activity activity, ReadableMap map){
-    final String estimatedTotalPrice = map.getString("price");
-    final String currencyCode = map.getString("currency");
+  private void startAndroidPayNew(final Activity activity, final ReadableMap map) {
     googleApiClient = new GoogleApiClient.Builder(activity)
       .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
         @Override
@@ -201,20 +194,21 @@ public class StripeModule extends ReactContextBaseJavaModule {
                 if (booleanResult.getStatus().isSuccess()) {
                   Log.d(TAG, "onResult: booleanResult.getStatus().isSuccess()");
                   if (booleanResult.getValue()) {
-                    //TODO В Ннашей стране не работает! Как тестить не знаю.
+                    //TODO Work only in few countries. I don't now how test it in our coutries.
                     Log.d(TAG, "onResult: booleanResult.getValue()");
-                    showAndroidPay(estimatedTotalPrice, currencyCode);
+                    showAndroidPay(map);
                   } else {
                     Log.d(TAG, "onResult: !booleanResult.getValue()");
-                    //TODO: Здесь надо показывать диалог о том что Android Pay не доступна на данном устройстве, но я вызываю showAndroidPay() что бы было видно как она выглядит)
-                    showAndroidPay(estimatedTotalPrice, currencyCode);
                     // Hide Android Pay buttons, show a message that Android Pay
                     // cannot be used yet, and display a traditional checkout button
-//                                payPromise.reject("Android Pay unavaliable");
+                    androidPayUnavaliableDialog();
+                    payPromise.reject("Android Pay unavaliable");
                   }
                 } else {
                   // Error making isReadyToPay call
                   Log.e(TAG, "isReadyToPay:" + booleanResult.getStatus());
+                  androidPayUnavaliableDialog();
+                  payPromise.reject("Error making isReadyToPay call");
                 }
               }
             }
@@ -240,12 +234,15 @@ public class StripeModule extends ReactContextBaseJavaModule {
     googleApiClient.connect();
   }
 
-  private void showAndroidPay(final String estimatedTotalPrice, final String currencyCode) {
+  private void showAndroidPay(final ReadableMap map) {
+    androidPayParams = map;
+    final String estimatedTotalPrice = map.getString(TOTAL_PRICE);
+    final String currencyCode = map.getString(CURRENCY_CODE);
     final MaskedWalletRequest maskedWalletRequest = createWalletRequest(estimatedTotalPrice, currencyCode);
     Wallet.Payments.loadMaskedWallet(googleApiClient, maskedWalletRequest, LOAD_MASKED_WALLET_REQUEST_CODE);
   }
 
-  private MaskedWalletRequest createWalletRequest(final String estimatedTotalPrice, final String currencyCode){
+  private MaskedWalletRequest createWalletRequest(final String estimatedTotalPrice, final String currencyCode) {
 
     final MaskedWalletRequest maskedWalletRequest = MaskedWalletRequest.newBuilder()
 
@@ -264,5 +261,45 @@ public class StripeModule extends ReactContextBaseJavaModule {
       .setCurrencyCode(currencyCode)
       .build();
     return maskedWalletRequest;
+  }
+
+  private void androidPayUnavaliableDialog() {
+    new AlertDialog.Builder(getCurrentActivity())
+      .setMessage(R.string.android_pay_unavaliable)
+      .setPositiveButton(android.R.string.ok, null)
+      .show();
+  }
+
+  private void handleLoadMascedWaletRequest(int resultCode, Intent data) {
+    if (resultCode == Activity.RESULT_OK) {
+      MaskedWallet maskedWallet = data.getParcelableExtra(WalletConstants.EXTRA_MASKED_WALLET);
+
+      final Cart.Builder cartBuilder = Cart.newBuilder()
+        .setCurrencyCode(androidPayParams.getString(CURRENCY_CODE))
+        .setTotalPrice(androidPayParams.getString(TOTAL_PRICE));
+
+      final ReadableArray lineItems = androidPayParams.getArray(LINE_ITEMS);
+      if (lineItems != null) {
+        for (int i = 0; i < lineItems.size(); i++) {
+          final ReadableMap lineItem = lineItems.getMap(i);
+          cartBuilder.addLineItem(LineItem.newBuilder() // Identify item being purchased
+            .setCurrencyCode(lineItem.getString(CURRENCY_CODE))
+            .setQuantity(lineItem.getString(QUANTITY))
+            .setDescription(DESCRIPTION)
+            .setTotalPrice(TOTAL_PRICE)
+            .setUnitPrice(UNIT_PRICE)
+            .build());
+        }
+      }
+
+      final FullWalletRequest fullWalletRequest = FullWalletRequest.newBuilder()
+        .setCart(cartBuilder.build())
+        .setGoogleTransactionId(maskedWallet.getGoogleTransactionId())
+        .build();
+
+      Wallet.Payments.loadFullWallet(googleApiClient, fullWalletRequest, LOAD_FULL_WALLET_REQUEST_CODE);
+    } else {
+      payPromise.reject(PURCHASE_CANCELLED, "Purchase was cancelled");
+    }
   }
 }

@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -23,6 +24,7 @@ import com.facebook.react.bridge.WritableMap;
 import com.gettipsi.stripe.R;
 import com.gettipsi.stripe.R2;
 import com.gettipsi.stripe.util.CardFlipAnimator;
+import com.gettipsi.stripe.util.Utils;
 import com.stripe.android.Stripe;
 import com.stripe.android.TokenCallback;
 import com.stripe.android.model.Card;
@@ -30,7 +32,6 @@ import com.stripe.android.model.Token;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by dmitriy on 11/13/16
@@ -38,7 +39,6 @@ import butterknife.OnClick;
 
 public class AddCardDialogFragmentTwo extends DialogFragment {
 
-  private static final String CURRENCY_UNSPECIFIED = "Unspecified";
   private static final String KEY = "KEY";
   private static final String TAG = AddCardDialogFragmentTwo.class.getSimpleName();
   private static final String CCV_INPUT_CLASS_NAME = SecurityCodeText.class.getSimpleName();
@@ -54,7 +54,7 @@ public class AddCardDialogFragmentTwo extends DialogFragment {
   ImageView imageFlipedCardBack;
 
   private volatile Promise promise;
-  private boolean succesful;
+  private boolean successful;
   private CardFlipAnimator cardFlipAnimator;
   private Button doneButton;
 
@@ -66,9 +66,6 @@ public class AddCardDialogFragmentTwo extends DialogFragment {
     return fragment;
   }
 
-  public static AddCardDialogFragmentTwo newInstance() {
-    return new AddCardDialogFragmentTwo();
-  }
 
   public void setPromise(Promise promise) {
     this.promise = promise;
@@ -103,8 +100,8 @@ public class AddCardDialogFragmentTwo extends DialogFragment {
         onSaveCLick();
       }
     });
-    doneButton.setTextColor(getResources().getColor(R.color.colorAccent));
-    dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.colorAccent));
+    doneButton.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorAccent));
+    dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getActivity(), R.color.colorAccent));
     doneButton.setEnabled(false);
 
     ButterKnife.bind(this, view);
@@ -115,8 +112,8 @@ public class AddCardDialogFragmentTwo extends DialogFragment {
 
   @Override
   public void onDismiss(DialogInterface dialog) {
-    if (!succesful && promise != null) {
-      promise.reject("User cancel dialog. No card added!");
+    if (!successful && promise != null) {
+      promise.reject(TAG, getString(R.string.user_cancel_dialog));
       promise = null;
     }
     super.onDismiss(dialog);
@@ -137,18 +134,17 @@ public class AddCardDialogFragmentTwo extends DialogFragment {
               ((SecurityCodeText) view).addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                  Log.d(TAG, "beforeTextChanged: " + charSequence + " i = " + i + " i1 = " + i1 + " i2 = " + i2);
+                  //unused
                 }
 
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                  Log.d(TAG, "onTextChanged: " + charSequence + " i = " + i + " i1 = " + i1 + " i2 = " + i2);
                   doneButton.setEnabled(charSequence.length() == 3);
                 }
 
                 @Override
                 public void afterTextChanged(Editable editable) {
-                  Log.d(TAG, "afterTextChanged: " + editable.toString());
+                  //unused
                 }
               });
             }
@@ -162,7 +158,7 @@ public class AddCardDialogFragmentTwo extends DialogFragment {
     });
 
     cardFlipAnimator = new CardFlipAnimator(getActivity(), imageFlipedCard, imageFlipedCardBack);
-    succesful = false;
+    successful = false;
   }
 
   public void onSaveCLick() {
@@ -175,7 +171,7 @@ public class AddCardDialogFragmentTwo extends DialogFragment {
       fromCard.getExpYear(),
       fromCard.getSecurityCode());
 
-    String errorMessage = validateCard(card);
+    String errorMessage = Utils.validateCard(card);
     if (errorMessage == null) {
       new Stripe().createToken(
         card,
@@ -190,7 +186,7 @@ public class AddCardDialogFragmentTwo extends DialogFragment {
               promise.resolve(newToken);
               promise = null;
             }
-            succesful = true;
+            successful = true;
             dismiss();
           }
 
@@ -205,16 +201,5 @@ public class AddCardDialogFragmentTwo extends DialogFragment {
       progressBar.setVisibility(View.GONE);
       Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_LONG).show();
     }
-  }
-
-  private String validateCard(Card card) {
-    if (!card.validateNumber()) {
-      return "The card number that you entered is invalid";
-    } else if (!card.validateExpiryDate()) {
-      return "The expiration date that you entered is invalid";
-    } else if (!card.validateCVC()) {
-      return "The CVC code that you entered is invalid";
-    }
-    return null;
   }
 }

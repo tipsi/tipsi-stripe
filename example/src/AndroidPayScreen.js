@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from 'react-native'
 import Stripe from 'tipsi-stripe'
 import Button from './Button'
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -43,8 +44,27 @@ export default class AndroidPayScreen extends Component {
         token: null,
       })
       const result = await Stripe.paymentRequestWithAndroidPay({
-        price: '100.00',
-        currency: 'USD',
+        total_price: '100.00',
+        currency_code: 'USD',
+        line_items: [{
+                       currency_code: 'USD',
+                       description: 'Whisky',
+                       total_price: '50.00',
+                       unit_price: '50.00',
+                       quantity: '1',
+                      }, {
+                        currency_code: 'USD',
+                        description: 'Vine',
+                        total_price: '30.00',
+                        unit_price: '30.00',
+                        quantity: '1',
+                      }, {
+                        currency_code: 'USD',
+                        description: 'Tipsi',
+                        total_price: '20.00',
+                        unit_price: '20.00',
+                        quantity: '1',
+                      }],
       })
       console.log('Result:', result)
       this.setState({
