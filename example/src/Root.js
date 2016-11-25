@@ -9,8 +9,8 @@ import CustomCardScreen from './CustomCardScreen'
 import CardTextFieldScreen from './CardTextFieldScreen'
 
 stripe.init({
-  publishableKey: 'pk_test_m3kEfDWERg2qNxwlikeKzeEI',
-  merchantId: '',
+  publishableKey: '<PUBLISHABLE_KEY>',
+  merchantId: '<MERCHANT_ID>',
 })
 
 export default class Root extends Component {
