@@ -4,13 +4,13 @@ import helper from './utils/helper'
 const { driver, idFromAccessId, idFromResourceId } = helper
 
 test('Test if user can use Card Form', async(t) => {
-  try {
-    const cardFormTabId = idFromAccessId('headerTab_1')
-    const cardFromButton = idFromAccessId('cardFormButton')
-    const numberInputId = idFromResourceId('com.example:id/cc_card')
-    const doneButtonId = idFromResourceId('android:id/button1')
-    const tokenId = idFromAccessId('cardFormToken')
+  const cardFormTabId = idFromAccessId('headerTab_1')
+  const cardFromButton = idFromAccessId('cardFormButton')
+  const numberInputId = idFromResourceId('com.example:id/cc_card')
+  const doneButtonId = idFromResourceId('android:id/button1')
+  const tokenId = idFromAccessId('cardFormToken')
 
+  try {
     await driver.waitForVisible(cardFormTabId, 70000)
     await driver.click(cardFormTabId)
 

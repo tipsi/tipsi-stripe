@@ -12,18 +12,10 @@ test('Test if user can use Custom Card params', async (t) => {
     XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[3]
   `)
   const cardFormButtonId = idFromAccessId('customCardButton')
-  const tokenId = idFromXPath(`
-    //XCUIElementTypeApplication/XCUIElementTypeWindow/
-    XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/
-    XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/
-    XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther/
-    XCUIElementTypeOther[3]/XCUIElementTypeOther/XCUIElementTypeOther[3]/
-    XCUIElementTypeStaticText
-  `)
+  const tokenId = idFromAccessId('customCardToken')
 
   try {
     await driver.waitForVisible(cardFormTabId, 60000)
-
     await driver.click(cardFormTabId)
 
     await driver.waitForVisible(cardFormButtonId, 5000)

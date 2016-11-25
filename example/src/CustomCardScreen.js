@@ -57,7 +57,7 @@ export default class CustomCardScreen extends Component {
         token: null,
       })
       const token = await stripe.createTokenWithCard(this.state.params)
-      console.log('Result:', token.tokenId) // eslint-disable-line no-console
+      console.log('Result:', token) // eslint-disable-line no-console
       this.setState({
         loading: false,
         token,

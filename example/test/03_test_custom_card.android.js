@@ -3,31 +3,26 @@ import helper from './utils/helper'
 
 const { driver, idFromAccessId } = helper
 
-test('02 Test Custom Card', async(t) => {
+test('Test if user can use Custom Card params', async(t) => {
+  const cardFormTabId = idFromAccessId('headerTab_2')
+  const cardFormButtonId = idFromAccessId('customCardButton')
+  const tokenId = idFromAccessId('customCardToken')
+
   try {
-    const tabCustomCard = idFromAccessId('headerTab_2')
+    await driver.waitForVisible(cardFormTabId, 70000)
+    await driver.click(cardFormTabId)
 
-    await driver.waitForVisible(tabCustomCard, 70000)
+    await driver.waitForVisible(cardFormButtonId, 10000)
 
-    await driver.click(tabCustomCard)
+    t.pass('User should see `Pay with custom params` button')
 
-    t.pass('test for tabCustomCard')
+    await driver.click(cardFormButtonId)
 
-    const customCardButton = idFromAccessId('customCardButton')
-
-    await driver.waitForVisible(customCardButton, 10000)
-
-    await driver.click(customCardButton)
-
-    t.pass('test for customCardButton')
-
-    const tokenId = idFromAccessId('customCardToken')
+    t.pass('User should be able to tap on `Pay with custom params` button')
 
     await driver.waitForVisible(tokenId, 500000)
 
-    t.pass('test for tokenId')
-
-    t.pass('test for Successful!')
+    t.pass('User should see token')
   } catch (error) {
     await helper.screenshot()
     await helper.source()
