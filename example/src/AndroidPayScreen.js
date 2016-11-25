@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
-import Stripe from 'tipsi-stripe'
+import stripe from 'tipsi-stripe'
 import Button from './Button'
 
 export default class AndroidPayScreen extends Component {
@@ -16,7 +16,7 @@ export default class AndroidPayScreen extends Component {
         loading: true,
         token: null,
       })
-      const token = await Stripe.paymentRequestWithAndroidPay({
+      const token = await stripe.paymentRequestWithAndroidPay({
         total_price: '100.00',
         currency_code: 'USD',
         line_items: [{

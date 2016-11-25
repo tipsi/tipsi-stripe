@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
-import Stripe from 'tipsi-stripe'
+import stripe from 'tipsi-stripe'
 import Button from './Button'
 
 export default class CardFormScreen extends Component {
@@ -15,7 +15,7 @@ export default class CardFormScreen extends Component {
         loading: true,
         token: null,
       })
-      const token = await Stripe.paymentRequestWithCardForm({
+      const token = await stripe.paymentRequestWithCardForm({
         smsAutofillDisabled: true, // iOS only
       })
 
