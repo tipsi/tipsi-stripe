@@ -1,18 +1,21 @@
 import test from 'tape-async'
 import helper from './utils/helper'
 
-const { driver, idFromXPath, idFromAccessId } = helper
+const { driver, select, idFromXPath, idFromAccessId } = helper
 
-test('Test if user can use Custom Card params', async (t) => {
-  const cardFormTabId = idFromXPath('//*/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[3]')
+test('Test if user can use Custom Card params', async(t) => {
+  const cardFormTabId = select({
+    ios: idFromXPath('//*/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[3]'),
+    android: idFromAccessId('headerTab_2'),
+  })
   const cardFormButtonId = idFromAccessId('customCardButton')
   const tokenId = idFromAccessId('customCardToken')
 
   try {
-    await driver.waitForVisible(cardFormTabId, 60000)
+    await driver.waitForVisible(cardFormTabId, 70000)
     await driver.click(cardFormTabId)
 
-    await driver.waitForVisible(cardFormButtonId, 5000)
+    await driver.waitForVisible(cardFormButtonId, 10000)
 
     t.pass('User should see `Pay with custom params` button')
 
@@ -20,7 +23,7 @@ test('Test if user can use Custom Card params', async (t) => {
 
     t.pass('User should be able to tap on `Pay with custom params` button')
 
-    await driver.waitForVisible(tokenId, 20000)
+    await driver.waitForVisible(tokenId, 500000)
 
     t.pass('User should see token')
   } catch (error) {

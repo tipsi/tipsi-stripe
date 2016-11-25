@@ -1,15 +1,21 @@
 import test from 'tape-async'
 import helper from './utils/helper'
 
-const { driver, idFromXPath, idFromAccessId } = helper
+const { driver, select, idFromXPath, idFromAccessId } = helper
 
-test('Test if user can use PaymentCardTextField component', async (t) => {
-  const cardTextFieldTabId = idFromXPath('//*/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[4]')
+test('Test if user can use PaymentCardTextField component', async(t) => {
+  const cardTextFieldTabId = select({
+    ios: idFromXPath('//*/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[4]'),
+    android: idFromAccessId('headerTab_3'),
+  })
   const cardTextFieldId = idFromAccessId('cardTextField')
-  const fieldsId = idFromXPath('//*/XCUIElementTypeOther[2]/XCUIElementTypeStaticText')
+  const fieldsId = select({
+    ios: idFromXPath('//*/XCUIElementTypeOther[2]/XCUIElementTypeStaticText'),
+    android: idFromAccessId('cardField'),
+  })
 
   try {
-    await driver.waitForVisible(cardTextFieldTabId, 60000)
+    await driver.waitForVisible(cardTextFieldTabId, 70000)
     await driver.click(cardTextFieldTabId)
 
     await driver.waitForVisible(cardTextFieldId, 5000)
@@ -27,7 +33,7 @@ test('Test if user can use PaymentCardTextField component', async (t) => {
     const [valid, number, month, year, cvc] = await driver.getText(fieldsId)
 
     t.equal(valid, 'Valid: true', 'Field should be valid')
-    t.equal(number, 'Number: 4242424242424242', 'Number should be 4242424242424242')
+    t.equal(number, 'Number: 4242 4242 4242 4242', 'Number should be 4242 4242 4242 4242')
     t.equal(month, 'Month: 12', 'Month should be 12')
     t.equal(year, 'Year: 34', 'Year should be 34')
     t.equal(cvc, 'CVC: 123', 'CVC should be 123')
