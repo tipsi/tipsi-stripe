@@ -4,16 +4,13 @@ import helper from './utils/helper'
 const { driver, idFromAccessId } = helper
 
 test('04 Test Card Text Filed', async(t) => {
+  const cardTextFieldTabId = idFromAccessId('headerTab_3')
+  const cardTextFieldId = idFromAccessId('cardTextField')
+  const fieldsId = idFromAccessId('cardField')
+
   try {
-    const tabCardForm = idFromAccessId('headerTab_3')
-
-    await driver.waitForVisible(tabCardForm, 70000)
-
-    await driver.click(tabCardForm)
-
-    t.pass('test for tabCardForm')
-
-    const cardTextFieldId = idFromAccessId('cardTextField')
+    await driver.waitForVisible(cardTextFieldTabId, 70000)
+    await driver.click(cardTextFieldTabId)
 
     await driver.waitForVisible(cardTextFieldId, 5000)
 
@@ -26,8 +23,6 @@ test('04 Test Card Text Filed', async(t) => {
     await driver.keys('4242424242424242 1234 123')
 
     t.pass('User should be able write card data on `PaymentCardTextField` component')
-
-    const fieldsId = idFromAccessId('cardField')
 
     const [valid, number, month, year, cvc] = await driver.getText(fieldsId)
 

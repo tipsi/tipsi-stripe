@@ -12,18 +12,10 @@ test('Test if user can use PaymentCardTextField component', async (t) => {
     XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[4]
   `)
   const cardTextFieldId = idFromAccessId('cardTextField')
-  const fieldsId = idFromXPath(`
-    //XCUIElementTypeApplication/XCUIElementTypeWindow/
-    XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/
-    XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/
-    XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther/
-    XCUIElementTypeOther[4]/XCUIElementTypeOther/XCUIElementTypeOther/
-    XCUIElementTypeOther[2]/XCUIElementTypeStaticText
-  `)
+  const fieldsId = idFromXPath('//*/XCUIElementTypeOther[2]/XCUIElementTypeStaticText')
 
   try {
     await driver.waitForVisible(cardTextFieldTabId, 60000)
-
     await driver.click(cardTextFieldTabId)
 
     await driver.waitForVisible(cardTextFieldId, 5000)
@@ -34,9 +26,9 @@ test('Test if user can use PaymentCardTextField component', async (t) => {
 
     t.pass('User should be able focus on `PaymentCardTextField` component')
 
-    await driver.keys('4242424242424242')
-    await driver.keys('1234')
-    await driver.keys('123')
+    await driver.keys('4242424242424242 1234 123')
+
+    t.pass('User should be able write card data on `PaymentCardTextField` component')
 
     const [valid, number, month, year, cvc] = await driver.getText(fieldsId)
 

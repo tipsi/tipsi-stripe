@@ -3,6 +3,76 @@ import { KeyboardAvoidingView, View, Text, StyleSheet } from 'react-native'
 import dismissKeyboard from 'react-native/Libraries/Utilities/dismissKeyboard'
 import { PaymentCardTextField } from 'tipsi-stripe'
 
+export default class CardTextFieldScreen extends Component {
+  state = {
+    valid: false,
+    params: {
+      number: '',
+      expMonth: 0,
+      expYear: 0,
+      cvc: '',
+    },
+  }
+
+  handleFieldParamsChange = (valid, params) => {
+    this.setState({
+      valid,
+      params,
+    })
+  }
+
+  render() {
+    const { valid, params } = this.state
+
+    return (
+      <KeyboardAvoidingView
+        behavior="padding"
+        style={styles.container}
+        onResponderGrant={dismissKeyboard}
+        onStartShouldSetResponder={() => true}>
+        <View>
+          <Text style={styles.header}>
+            PaymentCardTextField Example
+          </Text>
+          <PaymentCardTextField
+            accessible
+            accessibilityLabel="cardTextField"
+            style={styles.field}
+            onParamsChange={this.handleFieldParamsChange}
+          />
+          <View
+            style={styles.params}>
+            <Text
+              accessibilityLabel="cardField"
+              style={styles.instruction}>
+              Valid: {valid ? 'true' : 'false'}
+            </Text>
+            <Text
+              accessibilityLabel="cardField"
+              style={styles.instruction}>
+              Number: {params.number || '-'}
+            </Text>
+            <Text
+              accessibilityLabel="cardField"
+              style={styles.instruction}>
+              Month: {params.expMonth || '-'}
+            </Text>
+            <Text
+              accessibilityLabel="cardField"
+              style={styles.instruction}>
+              Year: {params.expYear || '-'}
+            </Text>
+            <Text
+              accessibilityLabel="cardField"
+              style={styles.instruction}>
+              CVC: {params.cvc || '-'}
+            </Text>
+          </View>
+        </View>
+      </KeyboardAvoidingView>
+    )
+  }
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -38,92 +108,9 @@ const styles = StyleSheet.create({
   },
   field: {
     width: 300,
-//    color: '#449aeb',
+    color: '#449aeb',
     borderColor: '#000',
     borderWidth: 1,
     borderRadius: 5,
   },
 })
-
-export default class CardTextFieldScreen extends Component {
-  state = {
-    valid: false,
-    params: {
-      number: null,
-      expMonth: null,
-      expYear: null,
-      cvc: null,
-      name: null,
-      currency: null,
-    },
-  }
-
-  handleFieldParamsChange = (valid, params) => {
-  console.log('valid === '+valid)
-  console.log('params === '+params)
-    this.setState({
-      valid,
-      params,
-      text: '123',
-    })
-  }
-
-  render() {
-    const { valid, params } = this.state
-
-    return (
-      <KeyboardAvoidingView
-        behavior="padding"
-        style={styles.container}
-        onResponderGrant={dismissKeyboard}
-        onStartShouldSetResponder={() => true}>
-        <View style={styles.container}>
-          <Text style={styles.header}>
-            PaymentCardTextField Example
-          </Text>
-          <PaymentCardTextField
-            accessible
-            accessibilityLabel="cardTextField"
-            onParamsChange={this.handleFieldParamsChange}
-            style={styles.field}
-          />
-          <View
-            accessible
-            accessibilityLabel="fieldsId"
-            style={styles.params}>
-            <Text
-              accessible
-              accessibilityLabel="cardField"
-              style={styles.instruction}>
-                Valid: {valid ? 'true' : 'false'}
-            </Text>
-            <Text
-              accessible
-              accessibilityLabel="cardField"
-              style={styles.instruction}>
-              Number: {params.number || '-'}
-            </Text>
-            <Text
-              accessible
-              accessibilityLabel="cardField"
-              style={styles.instruction}>
-              Month: {params.expMonth || '-'}
-            </Text>
-            <Text
-              accessible
-              accessibilityLabel="cardField"
-              style={styles.instruction}>
-              Year: {params.expYear || '-'}
-            </Text>
-            <Text
-              accessible
-              accessibilityLabel="cardField"
-              style={styles.instruction}>
-              CVC: {params.cvc || '-'}
-            </Text>
-          </View>
-        </View>
-      </KeyboardAvoidingView>
-    )
-  }
-}
