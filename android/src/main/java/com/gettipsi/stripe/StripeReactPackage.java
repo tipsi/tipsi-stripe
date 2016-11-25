@@ -13,20 +13,20 @@ import java.util.List;
 
 public class StripeReactPackage implements ReactPackage {
 
-    @Override
-    public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
-        List<NativeModule> modules = new ArrayList<>();
-        modules.add(new StripeModule(reactContext));
-        return modules;
-    }
+  @Override
+  public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
+    List<NativeModule> modules = new ArrayList<>();
+    modules.add(new StripeModule(reactContext));
+    return modules;
+  }
 
-    @Override
-    public List<Class<? extends JavaScriptModule>> createJSModules() {
-        return Collections.emptyList();
-    }
+  @Override
+  public List<Class<? extends JavaScriptModule>> createJSModules() {
+    return Collections.emptyList();
+  }
 
-    @Override
-    public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
-        return Arrays.<ViewManager>asList(new CustomCardInputReactManager());
-    }
+  @Override
+  public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
+    return Arrays.<ViewManager>asList(new CustomCardInputReactManager());
+  }
 }

@@ -21,167 +21,167 @@ import org.xmlpull.v1.XmlPullParser;
  * Created by dmitriy on 11/15/16
  */
 
-public class CustomCadrInputReactManager extends SimpleViewManager<CreditCardForm> {
+public class CustomCardInputReactManager extends SimpleViewManager<CreditCardForm> {
 
-    public static final String REACT_CLASS = "CreditCardForm";
-    private static final String TAG = CustomCadrInputReactManager.class.getSimpleName();
-    private static final String NUMBER = "number";
-    private static final String EXP_MONTH = "expMonth";
-    private static final String EXP_YEAR = "expYear";
-    private static final String CCV = "cvc";
+  public static final String REACT_CLASS = "CreditCardForm";
+  private static final String TAG = CustomCardInputReactManager.class.getSimpleName();
+  private static final String NUMBER = "number";
+  private static final String EXP_MONTH = "expMonth";
+  private static final String EXP_YEAR = "expYear";
+  private static final String CCV = "cvc";
 
-    private ThemedReactContext reactContext;
-    private WritableMap currentParams;
+  private ThemedReactContext reactContext;
+  private WritableMap currentParams;
 
-    private String currentNumber;
-    private int currentMonth;
-    private int currentYear;
-    private String currentCCV;
+  private String currentNumber;
+  private int currentMonth;
+  private int currentYear;
+  private String currentCCV;
 
-    @Override
-    public String getName() {
-        return REACT_CLASS;
+  @Override
+  public String getName() {
+    return REACT_CLASS;
+  }
+
+  @Override
+  protected CreditCardForm createViewInstance(ThemedReactContext reactContext) {
+    XmlPullParser parser = reactContext.getResources().getXml(R.xml.stub_material);
+    try {
+      parser.next();
+      parser.nextTag();
+    } catch (Exception e) {
+      e.printStackTrace();
     }
 
-    @Override
-    protected CreditCardForm createViewInstance(ThemedReactContext reactContext) {
-        XmlPullParser parser = reactContext.getResources().getXml(R.xml.stub_material);
+    AttributeSet attr = Xml.asAttributeSet(parser);
+    final CreditCardForm creditCardForm = new CreditCardForm(reactContext, attr);
+    setListeners(creditCardForm);
+    this.reactContext = reactContext;
+    return creditCardForm;
+  }
+
+  @ReactProp(name = "enabled")
+  public void setEnabled(CreditCardForm view, boolean enabled) {
+    view.setEnabled(enabled);
+  }
+
+  @ReactProp(name = "backgroundColor")
+  public void setBackgroundColor(CreditCardForm view, int color) {
+    Log.d("TAG", "setBackgroundColor: "+color);
+    view.setBackgroundColor(color);
+  }
+
+  @ReactProp(name = "cardNumber")
+  public void setCardNumber(CreditCardForm view, String cardNumber) {
+    view.setCardNumber(cardNumber, true);
+  }
+
+  @ReactProp(name = "expDate")
+  public void setExpDate(CreditCardForm view, String expDate) {
+    view.setExpDate(expDate, true);
+  }
+
+  @ReactProp(name = "securityCode")
+  public void setSecurityCode(CreditCardForm view, String securityCode) {
+    view.setSecurityCode(securityCode, true);
+  }
+
+  @ReactProp(name = "numberPlaceholder")
+  public void setCreditCardTextHint(CreditCardForm view, String creditCardTextHint) {
+    view.setCreditCardTextHint(creditCardTextHint);
+  }
+
+  @ReactProp(name = "expirationPlaceholder")
+  public void setExpDateTextHint(CreditCardForm view, String expDateTextHint) {
+    view.setExpDateTextHint(expDateTextHint);
+  }
+
+  @ReactProp(name = "cvcPlaceholder")
+  public void setSecurityCodeTextHint(CreditCardForm view, String securityCodeTextHint) {
+    view.setSecurityCodeTextHint(securityCodeTextHint);
+  }
+
+
+  private void setListeners(final CreditCardForm view){
+
+    final EditText ccNumberEdit = (EditText) view.findViewById(R.id.cc_card);
+    final EditText ccExpEdit = (EditText) view.findViewById(R.id.cc_exp);
+    final EditText ccCcvEdit = (EditText) view.findViewById(R.id.cc_ccv);
+
+    ccNumberEdit.addTextChangedListener(new TextWatcher() {
+      @Override
+      public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+      }
+
+      @Override
+      public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        Log.d(TAG, "onTextChanged: cardNumber = "+charSequence);
+        currentNumber = charSequence.toString();
+        postEvent(view);
+      }
+
+      @Override
+      public void afterTextChanged(Editable editable) {
+      }
+    });
+
+    ccExpEdit.addTextChangedListener(new TextWatcher() {
+      @Override
+      public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+      }
+
+      @Override
+      public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        Log.d(TAG, "onTextChanged: EXP_YEAR = "+charSequence);
         try {
-            parser.next();
-            parser.nextTag();
-        } catch (Exception e) {
-            e.printStackTrace();
+          currentMonth = view.getCreditCard().getExpMonth();
+        }catch (Exception e){
+          if(charSequence.length() == 0)
+            currentMonth = 0;
         }
+        try {
+          currentYear = view.getCreditCard().getExpYear();
+        }catch (Exception e){
+          currentYear = 0;
+        }
+        postEvent(view);
+      }
 
-        AttributeSet attr = Xml.asAttributeSet(parser);
-        final CreditCardForm creditCardForm = new CreditCardForm(reactContext, attr);
-        setListeners(creditCardForm);
-        this.reactContext = reactContext;
-        return creditCardForm;
-    }
+      @Override
+      public void afterTextChanged(Editable editable) {
+      }
+    });
 
-    @ReactProp(name = "enabled")
-    public void setEnabled(CreditCardForm view, boolean enabled) {
-        view.setEnabled(enabled);
-    }
+    ccCcvEdit.addTextChangedListener(new TextWatcher() {
+      @Override
+      public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+      }
 
-    @ReactProp(name = "backgroundColor")
-    public void setBackgroundColor(CreditCardForm view, int color) {
-        Log.d("TAG", "setBackgroundColor: "+color);
-        view.setBackgroundColor(color);
-    }
+      @Override
+      public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        Log.d(TAG, "onTextChanged: CCV = "+charSequence);
+        currentCCV = charSequence.toString();
+        postEvent(view);
+      }
 
-    @ReactProp(name = "cardNumber")
-    public void setCardNumber(CreditCardForm view, String cardNumber) {
-        view.setCardNumber(cardNumber, true);
-    }
+      @Override
+      public void afterTextChanged(Editable editable) {
+      }
+    });
+  }
 
-    @ReactProp(name = "expDate")
-    public void setExpDate(CreditCardForm view, String expDate) {
-        view.setExpDate(expDate, true);
-    }
+  private void postEvent(CreditCardForm view){
+    currentParams = Arguments.createMap();
+    currentParams.putString(NUMBER, currentNumber);
+    currentParams.putInt(EXP_MONTH, currentMonth);
+    currentParams.putInt(EXP_YEAR, currentYear);
+    currentParams.putString(CCV, currentCCV);
+    reactContext.getNativeModule(UIManagerModule.class)
+      .getEventDispatcher().dispatchEvent(
+      new CreditCardFormOnChangeEvent(view.getId(), currentParams, view.isCreditCardValid()));
+  }
 
-    @ReactProp(name = "securityCode")
-    public void setSecurityCode(CreditCardForm view, String securityCode) {
-        view.setSecurityCode(securityCode, true);
-    }
+  private void updateView(CreditCardForm view){
 
-    @ReactProp(name = "numberPlaceholder")
-    public void setCreditCardTextHint(CreditCardForm view, String creditCardTextHint) {
-        view.setCreditCardTextHint(creditCardTextHint);
-    }
-
-    @ReactProp(name = "expirationPlaceholder")
-    public void setExpDateTextHint(CreditCardForm view, String expDateTextHint) {
-        view.setExpDateTextHint(expDateTextHint);
-    }
-
-    @ReactProp(name = "cvcPlaceholder")
-    public void setSecurityCodeTextHint(CreditCardForm view, String securityCodeTextHint) {
-        view.setSecurityCodeTextHint(securityCodeTextHint);
-    }
-
-
-    private void setListeners(final CreditCardForm view){
-
-        final EditText ccNumberEdit = (EditText) view.findViewById(R.id.cc_card);
-        final EditText ccExpEdit = (EditText) view.findViewById(R.id.cc_exp);
-        final EditText ccCcvEdit = (EditText) view.findViewById(R.id.cc_ccv);
-
-        ccNumberEdit.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                Log.d(TAG, "onTextChanged: cardNumber = "+charSequence);
-                currentNumber = charSequence.toString();
-                postEvent(view);
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-            }
-        });
-
-        ccExpEdit.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                Log.d(TAG, "onTextChanged: EXP_YEAR = "+charSequence);
-                try {
-                    currentMonth = view.getCreditCard().getExpMonth();
-                }catch (Exception e){
-                    if(charSequence.length() == 0)
-                        currentMonth = 0;
-                }
-                try {
-                    currentYear = view.getCreditCard().getExpYear();
-                }catch (Exception e){
-                    currentYear = 0;
-                }
-                postEvent(view);
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-            }
-        });
-
-        ccCcvEdit.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                Log.d(TAG, "onTextChanged: CCV = "+charSequence);
-                currentCCV = charSequence.toString();
-                postEvent(view);
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-            }
-        });
-    }
-
-    private void postEvent(CreditCardForm view){
-        currentParams = Arguments.createMap();
-        currentParams.putString(NUMBER, currentNumber);
-        currentParams.putInt(EXP_MONTH, currentMonth);
-        currentParams.putInt(EXP_YEAR, currentYear);
-        currentParams.putString(CCV, currentCCV);
-        reactContext.getNativeModule(UIManagerModule.class)
-                .getEventDispatcher().dispatchEvent(
-                new CreditCardFormOnChangeEvent(view.getId(), currentParams, view.isCreditCardValid()));
-    }
-
-    private void updateView(CreditCardForm view){
-
-    }
+  }
 }
