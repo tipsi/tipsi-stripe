@@ -114,7 +114,7 @@ An object with the following keys:
 * `created` _Number_ - When the token was created.
 * `livemode` _Number_ - Whether or not this token was created in livemode. Will be `1` if you used your `Live Publishable Key`, and `0` if you used your `Test Publishable Key`.
 * `card` _Object_ - The credit card details object that were used to create the token.
-* `extra` _Object_ - An additional information that method can provide.
+* `extra` _Object_  (iOS only)- An additional information that method can provide.
 
 ##### `card`
 
@@ -122,7 +122,7 @@ An object with the following keys:
 
 * `cardId` _String_ - The Stripe ID for the card.
 * `brand` _String_ - The card’s brand. Can be one of: `JCB`|`American Express`|`Visa`|`Discover`|`Diners Club`|`MasterCard`|`Unknown`.
-* `funding` _String_ - The card’s funding. Can be one of: `debit`|`credit`|`prepaid`|`unknown`.
+* `funding` _String_ (iOS only) - The card’s funding. Can be one of: `debit`|`credit`|`prepaid`|`unknown`.
 * `last4` _String_ - The last 4 digits of the card.
 * `dynamicLast4` _String_ (iOS only) - For cards made with `Apple Pay`, this refers to the last 4 digits of the `Device Account Number` for the tokenized card.
 * `expMonth` _Number_ - The card’s expiration month. 1-indexed (i.e. 1 == January)
@@ -133,7 +133,7 @@ An object with the following keys:
 * `addressLine1` _String_ - The cardholder’s first address line.
 * `addressLine2` _String_ - The cardholder’s second address line.
 * `addressCity` _String_ - The cardholder’s city.
-* `addressState` _String_ - The cardholder’s city.
+* `addressState` _String_ - The cardholder’s state.
 * `addressCountry` _String_ - The cardholder’s country.
 * `addressZip` _String_ - The cardholder’s zip code.
 
@@ -282,8 +282,21 @@ An object with the following keys:
 
 ```js
 const item = {
-    price: '100.00',
+    price: '80.00',
     currency: 'USD',
+    line_items: [{
+    currency_code: 'USD',
+      description: 'Whisky',
+      total_price: '50.00',
+      unit_price: '50.00',
+      quantity: '1',
+    }, {
+      currency_code: 'USD',
+      description: 'Vine',
+      total_price: '30.00',
+      unit_price: '30.00',
+      quantity: '1',
+    }, ],
 }
 
 const token = await stripe.paymentRequestWithAndroidPay(item)

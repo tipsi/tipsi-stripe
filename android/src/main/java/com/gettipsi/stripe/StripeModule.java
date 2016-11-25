@@ -19,7 +19,6 @@ import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.gettipsi.stripe.dialog.AddCardDialogFragment;
-import com.gettipsi.stripe.dialog.AddCardDialogFragmentTwo;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.BooleanResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -151,20 +150,11 @@ public class StripeModule extends ReactContextBaseJavaModule {
       });
   }
 
-  @ReactMethod
-  public void addCard(Promise promise) {
-    if (getCurrentActivity() != null) {
-      final AddCardDialogFragment fragment = AddCardDialogFragment.newInstance(publicKey);
-      fragment.setPromise(promise);
-      fragment.show(getCurrentActivity().getFragmentManager(), "AddNewCard");
-    }
-  }
-
 
   @ReactMethod
   public void paymentRequestWithCardForm(ReadableMap unused, final Promise promise) {
     if (getCurrentActivity() != null) {
-      final AddCardDialogFragmentTwo cardDialog = AddCardDialogFragmentTwo.newInstance(publicKey);
+      final AddCardDialogFragment cardDialog = AddCardDialogFragment.newInstance(publicKey);
       cardDialog.setPromise(promise);
       cardDialog.show(getCurrentActivity().getFragmentManager(), "AddNewCard");
     }
