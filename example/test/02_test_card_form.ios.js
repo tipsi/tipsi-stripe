@@ -4,13 +4,7 @@ import helper from './utils/helper'
 const { driver, idFromXPath, idFromAccessId } = helper
 
 test('Test if user can use Card Form', async (t) => {
-  const cardFormTabId = idFromXPath(`
-    //XCUIElementTypeApplication/XCUIElementTypeWindow/
-    XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/
-    XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/
-    XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/
-    XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[2]
-  `)
+  const cardFormTabId = idFromXPath('//*/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[2]')
   const cardFormButtonId = idFromAccessId('cardFormButton')
   const numberInputId = idFromAccessId('card number')
   const doneButtonId = idFromAccessId('Done')

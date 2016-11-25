@@ -4,13 +4,7 @@ import helper from './utils/helper'
 const { driver, idFromXPath, idFromAccessId } = helper
 
 test('Test if user can use Custom Card params', async (t) => {
-  const cardFormTabId = idFromXPath(`
-    //XCUIElementTypeApplication/XCUIElementTypeWindow/
-    XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/
-    XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/
-    XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/
-    XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[3]
-  `)
+  const cardFormTabId = idFromXPath('//*/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[3]')
   const cardFormButtonId = idFromAccessId('customCardButton')
   const tokenId = idFromAccessId('customCardToken')
 

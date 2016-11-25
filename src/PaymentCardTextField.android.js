@@ -1,7 +1,6 @@
-import UnimplementedView from 'react-native/Libraries/Components/UnimplementedViews/UnimplementedView'
+import React, { Component, PropTypes } from 'react'
+import { requireNativeComponent, findNodeHandle, StyleSheet, View, TouchableWithoutFeedback } from 'react-native'
 import StyleSheetPropType from 'react-native/Libraries/StyleSheet/StyleSheetPropType'
-import React, { Component, PropTypes } from 'react';
-import { requireNativeComponent, findNodeHandle, StyleSheet, View, TouchableWithoutFeedback } from 'react-native';
 import ViewStylePropTypes from 'react-native/Libraries/Components/View/ViewStylePropTypes'
 
 import TextInputState from 'react-native/Libraries/Components/TextInput/TextInputState'
@@ -11,31 +10,22 @@ const FieldStylePropType = {
   color: PropTypes.string,
 }
 
-var iface = {
-  propTypes: {
-    ...View.propTypes,
-//    source: PropTypes.string,
-  },
-};
-
-
 export default class PaymentCardTextField extends Component {
   static propTypes = {
-             ...View.propTypes,
-//             source: PropTypes.string,
-                     setEnabled: PropTypes.bool,
-                     backgroundColor: PropTypes.string,
-                     cardNumber: PropTypes.string,
-                     expDate: PropTypes.string,
-                     securityCode: PropTypes.string,
-                     expirationPlaceholder: PropTypes.string,
-                     cvcPlaceholder: PropTypes.string,
-                     numberPlaceholder: PropTypes.string,
+    ...View.propTypes,
+    style: StyleSheetPropType(FieldStylePropType), // eslint-disable-line new-cap
+    // source: PropTypes.string,
+    setEnabled: PropTypes.bool,
+    backgroundColor: PropTypes.string,
+    cardNumber: PropTypes.string,
+    expDate: PropTypes.string,
+    securityCode: PropTypes.string,
+    expirationPlaceholder: PropTypes.string,
+    cvcPlaceholder: PropTypes.string,
+    numberPlaceholder: PropTypes.string,
 
-
-
-                     onChange: PropTypes.func,
-                     onValueChange: PropTypes.func,
+    onChange: PropTypes.func,
+    onValueChange: PropTypes.func,
   }
 
   valid = false // eslint-disable-line react/sort-comp
@@ -150,5 +140,5 @@ const NativePaymentCardTextField = requireNativeComponent('CreditCardForm', Paym
     fontSize: true,
     enabled: true,
     onChange: true,
-  }
+  },
 })

@@ -3,7 +3,7 @@ import helper from './utils/helper'
 
 const { driver, /* idFromXPath, */ idFromAccessId } = helper
 
-test('01 Test Android Pay', async(t) => {
+test('Test if user can use Android Pay', async(t) => {
   try {
     const tabAndroidPay = idFromAccessId('headerTab_0')
 

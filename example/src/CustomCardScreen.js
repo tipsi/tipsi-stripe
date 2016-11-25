@@ -110,9 +110,9 @@ export default class CustomCardScreen extends Component {
           onPress={this.handleCustomPayPress}
         />
         <View
-          style={styles.token}
           accessible
-          accessibilityLabel={'customCardToken'}>
+          accessibilityLabel={'customCardToken'}
+          style={styles.token}>
           {token &&
             <Text style={styles.instruction}>
               Token: {token.tokenId}

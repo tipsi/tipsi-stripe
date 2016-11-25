@@ -4,13 +4,7 @@ import helper from './utils/helper'
 const { driver, idFromXPath, idFromAccessId } = helper
 
 test('Test if user can use PaymentCardTextField component', async (t) => {
-  const cardTextFieldTabId = idFromXPath(`
-    //XCUIElementTypeApplication/XCUIElementTypeWindow/
-    XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/
-    XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/
-    XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/
-    XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[4]
-  `)
+  const cardTextFieldTabId = idFromXPath('//*/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[4]')
   const cardTextFieldId = idFromAccessId('cardTextField')
   const fieldsId = idFromXPath('//*/XCUIElementTypeOther[2]/XCUIElementTypeStaticText')
 

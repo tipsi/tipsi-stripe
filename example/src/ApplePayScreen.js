@@ -102,7 +102,10 @@ export default class ApplePayScreen extends Component {
           accessibilityLabel={'applePayButton'}
           onPress={this.handleApplePayPress}
         />
-        <View style={styles.token}>
+        <View
+          accessible
+          accessibilityLabel={'applePayToken'}
+          style={styles.token}>
           {token &&
             <Text style={styles.instruction}>
               Token: {token.tokenId}
