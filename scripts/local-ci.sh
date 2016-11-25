@@ -58,6 +58,6 @@ isIOS && (npm run build:ios || true)
 ###################
 
 # Run Android e2e tests
-# npm run test:android || true
+npm run test:android || true
 # Run iOS e2e tests
 isIOS && (npm run test:ios || true)
