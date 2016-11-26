@@ -1,3 +1,5 @@
 rootProject.name = 'example'
 
 include ':app'
+include ':tipsi-stripe'
+project(':tipsi-stripe').projectDir = new File(rootProject.projectDir, '../node_modules/tipsi-stripe/android')

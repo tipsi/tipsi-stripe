@@ -11,10 +11,12 @@ matrix:
         components:
           - platform-tools
           - tools
-          - build-tools-24.0.2
-          - android-24
-          - sys-img-armeabi-v7a-android-21
+          - build-tools-25.0.0
+          - android-25
+          - sys-img-armeabi-v7a-android-23
           - extra-android-m2repository
+          - extra-google-m2repository
+          - extra-google-google_play_services
 
 cache:
   directories:

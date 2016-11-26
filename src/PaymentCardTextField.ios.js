@@ -91,7 +91,7 @@ export default class PaymentCardTextField extends Component {
       numberPlaceholder,
       expirationPlaceholder,
       cvcPlaceholder,
-      ...rest,
+      ...rest
     } = this.props
     const {
       borderColor,

@@ -3,28 +3,14 @@ import helper from './utils/helper'
 
 const { driver, idFromXPath, idFromAccessId } = helper
 
-test('Test if user can see use Apple Pay', async (t) => {
-  const applePayTabId = idFromXPath(`
-    //XCUIElementTypeApplication/XCUIElementTypeWindow/
-    XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/
-    XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/
-    XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/
-    XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther
-  `)
+test('Test if user can use Apple Pay', async (t) => {
+  const applePayTabId = idFromXPath('//*/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther')
   const applePayButtonId = idFromAccessId('applePayButton')
   const payWithPasscodeButtonId = idFromAccessId('Pay with Passcode')
-  const tokenId = idFromXPath(`
-    //XCUIElementTypeApplication/XCUIElementTypeWindow/
-    XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/
-    XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/
-    XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther/
-    XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/
-    XCUIElementTypeStaticText
-  `)
+  const tokenId = idFromAccessId('applePayToken')
 
   try {
     await driver.waitForVisible(applePayTabId, 60000)
-
     await driver.click(applePayTabId)
 
     await driver.waitForVisible(applePayButtonId, 5000)

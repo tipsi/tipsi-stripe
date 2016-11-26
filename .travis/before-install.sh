@@ -9,6 +9,7 @@ case "${TRAVIS_OS_NAME}" in
   ;;
   linux)
     $HOME/.nvm/nvm.sh
-    nvm install stable
+    nvm install 6.8.1
+    android list targets
   ;;
 esac

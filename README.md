@@ -12,6 +12,10 @@ React Native Stripe binding for iOS/Andriod platforms
 * iOS 10+
 * [CocoaPods](https://cocoapods.org) 1.1.1+
 
+### Android
+
+* Minimum SDK 16
+
 ## Installation
 
 Run `npm install --save tipsi-stripe` to add the package to your app's dependencies.
@@ -38,6 +42,49 @@ Run `react-native link tipsi-stripe` so your project is linked against your Xcod
 5. Whenever you want to use it within React code now you can:
   * `import stripe from 'tipsi-stripe'`
 
+### Android
+
+#### react-native cli
+
+Run `react-native link tipsi-stripe` so your project is linked against your Android project
+
+#### Manual
+
+In your `android/app/build.gradle` add:
+
+```gradle
+...
+dependencies {
+ ...
+ compile project(':tipsi-stripe')
+}
+```
+
+In your `android/settings.gradle` add:
+
+```gradle
+...
+include ':tipsi-stripe'
+project(':tipsi-stripe').projectDir = new File(rootProject.projectDir, '../node_modules/tipsi-stripe/android')
+```
+
+In your `android/build.gradle` add:
+
+```gradle
+...
+allprojects {
+    repositories {
+...
+        maven { url "https://jitpack.io" }
+    }
+}
+```
+
+Ensure that you have Google Play Services installed:
+
+For `Genymotion` you can follow [these instructions](http://stackoverflow.com/questions/20121883/how-to-install-google-play-services-in-a-genymotion-vm-with-no-drag-and-drop-su/20137324#20137324).
+For a physical device you need to search on Google for 'Google Play Services'. There will be a link that takes you to the `Play Store` and from there you will see a button to update it (do not search within the `Play Store`).
+
 ## Usage
 
 Let's require `tipsi-stripe` module:
@@ -63,11 +110,11 @@ A token object returned from submitting payment details (via `paymentRequestWith
 
 An object with the following keys:
 
-* `tokenId` _String_ - The value of the token. You can store this value on your server and use it to make charges and customers. 
+* `tokenId` _String_ - The value of the token. You can store this value on your server and use it to make charges and customers.
 * `created` _Number_ - When the token was created.
 * `livemode` _Number_ - Whether or not this token was created in livemode. Will be `1` if you used your `Live Publishable Key`, and `0` if you used your `Test Publishable Key`.
 * `card` _Object_ - The credit card details object that were used to create the token.
-* `extra` _Object_ - An additional information that method can provide.
+* `extra` _Object_  (iOS only)- An additional information that method can provide.
 
 ##### `card`
 
@@ -75,7 +122,7 @@ An object with the following keys:
 
 * `cardId` _String_ - The Stripe ID for the card.
 * `brand` _String_ - The card’s brand. Can be one of: `JCB`|`American Express`|`Visa`|`Discover`|`Diners Club`|`MasterCard`|`Unknown`.
-* `funding` _String_ - The card’s funding. Can be one of: `debit`|`credit`|`prepaid`|`unknown`.
+* `funding` _String_ (iOS only) - The card’s funding. Can be one of: `debit`|`credit`|`prepaid`|`unknown`.
 * `last4` _String_ - The last 4 digits of the card.
 * `dynamicLast4` _String_ (iOS only) - For cards made with `Apple Pay`, this refers to the last 4 digits of the `Device Account Number` for the tokenized card.
 * `expMonth` _Number_ - The card’s expiration month. 1-indexed (i.e. 1 == January)
@@ -86,7 +133,7 @@ An object with the following keys:
 * `addressLine1` _String_ - The cardholder’s first address line.
 * `addressLine2` _String_ - The cardholder’s second address line.
 * `addressCity` _String_ - The cardholder’s city.
-* `addressState` _String_ - The cardholder’s city.
+* `addressState` _String_ - The cardholder’s state.
 * `addressCountry` _String_ - The cardholder’s country.
 * `addressZip` _String_ - The cardholder’s zip code.
 
@@ -217,13 +264,51 @@ stripe.completeApplePayRequest()
 // stripe.cancelApplePayRequest()
 ```
 
+### Android Pay (Android only)
+(Under active development)
+
+#### `paymentRequestWithAndroidPay(item) -> Promise`
+
+Launch the `Android Pay` view to to accept payment.
+
+##### `item`
+
+An object with the following keys:
+
+* `price` _String_ - Price of the item.
+* `currency` _String_ - Three-letter ISO currency code representing the currency paid out to the bank account.
+
+#### Example
+
+```js
+const item = {
+    price: '80.00',
+    currency: 'USD',
+    line_items: [{
+    currency_code: 'USD',
+      description: 'Whisky',
+      total_price: '50.00',
+      unit_price: '50.00',
+      quantity: '1',
+    }, {
+      currency_code: 'USD',
+      description: 'Vine',
+      total_price: '30.00',
+      unit_price: '30.00',
+      quantity: '1',
+    }, ],
+}
+
+const token = await stripe.paymentRequestWithAndroidPay(item)
+```
+
 ### Request with Card Form
 
 #### `paymentRequestWithCardForm(options) -> Promise`
 
 Launch `Add Card` view to to accept payment.
 
-##### `options`
+##### `options (iOS only)`
 
 An object with the following keys:
 
@@ -231,7 +316,7 @@ An object with the following keys:
 * `smsAutofillDisabled` _Bool_ - When entering their payment information, users who have a saved card with Stripe will be prompted to autofill it by entering an SMS code. Set this property to `true` to disable this feature.
 * `theme` _Object_ - Can be used to visually style Stripe-provided UI.
 
-##### `theme`
+##### `theme (iOS only)`
 
 An object with the following keys:
 
@@ -244,7 +329,8 @@ An object with the following keys:
 
 #### Example
 
-![Card Form](https://cloud.githubusercontent.com/assets/1177226/20274560/1432abf2-aaa6-11e6-8505-0cdc3017fe22.gif)
+![Card Form iOS](https://cloud.githubusercontent.com/assets/1177226/20274560/1432abf2-aaa6-11e6-8505-0cdc3017fe22.gif)
+![Card Form Android](https://cloud.githubusercontent.com/assets/1177226/20572150/54192810-b1bb-11e6-9df6-5c068bf69904.gif)
 
 ```js
 const options = {
@@ -277,7 +363,8 @@ An object with the following keys:
 
 ##### Example
 
-![Card Params](https://cloud.githubusercontent.com/assets/1177226/20275232/cf0f8e3e-aaa8-11e6-85bf-5e093706ea0a.gif)
+![Card Params iOS](https://cloud.githubusercontent.com/assets/1177226/20275232/cf0f8e3e-aaa8-11e6-85bf-5e093706ea0a.gif)
+![Card Params Android](https://cloud.githubusercontent.com/assets/1177226/20572183/7a0a4824-b1bb-11e6-82f2-9b3f7038b1a9.gif)
 
 ```js
 const params = {
@@ -293,25 +380,26 @@ const token = await stripe.createTokenWithCard(params)
 // api.sendTokenToBackend(token)
 ```
 
-### PaymentCardTextField component (iOS only)
+### PaymentCardTextField component
 
 A text field component specialized for collecting credit/debit card information. It manages multiple text fields under the hood to collect this information. It’s designed to fit on a single line.
 
-##### Props
+#### Props
 * `styles` Object - Accepts all `View` styles, also support `color` param.
-* `cursorColor` String - The cursor color for the field.
-* `textErrorColor` String - The text color to be used when the user has entered invalid information, such as an invalid card number.
-* `placeholderColor` String - The text placeholder color used in each child field.
+* `cursorColor` String (IOS only) - The cursor color for the field.
+* `textErrorColor` String (IOS only) - The text color to be used when the user has entered invalid information, such as an invalid card number.
+* `placeholderColor` String (IOS only)- The text placeholder color used in each child field.
 * `numberPlaceholder` String - The placeholder for the card number field.
 * `expirationPlaceholder` String - The placeholder for the expiration field.
 * `cvcPlaceholder` String - The placeholder for the cvc field.
-* `disabled` Bool - Enable/disable selecting or editing the field. Useful when submitting card details to Stripe.
+* `disabled` Bool(IOS only) - Enable/disable selecting or editing the field. Useful when submitting card details to Stripe.
+* `enabled` Bool (Android only) - Enable/disable selecting or editing the field. Useful when submitting card details to Stripe.
 * `onChange` Func - This function will be called each input change.
 * `onValueChange` Func - This function will be called each input change, it takes two argumants:
   * `valid` Bool - Whether or not the form currently contains a valid card number, expiration date, and CVC.
   * `params` Object - Contains entered card params: `number`, `expMonth`, `expYear` and `cvc`.
-  
-##### Initial params
+
+#### Initial params
 
 To set inital params you can use `<instance>.setParams(params)` method which is available via `ref`.
 For example, if you’re using another library to scan your user’s credit card with a camera, you can assemble that data into an object and set this property to that object to prefill the fields you’ve collected.
@@ -319,8 +407,8 @@ For example, if you’re using another library to scan your user’s credit card
 You can also access to `valid` and `params` info via `<instance>.valid` and `<instance>.params` respectively.
 
 ##### Example
-
-![PaymentCardTextField](https://cloud.githubusercontent.com/assets/1177226/20276457/60680ee8-aaad-11e6-834f-007909ce6814.gif)
+![PaymentCardTextField iOS](https://cloud.githubusercontent.com/assets/1177226/20276457/60680ee8-aaad-11e6-834f-007909ce6814.gif)
+![PaymentCardTextField Android](https://cloud.githubusercontent.com/assets/1177226/20572188/82ae5bf0-b1bb-11e6-97fe-fce360208130.gif)
 
 ```js
 import React, { Component } from 'react'

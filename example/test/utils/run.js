@@ -1,13 +1,14 @@
-import findAndroidDevice from './find-android-device'
-import findiOSDevice from './find-ios-device'
-import appiumIsRunning from './appium-is-running'
-import runTapeTests from './run-tape-tests'
+import findAndroidDevice from './core/find-android-device'
+import findiOSDevice from './core/find-ios-device'
+import appiumIsRunning from './core/appium-is-running'
+import runTapeTests from './core/run-tape-tests'
 import helper from './helper'
 
 const {
   APPIUM_HOST = '0.0.0.0',
   APPIUM_PORT = '4723',
   TESTS_PATH = 'test/*_test_*.js',
+  IGNORE_PATH,
   APP_PATH,
   PLATFORM_NAME,
   NO_RESET,
@@ -93,7 +94,10 @@ const allowedPlatformNames = ['ios', 'android'];
     })
 
     // Run Tape tests
-    await runTapeTests(TESTS_PATH)
+    await runTapeTests({
+      paths: [TESTS_PATH],
+      ignore: IGNORE_PATH,
+    })
 
     // Close Helper
     await helper.release()

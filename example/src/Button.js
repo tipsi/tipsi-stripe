@@ -1,17 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { View, Text, TouchableHighlight, ActivityIndicator, StyleSheet } from 'react-native'
-
-const styles = StyleSheet.create({
-  button: {
-    padding: 8,
-    height: 35,
-    minWidth: 160,
-    overflow: 'hidden',
-    borderRadius: 4,
-    backgroundColor: 'white',
-    alignItems: 'center',
-  },
-})
+import { View, Text, TouchableHighlight, ActivityIndicator, Platform, StyleSheet } from 'react-native'
 
 export default class Button extends Component {
   static propTypes = {
@@ -66,3 +54,15 @@ export default class Button extends Component {
     )
   }
 }
+
+const styles = StyleSheet.create({
+  button: {
+    padding: 8,
+    height: Platform.OS === 'ios' ? 35 : 40,
+    minWidth: 160,
+    overflow: 'hidden',
+    borderRadius: 4,
+    backgroundColor: 'white',
+    alignItems: 'center',
+  },
+})
