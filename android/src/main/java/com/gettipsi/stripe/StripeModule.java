@@ -26,6 +26,7 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.wallet.Cart;
 import com.google.android.gms.wallet.FullWallet;
 import com.google.android.gms.wallet.FullWalletRequest;
+import com.google.android.gms.wallet.IsReadyToPayRequest;
 import com.google.android.gms.wallet.LineItem;
 import com.google.android.gms.wallet.MaskedWallet;
 import com.google.android.gms.wallet.MaskedWalletRequest;
@@ -95,7 +96,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
             }
           }
         } else {
-          super.onActivityResult(requestCode, resultCode, data);
+          super.onActivityResult(activity, requestCode, resultCode, data);
         }
       }
     }
@@ -145,7 +146,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
 
         public void onError(Exception error) {
           error.printStackTrace();
-          promise.reject(error.getMessage());
+          promise.reject(TAG, error.getMessage());
         }
       });
   }
@@ -176,7 +177,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
         @Override
         public void onConnected(@Nullable Bundle bundle) {
           Log.d(TAG, "onConnected: ");
-          Wallet.Payments.isReadyToPay(googleApiClient).setResultCallback(
+          Wallet.Payments.isReadyToPay(googleApiClient, doIsReadyToPayRequest()).setResultCallback(
             new ResultCallback<BooleanResult>() {
               @Override
               public void onResult(@NonNull BooleanResult booleanResult) {
@@ -192,13 +193,13 @@ public class StripeModule extends ReactContextBaseJavaModule {
                     // Hide Android Pay buttons, show a message that Android Pay
                     // cannot be used yet, and display a traditional checkout button
                     androidPayUnavaliableDialog();
-                    payPromise.reject("Android Pay unavaliable");
+                    payPromise.reject(TAG, "Android Pay unavaliable");
                   }
                 } else {
                   // Error making isReadyToPay call
                   Log.e(TAG, "isReadyToPay:" + booleanResult.getStatus());
                   androidPayUnavaliableDialog();
-                  payPromise.reject("Error making isReadyToPay call");
+                  payPromise.reject(TAG, "Error making isReadyToPay call");
                 }
               }
             }
@@ -291,5 +292,9 @@ public class StripeModule extends ReactContextBaseJavaModule {
     } else {
       payPromise.reject(PURCHASE_CANCELLED, "Purchase was cancelled");
     }
+  }
+
+  private IsReadyToPayRequest doIsReadyToPayRequest() {
+    return IsReadyToPayRequest.newBuilder().build();
   }
 }
