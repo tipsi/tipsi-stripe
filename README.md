@@ -14,7 +14,7 @@ React Native Stripe binding for iOS/Andriod platforms
 
 ### Android
 
-* Minimum SDK 16
+* SDK 17+
 
 ## Installation
 

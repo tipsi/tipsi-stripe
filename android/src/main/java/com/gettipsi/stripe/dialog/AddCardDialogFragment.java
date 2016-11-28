@@ -22,7 +22,6 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.WritableMap;
 import com.gettipsi.stripe.R;
-import com.gettipsi.stripe.R2;
 import com.gettipsi.stripe.util.CardFlipAnimator;
 import com.gettipsi.stripe.util.Utils;
 import com.stripe.android.Stripe;
@@ -30,8 +29,6 @@ import com.stripe.android.TokenCallback;
 import com.stripe.android.model.Card;
 import com.stripe.android.model.Token;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by dmitriy on 11/13/16
@@ -44,14 +41,10 @@ public class AddCardDialogFragment extends DialogFragment {
   private static final String CCV_INPUT_CLASS_NAME = SecurityCodeText.class.getSimpleName();
   private String PUBLISHABLE_KEY;
 
-  @BindView(R2.id.buttonProgress)
-  ProgressBar progressBar;
-  @BindView(R2.id.credit_card_form)
-  CreditCardForm from;
-  @BindView(R2.id.imageFlippedCard)
-  ImageView imageFlipedCard;
-  @BindView(R2.id.imageFlippedCardBack)
-  ImageView imageFlipedCardBack;
+  private ProgressBar progressBar;
+  private CreditCardForm from;
+  private ImageView imageFlipedCard;
+  private ImageView imageFlipedCardBack;
 
   private volatile Promise promise;
   private boolean successful;
@@ -104,8 +97,9 @@ public class AddCardDialogFragment extends DialogFragment {
     dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getActivity(), R.color.colorAccent));
     doneButton.setEnabled(false);
 
-    ButterKnife.bind(this, view);
+    bindViews(view);
     init();
+
     Log.d(TAG, "onCreateDialog: ");
     return dialog;
   }
@@ -117,6 +111,13 @@ public class AddCardDialogFragment extends DialogFragment {
       promise = null;
     }
     super.onDismiss(dialog);
+  }
+
+  private void bindViews(final View view) {
+    progressBar = (ProgressBar) view.findViewById(R.id.buttonProgress);
+    from = (CreditCardForm) view.findViewById(R.id.credit_card_form);
+    imageFlipedCard = (ImageView) view.findViewById(R.id.imageFlippedCard);
+    imageFlipedCardBack = (ImageView) view.findViewById(R.id.imageFlippedCardBack);
   }
 
 
@@ -181,7 +182,7 @@ public class AddCardDialogFragment extends DialogFragment {
             final WritableMap newToken = Arguments.createMap();
             newToken.putString("tokenId", token.getId());
             newToken.putBoolean("livemode", token.getLivemode());
-            newToken.putDouble("created",token.getCreated().getTime());
+            newToken.putDouble("created", token.getCreated().getTime());
             newToken.putBoolean("user", token.getUsed());
             final WritableMap cardMap = Arguments.createMap();
             final Card card = token.getCard();
