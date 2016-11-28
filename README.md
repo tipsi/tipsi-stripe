@@ -1,5 +1,6 @@
 # tipsi-stripe
 
+[![npm version](https://img.shields.io/npm/v/tipsi-stripe.svg?style=flat-square)](https://www.npmjs.com/package/tipsi-stripe)
 [![build status](https://img.shields.io/travis/tipsi/tipsi-stripe/master.svg?style=flat-square)](https://travis-ci.org/tipsi/tipsi-stripe)
 
 React Native Stripe binding for iOS/Andriod platforms
