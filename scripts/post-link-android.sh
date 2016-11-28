@@ -44,7 +44,7 @@ var dep = str.substr(0, replacePos);
 // Chech if the repository already exists
 if (String(dep).match(/url[^h]*https\:\/\/jitpack\.io/) === null) {
 
-  dep = String(dep).replace(/repositories[^\{]*\{/, 'repositories {\r\n        // Add jitpack repository (added by tipsi-stripe)\r\n        tmaven { url "https://jitpack.io" }');
+  dep = String(dep).replace(/repositories[^\{]*\{/, 'repositories {\r\n        // Add jitpack repository (added by tipsi-stripe)\r\n        maven { url "https://jitpack.io" }');
   str = dep + str.substr(replacePos, str.length - replacePos);
 
   // replace original build script

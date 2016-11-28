@@ -15,7 +15,7 @@ buildscript {
 allprojects {
     repositories {
         // Add jitpack repository (added by tipsi-stripe)
-        tmaven { url "https://jitpack.io" }
+        maven { url "https://jitpack.io" }
         mavenLocal()
         jcenter()
         maven {
