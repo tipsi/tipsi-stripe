@@ -17,11 +17,10 @@
     "test": "npm-run-all test:*"
   },
   "dependencies": {
-    "react": "15.3.2",
-    "react-addons-shallow-compare": "^15.3.2",
-    "react-native": "0.36.0",
+    "react": "15.4.1",
+    "react-addons-shallow-compare": "15.4.1",
+    "react-native": "0.38.0",
     "react-native-tab-view": "0.0.37",
-    "react-native-button": "^1.7.1",
     "tipsi-stripe": "../"
   },
   "devDependencies": {

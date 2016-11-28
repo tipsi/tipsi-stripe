@@ -1,11 +1,5 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
-ext {
-    travisBuild = System.getenv("TRAVIS") == "true"
-    // allows for -Dpre-dex=false to be set
-    preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
-}
-
 buildscript {
     repositories {
         jcenter()
@@ -20,12 +14,13 @@ buildscript {
 
 allprojects {
     repositories {
+        // Add jitpack repository (added by tipsi-stripe)
+        tmaven { url "https://jitpack.io" }
         mavenLocal()
         jcenter()
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url "$rootDir/../node_modules/react-native/android"
         }
-        maven { url "https://jitpack.io" }
     }
 }
