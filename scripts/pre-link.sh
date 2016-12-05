@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo "Preparing to link tipsi-dropdown for iOS"
+echo "Preparing to link tipsi-stripe for iOS"
 
 echo "Checking CocoaPods..."
 has_cocoapods=`which pod >/dev/null 2>&1`

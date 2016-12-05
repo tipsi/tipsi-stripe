@@ -16,7 +16,7 @@ isIOS && [ -z "$MERCHANT_ID" ] && echo "Need to set Apple Pay MERCHANT_ID" && ex
 ! isIOS && echo "Current os is not OSX, setup for iOS will be skipped"
 # Go to example project
 cd example
-# Remove tipsi-dropdown dependency
+# Remove tipsi-stripe dependency
 rm -rf node_modules/tipsi-stripe
 
 ###################

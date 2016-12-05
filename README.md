@@ -283,21 +283,21 @@ An object with the following keys:
 
 ```js
 const item = {
-    price: '80.00',
-    currency: 'USD',
-    line_items: [{
+  price: '80.00',
+  currency: 'USD',
+  line_items: [{
     currency_code: 'USD',
-      description: 'Whisky',
-      total_price: '50.00',
-      unit_price: '50.00',
-      quantity: '1',
-    }, {
-      currency_code: 'USD',
-      description: 'Vine',
-      total_price: '30.00',
-      unit_price: '30.00',
-      quantity: '1',
-    }, ],
+    description: 'Whisky',
+    total_price: '50.00',
+    unit_price: '50.00',
+    quantity: '1',
+  }, {
+    currency_code: 'USD',
+    description: 'Vine',
+    total_price: '30.00',
+    unit_price: '30.00',
+    quantity: '1',
+  }],
 }
 
 const token = await stripe.paymentRequestWithAndroidPay(item)
