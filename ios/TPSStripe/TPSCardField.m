@@ -9,19 +9,27 @@
 #import "TPSCardField.h"
 #import "RCTLog.h"
 
-@implementation TPSCardField
-{
+@interface TPSCardField () <STPPaymentCardTextFieldDelegate>
+@end
+
+@implementation TPSCardField {
     BOOL _jsRequestingFirstResponder;
     BOOL _isFirstResponder;
-    NSUInteger _changeViaSetCardParamsCounter;
+    STPPaymentCardTextField *_paymentCardTextField;
+    
 }
 
-- (instancetype)initWithFrame:(CGRect)frame
-{
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:self.window];
+}
+
+- (instancetype)initWithFrame:(CGRect)frame {
     if ((self = [super initWithFrame:frame])) {
-        self.delegate = self;
         _isFirstResponder = NO;
-        _changeViaSetCardParamsCounter = 0;
+        _paymentCardTextField = [[STPPaymentCardTextField alloc] initWithFrame:self.bounds];
+        _paymentCardTextField.delegate = self;
+        [self addSubview:_paymentCardTextField];
+        self.backgroundColor = [UIColor clearColor];
         [[NSNotificationCenter defaultCenter]
             addObserver:self
                selector:@selector(keyboardWillShow:)
@@ -31,90 +39,137 @@
     return self;
 }
 
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+- (void)reactSetFrame:(CGRect)frame {
+    [super reactSetFrame:frame];
+    _paymentCardTextField.frame = self.bounds;
 }
 
-- (void)reactWillMakeFirstResponder
-{
+- (void)reactWillMakeFirstResponder {
     _jsRequestingFirstResponder = YES;
 }
 
-- (BOOL)canBecomeFirstResponder
-{
+- (BOOL)canBecomeFirstResponder {
     return _jsRequestingFirstResponder;
 }
 
-- (void)reactDidMakeFirstResponder
-{
+- (void)reactDidMakeFirstResponder {
     _jsRequestingFirstResponder = NO;
 }
 
-- (void)didMoveToWindow
-{
+- (void)didMoveToWindow {
     if (_jsRequestingFirstResponder) {
-        [self becomeFirstResponder];
+        [_paymentCardTextField becomeFirstResponder];
         [self reactDidMakeFirstResponder];
     }
 }
 
-- (void)keyboardWillShow:(NSNotification *)n
-{
+- (void)keyboardWillShow:(NSNotification *)n {
     if (!_jsRequestingFirstResponder && !_isFirstResponder) {
-        [self resignFirstResponder];
+        [_paymentCardTextField resignFirstResponder];
     }
 }
 
-- (BOOL)becomeFirstResponder
-{
+- (BOOL)becomeFirstResponder {
     _isFirstResponder = YES;
-    return [super becomeFirstResponder];
+    return [_paymentCardTextField becomeFirstResponder];
 }
 
-- (BOOL)resignFirstResponder
-{
+- (BOOL)resignFirstResponder {
     _isFirstResponder = NO;
-    return [super resignFirstResponder];
+    return [_paymentCardTextField resignFirstResponder];
 }
 
-- (void)setCardParams:(STPCardParams *)cardParams
-{
-    _changeViaSetCardParamsCounter = 2;
-    [super setCardParams:cardParams];
+#pragma mark -
+
+- (UIFont *)font {
+    return _paymentCardTextField.font;
 }
 
-- (void)onChange {
-    if (_changeViaSetCardParamsCounter > 0) {
-        _changeViaSetCardParamsCounter--;
-        return;
-    }
+- (void)setFont:(UIFont*)font {
+    _paymentCardTextField.font = font;
+}
+
+- (UIColor *)textColor {
+    return _paymentCardTextField.textColor;
+}
+
+- (void)setTextColor:(UIColor *)textColor {
+    _paymentCardTextField.textColor = textColor;
+}
+
+- (UIColor *)borderColor {
+    return _paymentCardTextField.borderColor;
+}
+
+- (void)setBorderColor:(UIColor *)borderColor {
+    _paymentCardTextField.borderColor = borderColor;
+}
+
+- (CGFloat)borderWidth {
+    return _paymentCardTextField.borderWidth;
+}
+
+- (void)setBorderWidth:(CGFloat)borderWidth {
+    _paymentCardTextField.borderWidth = borderWidth;
+}
+
+- (CGFloat)cornerRadius {
+    return _paymentCardTextField.cornerRadius;
+}
+
+- (void)setCornerRadius:(CGFloat)cornerRadius {
+    _paymentCardTextField.cornerRadius = cornerRadius;
+}
+
+- (UIColor *)cursorColor {
+    return _paymentCardTextField.cursorColor;
+}
+
+- (void)setCursorColor:(UIColor *)cursorColor {
+    _paymentCardTextField.cursorColor = cursorColor;
+}
+
+- (UIColor *)textErrorColor {
+    return _paymentCardTextField.textErrorColor;
+}
+
+- (void)setTextErrorColor:(UIColor *)textErrorColor {
+    _paymentCardTextField.textErrorColor = textErrorColor;
+}
+
+- (UIColor *)placeholderColor {
+    return _paymentCardTextField.placeholderColor;
+}
+
+- (void)setPlaceholderColor:(UIColor *)placeholderColor {
+    _paymentCardTextField.placeholderColor = placeholderColor;
+}
+
+- (void)setCardParams:(STPCardParams *)cardParams {
+    // Remove delegate before update paymentCardTextField with prefilled card
+    // for preventing call paymentCardTextFieldDidChange for every fields
+    _paymentCardTextField.delegate = nil;
+    [_paymentCardTextField setCardParams:cardParams];
+    _paymentCardTextField.delegate = self;
+    // call paymentCardTextFieldDidChange for update RN
+    [self paymentCardTextFieldDidChange:nil];
+}
+
+#pragma mark - STPPaymentCardTextFieldDelegate
+
+- (void)paymentCardTextFieldDidChange:(STPPaymentCardTextField *)textField {
     if (!_onChange) {
         return;
     }
-
-    @try {
-        _onChange(@{
-            @"valid": @(self.isValid),
-            @"params": @{
-                @"number": self.cardParams.number,
-                @"expMonth": @(self.cardParams.expMonth),
-                @"expYear": @(self.cardParams.expYear),
-                @"cvc": self.cardParams.cvc
-            }
-        });
-    }
-    @catch (NSException *exception) {
-        _onChange(@{
-            @"valid": @(self.isValid),
-            @"params": @{
-                @"number": self.cardParams.number,
-                @"expMonth": @(self.cardParams.expMonth),
-                @"expYear": @(self.cardParams.expYear),
-                @"cvc": @""
-            }
-        });
-    }
+    _onChange(@{
+                @"valid": @(_paymentCardTextField.isValid),
+                @"params": @{
+                        @"number": _paymentCardTextField.cardParams.number?:@"",
+                        @"expMonth": @(_paymentCardTextField.cardParams.expMonth),
+                        @"expYear": @(_paymentCardTextField.cardParams.expYear),
+                        @"cvc": _paymentCardTextField.cardParams.cvc?:@""
+                        }
+                });
 }
 
 @end
