@@ -12,6 +12,7 @@ matrix:
           - platform-tools
           - tools
           - build-tools-25.0.0
+          - android-23
           - android-25
           - sys-img-armeabi-v7a-android-23
           - extra-android-m2repository
