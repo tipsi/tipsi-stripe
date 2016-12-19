@@ -7,23 +7,23 @@ init_new_example_project() {
   react_native_ver=$(cd $proj_dir_old && npm view react-native version)
 
   files_to_copy=(
-    $proj_dir_old/package.json
-    $proj_dir_old/index.*.js
-    $proj_dir_old/android/app/build.gradle
-    $proj_dir_old/src
-    $proj_dir_old/scripts
-    $proj_dir_old/test
+    package.json
+    index.{ios,android}.js
+    android/app/build.gradle
+    src
+    scripts
+    test
   )
 
   mkdir tmp
   cd tmp
-  react-native init $proj_dir_new --version $react_native_ver
+  react-native init $proj_dir_old --version $react_native_ver
   cd ..
   mv tmp/$proj_dir_old $proj_dir_new
 
   for i in ${files_to_copy[@]}; do
     if [ -e $i ]; then
-      cp -rp $i $proj_dir_new
+      cp -Rp $proj_dir_old/"$i" $proj_dir_new/"$i"
     fi
   done
 }
