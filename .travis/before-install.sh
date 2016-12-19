@@ -9,6 +9,7 @@ init_new_example_project() {
   files_to_copy=(
     $proj_dir_old/package.json
     $proj_dir_old/index.*.js
+    $proj_dir_old/android/app/build.gradle
     $proj_dir_old/src
     $proj_dir_old/scripts
     $proj_dir_old/test

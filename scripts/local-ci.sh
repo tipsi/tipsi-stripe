@@ -16,6 +16,7 @@ react_native_ver=$(cd $proj_dir_old && npm view react-native version)
 files_to_copy=(
   $proj_dir_old/package.json
   $proj_dir_old/index.*.js
+  $proj_dir_old/android/app/build.gradle
   $proj_dir_old/src
   $proj_dir_old/scripts
   $proj_dir_old/test
