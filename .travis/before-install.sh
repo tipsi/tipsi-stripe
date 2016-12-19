@@ -34,13 +34,13 @@ case "${TRAVIS_OS_NAME}" in
     nvm install 6.8.1
     gem install cocoapods -v 1.1.1
     travis_wait pod repo update --silent
-    npm install -g react-native
+    npm install -g react-native-cli
     init_new_example_project
   ;;
   linux)
     $HOME/.nvm/nvm.sh
     nvm install 6.8.1
-    npm install -g react-native
+    npm install -g react-native-cli
     init_new_example_project
   ;;
 esac
