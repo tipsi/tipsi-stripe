@@ -6,6 +6,7 @@ case "${TRAVIS_OS_NAME}" in
     npm install
     pwd
     ls -al
+    react-native unlink tipsi-stripe
     react-native link
   ;;
   linux)
@@ -13,6 +14,7 @@ case "${TRAVIS_OS_NAME}" in
     npm install
     pwd
     ls -al
+    react-native unlink tipsi-stripe
     react-native link
   ;;
 esac
