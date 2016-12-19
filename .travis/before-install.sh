@@ -26,6 +26,10 @@ init_new_example_project() {
       cp -Rp $proj_dir_old/"$i" $proj_dir_new/"$i"
     fi
   done
+
+  ls -al $proj_dir_new
+  cat $proj_dir_new/index.ios.js
+  cat $proj_dir_new/android/app/build.gradle
 }
 
 case "${TRAVIS_OS_NAME}" in
