@@ -22,9 +22,8 @@ init_new_example_project() {
   mv tmp/$proj_dir_old $proj_dir_new
 
   for i in ${files_to_copy[@]}; do
-    if [ -e $i ]; then
-      rm -rf $proj_dir_new/$i
-      cp -Rpf $proj_dir_old/$i $proj_dir_new/$i
+    if [ -e $proj_dir_old/$i ]; then
+      cp -Rp $proj_dir_old/$i $proj_dir_new/$i
     fi
   done
 
