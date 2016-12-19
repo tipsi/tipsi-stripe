@@ -54,8 +54,8 @@ else
   rm -rf tmp
   # Copy necessary files from example project
   for i in ${files_to_copy[@]}; do
-    if [ -e $proj_dir_old/"$i" ]; then
-      cp -Rp $proj_dir_old/"$i" $proj_dir_new/"$i"
+    if [ -e $proj_dir_old/$i ]; then
+      cp -Rp $proj_dir_old/$i $proj_dir_new/$i
     fi
   done
 fi
