@@ -23,7 +23,7 @@ init_new_example_project() {
 
   for i in ${files_to_copy[@]}; do
     if [ -e $i ]; then
-      cp -Rp $proj_dir_old/"$i" $proj_dir_new/"$i"
+      cp -Rpf $proj_dir_old/"$i" $proj_dir_new/"$i"
     fi
   done
 
