@@ -72,3 +72,6 @@ android/gradle/wrapper/gradle-wrapper.properties
 #
 node_modules/
 npm-debug.log
+
+tmp
+example_tmp
