@@ -2,12 +2,13 @@
 
 case "${TRAVIS_OS_NAME}" in
   osx)
-    cd example
+    cd example_tmp
     npm install
-    pod install --project-directory=ios
+    react-native link
   ;;
   linux)
-    cd example
+    cd example_tmp
     npm install
+    react-native link
   ;;
 esac
