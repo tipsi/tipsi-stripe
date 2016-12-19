@@ -15,7 +15,7 @@ init_new_example_project() {
     $proj_dir_old/test
   )
 
-  mkdir $proj_dir_new tmp
+  mkdir tmp
   cd tmp
   react-native init $proj_dir_new --version $react_native_ver
   cd ..

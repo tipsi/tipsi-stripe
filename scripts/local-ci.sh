@@ -17,7 +17,6 @@ files_to_copy=(
   package.json
   index.{ios,android}.js
   android/app/build.gradle
-  android/settings.gradle
   src
   scripts
   test
@@ -71,6 +70,7 @@ cd $proj_dir_new
 # Install dependencies
 npm install
 # Link project
+react-native unlink tipsi-stripe
 react-native link
 
 ###################
