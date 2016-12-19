@@ -14,12 +14,12 @@ proj_dir_new=example_tmp
 react_native_ver=$(cd $proj_dir_old && npm view react-native version)
 
 files_to_copy=(
-  $proj_dir_old/package.json
-  $proj_dir_old/index.*.js
-  $proj_dir_old/android/app/build.gradle
-  $proj_dir_old/src
-  $proj_dir_old/scripts
-  $proj_dir_old/test
+  package.json
+  index.{ios,android}.js
+  android/app/build.gradle
+  src
+  scripts
+  test
 )
 
 isOSX() {
@@ -54,8 +54,8 @@ else
   rm -rf tmp
   # Copy necessary files from example project
   for i in ${files_to_copy[@]}; do
-    if [ -e $i ]; then
-      cp -rp $i $proj_dir_new
+    if [ -e $proj_dir_old/"$i" ]; then
+      cp -Rp $proj_dir_old/"$i" $proj_dir_new/"$i"
     fi
   done
 fi
