@@ -19,7 +19,7 @@ files_to_copy=(
   android/app/build.gradle
   src
   scripts
-  test
+  tests
 )
 
 isOSX() {

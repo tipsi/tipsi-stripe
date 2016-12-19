@@ -12,7 +12,7 @@ init_new_example_project() {
     android/app/build.gradle
     src
     scripts
-    test
+    tests
   )
 
   mkdir tmp
@@ -23,7 +23,7 @@ init_new_example_project() {
 
   for i in ${files_to_copy[@]}; do
     if [ -e $i ]; then
-      cp -Rpf $proj_dir_old/"$i" $proj_dir_new/"$i"
+      \cp -Rpf $proj_dir_old/"$i" $proj_dir_new/"$i"
     fi
   done
 
