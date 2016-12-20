@@ -17,7 +17,7 @@ fi
 proj_dir_old=example
 proj_dir_new=example_tmp
 
-react_native_version=$(cd $proj_dir_old && npm view react-native version)
+react_native_version=$(cat $proj_dir_old/package.json | sed -n 's/"react-native": "\(\^|~\)*\(.*\)",*/\2/p')
 library_name=$(node -p "require('./package.json').name")
 
 files_to_copy=(
