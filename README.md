@@ -300,7 +300,14 @@ const item = {
   }],
 }
 
+//check available AndroidPay on this device
+const allowed = await stripe.deviceSupportsAndroidPay()
+
+if(allowed) {
 const token = await stripe.paymentRequestWithAndroidPay(item)
+
+...
+}
 ```
 
 ### Request with Card Form
