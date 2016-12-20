@@ -5,9 +5,14 @@ import Button from './Button'
 
 export default class AndroidPayScreen extends Component {
   state = {
-    loading: false,
+    loading: true,
     allowed: true,
     token: null,
+  }
+
+  async componentDidMount() {
+    const allowed = await stripe.deviceSupportsAndroidPay()
+    this.setState({ allowed, loading: false })
   }
 
   handleAndroidPayPress = async () => {
