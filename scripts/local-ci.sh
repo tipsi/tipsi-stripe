@@ -8,10 +8,17 @@ else
   skip_new=false
 fi
 
+if [[ $@ == *"--use-old"* ]]; then
+  use_old=true
+else
+  use_old=false
+fi
+
 proj_dir_old=example
 proj_dir_new=example_tmp
 
-react_native_ver=$(cd $proj_dir_old && npm view react-native version)
+react_native_version=$(cd $proj_dir_old && npm view react-native version)
+library_name=$(node -p "require('./package.json').name")
 
 files_to_copy=(
   package.json
@@ -39,15 +46,18 @@ if ! type react-native > /dev/null; then
   npm install -g react-native-cli
 fi
 
-if $skip_new; then
+if ($skip_new && ! $use_old); then
   echo "Creating new example project skipped"
-else
+  # Go to new test project
+  cd $proj_dir_new
+elif (! $skip_new && ! $use_old); then
+  echo "Creating new example project"
   # Remove old test project and tmp dir if exist
   rm -rf $proj_dir_new tmp
   # Init new test project in tmp directory
   mkdir tmp
   cd tmp
-  react-native init $proj_dir_old --version $react_native_ver
+  react-native init $proj_dir_old --version $react_native_version
   # Move new project from tmp dir and remove tmp dir
   cd ..
   mv tmp/$proj_dir_old $proj_dir_new
@@ -58,10 +68,13 @@ else
       cp -Rp $proj_dir_old/$i $proj_dir_new/$i
     fi
   done
+  # Go to new test project
+  cd $proj_dir_new
+else
+  echo "Using example folder for tests"
+  # Go to old test project
+  cd $proj_dir_old
 fi
-
-# Go to new test project
-cd $proj_dir_new
 
 ###################
 # INSTALL         #
@@ -70,7 +83,7 @@ cd $proj_dir_new
 # Install dependencies
 npm install
 # Link project
-react-native unlink tipsi-stripe
+react-native unlink $library_name
 react-native link
 
 ###################
