@@ -1,8 +1,12 @@
 #!/bin/sh
 
+if [ "$(uname)" != "Darwin" ]; then
+  echo "Current OS is not macOS, skip iOS linking"
+  exit 0
+fi
+
 ios_dir=`pwd`/ios
-if [ -d ios_dir ]
-  then
+if [ -d ios_dir ]; then
   exit 0
 fi
 
@@ -11,8 +15,7 @@ pod_dep="pod 'Stripe'"
 
 echo "Checking Podfile in iOS project ($podfile)"
 
-if [ ! -f $podfile ]
-  then
+if [ ! -f $podfile ]; then
   echo "Adding Podfile to iOS project"
 
   cd ios
@@ -22,8 +25,7 @@ else
   echo "Found an existing Podfile"
 fi
 
-if ! grep -q "$pod_dep" "$podfile"
-  then
+if ! grep -q "$pod_dep" "$podfile"; then
   echo "Adding the following pod to Podfile":
   echo ""
   echo $pod_dep
