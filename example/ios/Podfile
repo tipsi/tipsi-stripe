@@ -13,4 +13,4 @@ target 'example' do
   end
 
 end
-pod 'Stripe'
+pod 'Stripe', '~> 9.2.0'
