@@ -11,7 +11,7 @@ if [ -d ios_dir ]; then
 fi
 
 podfile="$ios_dir/Podfile"
-pod_dep="pod 'Stripe'"
+pod_dep="pod 'Stripe', '~> 9.2.0'"
 
 echo "Checking Podfile in iOS project ($podfile)"
 
