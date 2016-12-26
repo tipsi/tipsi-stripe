@@ -6,8 +6,13 @@ import Button from './Button'
 export default class AndroidPayScreen extends Component {
   state = {
     loading: false,
-    allowed: true,
+    allowed: false,
     token: null,
+  }
+
+  async componentWillMount() {
+    const allowed = await stripe.deviceSupportsAndroidPay()
+    this.setState({ allowed })
   }
 
   handleAndroidPayPress = async () => {
@@ -74,9 +79,9 @@ export default class AndroidPayScreen extends Component {
           onPress={this.handleAndroidPayPress}
         />
         <View
-          style={styles.token}
           accessible
-          accessibilityLabel={'androidPayToken'}>
+          accessibilityLabel={'androidPayToken'}
+          style={styles.token}>
           {token &&
             <Text style={styles.instruction}>
               Token: {token}

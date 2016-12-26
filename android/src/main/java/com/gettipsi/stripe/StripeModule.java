@@ -126,6 +126,56 @@ public class StripeModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
+  public void deviceSupportsAndroidPay(final Promise promise) {
+    if (googleApiClient != null && googleApiClient.isConnected()) {
+      checkAndroidPayAvaliable(googleApiClient, promise);
+    } else if (googleApiClient != null && !googleApiClient.isConnected()) {
+      googleApiClient.registerConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+        @Override
+        public void onConnected(@Nullable Bundle bundle) {
+          checkAndroidPayAvaliable(googleApiClient, promise);
+        }
+
+        @Override
+        public void onConnectionSuspended(int i) {
+          promise.reject(TAG, "onConnectionSuspended i = " + i);
+        }
+      });
+      googleApiClient.connect();
+    } else if (googleApiClient == null && getCurrentActivity() != null) {
+      googleApiClient = new GoogleApiClient.Builder(getCurrentActivity())
+        .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+          @Override
+          public void onConnected(@Nullable Bundle bundle) {
+            Log.d(TAG, "onConnected: ");
+            checkAndroidPayAvaliable(googleApiClient, promise);
+          }
+
+          @Override
+          public void onConnectionSuspended(int i) {
+            Log.d(TAG, "onConnectionSuspended: ");
+            promise.reject(TAG, "onConnectionSuspended i = " + i);
+          }
+        })
+        .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
+          @Override
+          public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+            Log.d(TAG, "onConnectionFailed: ");
+            promise.reject(TAG, "onConnectionFailed: " + connectionResult.getErrorMessage());
+          }
+        })
+        .addApi(Wallet.API, new Wallet.WalletOptions.Builder()
+          .setEnvironment(WalletConstants.ENVIRONMENT_TEST)
+          .setTheme(WalletConstants.THEME_LIGHT)
+          .build())
+        .build();
+      googleApiClient.connect();
+    } else {
+      promise.reject(TAG, "Unknown error");
+    }
+  }
+
+  @ReactMethod
   public void createTokenWithCard(ReadableMap cardData, final Promise promise) {
     Card card = new Card(
       cardData.getString("number"),
@@ -167,62 +217,42 @@ public class StripeModule extends ReactContextBaseJavaModule {
     if (getCurrentActivity() != null) {
       payPromise = promise;
       Log.d(TAG, "startAndroidPay: getCurrentActivity() != null");
-      startAndroidPayNew(getCurrentActivity(), map);
+      startApiClientAndAndroidPay(getCurrentActivity(), map);
     }
   }
 
-  private void startAndroidPayNew(final Activity activity, final ReadableMap map) {
-    googleApiClient = new GoogleApiClient.Builder(activity)
-      .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
-        @Override
-        public void onConnected(@Nullable Bundle bundle) {
-          Log.d(TAG, "onConnected: ");
-          Wallet.Payments.isReadyToPay(googleApiClient, doIsReadyToPayRequest()).setResultCallback(
-            new ResultCallback<BooleanResult>() {
-              @Override
-              public void onResult(@NonNull BooleanResult booleanResult) {
-                Log.d(TAG, "onResult: ");
-                if (booleanResult.getStatus().isSuccess()) {
-                  Log.d(TAG, "onResult: booleanResult.getStatus().isSuccess()");
-                  if (booleanResult.getValue()) {
-                    //TODO Work only in few countries. I don't now how test it in our coutries.
-                    Log.d(TAG, "onResult: booleanResult.getValue()");
-                    showAndroidPay(map);
-                  } else {
-                    Log.d(TAG, "onResult: !booleanResult.getValue()");
-                    // Hide Android Pay buttons, show a message that Android Pay
-                    // cannot be used yet, and display a traditional checkout button
-                    androidPayUnavaliableDialog();
-                    payPromise.reject(TAG, "Android Pay unavaliable");
-                  }
-                } else {
-                  // Error making isReadyToPay call
-                  Log.e(TAG, "isReadyToPay:" + booleanResult.getStatus());
-                  androidPayUnavaliableDialog();
-                  payPromise.reject(TAG, "Error making isReadyToPay call");
-                }
-              }
-            }
-          );
-        }
+  private void startApiClientAndAndroidPay(final Activity activity, final ReadableMap map) {
+    if(googleApiClient != null && googleApiClient.isConnected()){
+      startAndroidPay(map);
+    } else {
+      googleApiClient = new GoogleApiClient.Builder(activity)
+        .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+          @Override
+          public void onConnected(@Nullable Bundle bundle) {
+            Log.d(TAG, "onConnected: ");
+            startAndroidPay(map);
+          }
 
-        @Override
-        public void onConnectionSuspended(int i) {
-          Log.d(TAG, "onConnectionSuspended: ");
-        }
-      })
-      .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
-        @Override
-        public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-          Log.d(TAG, "onConnectionFailed: ");
-        }
-      })
-      .addApi(Wallet.API, new Wallet.WalletOptions.Builder()
-        .setEnvironment(WalletConstants.ENVIRONMENT_TEST)
-        .setTheme(WalletConstants.THEME_LIGHT)
-        .build())
-      .build();
-    googleApiClient.connect();
+          @Override
+          public void onConnectionSuspended(int i) {
+            Log.d(TAG, "onConnectionSuspended: ");
+            payPromise.reject(TAG, "onConnectionSuspended i = " + i);
+          }
+        })
+        .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
+          @Override
+          public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+            Log.d(TAG, "onConnectionFailed: ");
+            payPromise.reject(TAG, "onConnectionFailed: " + connectionResult.getErrorMessage());
+          }
+        })
+        .addApi(Wallet.API, new Wallet.WalletOptions.Builder()
+          .setEnvironment(WalletConstants.ENVIRONMENT_TEST)
+          .setTheme(WalletConstants.THEME_LIGHT)
+          .build())
+        .build();
+      googleApiClient.connect();
+    }
   }
 
   private void showAndroidPay(final ReadableMap map) {
@@ -296,5 +326,51 @@ public class StripeModule extends ReactContextBaseJavaModule {
 
   private IsReadyToPayRequest doIsReadyToPayRequest() {
     return IsReadyToPayRequest.newBuilder().build();
+  }
+
+  private void checkAndroidPayAvaliable(final GoogleApiClient client, final Promise promise) {
+    Wallet.Payments.isReadyToPay(client).setResultCallback(
+      new ResultCallback<BooleanResult>() {
+        @Override
+        public void onResult(@NonNull BooleanResult booleanResult) {
+          if (booleanResult.getStatus().isSuccess()) {
+            promise.resolve(booleanResult.getValue());
+          } else {
+            // Error making isReadyToPay call
+            Log.e(TAG, "isReadyToPay:" + booleanResult.getStatus());
+            promise.reject(TAG, booleanResult.getStatus().getStatusMessage());
+          }
+        }
+      });
+  }
+
+  private void startAndroidPay(final ReadableMap map) {
+    Wallet.Payments.isReadyToPay(googleApiClient, doIsReadyToPayRequest()).setResultCallback(
+      new ResultCallback<BooleanResult>() {
+        @Override
+        public void onResult(@NonNull BooleanResult booleanResult) {
+          Log.d(TAG, "onResult: ");
+          if (booleanResult.getStatus().isSuccess()) {
+            Log.d(TAG, "onResult: booleanResult.getStatus().isSuccess()");
+            if (booleanResult.getValue()) {
+              //TODO Work only in few countries. I don't now how test it in our coutries.
+              Log.d(TAG, "onResult: booleanResult.getValue()");
+              showAndroidPay(map);
+            } else {
+              Log.d(TAG, "onResult: !booleanResult.getValue()");
+              // Hide Android Pay buttons, show a message that Android Pay
+              // cannot be used yet, and display a traditional checkout button
+              androidPayUnavaliableDialog();
+              payPromise.reject(TAG, "Android Pay unavaliable");
+            }
+          } else {
+            // Error making isReadyToPay call
+            Log.e(TAG, "isReadyToPay:" + booleanResult.getStatus());
+            androidPayUnavaliableDialog();
+            payPromise.reject(TAG, "Error making isReadyToPay call");
+          }
+        }
+      }
+    );
   }
 }

@@ -25,7 +25,6 @@ cache:
     - $HOME/.cocoapods
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
-    - example/node_modules
 
 before_cache: .travis/before-cache.sh
 before_install: . .travis/before-install.sh
