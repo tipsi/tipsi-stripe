@@ -166,6 +166,10 @@ An object with the following keys:
 
 ### Apple Pay (iOS only)
 
+#### `deviceSupportsApplePay() -> Promise`
+
+Indicates whether or not the device supports Apple Pay. Returns a `Boolean` value.
+
 #### `paymentRequestWithApplePay(items, [options]) -> Promise`
 
 Launch the `Apple Pay` view to to accept payment.
@@ -268,11 +272,15 @@ stripe.completeApplePayRequest()
 ### Android Pay (Android only)
 (Under active development)
 
-#### `paymentRequestWithAndroidPay(item) -> Promise`
+#### `deviceSupportsAndroidPay() -> Promise`
+
+Indicates whether or not the device supports Android Pay. Returns a `Boolean` value.
+
+#### `paymentRequestWithAndroidPay(options) -> Promise`
 
 Launch the `Android Pay` view to to accept payment.
 
-##### `item`
+##### `options`
 
 An object with the following keys:
 
@@ -282,7 +290,7 @@ An object with the following keys:
 #### Example
 
 ```js
-const item = {
+const options = {
   price: '80.00',
   currency: 'USD',
   line_items: [{
@@ -300,14 +308,10 @@ const item = {
   }],
 }
 
-//check available AndroidPay on this device
-const allowed = await stripe.deviceSupportsAndroidPay()
+const token = await stripe.paymentRequestWithAndroidPay(options)
 
-if(allowed) {
-const token = await stripe.paymentRequestWithAndroidPay(item)
-
-...
-}
+// Client specific code
+// api.sendTokenToBackend(token)
 ```
 
 ### Request with Card Form
