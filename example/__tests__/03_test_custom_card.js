@@ -1,5 +1,5 @@
 import test from 'tape-async'
-import helper from './utils/helper'
+import helper from 'tipsi-appium-helper'
 
 const { driver, select, idFromXPath, idFromAccessId } = helper
 

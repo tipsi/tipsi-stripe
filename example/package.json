@@ -12,8 +12,8 @@
     "build:android": "npm-run-all clean build:android:*",
     "build:ios": "cd ios && xcodebuild build -workspace example.xcworkspace -scheme example -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO OTHER_LDFLAGS='$(inherited) -ObjC -lc++' -destination 'platform=iOS Simulator,name=iPhone 6' -configuration Release -derivedDataPath build",
     "build": "npm-run-all build:*",
-    "test:android": "PLATFORM_NAME=android APP_PATH=`pwd`/android/app/build/outputs/apk/app-release.apk TESTS_PATH=tests/*_test_*.js IGNORE_PATH=tests/*_test_*.ios.js babel-node ./tests/utils/run.js",
-    "test:ios": "PLATFORM_NAME=ios NO_RESET=true AUTOMATION_NAME=xcuitest APP_PATH=`pwd`/ios/build/Build/Products/Release-iphonesimulator/example.app TESTS_PATH=tests/*_test_*.js IGNORE_PATH=tests/*_test_*.android.js babel-node ./tests/utils/run.js",
+    "test:android": "appium-helper --platform android",
+    "test:ios": "appium-helper --platform ios",
     "test": "npm-run-all test:*"
   },
   "dependencies": {
@@ -24,22 +24,9 @@
     "tipsi-stripe": "../"
   },
   "devDependencies": {
-    "adbkit": "^2.6.0",
     "appium": "1.6.1",
-    "babel-cli": "^6.16.0",
-    "babel-plugin-transform-runtime": "^6.15.0",
-    "babel-preset-es2015": "^6.16.0",
-    "babel-preset-stage-0": "^6.16.0",
-    "babel-register": "^6.16.3",
-    "better-pastebin": "^0.2.1",
-    "glob": "^7.1.0",
-    "imgur": "^0.1.7",
-    "node-simctl": "^3.4.4",
     "npm-run-all": "^3.1.1",
-    "require-dir-all": "^0.4.10",
-    "tap-diff": "^0.1.1",
-    "tape": "^4.6.2",
     "tape-async": "^2.1.1",
-    "webdriverio": "^4.2.16"
+    "tipsi-appium-helper": "github:tipsi/tipsi-appium-helper#development"
   }
 }

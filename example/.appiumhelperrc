@@ -1,0 +1,9 @@
+{
+  "ios": {
+    "appPath": "./ios/build/Build/Products/Release-iphonesimulator/example.app",
+    "noReset": true
+  },
+  "android": {
+    "appPath": "./android/app/build/outputs/apk/app-release.apk"
+  }
+}
