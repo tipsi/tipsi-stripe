@@ -8,7 +8,7 @@
 
 #import "TPSCardFieldManager.h"
 #import "TPSCardField.h"
-#import "RCTFont.h"
+#import <React/RCTFont.h>
 
 @implementation TPSCardFieldManager
 
@@ -55,7 +55,7 @@ RCT_EXPORT_VIEW_PROPERTY(onChange, RCTBubblingEventBlock);
 RCT_CUSTOM_VIEW_PROPERTY(params, NSDictionary, TPSCardField)
 {
     STPCardParams *cardParams = [[STPCardParams alloc] init];
-    
+
     [cardParams setValuesForKeysWithDictionary:json];
 
     [view setCardParams:cardParams];

@@ -7,7 +7,6 @@
 //
 
 #import "TPSCardField.h"
-#import "RCTLog.h"
 
 @interface TPSCardField () <STPPaymentCardTextFieldDelegate>
 @end
@@ -16,7 +15,7 @@
     BOOL _jsRequestingFirstResponder;
     BOOL _isFirstResponder;
     STPPaymentCardTextField *_paymentCardTextField;
-    
+
 }
 
 - (void)dealloc {

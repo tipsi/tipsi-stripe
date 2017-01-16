@@ -1,8 +1,8 @@
 {
-  "name": "example",
-  "version": "0.0.1",
-  "private": true,
-  "scripts": {
+	"name": "example",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "clean": "rm -rf android/app/release.keystore",
     "appium": "appium",
@@ -16,17 +16,17 @@
     "test:ios": "appium-helper --platform ios",
     "test": "npm-run-all test:*"
   },
-  "dependencies": {
-    "react": "15.4.1",
-    "react-addons-shallow-compare": "15.4.1",
-    "react-native": "0.38.0",
+	"dependencies": {
+		"react": "~15.4.2",
+    "react-addons-shallow-compare": "~15.4.2",
+		"react-native": "0.40.0",
     "react-native-tab-view": "0.0.37",
-    "tipsi-stripe": "../"
-  },
-  "devDependencies": {
-    "appium": "1.6.3",
+    "tipsi-stripe": "../../"
+	},
+	"devDependencies": {
+		"appium": "1.6.3",
     "npm-run-all": "^3.1.1",
     "tape-async": "^2.1.1",
     "tipsi-appium-helper": "1.0.0"
-  }
+	}
 }
