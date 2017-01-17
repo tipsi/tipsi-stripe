@@ -30,7 +30,7 @@
     }
   },
   "peerDependencies": {
-    "react-native": "*"
+    "react-native": ">=0.40"
   },
   "devDependencies": {
     "babel-eslint": "^7.0.0",
