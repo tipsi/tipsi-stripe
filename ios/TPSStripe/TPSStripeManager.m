@@ -7,19 +7,18 @@
 //
 
 #import "TPSStripeManager.h"
-#import <RCTLog.h>
-#import "RCTUtils.h"
+#import <React/RCTUtils.h>
 
 @implementation TPSStripeManager
 {
     NSString *publishableKey;
     NSString *merchantId;
-    
+
     RCTPromiseResolveBlock promiseResolver;
     RCTPromiseRejectBlock promiseRejector;
-    
+
     BOOL requestIsCompleted;
-    
+
     void (^applePayCompletion)(PKPaymentAuthorizationStatus);
 }
 
@@ -74,17 +73,17 @@ RCT_EXPORT_METHOD(createTokenWithCard:(NSDictionary *)params
         );
         return;
     }
-    
+
     requestIsCompleted = NO;
-    
+
     STPCardParams *cardParams = [[STPCardParams alloc] init];
-    
+
     [cardParams setNumber: params[@"number"]];
     [cardParams setExpMonth: [params[@"expMonth"] integerValue]];
     [cardParams setExpYear: [params[@"expYear"] integerValue]];
     [cardParams setCvc: params[@"cvc"]];
     [cardParams setCurrency: params[@"currency"]];
-    
+
     [cardParams setName: params[@"name"]];
     [cardParams setAddressLine1: params[@"addressLine1"]];
     [cardParams setAddressLine2: params[@"addressLine2"]];
@@ -95,7 +94,7 @@ RCT_EXPORT_METHOD(createTokenWithCard:(NSDictionary *)params
 
     // cardParams.expMonth = [params[@"expMonth"] integerValue];
     // cardParams.expYear = [params[@"expYear"] integerValue];
-    
+
     [[STPAPIClient sharedClient] createTokenWithCard:cardParams completion:^(STPToken *token, NSError *error) {
         requestIsCompleted = YES;
 
@@ -124,21 +123,21 @@ RCT_EXPORT_METHOD(paymentRequestWithCardForm:(NSDictionary *)options
     // Save promise handlers to use in `paymentAuthorizationViewController`
     promiseResolver = resolve;
     promiseRejector = reject;
-    
+
     NSUInteger requiredBillingAddressFields = [self billingType:options[@"requiredBillingAddressFields"]];
     NSString *companyName = options[@"companyName"] ? options[@"companyName"] : @"";
     BOOL smsAutofillDisabled = [options[@"smsAutofillDisabled"] boolValue];
     NSString *nextPublishableKey = options[@"publishableKey"] ? options[@"publishableKey"] : publishableKey;
     UIModalPresentationStyle formPresentation = [self formPresentation:options[@"presentation"]];
     STPTheme *theme = [self formTheme:options[@"theme"]];
-    
+
     STPPaymentConfiguration *configuration = [[STPPaymentConfiguration alloc] init];
     [configuration setRequiredBillingAddressFields:requiredBillingAddressFields];
     [configuration setCompanyName:companyName];
     [configuration setSmsAutofillDisabled:smsAutofillDisabled];
     [configuration setPublishableKey:nextPublishableKey];
-    
-    
+
+
     STPAddCardViewController *addCardViewController = [[STPAddCardViewController alloc] initWithConfiguration:configuration theme:theme];
     addCardViewController.delegate = self;
     // STPAddCardViewController must be shown inside a UINavigationController.
@@ -164,15 +163,15 @@ RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
     // Save promise handlers to use in `paymentAuthorizationViewController`
     promiseResolver = resolve;
     promiseRejector = reject;
-    
+
     NSUInteger requiredShippingAddressFields = [self applePayAddressFields:options[@"requiredShippingAddressFields"]];
     NSUInteger requiredBillingAddressFields = [self applePayAddressFields:options[@"requiredBillingAddressFields"]];
     PKShippingType shippingType = [self applePayShippingType:options[@"shippingType"]];
     NSMutableArray *shippingMethodsItems = options[@"shippingMethods"] ? options[@"shippingMethods"] : [NSMutableArray array];
     NSString* currencyCode = options[@"currencyCode"] ? options[@"currencyCode"] : @"USD";
-    
+
     NSMutableArray *shippingMethods = [NSMutableArray array];
-    
+
     for (NSDictionary *item in shippingMethodsItems) {
         PKShippingMethod *shippingItem = [[PKShippingMethod alloc] init];
         shippingItem.label = item[@"label"];
@@ -181,9 +180,9 @@ RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
         shippingItem.identifier = item[@"id"];
         [shippingMethods addObject:shippingItem];
     }
-    
+
     NSMutableArray *summaryItems = [NSMutableArray array];
-    
+
     for (NSDictionary *item in items) {
         PKPaymentSummaryItem *summaryItem = [[PKPaymentSummaryItem alloc] init];
         summaryItem.label = item[@"label"];
@@ -232,7 +231,7 @@ RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
 
 - (void)addCardViewControllerDidCancel:(STPAddCardViewController *)addCardViewController {
     [RCTPresentedViewController() dismissViewControllerAnimated:YES completion:nil];
-    
+
     if (!requestIsCompleted) {
         requestIsCompleted = YES;
         promiseRejector(
@@ -363,19 +362,19 @@ RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
     if (inputContact.name) {
         [contactDetails setValue:[NSPersonNameComponentsFormatter localizedStringFromPersonNameComponents:inputContact.name style:NSPersonNameComponentsFormatterStyleDefault options:0] forKey:@"name"];
     }
-    
+
     if (inputContact.phoneNumber) {
         [contactDetails setValue:[inputContact.phoneNumber stringValue] forKey:@"phoneNumber"];
     }
-    
+
     if (inputContact.emailAddress) {
         [contactDetails setValue:inputContact.emailAddress forKey:@"emailAddress"];
     }
-    
+
     if (inputContact.supplementarySubLocality) {
         [contactDetails setValue:inputContact.supplementarySubLocality forKey:@"supplementarySubLocality"];
     }
-    
+
     for (NSString *elem in @[@"street", @"city", @"state", @"country", @"ISOCountryCode", @"postalCode"]) {
         if ([inputContact.postalAddress respondsToSelector:NSSelectorFromString(elem)]) {
             [contactDetails setValue:[inputContact.postalAddress valueForKey:elem] forKey:elem];
@@ -394,23 +393,23 @@ RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
     if (inputShipping.label) {
         [shippingDetails setValue:inputShipping.label forKey:@"label"];
     }
-    
+
     if (inputShipping.amount) {
         [shippingDetails setValue:[[self numberFormatter] stringFromNumber: inputShipping.amount] forKey:@"amount"];
     }
-    
+
     if (inputShipping.detail) {
         [shippingDetails setValue:inputShipping.detail forKey:@"detail"];
     }
-    
+
     if (inputShipping.identifier) {
         [shippingDetails setValue:inputShipping.identifier forKey:@"id"];
     }
-    
+
     if ([shippingDetails count] == 0) {
         return nil;
     }
-    
+
     return shippingDetails;
 }
 
@@ -461,7 +460,7 @@ RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
 
 - (STPTheme *)formTheme:(NSDictionary*)options {
     STPTheme *theme = [[STPTheme alloc] init];
-    
+
     [theme setPrimaryBackgroundColor:[RCTConvert UIColor:options[@"primaryBackgroundColor"]]];
     [theme setSecondaryBackgroundColor:[RCTConvert UIColor:options[@"secondaryBackgroundColor"]]];
     [theme setPrimaryForegroundColor:[RCTConvert UIColor:options[@"primaryForegroundColor"]]];
@@ -470,7 +469,7 @@ RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
     [theme setErrorColor:[RCTConvert UIColor:options[@"errorColor"]]];
     [theme setErrorColor:[RCTConvert UIColor:options[@"errorColor"]]];
     // TODO: process font vars
-    
+
     return theme;
 }
 
@@ -479,7 +478,7 @@ RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
         return UIModalPresentationPageSheet;
     if ([inputType isEqualToString:@"formSheet"])
         return UIModalPresentationFormSheet;
-    
+
     return UIModalPresentationFullScreen;
 }
 

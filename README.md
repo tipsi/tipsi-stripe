@@ -17,6 +17,10 @@ React Native Stripe binding for iOS/Andriod platforms
 
 * SDK 17+
 
+## Compatibility
+
+This package is now built for React Native `0.40` or greater! If you need to support React Native < `0.40`, you should install this package `@1.4.0`.
+
 ## Installation
 
 Run `npm install --save tipsi-stripe` to add the package to your app's dependencies.
