@@ -375,6 +375,7 @@ An object with the following keys:
 * `expYear` _Number_ - The card’s expiration year.
 * `cvc` _String_ - The card’s security code, found on the back.
 * `name` _String_ (Optional) - The cardholder’s name.
+* `addressZip` _String_ (Android only) - Zip code of the billing address.
 * `currency` _String_ (Optional) - Three-letter ISO currency code representing the currency paid out to the bank account. This is only applicable when tokenizing debit cards to issue payouts to managed accounts. You should not set it otherwise. The card can then be used as a transfer destination for funds in this currency.
 
 ##### Example

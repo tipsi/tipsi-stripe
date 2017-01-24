@@ -177,13 +177,21 @@ public class StripeModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void createTokenWithCard(ReadableMap cardData, final Promise promise) {
-    Card card = new Card(
+    final Card.Builder builder = new Card.Builder(
       cardData.getString("number"),
       cardData.getInt("expMonth"),
       cardData.getInt("expYear"),
       cardData.getString("cvc"));
 
-    stripe.createToken(card,
+    if(cardData.hasKey("name")){
+      builder.name(cardData.getString("name"));
+    }
+
+    if(cardData.hasKey("addressZip")){
+      builder.addressZip(cardData.getString("addressZip"));
+    }
+
+    stripe.createToken(builder.build(),
       publicKey,
       new TokenCallback() {
         public void onSuccess(Token token) {
