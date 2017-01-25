@@ -370,26 +370,10 @@ Creates token based on passed card params.
 
 An object with the following keys:
 
-    [cardParams setNumber: params[@"number"]];
-    [cardParams setExpMonth: [params[@"expMonth"] integerValue]];
-    [cardParams setExpYear: [params[@"expYear"] integerValue]];
-    [cardParams setCvc: params[@"cvc"]];
-    [cardParams setCurrency: params[@"currency"]];
-
-    [cardParams setName: params[@"name"]];
-    [cardParams setAddressLine1: params[@"addressLine1"]];
-    [cardParams setAddressLine2: params[@"addressLine2"]];
-    [cardParams setAddressCity: params[@"addressCity"]];
-    [cardParams setAddressState: params[@"addressState"]];
-    [cardParams setAddressCountry: params[@"addressCountry"]];
-    [cardParams setAddressZip: params[@"addressZip"]];
-
-###### `Required`
-* `number` _String_ - The card’s number.
-* `expMonth` _Number_ - The card’s expiration month.
-* `expYear` _Number_ - The card’s expiration year.
-* `cvc` _String_ - The card’s security code, found on the back.
-###### `Optional`
+* `number` _String_ (Required) - The card’s number.
+* `expMonth` _Number_ (Required) - The card’s expiration month.
+* `expYear` _Number_ (Required) - The card’s expiration year.
+* `cvc` _String_ (Required) - The card’s security code, found on the back.
 * `name` _String_ - The cardholder’s name.
 * `addressLine1` _String_ - The first line of the billing address.
 * `addressLine2` _String_ - The second line of the billing address.
