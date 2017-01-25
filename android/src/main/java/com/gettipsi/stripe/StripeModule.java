@@ -177,21 +177,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void createTokenWithCard(ReadableMap cardData, final Promise promise) {
-    final Card.Builder builder = new Card.Builder(
-      cardData.getString("number"),
-      cardData.getInt("expMonth"),
-      cardData.getInt("expYear"),
-      cardData.getString("cvc"));
-
-    if(cardData.hasKey("name")){
-      builder.name(cardData.getString("name"));
-    }
-
-    if(cardData.hasKey("addressZip")){
-      builder.addressZip(cardData.getString("addressZip"));
-    }
-
-    stripe.createToken(builder.build(),
+    stripe.createToken(createCard(cardData),
       publicKey,
       new TokenCallback() {
         public void onSuccess(Token token) {
@@ -230,7 +216,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
   }
 
   private void startApiClientAndAndroidPay(final Activity activity, final ReadableMap map) {
-    if(googleApiClient != null && googleApiClient.isConnected()){
+    if (googleApiClient != null && googleApiClient.isConnected()) {
       startAndroidPay(map);
     } else {
       googleApiClient = new GoogleApiClient.Builder(activity)
@@ -337,7 +323,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
   }
 
   private void checkAndroidPayAvaliable(final GoogleApiClient client, final Promise promise) {
-    Wallet.Payments.isReadyToPay(client).setResultCallback(
+    Wallet.Payments.isReadyToPay(client, doIsReadyToPayRequest()).setResultCallback(
       new ResultCallback<BooleanResult>() {
         @Override
         public void onResult(@NonNull BooleanResult booleanResult) {
@@ -379,6 +365,38 @@ public class StripeModule extends ReactContextBaseJavaModule {
           }
         }
       }
+    );
+  }
+
+  private String exist(final ReadableMap map, final String key) {
+    if (map.hasKey(key)) {
+      return map.getString(key);
+    } else {
+      return null;
+    }
+  }
+
+  private Card createCard(final ReadableMap cardData) {
+    return new Card(
+      //required fields
+      cardData.getString("number"),
+      cardData.getInt("expMonth"),
+      cardData.getInt("expYear"),
+      cardData.getString("cvc"),
+      //additional fields
+      exist(cardData, "name"),
+      exist(cardData, "addressLine1"),
+      exist(cardData, "addressLine2"),
+      exist(cardData, "addressCity"),
+      exist(cardData, "addressState"),
+      exist(cardData, "addressZip"),
+      exist(cardData, "addressCountry"),
+      exist(cardData, "brand"),
+      exist(cardData, "last4"),
+      exist(cardData, "fingerprint"),
+      exist(cardData, "funding"),
+      exist(cardData, "country"),
+      exist(cardData, "currency")
     );
   }
 }
