@@ -36,11 +36,16 @@ import com.google.android.gms.wallet.Wallet;
 import com.google.android.gms.wallet.WalletConstants;
 import com.stripe.android.Stripe;
 import com.stripe.android.TokenCallback;
+import com.stripe.android.exception.AuthenticationException;
 import com.stripe.android.model.Card;
 import com.stripe.android.model.Token;
-import com.stripe.exception.AuthenticationException;
+import com.stripe.android.net.StripeApiHandler;
+import com.stripe.android.net.TokenParser;
+
+import org.json.JSONException;
 
 public class StripeModule extends ReactContextBaseJavaModule {
+
 
   private static final String TAG = StripeModule.class.getSimpleName();
   private static final String MODULE_NAME = "StripeModule";
@@ -86,13 +91,14 @@ public class StripeModule extends ReactContextBaseJavaModule {
             //A token will only be returned in production mode,
             //i.e. WalletConstants.ENVIRONMENT_PRODUCTION
             if (mEnvironment == WalletConstants.ENVIRONMENT_PRODUCTION) {
-              com.stripe.model.Token token = com.stripe.model.Token.GSON.fromJson(
-                tokenJSON, com.stripe.model.Token.class);
-
-              Log.d(TAG, "onActivityResult: Stripe Token: " + token.toString());
-
-              // TODO: send token to your server
-              payPromise.resolve(token.toString());
+              try {
+                Token token = TokenParser.parseToken(tokenJSON);
+                Log.d(TAG, "onActivityResult: Stripe Token: " + token.toString());
+                payPromise.resolve(token.toString());
+              } catch (JSONException jsonException) {
+                // Log the error and notify Stripe helpß
+                Log.e(TAG, "onActivityResult: ", jsonException);
+              }
             }
           }
         } else {
@@ -121,7 +127,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
     try {
       stripe = new Stripe(publicKey);
     } catch (AuthenticationException e) {
-      e.printStackTrace();
+      Log.e(TAG, "init: ", e);
     }
   }
 
@@ -270,7 +276,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
         .setPaymentMethodTokenizationType(PaymentMethodTokenizationType.PAYMENT_GATEWAY)
         .addParameter("gateway", "stripe")
         .addParameter("stripe:publishableKey", publicKey)
-        .addParameter("stripe:version", com.stripe.Stripe.VERSION)
+        .addParameter("stripe:version", StripeApiHandler.VERSION)
         .build())
       // You want the shipping address:
       .setShippingAddressRequired(true)
