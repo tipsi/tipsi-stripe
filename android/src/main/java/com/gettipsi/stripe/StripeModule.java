@@ -177,22 +177,26 @@ public class StripeModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void createTokenWithCard(ReadableMap cardData, final Promise promise) {
-    stripe.createToken(createCard(cardData),
-      publicKey,
-      new TokenCallback() {
-        public void onSuccess(Token token) {
-          WritableMap newToken = Arguments.createMap();
-          newToken.putString("tokenId", token.getId());
-          newToken.putBoolean("livemode", token.getLivemode());
-          newToken.putBoolean("user", token.getUsed());
-          promise.resolve(newToken);
-        }
+    try {
+      stripe.createToken(createCard(cardData),
+        publicKey,
+        new TokenCallback() {
+          public void onSuccess(Token token) {
+            WritableMap newToken = Arguments.createMap();
+            newToken.putString("tokenId", token.getId());
+            newToken.putBoolean("livemode", token.getLivemode());
+            newToken.putBoolean("user", token.getUsed());
+            promise.resolve(newToken);
+          }
 
-        public void onError(Exception error) {
-          error.printStackTrace();
-          promise.reject(TAG, error.getMessage());
-        }
-      });
+          public void onError(Exception error) {
+            error.printStackTrace();
+            promise.reject(TAG, error.getMessage());
+          }
+        });
+    } catch (Exception e) {
+      promise.reject(TAG, e.getMessage());
+    }
   }
 
 
