@@ -507,12 +507,10 @@ brew install carthage
 ```
 #### Android
 
-* If  you get crash with [following error](https://github.com/tipsi/tipsi-stripe/issues/18):
+* Using higher than [ours version](https://github.com/tipsi/tipsi-stripe/blob/master/android/build.gradle#L26) of Google Play Services in your project might encourage [an error](https://github.com/tipsi/tipsi-stripe/issues/18):
 `NoClassDefFoundError: com.google.android.gms.wallet.MaskedWalletRequest`
 
-This is possible if you use Google Play Services in your project, and its version is higher [than in our library](https://github.com/tipsi/tipsi-stripe/blob/master/android/build.gradle#L26).
-We have fixed it, but if you suddenly get this bug - you can create issue or pull request and we will fix it.
-
+We have fixed this issue, but if you somehow facing this bug again - please, create an issue or a pull request and we will take another look.
 
 ## Example
 
