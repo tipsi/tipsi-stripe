@@ -496,7 +496,9 @@ PUBLISHABLE_KEY=<...> MERCHANT_ID=<...> npm run ci
   * `npm run test:android` - for Android
   * `npm run test` - for both iOS and Android
 
-#### Troubleshooting
+## Troubleshooting
+
+#### Tests
 
 You might encounter the following error while trying to run tests:
 
@@ -507,6 +509,12 @@ You can fix it by installing `Carthage`:
 ```bash
 brew install carthage
 ```
+#### Android
+
+* Using higher than [ours version](https://github.com/tipsi/tipsi-stripe/blob/master/android/build.gradle#L26) of Google Play Services in your project might encourage [an error](https://github.com/tipsi/tipsi-stripe/issues/18):
+`NoClassDefFoundError: com.google.android.gms.wallet.MaskedWalletRequest`
+
+We have fixed this issue, but if you somehow facing this bug again - please, create an issue or a pull request and we will take another look.
 
 ## Example
 
