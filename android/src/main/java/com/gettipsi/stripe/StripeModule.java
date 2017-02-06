@@ -376,6 +376,9 @@ public class StripeModule extends ReactContextBaseJavaModule {
     if (map.hasKey(key)) {
       return map.getString(key);
     } else {
+      /**
+       * If {@param map} don't have some key - we must pass null to {@link Card} constructor.
+       */
       return null;
     }
   }
