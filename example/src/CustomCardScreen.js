@@ -97,17 +97,6 @@ export default class CustomCardScreen extends Component {
             Address Zip: {params.addressZip}
           </Text>
         </View>
-        <Text style={styles.instruction}>
-          Click button to get token based on params.
-        </Text>
-        <Button
-          text="Pay with custom params"
-          loading={loading}
-          style={styles.button}
-          accessible
-          accessibilityLabel={'customCardButton'}
-          onPress={this.handleCustomPayPress}
-        />
         <View
           accessible
           accessibilityLabel={'customCardToken'}
@@ -118,6 +107,17 @@ export default class CustomCardScreen extends Component {
             </Text>
           }
         </View>
+        <Text style={styles.instruction}>
+          {token == null ? 'Click button to get token based on params.' : ''}
+        </Text>
+        <Button
+          text="Pay with custom params"
+          loading={loading}
+          style={styles.button}
+          accessible
+          accessibilityLabel={'customCardButton'}
+          onPress={this.handleCustomPayPress}
+        />
       </View>
     )
   }
