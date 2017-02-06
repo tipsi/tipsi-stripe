@@ -82,8 +82,8 @@ RCT_EXPORT_METHOD(createTokenWithCard:(NSDictionary *)params
     [cardParams setExpMonth: [params[@"expMonth"] integerValue]];
     [cardParams setExpYear: [params[@"expYear"] integerValue]];
     [cardParams setCvc: params[@"cvc"]];
-    [cardParams setCurrency: params[@"currency"]];
 
+    [cardParams setCurrency: params[@"currency"]];
     [cardParams setName: params[@"name"]];
     [cardParams setAddressLine1: params[@"addressLine1"]];
     [cardParams setAddressLine2: params[@"addressLine2"]];
@@ -92,7 +92,6 @@ RCT_EXPORT_METHOD(createTokenWithCard:(NSDictionary *)params
     [cardParams setAddressCountry: params[@"addressCountry"]];
     [cardParams setAddressZip: params[@"addressZip"]];
 
-    // cardParams.expMonth = [params[@"expMonth"] integerValue];
     // cardParams.expYear = [params[@"expYear"] integerValue];
 
     [[STPAPIClient sharedClient] createTokenWithCard:cardParams completion:^(STPToken *token, NSError *error) {

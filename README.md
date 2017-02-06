@@ -395,10 +395,20 @@ An object with the following keys:
 
 ```js
 const params = {
+  //mandatory
   number: '4242424242424242',
   expMonth: 11,
   expYear: 17,
   cvc: '223',
+  //optional
+  name: 'Test User',
+  currency: 'usd',
+  addressLine1: '123 Test Street',
+  addressLine2: 'Apt. 5',
+  addressCity: 'Test City',
+  addressState: 'Test State',
+  addressCountry: 'Test Country',
+  addressZip: '55555',
 }
 
 const token = await stripe.createTokenWithCard(params)
