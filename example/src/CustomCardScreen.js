@@ -107,9 +107,11 @@ export default class CustomCardScreen extends Component {
             </Text>
           }
         </View>
-        <Text style={styles.instruction}>
-          {token == null ? 'Click button to get token based on params.' : ''}
-        </Text>
+        {!token &&
+          <Text style={styles.instruction}>
+            Click button to get token based on params.
+          </Text>
+        }
         <Button
           text="Pay with custom params"
           loading={loading}
