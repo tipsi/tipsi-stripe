@@ -131,17 +131,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5FCFF',
   },
   header: {
-    fontSize: 20,
+    fontSize: 18,
     textAlign: 'center',
     margin: 10,
   },
   instruction: {
+    fontSize: 12,
     textAlign: 'center',
     color: '#333333',
     marginBottom: 5,
   },
   optionalParams: {
-    fontSize: 10,
+    fontSize: 12,
     textAlign: 'center',
     color: '#333333',
     marginBottom: 2,
