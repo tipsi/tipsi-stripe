@@ -370,12 +370,23 @@ Creates token based on passed card params.
 
 An object with the following keys:
 
-* `number` _String_ - The card’s number.
-* `expMonth` _Number_ - The card’s expiration month.
-* `expYear` _Number_ - The card’s expiration year.
-* `cvc` _String_ - The card’s security code, found on the back.
-* `name` _String_ (Optional) - The cardholder’s name.
-* `currency` _String_ (Optional) - Three-letter ISO currency code representing the currency paid out to the bank account. This is only applicable when tokenizing debit cards to issue payouts to managed accounts. You should not set it otherwise. The card can then be used as a transfer destination for funds in this currency.
+* `number` _String_ (Required) - The card’s number.
+* `expMonth` _Number_ (Required) - The card’s expiration month.
+* `expYear` _Number_ (Required) - The card’s expiration year.
+* `cvc` _String_ (Required) - The card’s security code, found on the back.
+* `name` _String_ - The cardholder’s name.
+* `addressLine1` _String_ - The first line of the billing address.
+* `addressLine2` _String_ - The second line of the billing address.
+* `addressCity` _String_ - City of the billing address.
+* `addressState` _String_ - State of the billing address.
+* `addressZip` _String_ - Zip code of the billing address.
+* `addressCountry` _String_ - Country for the billing address.
+* `brand` _String_ (Android only) - Brand of this card. Can be one of: `JCB`|`American Express`|`Visa`|`Discover`|`Diners Club`|`MasterCard`|`Unknown`.
+* `last4` _String_ (Android only) - last 4 digits of the card.
+* `fingerprint` _String_ (Android only) - The card fingerprint.
+* `funding` _String_ (Android only) - The funding type of the card. Can be one of: `debit`|`credit`|`prepaid`|`unknown`.
+* `country` _String_ (Android only) - ISO country code of the card itself.
+* `currency` _String_ - Three-letter ISO currency code representing the currency paid out to the bank account. This is only applicable when tokenizing debit cards to issue payouts to managed accounts. You should not set it otherwise. The card can then be used as a transfer destination for funds in this currency.
 
 ##### Example
 
@@ -384,10 +395,20 @@ An object with the following keys:
 
 ```js
 const params = {
+  //mandatory
   number: '4242424242424242',
   expMonth: 11,
   expYear: 17,
   cvc: '223',
+  //optional
+  name: 'Test User',
+  currency: 'usd',
+  addressLine1: '123 Test Street',
+  addressLine2: 'Apt. 5',
+  addressCity: 'Test City',
+  addressState: 'Test State',
+  addressCountry: 'Test Country',
+  addressZip: '55555',
 }
 
 const token = await stripe.createTokenWithCard(params)

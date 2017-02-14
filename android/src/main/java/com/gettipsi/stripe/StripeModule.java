@@ -177,28 +177,26 @@ public class StripeModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void createTokenWithCard(ReadableMap cardData, final Promise promise) {
-    Card card = new Card(
-      cardData.getString("number"),
-      cardData.getInt("expMonth"),
-      cardData.getInt("expYear"),
-      cardData.getString("cvc"));
+    try {
+      stripe.createToken(createCard(cardData),
+        publicKey,
+        new TokenCallback() {
+          public void onSuccess(Token token) {
+            WritableMap newToken = Arguments.createMap();
+            newToken.putString("tokenId", token.getId());
+            newToken.putBoolean("livemode", token.getLivemode());
+            newToken.putBoolean("user", token.getUsed());
+            promise.resolve(newToken);
+          }
 
-    stripe.createToken(card,
-      publicKey,
-      new TokenCallback() {
-        public void onSuccess(Token token) {
-          WritableMap newToken = Arguments.createMap();
-          newToken.putString("tokenId", token.getId());
-          newToken.putBoolean("livemode", token.getLivemode());
-          newToken.putBoolean("user", token.getUsed());
-          promise.resolve(newToken);
-        }
-
-        public void onError(Exception error) {
-          error.printStackTrace();
-          promise.reject(TAG, error.getMessage());
-        }
-      });
+          public void onError(Exception error) {
+            error.printStackTrace();
+            promise.reject(TAG, error.getMessage());
+          }
+        });
+    } catch (Exception e) {
+      promise.reject(TAG, e.getMessage());
+    }
   }
 
 
@@ -222,7 +220,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
   }
 
   private void startApiClientAndAndroidPay(final Activity activity, final ReadableMap map) {
-    if(googleApiClient != null && googleApiClient.isConnected()){
+    if (googleApiClient != null && googleApiClient.isConnected()) {
       startAndroidPay(map);
     } else {
       googleApiClient = new GoogleApiClient.Builder(activity)
@@ -329,7 +327,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
   }
 
   private void checkAndroidPayAvaliable(final GoogleApiClient client, final Promise promise) {
-    Wallet.Payments.isReadyToPay(client).setResultCallback(
+    Wallet.Payments.isReadyToPay(client, doIsReadyToPayRequest()).setResultCallback(
       new ResultCallback<BooleanResult>() {
         @Override
         public void onResult(@NonNull BooleanResult booleanResult) {
@@ -371,6 +369,41 @@ public class StripeModule extends ReactContextBaseJavaModule {
           }
         }
       }
+    );
+  }
+
+  private String exist(final ReadableMap map, final String key) {
+    if (map.hasKey(key)) {
+      return map.getString(key);
+    } else {
+      /**
+       * If {@param map} don't have some key - we must pass null to {@link Card} constructor.
+       */
+      return null;
+    }
+  }
+
+  private Card createCard(final ReadableMap cardData) {
+    return new Card(
+      //required fields
+      cardData.getString("number"),
+      cardData.getInt("expMonth"),
+      cardData.getInt("expYear"),
+      cardData.getString("cvc"),
+      //additional fields
+      exist(cardData, "name"),
+      exist(cardData, "addressLine1"),
+      exist(cardData, "addressLine2"),
+      exist(cardData, "addressCity"),
+      exist(cardData, "addressState"),
+      exist(cardData, "addressZip"),
+      exist(cardData, "addressCountry"),
+      exist(cardData, "brand"),
+      exist(cardData, "last4"),
+      exist(cardData, "fingerprint"),
+      exist(cardData, "funding"),
+      exist(cardData, "country"),
+      exist(cardData, "currency")
     );
   }
 }

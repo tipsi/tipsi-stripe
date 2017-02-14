@@ -10,7 +10,7 @@ test('Test if user can use PaymentCardTextField component', async(t) => {
   })
   const cardTextFieldId = idFromAccessId('cardTextField')
   const fieldsId = select({
-    ios: idFromXPath('//*/XCUIElementTypeOther[2]/XCUIElementTypeStaticText'),
+    ios: idFromXPath('//*/XCUIElementTypeOther[1]/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText'),
     android: idFromAccessId('cardField'),
   })
 
