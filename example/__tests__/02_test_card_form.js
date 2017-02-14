@@ -23,7 +23,7 @@ test('Test if user can use Card Form', async (t) => {
     await driver.waitForVisible(cardFormTabId, 70000)
     await driver.click(cardFormTabId)
 
-    await driver.waitForVisible(cardFromButton, 10000)
+    await driver.waitForVisible(cardFromButton, 15000)
 
     t.pass('User should see `Enter you card and pay` button')
 

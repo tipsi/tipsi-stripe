@@ -8,10 +8,10 @@ test('Test if user can use Android Pay', async (t) => {
   const androidPayButton = idFromAccessId('androidPayButton')
 
   try {
-    await driver.waitForVisible(tabAndroidPay, 70000)
+    await driver.waitForVisible(tabAndroidPay, 100000)
     await driver.click(tabAndroidPay)
 
-    await driver.waitForVisible(androidPayButton, 10000)
+    await driver.waitForVisible(androidPayButton, 15000)
 
     t.pass('User should see `Pay with Android Pay` button')
 
