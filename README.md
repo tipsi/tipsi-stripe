@@ -295,8 +295,8 @@ An object with the following keys:
 
 ```js
 const options = {
-  price: '80.00',
-  currency: 'USD',
+  total_price: '80.00',
+  currency_code: 'USD',
   line_items: [{
     currency_code: 'USD',
     description: 'Whisky',
