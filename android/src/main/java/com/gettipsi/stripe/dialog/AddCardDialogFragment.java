@@ -41,7 +41,7 @@ public class AddCardDialogFragment extends DialogFragment {
   private static final String CCV_INPUT_CLASS_NAME = SecurityCodeText.class.getSimpleName();
   private String PUBLISHABLE_KEY;
 
-  private ProgressBar progressBar;
+//  private ProgressBar progressBar;
   private CreditCardForm from;
   private ImageView imageFlipedCard;
   private ImageView imageFlipedCardBack;
@@ -114,7 +114,7 @@ public class AddCardDialogFragment extends DialogFragment {
   }
 
   private void bindViews(final View view) {
-    progressBar = (ProgressBar) view.findViewById(R.id.buttonProgress);
+//    progressBar = (ProgressBar) view.findViewById(R.id.buttonProgress);
     from = (CreditCardForm) view.findViewById(R.id.credit_card_form);
     imageFlipedCard = (ImageView) view.findViewById(R.id.imageFlippedCard);
     imageFlipedCardBack = (ImageView) view.findViewById(R.id.imageFlippedCardBack);
@@ -164,7 +164,7 @@ public class AddCardDialogFragment extends DialogFragment {
 
   public void onSaveCLick() {
     doneButton.setEnabled(false);
-    progressBar.setVisibility(View.VISIBLE);
+//    progressBar.setVisibility(View.VISIBLE);
     final CreditCard fromCard = from.getCreditCard();
     final Card card = new Card(
       fromCard.getCardNumber(),
@@ -179,6 +179,7 @@ public class AddCardDialogFragment extends DialogFragment {
         PUBLISHABLE_KEY,
         new TokenCallback() {
           public void onSuccess(Token token) {
+            Log.d(TAG, "onSuccess: !!!");
             final WritableMap newToken = Arguments.createMap();
             newToken.putString("tokenId", token.getId());
             newToken.putBoolean("livemode", token.getLivemode());
@@ -210,14 +211,15 @@ public class AddCardDialogFragment extends DialogFragment {
           }
 
           public void onError(Exception error) {
+            Log.d(TAG, "onError: " + error.getMessage());
             doneButton.setEnabled(true);
-            progressBar.setVisibility(View.GONE);
+//            progressBar.setVisibility(View.GONE);
             Toast.makeText(getActivity(), error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
           }
         });
     } else {
       doneButton.setEnabled(true);
-      progressBar.setVisibility(View.GONE);
+//      progressBar.setVisibility(View.GONE);
       Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_LONG).show();
     }
   }
