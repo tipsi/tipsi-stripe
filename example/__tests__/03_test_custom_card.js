@@ -3,9 +3,9 @@ import helper from 'tipsi-appium-helper'
 
 const { driver, select, idFromXPath, idFromAccessId } = helper
 
-test('Test if user can use Custom Card params', async(t) => {
+test('Test if user can use Custom Card params', async (t) => {
   const cardFormTabId = select({
-    ios: idFromXPath('//*/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[3]'),
+    ios: idFromXPath('//XCUIElementTypeScrollView/*/XCUIElementTypeOther[3]'),
     android: idFromAccessId('headerTab_2'),
   })
   const cardFormButtonId = idFromAccessId('customCardButton')

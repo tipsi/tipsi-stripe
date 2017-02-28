@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { KeyboardAvoidingView, View, Text, StyleSheet } from 'react-native'
 import dismissKeyboard from 'react-native/Libraries/Utilities/dismissKeyboard'
 import { PaymentCardTextField } from 'tipsi-stripe'
+import Spoiler from '../components/Spoiler'
+import testID from '../utils/testID'
 
 export default class CardTextFieldScreen extends Component {
   state = {
@@ -35,39 +37,41 @@ export default class CardTextFieldScreen extends Component {
             PaymentCardTextField Example
           </Text>
           <PaymentCardTextField
-            accessible
-            accessibilityLabel="cardTextField"
+            accessible={false}
             style={styles.field}
             onParamsChange={this.handleFieldParamsChange}
+            {...testID('cardTextField')}
           />
-          <View
-            style={styles.params}>
-            <Text
-              accessibilityLabel="cardField"
-              style={styles.instruction}>
-              Valid: {valid ? 'true' : 'false'}
-            </Text>
-            <Text
-              accessibilityLabel="cardField"
-              style={styles.instruction}>
-              Number: {params.number || '-'}
-            </Text>
-            <Text
-              accessibilityLabel="cardField"
-              style={styles.instruction}>
-              Month: {params.expMonth || '-'}
-            </Text>
-            <Text
-              accessibilityLabel="cardField"
-              style={styles.instruction}>
-              Year: {params.expYear || '-'}
-            </Text>
-            <Text
-              accessibilityLabel="cardField"
-              style={styles.instruction}>
-              CVC: {params.cvc || '-'}
-            </Text>
-          </View>
+          <Spoiler title="Params" style={styles.spoiler}>
+            <View
+              style={styles.params}>
+              <Text
+                style={styles.instruction}
+                {...testID('paramValid')}>
+                Valid: {valid ? 'true' : 'false'}
+              </Text>
+              <Text
+                style={styles.instruction}
+                {...testID('paramNumber')}>
+                Number: {params.number || '-'}
+              </Text>
+              <Text
+                style={styles.instruction}
+                {...testID('paramExpMonth')}>
+                Month: {params.expMonth || '-'}
+              </Text>
+              <Text
+                style={styles.instruction}
+                {...testID('paramExpYear')}>
+                Year: {params.expYear || '-'}
+              </Text>
+              <Text
+                style={styles.instruction}
+                {...testID('paramCVC')}>
+                CVC: {params.cvc || '-'}
+              </Text>
+            </View>
+          </Spoiler>
         </View>
       </KeyboardAvoidingView>
     )
@@ -91,12 +95,11 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginBottom: 5,
   },
-  button: {
-    margin: 10,
-    borderWidth: 1,
-  },
   token: {
     height: 20,
+  },
+  spoiler: {
+    width: 300,
   },
   params: {
     alignItems: 'flex-start',
@@ -104,7 +107,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     margin: 5,
-    width: 300,
   },
   field: {
     width: 300,

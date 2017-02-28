@@ -1,8 +1,6 @@
 {
   "ios": {
-    "appPath": "./ios/build/Build/Products/Release-iphonesimulator/example.app",
-    "noReset": true,
-    "automationName": "XCUITest"
+    "appPath": "./ios/build/Build/Products/Release-iphonesimulator/example.app"
   },
   "android": {
     "appPath": "./android/app/build/outputs/apk/app-release.apk"

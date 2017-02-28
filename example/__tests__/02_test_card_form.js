@@ -3,9 +3,9 @@ import helper from 'tipsi-appium-helper'
 
 const { driver, select, platform, idFromXPath, idFromAccessId, idFromResourceId } = helper
 
-test('Test if user can use Card Form', async(t) => {
+test('Test if user can use Card Form', async (t) => {
   const cardFormTabId = select({
-    ios: idFromXPath('//*/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[2]'),
+    ios: idFromXPath('//XCUIElementTypeScrollView[1]/*/XCUIElementTypeOther[2]'),
     android: idFromAccessId('headerTab_1'),
   })
   const cardFromButton = idFromAccessId('cardFormButton')

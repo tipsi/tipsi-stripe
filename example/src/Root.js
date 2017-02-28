@@ -2,15 +2,16 @@ import React, { Component } from 'react'
 import { View, Text, Platform, StyleSheet } from 'react-native'
 import { TabViewAnimated, TabBarTop } from 'react-native-tab-view'
 import stripe from 'tipsi-stripe'
-import ApplePayScreen from './ApplePayScreen'
-import AndroidPayScreen from './AndroidPayScreen'
-import CardFormScreen from './CardFormScreen'
-import CustomCardScreen from './CustomCardScreen'
-import CardTextFieldScreen from './CardTextFieldScreen'
+import ApplePayScreen from './scenes/ApplePayScreen'
+import AndroidPayScreen from './scenes/AndroidPayScreen'
+import CardFormScreen from './scenes/CardFormScreen'
+import CustomCardScreen from './scenes/CustomCardScreen'
+import CardTextFieldScreen from './scenes/CardTextFieldScreen'
+import testID from './utils/testID'
 
 stripe.init({
-  publishableKey: '<PUBLISHABLE_KEY>',
-  merchantId: '<MERCHANT_ID>',
+  publishableKey: 'pk_test_m3kEfDWERg2qNxwlikeKzeEI',
+  merchantId: 'merchant.com.tipsi.applepaytest',
 })
 
 export default class Root extends Component {
@@ -40,8 +41,7 @@ export default class Root extends Component {
 
   renderLabel = ({ route, index }) => (
     <Text
-      accessible
-      accessibilityLabel={`headerTab_${index}`}
+      {...testID(`headerTab_${index}`)}
       style={[styles.label]}>
       {route.title.toUpperCase()}
     </Text>
@@ -49,19 +49,19 @@ export default class Root extends Component {
 
   renderScene = ({ route }) => {
     switch (route.key) {
-    case '1':
-      return Platform.select({
-        ios: <ApplePayScreen />,
-        android: <AndroidPayScreen />,
-      })
-    case '2':
-      return <CardFormScreen />
-    case '3':
-      return <CustomCardScreen />
-    case '4':
-      return <CardTextFieldScreen />
-    default:
-      return null
+      case '1':
+        return Platform.select({
+          ios: <ApplePayScreen />,
+          android: <AndroidPayScreen />,
+        })
+      case '2':
+        return <CardFormScreen />
+      case '3':
+        return <CustomCardScreen />
+      case '4':
+        return <CardTextFieldScreen />
+      default:
+        return null
     }
   };
 

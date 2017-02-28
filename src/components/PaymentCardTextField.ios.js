@@ -14,18 +14,23 @@ export default class PaymentCardTextField extends Component {
   static propTypes = {
     ...View.propTypes,
     style: StyleSheetPropType(FieldStylePropType), // eslint-disable-line new-cap
-    // source: PropTypes.string,
-    setEnabled: PropTypes.bool,
-    backgroundColor: PropTypes.string,
-    cardNumber: PropTypes.string,
-    expDate: PropTypes.string,
-    securityCode: PropTypes.string,
+
+    cursorColor: PropTypes.string,
+    textErrorColor: PropTypes.string,
+    placeholderColor: PropTypes.string,
+
+    numberPlaceholder: PropTypes.string,
     expirationPlaceholder: PropTypes.string,
     cvcPlaceholder: PropTypes.string,
-    numberPlaceholder: PropTypes.string,
+
+    disabled: PropTypes.bool,
 
     onChange: PropTypes.func,
     onValueChange: PropTypes.func,
+  }
+
+  static defaultProps = {
+    ...View.defaultProps,
   }
 
   valid = false // eslint-disable-line react/sort-comp
@@ -54,6 +59,10 @@ export default class PaymentCardTextField extends Component {
     TextInputState.blurTextInput(findNodeHandle(this))
   }
 
+  setParams = (params) => {
+    this.field.setNativeProps({ params })
+  }
+
   handlePress = () => {
     this.focus()
   }
@@ -77,7 +86,17 @@ export default class PaymentCardTextField extends Component {
   }
 
   render() {
-    const { style, disabled, ...rest } = this.props
+    const {
+      style,
+      disabled,
+      cursorColor,
+      textErrorColor,
+      placeholderColor,
+      numberPlaceholder,
+      expirationPlaceholder,
+      cvcPlaceholder,
+      ...rest
+    } = this.props
     const {
       borderColor,
       borderWidth,
@@ -99,6 +118,7 @@ export default class PaymentCardTextField extends Component {
         accessibilityTraits={rest.accessibilityTraits}
         rejectResponderTermination>
         <NativePaymentCardTextField
+          ref={field => this.field = field}
           style={[styles.field, fieldStyles]}
           borderColor={borderColor}
           borderWidth={borderWidth}
@@ -109,7 +129,12 @@ export default class PaymentCardTextField extends Component {
           fontStyle={fontStyle}
           fontSize={fontSize}
           enabled={!disabled}
-          {...rest}
+          cursorColor={cursorColor}
+          textErrorColor={textErrorColor}
+          placeholderColor={placeholderColor}
+          numberPlaceholder={numberPlaceholder}
+          expirationPlaceholder={expirationPlaceholder}
+          cvcPlaceholder={cvcPlaceholder}
           onChange={this.handleChange}
         />
       </TouchableWithoutFeedback>
@@ -124,11 +149,11 @@ const styles = StyleSheet.create({
     // surrounding view to ensure it gets rendered.
     height: 44,
     // Set default background color to prevent transparent background
-    //backgroundColor: '#FFFFFF',
+    backgroundColor: '#ffffff',
   },
 })
 
-const NativePaymentCardTextField = requireNativeComponent('CreditCardForm', PaymentCardTextField, {
+const NativePaymentCardTextField = requireNativeComponent('TPSCardField', PaymentCardTextField, {
   nativeOnly: {
     borderColor: true,
     borderWidth: true,
@@ -139,6 +164,7 @@ const NativePaymentCardTextField = requireNativeComponent('CreditCardForm', Paym
     fontStyle: true,
     fontSize: true,
     enabled: true,
+    params: true,
     onChange: true,
   },
 })

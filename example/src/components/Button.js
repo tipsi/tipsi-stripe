@@ -3,12 +3,19 @@ import { View, Text, TouchableHighlight, ActivityIndicator, Platform, StyleSheet
 
 export default class Button extends Component {
   static propTypes = {
-    text: PropTypes.string,
+    text: PropTypes.string.isRequired,
     disabledText: PropTypes.string,
     loading: PropTypes.bool,
     disabled: PropTypes.bool,
     style: PropTypes.any,
-    onPress: PropTypes.func,
+    onPress: PropTypes.func.isRequired,
+  }
+
+  static defaultProps = {
+    disabledText: '',
+    loading: false,
+    disabled: false,
+    style: undefined,
   }
 
   handlePress = (event) => {
@@ -58,9 +65,11 @@ export default class Button extends Component {
 const styles = StyleSheet.create({
   button: {
     padding: 8,
+    margin: 10,
     height: Platform.OS === 'ios' ? 35 : 40,
     minWidth: 160,
     overflow: 'hidden',
+    borderWidth: 1,
     borderRadius: 4,
     backgroundColor: 'white',
     alignItems: 'center',
