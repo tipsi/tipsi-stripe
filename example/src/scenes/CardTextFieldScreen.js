@@ -48,7 +48,7 @@ export default class CardTextFieldScreen extends Component {
               <Text
                 style={styles.instruction}
                 {...testID('paramValid')}>
-                Valid: {valid ? 'true' : 'false'}
+                Valid: {Boolean(valid)}
               </Text>
               <Text
                 style={styles.instruction}

@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     margin: 5,
   },
-    param: {
+  param: {
     fontSize: 12,
     textAlign: 'center',
     color: '#333333',

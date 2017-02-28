@@ -10,8 +10,8 @@ import CardTextFieldScreen from './scenes/CardTextFieldScreen'
 import testID from './utils/testID'
 
 stripe.init({
-  publishableKey: 'pk_test_m3kEfDWERg2qNxwlikeKzeEI',
-  merchantId: 'merchant.com.tipsi.applepaytest',
+  publishableKey: '<PUBLISHABLE_KEY>',
+  merchantId: '<MERCHANT_ID>',
 })
 
 export default class Root extends Component {

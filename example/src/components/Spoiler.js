@@ -42,7 +42,7 @@ export default class Spoiler extends Component {
             <Text style={arrowStyles}>›</Text>
           </View>
         </TouchableHighlight>
-        <View style={styles.content}>
+        <View>
           {open && children}
         </View>
       </View>
@@ -76,8 +76,5 @@ const styles = StyleSheet.create({
   },
   arrowDown: {
     transform: [{ rotate: '90deg' }],
-  },
-  content: {
-
   },
 })
