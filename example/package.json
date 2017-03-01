@@ -24,6 +24,6 @@
     "appium": "1.6.3",
     "npm-run-all": "^3.1.1",
     "tape-async": "^2.1.1",
-    "tipsi-appium-helper": "1.0.0"
+    "tipsi-appium-helper": "1.2.0"
   }
 }
