@@ -48,11 +48,11 @@ test('Test if user can use PaymentCardTextField component', async (t) => {
 
     t.pass('User should be able write card data on `PaymentCardTextField` component')
 
-    t.equal(await driver.getText(cardPramIds.valid), 'Valid: true', 'Field should be valid')
     t.equal(await driver.getText(cardPramIds.number), 'Number: 4242424242424242', 'Number should be 4242424242424242')
     t.equal(await driver.getText(cardPramIds.expMonth), 'Month: 12', 'Month should be 12')
     t.equal(await driver.getText(cardPramIds.expYear), 'Year: 34', 'Year should be 34')
     t.equal(await driver.getText(cardPramIds.cvc), 'CVC: 123', 'CVC should be 123')
+    t.equal(await driver.getText(cardPramIds.valid), 'Valid: true', 'Field should be valid')
   } catch (error) {
     await helper.screenshot()
     await helper.source()
