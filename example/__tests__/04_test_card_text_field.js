@@ -42,9 +42,9 @@ test('Test if user can use PaymentCardTextField component', async (t) => {
     t.pass('User should be able focus on `PaymentCardTextField` component')
 
     await driver.keys('4242424242424242 1234 123')
-    await driver.waitForVisible(inputNumber, 5000)
-    await driver.waitForVisible(inputExpData, 5000)
-    await driver.waitForVisible(inputCVC, 5000)
+    await driver.waitForVisible(inputNumber, 5000).waitForText(inputNumber)
+    await driver.waitForVisible(inputExpData, 5000).waitForText(inputExpData)
+    await driver.waitForVisible(inputCVC, 5000).waitForText(inputCVC)
 
     t.pass('User should be able write card data on `PaymentCardTextField` component')
 
