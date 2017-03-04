@@ -4,13 +4,10 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "clean": "rm -rf android/app/release.keystore",
     "appium": "appium",
-    "configure": "./scripts/configure.sh",
-    "build:android:key": "keytool -genkey -v -keystore android/app/release.keystore -storepass android -alias androidreleasekey -keypass android -dname 'CN=Android Debug,O=Android,C=US'",
-    "build:android:release": "cd android && ./gradlew assembleRelease --console=plain -S",
-    "build:android": "npm-run-all clean build:android:*",
-    "build:ios": "cd ios && xcodebuild build -workspace example.xcworkspace -scheme example -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO OTHER_LDFLAGS='$(inherited) -ObjC -lc++' -destination 'platform=iOS Simulator,name=iPhone 6' -configuration Release -derivedDataPath build",
+    "configure": "scripts/configure.sh",
+    "build:android": "scripts/build-android.sh",
+    "build:ios": "scripts/build-ios.sh",
     "build": "npm-run-all build:*",
     "test:android": "appium-helper --platform android",
     "test:ios": "appium-helper --platform ios",
@@ -27,6 +24,6 @@
     "appium": "1.6.3",
     "npm-run-all": "^3.1.1",
     "tape-async": "^2.1.1",
-    "tipsi-appium-helper": "1.0.0"
+    "tipsi-appium-helper": "1.2.0"
   }
 }

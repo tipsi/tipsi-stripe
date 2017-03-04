@@ -4,7 +4,7 @@ import helper from 'tipsi-appium-helper'
 const { driver, idFromXPath, idFromAccessId } = helper
 
 test('Test if user can use Apple Pay', async (t) => {
-  const applePayTabId = idFromXPath('//*/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther')
+  const applePayTabId = idFromXPath('//XCUIElementTypeScrollView[1]/*/XCUIElementTypeOther[1]')
   const applePayButtonId = idFromAccessId('applePayButton')
   const payWithPasscodeButtonId = idFromAccessId('Pay with Passcode')
   const tokenId = idFromAccessId('applePayToken')

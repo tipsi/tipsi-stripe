@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import stripe from 'tipsi-stripe'
-import Button from './Button'
+import Button from '../components/Button'
+import testID from '../utils/testID'
 
 export default class ApplePayScreen extends Component {
   state = {
@@ -71,15 +72,12 @@ export default class ApplePayScreen extends Component {
           disabledText="Not supported"
           loading={loading}
           disabled={!allowed}
-          style={styles.button}
-          accessible
-          accessibilityLabel={'applePayButton'}
           onPress={this.handleApplePayPress}
+          {...testID('applePayButton')}
         />
         <View
-          accessible
-          accessibilityLabel={'applePayToken'}
-          style={styles.token}>
+          style={styles.token}
+          {...testID('applePayToken')}>
           {token &&
             <Text style={styles.instruction}>
               Token: {token.tokenId}
@@ -107,10 +105,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#333333',
     marginBottom: 5,
-  },
-  button: {
-    margin: 10,
-    borderWidth: 1,
   },
   token: {
     height: 20,

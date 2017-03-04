@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import stripe from 'tipsi-stripe'
-import Button from './Button'
+import Button from '../components/Button'
+import testID from '../utils/testID'
 
 export default class CardFormScreen extends Component {
   state = {
@@ -46,15 +47,12 @@ export default class CardFormScreen extends Component {
         <Button
           text="Enter you card and pay"
           loading={loading}
-          style={styles.button}
-          accessible
-          accessibilityLabel={'cardFormButton'}
           onPress={this.handleCardPayPress}
+          {...testID('cardFormButton')}
         />
         <View
           style={styles.token}
-          accessible
-          accessibilityLabel={'cardFormToken'}>
+          {...testID('cardFormToken')}>
           {token &&
             <Text style={styles.instruction}>
               Token: {token.tokenId}
@@ -82,10 +80,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#333333',
     marginBottom: 5,
-  },
-  button: {
-    margin: 10,
-    borderWidth: 1,
   },
   token: {
     height: 20,

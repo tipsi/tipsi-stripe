@@ -1,7 +1,5 @@
 import Stripe from './Stripe'
-import PaymentCardTextField from './PaymentCardTextField'
+import PaymentCardTextField from './components/PaymentCardTextField'
 
 export default Stripe
-export {
-  PaymentCardTextField
-}
+export { PaymentCardTextField }

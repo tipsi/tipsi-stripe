@@ -1,5 +1,5 @@
 import { NativeModules } from 'react-native'
-import processTheme from './processTheme'
+import processTheme from './utils/processTheme'
 
 const { TPSStripeManager } = NativeModules
 
