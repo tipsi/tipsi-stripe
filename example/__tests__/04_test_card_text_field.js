@@ -33,7 +33,7 @@ test('Test if user can use PaymentCardTextField component', async (t) => {
     await driver.waitForVisible(cardTextFieldTabId, 70000)
     await driver.click(cardTextFieldTabId)
 
-    await driver.waitForVisible(cardTextFieldId, 5000)
+    await driver.waitForVisible(cardTextFieldId, 15000)
 
     t.pass('User should see `PaymentCardTextField` component')
 

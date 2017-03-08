@@ -24,6 +24,6 @@ dependencies {
   compile 'com.facebook.react:react-native:+'
   compile 'com.android.support:appcompat-v7:25.0.1'
   compile 'com.google.android.gms:play-services-wallet:10.+'
-  compile 'com.stripe:stripe-android:1.+'
+  compile 'com.stripe:stripe-android:2.1.+'
   compile 'com.github.thefuntasty:CreditCardEntry:1.4.8.4'
 }

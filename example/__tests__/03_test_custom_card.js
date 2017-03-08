@@ -15,7 +15,7 @@ test('Test if user can use Custom Card params', async (t) => {
     await driver.waitForVisible(cardFormTabId, 70000)
     await driver.click(cardFormTabId)
 
-    await driver.waitForVisible(cardFormButtonId, 10000)
+    await driver.waitForVisible(cardFormButtonId, 15000)
 
     t.pass('User should see `Pay with custom params` button')
 

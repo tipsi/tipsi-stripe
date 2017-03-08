@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -100,7 +99,6 @@ public class AddCardDialogFragment extends DialogFragment {
     bindViews(view);
     init();
 
-    Log.d(TAG, "onCreateDialog: ");
     return dialog;
   }
 
@@ -127,9 +125,7 @@ public class AddCardDialogFragment extends DialogFragment {
       public void onFocusChange(final View view, boolean b) {
         if (CCV_INPUT_CLASS_NAME.equals(view.getClass().getSimpleName())) {
           if (b) {
-            Log.d(TAG, "ANIMATE: SHOW_CCV");
             cardFlipAnimator.showBack();
-            Log.d(TAG, "onFocusChange: " + view.getTag());
             if (view.getTag() == null) {
               view.setTag("TAG");
               ((SecurityCodeText) view).addTextChangedListener(new TextWatcher() {
@@ -150,7 +146,6 @@ public class AddCardDialogFragment extends DialogFragment {
               });
             }
           } else {
-            Log.d(TAG, "ANIMATE: HIDE_CCV");
             cardFlipAnimator.showFront();
           }
         }
@@ -187,7 +182,7 @@ public class AddCardDialogFragment extends DialogFragment {
             final WritableMap cardMap = Arguments.createMap();
             final Card card = token.getCard();
             cardMap.putString("cardId", card.getFingerprint());
-            cardMap.putString("brand", card.getType());
+            cardMap.putString("brand", card.getBrand());
             cardMap.putString("last4", card.getLast4());
             cardMap.putInt("expMonth", card.getExpMonth());
             cardMap.putInt("expYear", card.getExpYear());
