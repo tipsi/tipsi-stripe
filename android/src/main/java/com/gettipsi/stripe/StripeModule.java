@@ -395,8 +395,8 @@ public class StripeModule extends ReactContextBaseJavaModule {
       cardData.getString("number"),
       cardData.getInt("expMonth"),
       cardData.getInt("expYear"),
-      cardData.getString("cvc"),
       //additional fields
+      exist(cardData, "cvc"),
       exist(cardData, "name"),
       exist(cardData, "addressLine1"),
       exist(cardData, "addressLine2"),
