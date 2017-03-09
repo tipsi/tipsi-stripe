@@ -373,7 +373,7 @@ An object with the following keys:
 * `number` _String_ (Required) - The card’s number.
 * `expMonth` _Number_ (Required) - The card’s expiration month.
 * `expYear` _Number_ (Required) - The card’s expiration year.
-* `cvc` _String_ (Required) - The card’s security code, found on the back.
+* `cvc` _String_ - The card’s security code, found on the back.
 * `name` _String_ - The cardholder’s name.
 * `addressLine1` _String_ - The first line of the billing address.
 * `addressLine2` _String_ - The second line of the billing address.

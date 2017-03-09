@@ -64,13 +64,13 @@ export default class CustomCardScreen extends Component {
             <Text style={styles.param}>
               Year: {params.expYear}
             </Text>
-            <Text style={styles.param}>
-              CVC: {params.cvc}
-            </Text>
           </View>
         </Spoiler>
         <Spoiler title="Optional Fields" defaultOpen={false}>
           <View style={styles.params}>
+            <Text style={styles.param}>
+              CVC: {params.cvc}
+            </Text>
             <Text style={styles.param}>
               Name: {params.name}
             </Text>
