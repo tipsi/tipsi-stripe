@@ -7,6 +7,9 @@ class Stripe {
   init = (options = {}) => (
     TPSStripeManager.init(options)
   )
+  openPaymentSetup = () => (
+    TPSStripeManager.openPaymentSetup()
+  )
   deviceSupportsApplePay = () => (
     TPSStripeManager.deviceSupportsApplePay()
   )
