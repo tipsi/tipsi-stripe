@@ -3,3 +3,6 @@
 .travis
 .travis.yml
 example
+*~
+Makefile
+*.tgz
