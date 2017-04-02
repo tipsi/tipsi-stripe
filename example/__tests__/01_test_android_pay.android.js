@@ -4,7 +4,7 @@ import helper from 'tipsi-appium-helper'
 const { driver, idFromAccessId } = helper
 
 test('Test if user can use Android Pay', async (t) => {
-  const tabAndroidPay = idFromAccessId('headerTab_0')
+  const tabAndroidPay = idFromAccessId('Android Pay')
   const androidPayButton = idFromAccessId('androidPayButton')
 
   try {

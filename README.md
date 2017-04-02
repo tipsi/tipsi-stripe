@@ -432,7 +432,7 @@ A text field component specialized for collecting credit/debit card information.
 * `disabled` Bool(IOS only) - Enable/disable selecting or editing the field. Useful when submitting card details to Stripe.
 * `enabled` Bool (Android only) - Enable/disable selecting or editing the field. Useful when submitting card details to Stripe.
 * `onChange` Func - This function will be called each input change.
-* `onValueChange` Func - This function will be called each input change, it takes two argumants:
+* `onParamsChange` Func - This function will be called each input change, it takes two argumants:
   * `valid` Bool - Whether or not the form currently contains a valid card number, expiration date, and CVC.
   * `params` Object - Contains entered card params: `number`, `expMonth`, `expYear` and `cvc`.
 

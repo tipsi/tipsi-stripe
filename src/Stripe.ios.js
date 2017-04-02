@@ -16,6 +16,9 @@ class Stripe {
   completeApplePayRequest = () => (
     TPSStripeManager.completeApplePayRequest()
   )
+  cancelApplePayRequest = () => (
+    TPSStripeManager.cancelApplePayRequest()
+  )
   paymentRequestWithCardForm = (options = {}) => (
     TPSStripeManager.paymentRequestWithCardForm({
       ...options,
