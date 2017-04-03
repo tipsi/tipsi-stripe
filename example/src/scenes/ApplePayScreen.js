@@ -1,13 +1,16 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, Switch, StyleSheet } from 'react-native'
 import stripe from 'tipsi-stripe'
 import Button from '../components/Button'
 import testID from '../utils/testID'
 
+/* eslint-disable no-console */
 export default class ApplePayScreen extends Component {
   state = {
     loading: false,
     allowed: false,
+    complete: true,
+    status: null,
     token: null,
   }
 
@@ -16,10 +19,15 @@ export default class ApplePayScreen extends Component {
     this.setState({ allowed })
   }
 
+  handleCompleteChange = (complete) => (
+    this.setState({ complete })
+  )
+
   handleApplePayPress = async () => {
     try {
       this.setState({
         loading: true,
+        status: null,
         token: null,
       })
       const token = await stripe.paymentRequestWithApplePay([{
@@ -41,23 +49,27 @@ export default class ApplePayScreen extends Component {
           amount: '10.00',
         }],
       })
-      console.log('Result:', token) // eslint-disable-line no-console
-      await stripe.completeApplePayRequest()
-      console.log('Apple Pay payment completed') // eslint-disable-line no-console
-      this.setState({
-        loading: false,
-        token,
-      })
+
+      console.log('Result:', token)
+      this.setState({ loading: false, token })
+
+      if (this.state.complete) {
+        await stripe.completeApplePayRequest()
+        console.log('Apple Pay payment completed')
+        this.setState({ status: 'Apple Pay payment completed'})
+      } else {
+        await stripe.cancelApplePayRequest()
+        console.log('Apple Pay payment cenceled')
+        this.setState({ status: 'Apple Pay payment cenceled'})
+      }
     } catch (error) {
-      console.log('Error:', error) // eslint-disable-line no-console
-      this.setState({
-        loading: false,
-      })
+      console.log('Error:', error)
+      this.setState({ loading: false, status: `Error: ${error.message}` })
     }
   }
 
   render() {
-    const { loading, allowed, token } = this.state
+    const { loading, allowed, complete, status, token } = this.state
 
     return (
       <View style={styles.container}>
@@ -75,12 +87,28 @@ export default class ApplePayScreen extends Component {
           onPress={this.handleApplePayPress}
           {...testID('applePayButton')}
         />
-        <View
-          style={styles.token}
-          {...testID('applePayToken')}>
+        <Text style={styles.instruction}>
+          Complete the operation on tokent
+        </Text>
+        <Switch
+          style={styles.switch}
+          value={complete}
+          onValueChange={this.handleCompleteChange}
+          {...testID('applePaySwitch')}
+        />
+        <View style={styles.token}>
           {token &&
-            <Text style={styles.instruction}>
+            <Text
+              style={styles.instruction}
+              {...testID('applePayToken')}>
               Token: {token.tokenId}
+            </Text>
+          }
+          {status &&
+            <Text
+              style={styles.instruction}
+              {...testID('applePayStatus')}>
+              {status}
             </Text>
           }
         </View>
@@ -105,6 +133,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#333333',
     marginBottom: 5,
+  },
+  switch: {
+    marginBottom: 10,
   },
   token: {
     height: 20,

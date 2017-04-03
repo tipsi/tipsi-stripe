@@ -4,10 +4,7 @@ import helper from 'tipsi-appium-helper'
 const { driver, select, idFromXPath, idFromAccessId, idFromResourceId } = helper
 
 test('Test if user can use PaymentCardTextField component', async (t) => {
-  const cardTextFieldTabId = select({
-    ios: idFromXPath('//XCUIElementTypeScrollView/*/XCUIElementTypeOther[4]'),
-    android: idFromAccessId('headerTab_3'),
-  })
+  const cardTextFieldTabId = idFromAccessId('Card Text Field')
   const cardTextFieldId = idFromAccessId('cardTextField')
   const inputNumber = select({
     ios: idFromAccessId('card number'),

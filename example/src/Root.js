@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text, Platform, StyleSheet } from 'react-native'
-import { TabViewAnimated, TabBarTop } from 'react-native-tab-view'
+import { TabViewAnimated, TabBar } from 'react-native-tab-view'
 import stripe from 'tipsi-stripe'
 import ApplePayScreen from './scenes/ApplePayScreen'
 import AndroidPayScreen from './scenes/AndroidPayScreen'
@@ -30,19 +30,17 @@ export default class Root extends Component {
   }
 
   renderHeader = props => (
-    <TabBarTop
+    <TabBar
       {...props}
-      indicatorStyle={styles.indicator}
       style={styles.tabbar}
-      tabWidth={10}
+      indicatorStyle={styles.indicator}
+      accessible={false}
       renderLabel={this.renderLabel}
     />
   )
 
   renderLabel = ({ route, index }) => (
-    <Text
-      {...testID(`headerTab_${index}`)}
-      style={[styles.label]}>
+    <Text style={styles.label}>
       {route.title.toUpperCase()}
     </Text>
   )
@@ -93,7 +91,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   tabbar: {
-    height: 48,
+    height: 45,
     backgroundColor: '#fff',
   },
   page: {

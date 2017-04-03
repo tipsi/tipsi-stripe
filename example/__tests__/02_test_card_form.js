@@ -1,13 +1,10 @@
 import test from 'tape-async'
 import helper from 'tipsi-appium-helper'
 
-const { driver, select, platform, idFromXPath, idFromAccessId, idFromResourceId } = helper
+const { driver, select, platform, idFromAccessId, idFromResourceId } = helper
 
 test('Test if user can use Card Form', async (t) => {
-  const cardFormTabId = select({
-    ios: idFromXPath('//XCUIElementTypeScrollView[1]/*/XCUIElementTypeOther[2]'),
-    android: idFromAccessId('headerTab_1'),
-  })
+  const cardFormTabId = idFromAccessId('Card Form')
   const cardFromButton = idFromAccessId('cardFormButton')
   const numberInputId = select({
     ios: idFromAccessId('card number'),
