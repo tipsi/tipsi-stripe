@@ -28,6 +28,9 @@ class Stripe {
   createTokenWithCard = (params = {}) => (
     TPSStripeManager.createTokenWithCard(params)
   )
+  openApplePaySetup = () => (
+    TPSStripeManager.openApplePaySetup()
+  )
 }
 
 export default new Stripe()

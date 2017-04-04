@@ -213,6 +213,19 @@ RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
     }
 }
 
+RCT_EXPORT_METHOD(openApplePaySetup:(RCTPromiseResolveBlock)resolve
+                  rejecter:(__unused RCTPromiseRejectBlock)reject {
+    PKPassLibrary *library = [[PKPassLibrary alloc] init];
+    
+    // Here we should check, if openPaymentSetup selector exist
+    // Right now we don't use reject block
+    if ([library respondsToSelector:NSSelectorFromString(@"openPaymentSetup")]) {
+        [library openPaymentSetup];
+        
+        // Notify JS here
+        resolve(nil);
+    }
+}
 
 #pragma mark STPAddCardViewControllerDelegate
 

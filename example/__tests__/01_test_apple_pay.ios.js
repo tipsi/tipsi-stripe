@@ -5,6 +5,7 @@ const { driver, idFromAccessId } = helper
 
 test('Test if user can use Apple Pay', async (t) => {
   const applePayTabId = idFromAccessId('Pay')
+  const setupApplePayButtonId = idFromAccessId('setupApplePayButton')
   const applePayButtonId = idFromAccessId('applePayButton')
   const applePaySwitchId = idFromAccessId('applePaySwitch')
   const payWithPasscodeButtonId = idFromAccessId('Pay with Passcode')
@@ -14,6 +15,15 @@ test('Test if user can use Apple Pay', async (t) => {
   try {
     await driver.waitForVisible(applePayTabId, 60000)
     await driver.click(applePayTabId)
+
+    await driver.waitForVisible(setupApplePayButtonId, 30000)
+    t.pass('User should see `Setup Pay` button')
+
+    await driver.click(setupApplePayButtonId)
+    t.pass('User should be able to tap on `Setup Pay` button')
+
+    await driver.waitForVisible(setupApplePayButtonId, 30000)
+    t.pass('User should still see `Setup Pay` button')
 
     await driver.waitForVisible(applePayButtonId, 30000)
     t.pass('User should see `Pay with Pay` button')

@@ -23,6 +23,10 @@ export default class ApplePayScreen extends Component {
     this.setState({ complete })
   )
 
+  handleSetupApplePayPress = async () => (
+    await stripe.openApplePaySetup()
+  )
+
   handleApplePayPress = async () => {
     try {
       this.setState({
@@ -73,6 +77,16 @@ export default class ApplePayScreen extends Component {
 
     return (
       <View style={styles.container}>
+        <Button
+          text="Setup Pay"
+          disabledText="Not supported"
+          disabled={!allowed}
+          onPress={this.handleSetupApplePayPress}
+          {...testID('setupApplePayButton')}
+        />
+        <Text style={styles.hint}>
+          ('Setup Pay' works only on real device)
+        </Text>
         <Text style={styles.header}>
           Apple Pay Example
         </Text>
@@ -128,6 +142,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
+  },
+  hint: {
+    fontSize: 12,
+    textAlign: 'center',
+    color: 'gray',
+    marginBottom: 20,
   },
   instruction: {
     textAlign: 'center',
