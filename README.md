@@ -170,7 +170,7 @@ An object with the following keys:
 
 ### Apple Pay (iOS only)
 
-#### `openApplePaySetup() -> Promise`
+#### `openApplePaySetup()`
 
 Opens the user interface to set up credit cards for Apple Pay.
 

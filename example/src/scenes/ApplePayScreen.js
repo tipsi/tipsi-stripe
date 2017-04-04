@@ -68,8 +68,8 @@ export default class ApplePayScreen extends Component {
     }
   }
 
-  handleSetupApplePayPress = async () => (
-    await stripe.openApplePaySetup()
+  handleSetupApplePayPress = () => (
+    stripe.openApplePaySetup()
   )
 
   render() {
