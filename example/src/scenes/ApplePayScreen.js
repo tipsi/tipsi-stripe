@@ -23,10 +23,6 @@ export default class ApplePayScreen extends Component {
     this.setState({ complete })
   )
 
-  handleSetupApplePayPress = async () => (
-    await stripe.openApplePaySetup()
-  )
-
   handleApplePayPress = async () => {
     try {
       this.setState({
@@ -72,21 +68,15 @@ export default class ApplePayScreen extends Component {
     }
   }
 
+  handleSetupApplePayPress = async () => (
+    await stripe.openApplePaySetup()
+  )
+
   render() {
     const { loading, allowed, complete, status, token } = this.state
 
     return (
       <View style={styles.container}>
-        <Button
-          text="Setup Pay"
-          disabledText="Not supported"
-          disabled={!allowed}
-          onPress={this.handleSetupApplePayPress}
-          {...testID('setupApplePayButton')}
-        />
-        <Text style={styles.hint}>
-          ('Setup Pay' works only on real device)
-        </Text>
         <Text style={styles.header}>
           Apple Pay Example
         </Text>
@@ -110,7 +100,7 @@ export default class ApplePayScreen extends Component {
           onValueChange={this.handleCompleteChange}
           {...testID('applePaySwitch')}
         />
-        <View style={styles.token}>
+        <View>
           {token &&
             <Text
               style={styles.instruction}
@@ -125,6 +115,18 @@ export default class ApplePayScreen extends Component {
               {status}
             </Text>
           }
+        </View>
+        <View style={styles.hintContainer}>
+          <Button
+            text="Setup Pay"
+            disabledText="Not supported"
+            disabled={!allowed}
+            onPress={this.handleSetupApplePayPress}
+            {...testID('setupApplePayButton')}
+          />
+          <Text style={styles.hint}>
+            ('Setup Pay' works only on real device)
+          </Text>
         </View>
       </View>
     )
@@ -143,12 +145,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     margin: 10,
   },
-  hint: {
-    fontSize: 12,
-    textAlign: 'center',
-    color: 'gray',
-    marginBottom: 20,
-  },
   instruction: {
     textAlign: 'center',
     color: '#333333',
@@ -157,7 +153,12 @@ const styles = StyleSheet.create({
   switch: {
     marginBottom: 10,
   },
-  token: {
-    height: 20,
+  hintContainer: {
+    marginTop: 10,
+  },
+  hint: {
+    fontSize: 12,
+    textAlign: 'center',
+    color: 'gray',
   },
 })
