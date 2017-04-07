@@ -170,6 +170,10 @@ An object with the following keys:
 
 ### Apple Pay (iOS only)
 
+#### `openApplePaySetup()`
+
+Opens the user interface to set up credit cards for Apple Pay.
+
 #### `deviceSupportsApplePay() -> Promise`
 
 Indicates whether or not the device supports Apple Pay. Returns a `Boolean` value.

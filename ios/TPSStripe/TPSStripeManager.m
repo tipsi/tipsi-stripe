@@ -213,6 +213,14 @@ RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
     }
 }
 
+RCT_EXPORT_METHOD(openApplePaySetup) {
+    PKPassLibrary *library = [[PKPassLibrary alloc] init];
+    
+    // Here we should check, if openPaymentSetup selector exist
+    if ([library respondsToSelector:NSSelectorFromString(@"openPaymentSetup")]) {
+        [library openPaymentSetup];
+    }
+}
 
 #pragma mark STPAddCardViewControllerDelegate
 
