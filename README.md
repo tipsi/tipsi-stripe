@@ -57,31 +57,46 @@ Run `react-native link tipsi-stripe` so your project is linked against your Andr
 
 In your `android/app/build.gradle` add:
 
-```gradle
+```diff
 ...
 dependencies {
- ...
- compile project(':tipsi-stripe')
+  ...
++ compile project(':tipsi-stripe')
 }
 ```
 
 In your `android/settings.gradle` add:
 
-```gradle
+```diff
 ...
-include ':tipsi-stripe'
-project(':tipsi-stripe').projectDir = new File(rootProject.projectDir, '../node_modules/tipsi-stripe/android')
++include ':tipsi-stripe'
++project(':tipsi-stripe').projectDir = new File(rootProject.projectDir, '../node_modules/tipsi-stripe/android')
 ```
 
 In your `android/build.gradle` add:
 
-```gradle
+```diff
 ...
 allprojects {
-    repositories {
+  repositories {
+    ...
++   maven { url "https://jitpack.io" }
+  }
+}
+```
+
+In your `android/app/src/main/java/com/%YOUR_APP_NAME%/MainApplication.java` add:
+
+```diff
 ...
-        maven { url "https://jitpack.io" }
-    }
++ import com.gettipsi.stripe.StripeReactPackage;
+...
+protected List<ReactPackage> getPackages() {
+  return Arrays.<ReactPackage>asList(
+-   new MainReactPackage()
++   new MainReactPackage(),
++   new StripeReactPackage()
+  );
 }
 ```
 
