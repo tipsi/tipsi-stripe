@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if [ "$(uname)" == "Darwin" ]; then
-	ruby $(dirname "$0")/post-link-ios.rb  
+	ruby $(dirname "$0")/post-link-ios.rb
 fi
 
-$(dirname "$0")/post-link-android.sh
+$(dirname "$0")/post-link-android.js
