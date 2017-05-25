@@ -18,6 +18,9 @@ class Stripe {
   createTokenWithCard = (params = {}) => (
     StripeModule.createTokenWithCard(params)
   )
+  createTokenWithBankAccount = (params = {}) => (
+    StripeModule.createTokenWithBankAccount(params)
+  )
 }
 
 export default new Stripe()

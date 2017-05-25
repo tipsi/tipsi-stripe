@@ -2,7 +2,6 @@
 # platform :ios, '9.0'
 
 target 'example' do
-	pod 'Stripe', '~> 9.2.0'
-	inherit! :search_paths  
+  pod 'Stripe', '~> 9.2.0'
+  inherit! :search_paths
 end
-

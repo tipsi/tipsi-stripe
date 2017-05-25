@@ -1,10 +1,12 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import stripe from 'tipsi-stripe'
 import Button from '../components/Button'
 import testID from '../utils/testID'
 
-export default class AndroidPayScreen extends Component {
+export default class AndroidPayScreen extends PureComponent {
+  static title = 'Android Pay'
+
   state = {
     loading: false,
     allowed: false,
@@ -63,7 +65,7 @@ export default class AndroidPayScreen extends Component {
 
     return (
       <View style={styles.container}>
-        <Text style={styles.header}>
+        <Text style={styles.header} {...testID('headerText')}>
           Android Pay Example
         </Text>
         <Text style={styles.instruction}>
@@ -96,7 +98,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
   },
   header: {
     fontSize: 20,

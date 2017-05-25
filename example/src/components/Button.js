@@ -1,7 +1,7 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PureComponent, PropTypes } from 'react'
 import { View, Text, TouchableHighlight, ActivityIndicator, Platform, StyleSheet } from 'react-native'
 
-export default class Button extends Component {
+export default class Button extends PureComponent {
   static propTypes = {
     text: PropTypes.string.isRequired,
     disabledText: PropTypes.string,

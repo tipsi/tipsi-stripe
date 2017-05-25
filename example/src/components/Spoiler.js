@@ -1,7 +1,7 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PureComponent, PropTypes } from 'react'
 import { View, Text, TouchableHighlight, StyleSheet } from 'react-native'
 
-export default class Spoiler extends Component {
+export default class Spoiler extends PureComponent {
   static propTypes = {
     title: PropTypes.string.isRequired,
     defaultOpen: PropTypes.bool,
