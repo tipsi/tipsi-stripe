@@ -1,25 +1,20 @@
-import test from 'tape-async'
 import helper from 'tipsi-appium-helper'
+import test from './utils/tape'
+import openTestSuite from './common/openTestSuite'
 
 const { driver, idFromAccessId } = helper
 
 test('Test if user can use Android Pay', async (t) => {
-  const tabAndroidPay = idFromAccessId('Android Pay')
+  const header = idFromAccessId('headerText')
   const androidPayButton = idFromAccessId('androidPayButton')
 
-  try {
-    await driver.waitForVisible(tabAndroidPay, 100000)
-    await driver.click(tabAndroidPay)
+  await openTestSuite('Android Pay')
 
-    await driver.waitForVisible(androidPayButton, 15000)
+  await driver.waitForVisible(header, 15000)
+  t.pass('User should see `Android Pay Example` text')
 
-    t.pass('User should see `Pay with Android Pay` button')
+  await driver.waitForVisible(androidPayButton, 15000)
+  t.pass('User should see `Pay with Android Pay` button')
 
-    // to be continued ...
-  } catch (error) {
-    await helper.screenshot()
-    await helper.source()
-
-    throw error
-  }
+  // to be continued ...
 })

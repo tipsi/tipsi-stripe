@@ -134,6 +134,7 @@ An object with the following keys:
 * `created` _Number_ - When the token was created.
 * `livemode` _Number_ - Whether or not this token was created in livemode. Will be `1` if you used your `Live Publishable Key`, and `0` if you used your `Test Publishable Key`.
 * `card` _Object_ - The credit card details object that were used to create the token.
+* `bankAccount` _Object_ - The external (bank) account details object that were used to create the token.
 * `extra` _Object_  (iOS only)- An additional information that method can provide.
 
 ##### `card`
@@ -157,6 +158,20 @@ An object with the following keys:
 * `addressCountry` _String_ - The cardholder’s country.
 * `addressZip` _String_ - The cardholder’s zip code.
 
+##### `bankAccount`
+
+An object with the following keys:
+
+* `routingNumber` _String_ - The routing number of this account.
+* `accountNumber` _String_ - The account number for this BankAccount.
+* `countryCode`  _String_ - The two-letter country code that this account was created in.
+* `currency`  _String_ - The currency of this account.
+* `accountHolderName` _String_ - The account holder's name.
+* `accountHolderType` _String_ - the bank account type. Can be one of: `company`|`individual`.
+* `fingerprint` _String_ - The account fingerprint.
+* `bankName` _String_ - The name of bank.
+* `last4` _String_ - The last four digits of the account number.
+
 #### Example
 
 ```js
@@ -178,8 +193,19 @@ An object with the following keys:
     addressCity: 'Nashville',
     addressState: 'Tennessee',
     addressCountry: 'US',
-    addressZip: '37211'
-  }
+    addressZip: '37211',
+  },
+  bankAccount: {
+    bankName: 'STRIPE TEST BANK',
+    accountHolderType: 'company',
+    last4: '6789',
+    accountHolderName: 'Test holder name',
+    currency: 'usd',
+    fingerprint: 'afghsajhaartkjasd',
+    countryCode: 'US',
+    accountNumber: '424542424',
+    routingNumber: '110000000',
+  },
 }
 ```
 
@@ -263,7 +289,7 @@ const items = [{
   label: 'Whisky',
   amount: '50.00',
 }, {
-  label: 'Tipsi, Inc'
+  label: 'Tipsi, Inc',
   amount: '50.00',
 }]
 
@@ -414,12 +440,12 @@ An object with the following keys:
 
 ```js
 const params = {
-  //mandatory
+  // mandatory
   number: '4242424242424242',
   expMonth: 11,
   expYear: 17,
   cvc: '223',
-  //optional
+  // optional
   name: 'Test User',
   currency: 'usd',
   addressLine1: '123 Test Street',
@@ -435,6 +461,45 @@ const token = await stripe.createTokenWithCard(params)
 // Client specific code
 // api.sendTokenToBackend(token)
 ```
+
+### Request with external (bank) account params object (Android only at the moment)
+
+#### `createTokenWithBankAccount(params) -> Promise`
+
+Creates token based on external (bank) params.
+
+##### `params`
+
+An object with the following keys:
+
+* `accountNumber` _String_ (Required) - The account number for this BankAccount.
+* `countryCode`  _String_ (Required) - The two-letter country code that this account was created in.
+* `currency`  _String_ (Required) - The currency of this account.
+* `routingNumber` _String_ - The routing number of this account.
+* `accountHolderName` _String_ - The account holder's name.
+* `accountHolderType` _String_ - the bank account type. Can be one of: `company`|`individual`.
+
+##### Example
+
+![Bank Params Android](https://cloud.githubusercontent.com/assets/1286226/26419755/6c801f06-40c9-11e7-972e-521850eda2ef.gif)
+
+```js
+const params = {
+  // mandatory 
+  accountNumber: '000123456789',
+  countryCode: 'us',
+  currency: 'usd',
+  // optional 
+  routingNumber: '110000000', // 9 digits 
+  accountHolderName: 'Test holder name',
+  accountHolderType: 'company', // "company" or "individual" 
+}
+
+const token = await stripe.createTokenWithCard(params)
+
+// Client specific code
+// api.sendTokenToBackend(token)
+```  
 
 ### PaymentCardTextField component
 
@@ -501,8 +566,8 @@ class FieldExample extends Component {
         placeholderColor={...}
         numberPlaceholder={...}
         expirationPlaceholder={...}
-        cvcPlaceholder={...},
-        disabled={false},
+        cvcPlaceholder={...}
+        disabled={false}
         onParamsChange={this.handleFieldParamsChange}
       />
     )

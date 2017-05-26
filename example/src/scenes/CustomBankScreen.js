@@ -5,35 +5,29 @@ import Spoiler from '../components/Spoiler'
 import Button from '../components/Button'
 import testID from '../utils/testID'
 
-export default class CustomCardScreen extends PureComponent {
-  static title = 'Custom Card'
+export default class CustomBankScreen extends PureComponent {
+  static title = 'Custom Bank'
 
   state = {
     loading: false,
     token: null,
     params: {
-      number: '4242424242424242',
-      expMonth: 11,
-      expYear: 17,
-      cvc: '223',
-      name: 'Test User',
-      currency: 'usd',
-      addressLine1: '123 Test Street',
-      addressLine2: 'Apt. 5',
-      addressCity: 'Test City',
-      addressState: 'Test State',
-      addressCountry: 'Test Country',
-      addressZip: '55555',
+      accountNumber: '000123456789', // required field
+      countryCode: 'us', // required field
+      currency: 'usd', // required field
+      routingNumber: '110000000', // 9 digits
+      accountHolderName: 'Test holder name',
+      accountHolderType: 'company',
     },
   }
 
-  handleCustomPayPress = async () => {
+  handleBankAccountPayPress = async () => {
     try {
       this.setState({
         loading: true,
         token: null,
       })
-      const token = await stripe.createTokenWithCard(this.state.params)
+      const token = await stripe.createTokenWithBankAccount(this.state.params)
       console.log('Result:', token) // eslint-disable-line no-console
       this.setState({
         loading: false,
@@ -53,49 +47,43 @@ export default class CustomCardScreen extends PureComponent {
     return (
       <View style={styles.container}>
         <Text style={styles.header}>
-          Custom Card Params Example
+          Custom Account Params Example
         </Text>
         <Spoiler title="Mandatory Fields">
           <View style={styles.params}>
             <Text style={styles.param}>
-              Number: {params.number}
+              Routing Number: {params.routingNumber}
             </Text>
             <Text style={styles.param}>
-              Month: {params.expMonth}
+              Account Number: {params.accountNumber}
             </Text>
             <Text style={styles.param}>
-              Year: {params.expYear}
+              Country Code: {params.countryCode}
+            </Text>
+            <Text style={styles.param}>
+              Currency: {params.currency}
             </Text>
           </View>
         </Spoiler>
         <Spoiler title="Optional Fields" defaultOpen={false}>
           <View style={styles.params}>
             <Text style={styles.param}>
-              CVC: {params.cvc}
+              Account Type: {params.accountType}
             </Text>
             <Text style={styles.param}>
-              Name: {params.name}
+              Account HolderType: {params.accountHolderType}
             </Text>
             <Text style={styles.param}>
-              Currency: {params.currency}
+              Account Holder Name: {params.accountHolderName}
             </Text>
             <Text style={styles.param}>
-              Address Line 1: {params.addressLine1}
+              Fingerprint: {params.fingerprint}
             </Text>
             <Text style={styles.param}>
-              Address Line 2: {params.addressLine2}
+              Bank name: {params.bankName}
             </Text>
             <Text style={styles.param}>
-              Address City: {params.addressCity}
-            </Text>
-            <Text style={styles.param}>
-              Address State: {params.addressState}
-            </Text>
-            <Text style={styles.param}>
-              Address Country: {params.addressCountry}
-            </Text>
-            <Text style={styles.param}>
-              Address Zip: {params.addressZip}
+              Last4: {params.last4}
             </Text>
           </View>
         </Spoiler>
@@ -105,12 +93,12 @@ export default class CustomCardScreen extends PureComponent {
         <Button
           text="Pay with custom params"
           loading={loading}
-          onPress={this.handleCustomPayPress}
-          {...testID('customCardButton')}
+          onPress={this.handleBankAccountPayPress}
+          {...testID('customAccountButton')}
         />
         <View
           style={styles.token}
-          {...testID('customCardToken')}>
+          {...testID('customAccountToken')}>
           {token &&
             <Text style={styles.instruction}>
               Token: {token.tokenId}
@@ -134,7 +122,7 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   params: {
-    backgroundColor: '#fff',
+    backgroundColor: '#ffffff',
     borderRadius: 10,
     padding: 10,
     alignItems: 'flex-start',

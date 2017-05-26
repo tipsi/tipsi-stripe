@@ -37,6 +37,7 @@ import com.google.android.gms.wallet.WalletConstants;
 import com.stripe.android.Stripe;
 import com.stripe.android.TokenCallback;
 import com.stripe.android.exception.AuthenticationException;
+import com.stripe.android.model.BankAccount;
 import com.stripe.android.model.Card;
 import com.stripe.android.model.Token;
 import com.stripe.android.net.StripeApiHandler;
@@ -182,17 +183,14 @@ public class StripeModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void createTokenWithCard(ReadableMap cardData, final Promise promise) {
+  public void createTokenWithCard(final ReadableMap cardData, final Promise promise) {
     try {
+
       stripe.createToken(createCard(cardData),
         publicKey,
         new TokenCallback() {
           public void onSuccess(Token token) {
-            WritableMap newToken = Arguments.createMap();
-            newToken.putString("tokenId", token.getId());
-            newToken.putBoolean("livemode", token.getLivemode());
-            newToken.putBoolean("user", token.getUsed());
-            promise.resolve(newToken);
+            promise.resolve(convertTokenToWritableMap(token));
           }
 
           public void onError(Exception error) {
@@ -205,6 +203,26 @@ public class StripeModule extends ReactContextBaseJavaModule {
     }
   }
 
+  @ReactMethod
+  public void createTokenWithBankAccount(final ReadableMap accountData, final Promise promise) {
+    try {
+      stripe.createBankAccountToken(createBankAccount(accountData),
+        publicKey,
+        null,
+        new TokenCallback() {
+          public void onSuccess(Token token) {
+            promise.resolve(convertTokenToWritableMap(token));
+          }
+
+          public void onError(Exception error) {
+            error.printStackTrace();
+            promise.reject(TAG, error.getMessage());
+          }
+        });
+    } catch (Exception e) {
+      promise.reject(TAG, e.getMessage());
+    }
+  }
 
   @ReactMethod
   public void paymentRequestWithCardForm(ReadableMap unused, final Promise promise) {
@@ -357,7 +375,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
           if (booleanResult.getStatus().isSuccess()) {
             Log.d(TAG, "onResult: booleanResult.getStatus().isSuccess()");
             if (booleanResult.getValue()) {
-              //TODO Work only in few countries. I don't now how test it in our coutries.
+              // TODO Work only in few countries. I don't now how test it in our countries.
               Log.d(TAG, "onResult: booleanResult.getValue()");
               showAndroidPay(map);
             } else {
@@ -378,24 +396,13 @@ public class StripeModule extends ReactContextBaseJavaModule {
     );
   }
 
-  private String exist(final ReadableMap map, final String key) {
-    if (map.hasKey(key)) {
-      return map.getString(key);
-    } else {
-      /**
-       * If {@param map} don't have some key - we must pass null to {@link Card} constructor.
-       */
-      return null;
-    }
-  }
-
   private Card createCard(final ReadableMap cardData) {
     return new Card(
-      //required fields
+      // required fields
       cardData.getString("number"),
       cardData.getInt("expMonth"),
       cardData.getInt("expYear"),
-      //additional fields
+      // additional fields
       exist(cardData, "cvc"),
       exist(cardData, "name"),
       exist(cardData, "addressLine1"),
@@ -411,5 +418,96 @@ public class StripeModule extends ReactContextBaseJavaModule {
       exist(cardData, "country"),
       exist(cardData, "currency")
     );
+  }
+
+  private WritableMap convertTokenToWritableMap(Token token) {
+    WritableMap newToken = Arguments.createMap();
+
+    if (token == null) return newToken;
+
+    newToken.putString("tokenId", token.getId());
+    newToken.putBoolean("livemode", token.getLivemode());
+    newToken.putBoolean("used", token.getUsed());
+    newToken.putDouble("created", token.getCreated().getTime());
+
+    if (token.getCard() != null) {
+      newToken.putMap("card", convertCardToWritableMap(token.getCard()));
+    }
+    if (token.getBankAccount() != null) {
+      newToken.putMap("bankAccount", convertBankAccountToWritableMap(token.getBankAccount()));
+    }
+
+    return newToken;
+  }
+
+  private WritableMap convertCardToWritableMap(final Card card) {
+    WritableMap result = Arguments.createMap();
+
+    if(card == null) return result;
+
+    result.putString("number", card.getNumber());
+    result.putString("cvc", card.getCVC() );
+    result.putInt("expMonth", card.getExpMonth() );
+    result.putInt("expYear", card.getExpYear() );
+    result.putString("name", card.getName() );
+    result.putString("addressLine1", card.getAddressLine1() );
+    result.putString("addressLine2", card.getAddressLine2() );
+    result.putString("addressCity", card.getAddressCity() );
+    result.putString("addressState", card.getAddressState() );
+    result.putString("addressZip", card.getAddressZip() );
+    result.putString("addressCountry", card.getAddressCountry() );
+    result.putString("last4", card.getLast4() );
+    result.putString("brand", card.getBrand() );
+    result.putString("funding", card.getFunding() );
+    result.putString("fingerprint", card.getFingerprint() );
+    result.putString("country", card.getCountry() );
+    result.putString("currency", card.getCurrency() );
+
+    return result;
+  }
+
+  private WritableMap convertBankAccountToWritableMap(BankAccount account) {
+    WritableMap result = Arguments.createMap();
+
+    if(account == null) return result;
+
+    result.putString("routingNumber", account.getRoutingNumber());
+    result.putString("accountNumber", account.getAccountNumber());
+    result.putString("countryCode", account.getCountryCode());
+    result.putString("currency", account.getCurrency());
+    result.putString("accountHolderName", account.getAccountHolderName());
+    result.putString("accountHolderType", account.getAccountHolderType());
+    result.putString("fingerprint", account.getFingerprint());
+    result.putString("bankName", account.getBankName());
+    result.putString("last4", account.getLast4());
+
+    return result;
+  }
+
+  private BankAccount createBankAccount(ReadableMap accountData) {
+    BankAccount account = new BankAccount(
+      // required fields only
+      accountData.getString("accountNumber"),
+      accountData.getString("countryCode"),
+      accountData.getString("currency"),
+      exist(accountData, "routingNumber", "")
+    );
+    account.setAccountHolderName(exist(accountData, "accountHolderName"));
+    account.setAccountHolderType(exist(accountData, "accountHolderType"));
+
+    return account;
+  }
+
+  private String exist(final ReadableMap map, final String key, final String def) {
+    if (map.hasKey(key)) {
+      return map.getString(key);
+    } else {
+      // If map don't have some key - we must pass to constructor default value.
+      return def;
+    }
+  }
+
+  private String exist(final ReadableMap map, final String key) {
+    return exist(map, key, null);
   }
 }

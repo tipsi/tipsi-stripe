@@ -1,10 +1,12 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import stripe from 'tipsi-stripe'
 import Button from '../components/Button'
 import testID from '../utils/testID'
 
-export default class CardFormScreen extends Component {
+export default class CardFormScreen extends PureComponent {
+  static title = 'Card Form'
+
   state = {
     loading: false,
     token: null,
@@ -69,7 +71,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
   },
   header: {
     fontSize: 20,

@@ -1,11 +1,14 @@
-import React, { Component } from 'react'
-import { View, Text, Platform, StyleSheet } from 'react-native'
-import { TabViewAnimated, TabBar } from 'react-native-tab-view'
+import React, { PureComponent } from 'react'
+import { View, Platform, StyleSheet } from 'react-native'
+import DrawerLayout from 'react-native-drawer-layout-polyfill'
 import stripe from 'tipsi-stripe'
+import Header from './components/Header'
+import MenuItem from './components/MenuItem'
 import ApplePayScreen from './scenes/ApplePayScreen'
 import AndroidPayScreen from './scenes/AndroidPayScreen'
 import CardFormScreen from './scenes/CardFormScreen'
 import CustomCardScreen from './scenes/CustomCardScreen'
+import CustomBankScreen from './scenes/CustomBankScreen'
 import CardTextFieldScreen from './scenes/CardTextFieldScreen'
 import testID from './utils/testID'
 
@@ -14,66 +17,83 @@ stripe.init({
   merchantId: '<MERCHANT_ID>',
 })
 
-export default class Root extends Component {
+export default class Root extends PureComponent {
   state = {
     index: 0,
+    isDrawerOpen: false,
     routes: [
-      { key: '1', title: Platform.select({ ios: 'Pay', android: 'Android Pay' }) },
-      { key: '2', title: 'Card Form' },
-      { key: '3', title: 'Custom Card' },
-      { key: '4', title: 'Card Text Field' },
-    ],
-  };
+      Platform.select({
+        ios: ApplePayScreen,
+        android: AndroidPayScreen,
+      }),
+      CardFormScreen,
+      CustomCardScreen,
+      Platform.select({
+        android: CustomBankScreen,
+      }),
+      CardTextFieldScreen,
+    ].filter(item => item),
+  }
+
+  getCurrentScene = () => {
+    return this.state.routes[this.state.index]
+  }
 
   handleChangeTab = (index) => {
+    this.drawer.closeDrawer()
     this.setState({ index })
   }
 
-  renderHeader = props => (
-    <TabBar
-      {...props}
-      style={styles.tabbar}
-      indicatorStyle={styles.indicator}
-      accessible={false}
-      renderLabel={this.renderLabel}
-    />
-  )
+  handleDrawerRef = (node) => {
+    this.drawer = node
+  }
 
-  renderLabel = ({ route, index }) => (
-    <Text style={styles.label}>
-      {route.title.toUpperCase()}
-    </Text>
-  )
-
-  renderScene = ({ route }) => {
-    switch (route.key) {
-      case '1':
-        return Platform.select({
-          ios: <ApplePayScreen />,
-          android: <AndroidPayScreen />,
-        })
-      case '2':
-        return <CardFormScreen />
-      case '3':
-        return <CustomCardScreen />
-      case '4':
-        return <CardTextFieldScreen />
-      default:
-        return null
+  handleMenuPress = () => {
+    if (this.state.isDrawerOpen) {
+      this.drawer.closeDrawer()
+    } else {
+      this.drawer.openDrawer()
     }
-  };
+  }
+
+  handleDrawerOpen = () => {
+    this.setState({ isDrawerOpen: true })
+  }
+
+  handleDrawerClose = () => {
+    this.setState({ isDrawerOpen: false })
+  }
+
+  renderNavigation = () => (
+    <View style={styles.drawer}>
+      {this.state.routes.map((Scene, index) => (
+        <MenuItem
+          key={index}
+          title={Scene.title}
+          active={this.state.index === index}
+          onPress={() => this.handleChangeTab(index)}
+          {...testID(Scene.title)}
+        />
+      ))}
+    </View>
+  )
 
   render() {
+    const Scene = this.getCurrentScene()
+
     return (
       <View style={styles.container}>
         <View style={styles.statusbar} />
-        <TabViewAnimated
-          style={styles.tabsContainer}
-          navigationState={this.state}
-          renderScene={this.renderScene}
-          renderHeader={this.renderHeader}
-          onRequestChangeTab={this.handleChangeTab}
-        />
+        <Header title={`Example: ${Scene.title}`} onMenuPress={this.handleMenuPress} />
+        <DrawerLayout
+          drawerWidth={200}
+          drawerPosition={DrawerLayout.positions.Left}
+          renderNavigationView={this.renderNavigation}
+          onDrawerOpen={this.handleDrawerOpen}
+          onDrawerClose={this.handleDrawerClose}
+          ref={this.handleDrawerRef}>
+          <Scene />
+        </DrawerLayout>
       </View>
     )
   }
@@ -85,27 +105,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5',
   },
   statusbar: {
-    height: Platform.OS === 'ios' ? 20 : 0,
+    height: Platform.select({ ios: 20, android: 0 }),
   },
-  tabsContainer: {
+  drawer: {
     flex: 1,
-  },
-  tabbar: {
-    height: 45,
-    backgroundColor: '#fff',
-  },
-  page: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  indicator: {
-    backgroundColor: '#000',
-  },
-  label: {
-    color: '#000',
-    fontSize: 10,
-    fontWeight: '600',
-    textAlign: 'center',
+    backgroundColor: '#ffffff',
   },
 })

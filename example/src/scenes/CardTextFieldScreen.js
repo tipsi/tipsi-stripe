@@ -1,11 +1,18 @@
-import React, { Component } from 'react'
-import { KeyboardAvoidingView, View, Text, StyleSheet } from 'react-native'
+import React, { PureComponent } from 'react'
+import { KeyboardAvoidingView, View, Text, Platform, StyleSheet } from 'react-native'
 import dismissKeyboard from 'react-native/Libraries/Utilities/dismissKeyboard'
 import { PaymentCardTextField } from 'tipsi-stripe'
 import Spoiler from '../components/Spoiler'
 import testID from '../utils/testID'
 
-export default class CardTextFieldScreen extends Component {
+const ContainerView = Platform.select({
+  ios: KeyboardAvoidingView,
+  android: View,
+})
+
+export default class CardTextFieldScreen extends PureComponent {
+  static title = 'Card Text Field'
+
   state = {
     valid: false,
     params: {
@@ -27,7 +34,7 @@ export default class CardTextFieldScreen extends Component {
     const { valid, params } = this.state
 
     return (
-      <KeyboardAvoidingView
+      <ContainerView
         behavior="padding"
         style={styles.container}
         onResponderGrant={dismissKeyboard}
@@ -73,7 +80,7 @@ export default class CardTextFieldScreen extends Component {
             </View>
           </Spoiler>
         </View>
-      </KeyboardAvoidingView>
+      </ContainerView>
     )
   }
 }
@@ -83,7 +90,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
   },
   header: {
     fontSize: 20,
@@ -103,7 +109,7 @@ const styles = StyleSheet.create({
   },
   params: {
     alignItems: 'flex-start',
-    backgroundColor: '#fff',
+    backgroundColor: '#ffffff',
     borderRadius: 10,
     padding: 10,
     margin: 5,
@@ -111,7 +117,7 @@ const styles = StyleSheet.create({
   field: {
     width: 300,
     color: '#449aeb',
-    borderColor: '#000',
+    borderColor: '#000000',
     borderWidth: 1,
     borderRadius: 5,
   },

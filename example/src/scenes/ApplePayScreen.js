@@ -1,11 +1,13 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { View, Text, Switch, StyleSheet } from 'react-native'
 import stripe from 'tipsi-stripe'
 import Button from '../components/Button'
 import testID from '../utils/testID'
 
 /* eslint-disable no-console */
-export default class ApplePayScreen extends Component {
+export default class ApplePayScreen extends PureComponent {
+  static title = 'Pay'
+
   state = {
     loading: false,
     allowed: false,
@@ -138,7 +140,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
   },
   header: {
     fontSize: 20,
