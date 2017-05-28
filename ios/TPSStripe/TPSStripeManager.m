@@ -124,6 +124,7 @@ RCT_EXPORT_METHOD(paymentRequestWithCardForm:(NSDictionary *)options
     NSUInteger requiredBillingAddressFields = [self billingType:options[@"requiredBillingAddressFields"]];
     NSString *companyName = options[@"companyName"] ? options[@"companyName"] : @"";
     BOOL smsAutofillDisabled = [options[@"smsAutofillDisabled"] boolValue];
+    STPUserInformation *prefilledInformation = [self prefilledInformation:options[@"prefilledInformation"]];
     NSString *nextPublishableKey = options[@"publishableKey"] ? options[@"publishableKey"] : publishableKey;
     UIModalPresentationStyle formPresentation = [self formPresentation:options[@"presentation"]];
     STPTheme *theme = [self formTheme:options[@"theme"]];
@@ -137,6 +138,7 @@ RCT_EXPORT_METHOD(paymentRequestWithCardForm:(NSDictionary *)options
 
     STPAddCardViewController *addCardViewController = [[STPAddCardViewController alloc] initWithConfiguration:configuration theme:theme];
     addCardViewController.delegate = self;
+    addCardViewController.prefilledInformation = prefilledInformation;
     // STPAddCardViewController must be shown inside a UINavigationController.
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:addCardViewController];
     [navigationController setModalPresentationStyle:formPresentation];
@@ -215,7 +217,7 @@ RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
 
 RCT_EXPORT_METHOD(openApplePaySetup) {
     PKPassLibrary *library = [[PKPassLibrary alloc] init];
-    
+
     // Here we should check, if openPaymentSetup selector exist
     if ([library respondsToSelector:NSSelectorFromString(@"openPaymentSetup")]) {
         [library openPaymentSetup];
@@ -265,7 +267,7 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
         } else {
             NSDictionary *result = [self convertTokenObject:token];
             NSDictionary *extra = @{
-                                    @"billingContact": [self contactDetails:payment.billingContact] ?: [NSNull null],
+                @"billingContact": [self contactDetails:payment.billingContact] ?: [NSNull null],
                 @"shippingContact": [self contactDetails:payment.shippingContact] ?: [NSNull null],
                 @"shippingMethod": [self shippingDetails:payment.shippingMethod] ?: [NSNull null]
             };
@@ -461,6 +463,32 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
         return STPBillingAddressFieldsFull;
     }
     return STPBillingAddressFieldsNone;
+}
+
+- (STPUserInformation *)prefilledInformation:(NSDictionary*)inputInformation {
+    STPUserInformation *prefilledInformation = [[STPUserInformation alloc] init];
+
+    [prefilledInformation setEmail:inputInformation[@"email"]];
+    [prefilledInformation setPhone:inputInformation[@"phone"]];
+    [prefilledInformation setBillingAddress: [self billingAddress:inputInformation[@"billingAddress"]]];
+
+    return prefilledInformation;
+}
+
+- (STPAddress *)billingAddress:(NSDictionary*)inputAddress {
+    STPAddress *billingAddress = [[STPAddress alloc] init];
+
+    [billingAddress setName:inputAddress[@"name"]];
+    [billingAddress setLine1:inputAddress[@"line1"]];
+    [billingAddress setLine2:inputAddress[@"line2"]];
+    [billingAddress setCity:inputAddress[@"city"]];
+    [billingAddress setState:inputAddress[@"state"]];
+    [billingAddress setPostalCode:inputAddress[@"postalCode"]];
+    [billingAddress setCountry:inputAddress[@"country"]];
+    [billingAddress setPhone:inputAddress[@"phone"]];
+    [billingAddress setEmail:inputAddress[@"email"]];
+
+    return billingAddress;
 }
 
 - (STPTheme *)formTheme:(NSDictionary*)options {
