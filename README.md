@@ -146,6 +146,7 @@ An object with the following keys:
 * `funding` _String_ (iOS only) - The card’s funding. Can be one of: `debit`|`credit`|`prepaid`|`unknown`.
 * `last4` _String_ - The last 4 digits of the card.
 * `dynamicLast4` _String_ (iOS only) - For cards made with `Apple Pay`, this refers to the last 4 digits of the `Device Account Number` for the tokenized card.
+* `isApplePayCard` _Bool_ (iOS only) - Whether or not the card originated from Apple Pay.
 * `expMonth` _Number_ - The card’s expiration month. 1-indexed (i.e. 1 == January)
 * `expYear` _Number_ - The card’s expiration year.
 * `country` _String_ - Two-letter ISO code representing the issuing country of the card.
@@ -221,7 +222,7 @@ Indicates whether or not the device supports Apple Pay. Returns a `Boolean` valu
 
 #### `paymentRequestWithApplePay(items, [options]) -> Promise`
 
-Launch the `Apple Pay` view to to accept payment.
+Launch the `Apple Pay` view to accept payment.
 
 ##### `items`
 
@@ -374,10 +375,34 @@ Launch `Add Card` view to to accept payment.
 An object with the following keys:
 
 * `requiredBillingAddressFields` _String_ - The billing address fields the user must fill out when prompted for their payment details. Can be one of: `full`|`zip` or not specify to disable.
+* `prefilledInformation` _Object_ - You can set this property to pre-fill any information you’ve already collected from your user.
+* `managedAccountCurrency` _String_ - Required to be able to add the card to an account (in all other cases, this parameter is not used). [More info](https://stripe.com/docs/api#create_card_token-card-currency).
 * `smsAutofillDisabled` _Bool_ - When entering their payment information, users who have a saved card with Stripe will be prompted to autofill it by entering an SMS code. Set this property to `true` to disable this feature.
 * `theme` _Object_ - Can be used to visually style Stripe-provided UI.
 
-##### `theme (iOS only)`
+##### `prefilledInformation`
+
+An object with the following keys:
+
+* `email` _String_ - The user’s email address.
+* `phone` _String_ - The user’s phone number.
+* `billingAddress` _Object_ - The user’s billing address. When set, the add card form will be filled with this address.
+
+##### `billingAddress`
+
+An object with the following keys:
+
+* `name` _String_ - The user’s full name (e.g. "Jane Doe").
+* `line1` _String_ - The first line of the user’s street address (e.g. "123 Fake St").
+* `line2` _String_ - The apartment, floor number, etc of the user’s street address (e.g. "Apartment 1A").
+* `city` _String_ - The city in which the user resides (e.g. "San Francisco").
+* `state` _String_ - The state in which the user resides (e.g. "CA").
+* `postalCode` _String_ - The postal code in which the user resides (e.g. "90210").
+* `country` _String_ - The ISO country code of the address (e.g. "US").
+* `phone` _String_ - The phone number of the address (e.g. "8885551212").
+* `email` _String_ - The email of the address (e.g. "jane@doe.com").
+
+##### `theme`
 
 An object with the following keys:
 
@@ -397,6 +422,17 @@ An object with the following keys:
 const options = {
   smsAutofillDisabled: true,
   requiredBillingAddressFields: 'full',
+  prefilledInformation: {
+    billingAddress: {
+      name: 'Gunilla Haugeh',
+      line1: 'Canary Place',
+      line2: '3',
+      city: 'Macon',
+      state: 'Georgia',
+      country: 'US',
+      postalCode: '31217',
+    },
+  },
 }
 
 const token = await stripe.paymentRequestWithCardForm(options)
@@ -485,40 +521,40 @@ An object with the following keys:
 
 ```js
 const params = {
-  // mandatory 
+  // mandatory
   accountNumber: '000123456789',
   countryCode: 'us',
   currency: 'usd',
-  // optional 
-  routingNumber: '110000000', // 9 digits 
+  // optional
+  routingNumber: '110000000', // 9 digits
   accountHolderName: 'Test holder name',
-  accountHolderType: 'company', // "company" or "individual" 
+  accountHolderType: 'company', // "company" or "individual"
 }
 
 const token = await stripe.createTokenWithCard(params)
 
 // Client specific code
 // api.sendTokenToBackend(token)
-```  
+```
 
 ### PaymentCardTextField component
 
 A text field component specialized for collecting credit/debit card information. It manages multiple text fields under the hood to collect this information. It’s designed to fit on a single line.
 
 #### Props
-* `styles` Object - Accepts all `View` styles, also support `color` param.
-* `cursorColor` String (IOS only) - The cursor color for the field.
-* `textErrorColor` String (IOS only) - The text color to be used when the user has entered invalid information, such as an invalid card number.
-* `placeholderColor` String (IOS only)- The text placeholder color used in each child field.
-* `numberPlaceholder` String - The placeholder for the card number field.
-* `expirationPlaceholder` String - The placeholder for the expiration field.
-* `cvcPlaceholder` String - The placeholder for the cvc field.
-* `disabled` Bool(IOS only) - Enable/disable selecting or editing the field. Useful when submitting card details to Stripe.
-* `enabled` Bool (Android only) - Enable/disable selecting or editing the field. Useful when submitting card details to Stripe.
-* `onChange` Func - This function will be called each input change.
-* `onParamsChange` Func - This function will be called each input change, it takes two argumants:
-  * `valid` Bool - Whether or not the form currently contains a valid card number, expiration date, and CVC.
-  * `params` Object - Contains entered card params: `number`, `expMonth`, `expYear` and `cvc`.
+* `styles` _Object_ - Accepts all `View` styles, also support `color` param.
+* `cursorColor` _String_ (IOS only) - The cursor color for the field.
+* `textErrorColor` _String_ (IOS only) - The text color to be used when the user has entered invalid information, such as an invalid card number.
+* `placeholderColor` _String_ (IOS only)- The text placeholder color used in each child field.
+* `numberPlaceholder` _String_ - The placeholder for the card number field.
+* `expirationPlaceholder` _String_ - The placeholder for the expiration field.
+* `cvcPlaceholder` _String_ - The placeholder for the cvc field.
+* `disabled` _Bool_ (IOS only) - Enable/disable selecting or editing the field. Useful when submitting card details to Stripe.
+* `enabled` _Bool_ (Android only) - Enable/disable selecting or editing the field. Useful when submitting card details to Stripe.
+* `onChange` _Func_ - This function will be called each input change.
+* `onParamsChange` _Func_ - This function will be called each input change, it takes two argumants:
+  * `valid` _Bool_ - Whether or not the form currently contains a valid card number, expiration date, and CVC.
+  * `params` _Object_ - Contains entered card params: `number`, `expMonth`, `expYear` and `cvc`.
 
 #### Initial params
 

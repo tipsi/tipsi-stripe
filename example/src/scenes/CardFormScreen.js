@@ -23,7 +23,6 @@ export default class CardFormScreen extends PureComponent {
         smsAutofillDisabled: true,
         requiredBillingAddressFields: 'full',
         prefilledInformation: {
-          email: 'petrov.aap@gmail.com',
           billingAddress: {
             name: 'Gunilla Haugeh',
             line1: 'Canary Place',

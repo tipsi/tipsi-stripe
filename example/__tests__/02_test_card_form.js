@@ -2,7 +2,7 @@ import helper from 'tipsi-appium-helper'
 import test from './utils/tape'
 import openTestSuite from './common/openTestSuite'
 
-const { driver, select, platform, idFromAccessId, idFromResourceId, idFromText } = helper
+const { driver, select, platform, idFromAccessId, idFromResourceId } = helper
 
 test('Test if user can use Card Form', async (t) => {
   const cardFormButton = idFromAccessId('cardFormButton')

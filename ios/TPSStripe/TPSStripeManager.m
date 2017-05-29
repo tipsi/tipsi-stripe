@@ -125,6 +125,7 @@ RCT_EXPORT_METHOD(paymentRequestWithCardForm:(NSDictionary *)options
     NSString *companyName = options[@"companyName"] ? options[@"companyName"] : @"";
     BOOL smsAutofillDisabled = [options[@"smsAutofillDisabled"] boolValue];
     STPUserInformation *prefilledInformation = [self prefilledInformation:options[@"prefilledInformation"]];
+    NSString *managedAccountCurrency = options[@"managedAccountCurrency"];
     NSString *nextPublishableKey = options[@"publishableKey"] ? options[@"publishableKey"] : publishableKey;
     UIModalPresentationStyle formPresentation = [self formPresentation:options[@"presentation"]];
     STPTheme *theme = [self formTheme:options[@"theme"]];
@@ -137,8 +138,9 @@ RCT_EXPORT_METHOD(paymentRequestWithCardForm:(NSDictionary *)options
 
 
     STPAddCardViewController *addCardViewController = [[STPAddCardViewController alloc] initWithConfiguration:configuration theme:theme];
-    addCardViewController.delegate = self;
-    addCardViewController.prefilledInformation = prefilledInformation;
+    [addCardViewController setDelegate:self];
+    [addCardViewController setPrefilledInformation:prefilledInformation];
+    [addCardViewController setManagedAccountCurrency:managedAccountCurrency];
     // STPAddCardViewController must be shown inside a UINavigationController.
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:addCardViewController];
     [navigationController setModalPresentationStyle:formPresentation];
@@ -208,10 +210,10 @@ RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
         promiseResolver = nil;
         requestIsCompleted = YES;
         reject(
-               [NSString stringWithFormat:@"%ld", (long)1],
-               @"Apple Pay configuration error",
-               [NSError errorWithDomain:@"StipeNative" code:1 userInfo:@{NSLocalizedDescriptionKey:@"Apple Pay configuration error"}]
-               );
+            [NSString stringWithFormat:@"%ld", (long)1],
+            @"Apple Pay configuration error",
+            [NSError errorWithDomain:@"StipeNative" code:1 userInfo:@{NSLocalizedDescriptionKey:@"Apple Pay configuration error"}]
+        );
     }
 }
 
@@ -300,19 +302,18 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     [result setValue:card forKey:@"card"];
 
     // Token
-
     [result setValue:token.tokenId forKey:@"tokenId"];
     [result setValue:@([token.created timeIntervalSince1970]) forKey:@"created"];
     [result setValue:@(token.livemode) forKey:@"livemode"];
 
     // Card
-
     [card setValue:token.card.cardId forKey:@"cardId"];
 
     [card setValue:[self cardBrand:token.card.brand] forKey:@"brand"];
     [card setValue:[self cardFunding:token.card.funding] forKey:@"funding"];
     [card setValue:token.card.last4 forKey:@"last4"];
     [card setValue:token.card.dynamicLast4 forKey:@"dynamicLast4"];
+    [card setValue:@(token.card.isApplePayCard) forKey:@"isApplePayCard"];
     [card setValue:@(token.card.expMonth) forKey:@"expMonth"];
     [card setValue:@(token.card.expYear) forKey:@"expYear"];
     [card setValue:token.card.country forKey:@"country"];
@@ -524,6 +525,5 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     });
     return kSharedFormatter;
 }
-
 
 @end
