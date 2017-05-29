@@ -19,16 +19,22 @@ export default class CardFormScreen extends PureComponent {
         token: null,
       })
       const token = await stripe.paymentRequestWithCardForm({
-        smsAutofillDisabled: true, // iOS only
-        // requiredBillingAddressFields: 'full',
-        // prefilledInformation: {
-        //   email: 'petrov.aap@gmail.com',
-        //   billingAddress: {
-        //     name: 'Anton',
-        //     country: 'RU',
-        //     postalCode: '607651',
-        //   },
-        // },
+        // Only iOS support this options
+        smsAutofillDisabled: true,
+        requiredBillingAddressFields: 'full',
+        prefilledInformation: {
+          email: 'petrov.aap@gmail.com',
+          billingAddress: {
+            name: 'Gunilla Haugeh',
+            line1: 'Canary Place',
+            line2: '3',
+            city: 'Macon',
+            state: 'Georgia',
+            country: 'US',
+            postalCode: '31217',
+            email: 'ghaugeh0@printfriendly.com',
+          },
+        },
       })
 
       console.log('Result:', token) // eslint-disable-line no-console
