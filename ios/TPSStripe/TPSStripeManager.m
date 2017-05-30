@@ -124,7 +124,7 @@ RCT_EXPORT_METHOD(paymentRequestWithCardForm:(NSDictionary *)options
     NSUInteger requiredBillingAddressFields = [self billingType:options[@"requiredBillingAddressFields"]];
     NSString *companyName = options[@"companyName"] ? options[@"companyName"] : @"";
     BOOL smsAutofillDisabled = [options[@"smsAutofillDisabled"] boolValue];
-    STPUserInformation *prefilledInformation = [self prefilledInformation:options[@"prefilledInformation"]];
+    STPUserInformation *prefilledInformation = [self userInformation:options[@"prefilledInformation"]];
     NSString *managedAccountCurrency = options[@"managedAccountCurrency"];
     NSString *nextPublishableKey = options[@"publishableKey"] ? options[@"publishableKey"] : publishableKey;
     UIModalPresentationStyle formPresentation = [self formPresentation:options[@"presentation"]];
@@ -466,30 +466,30 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     return STPBillingAddressFieldsNone;
 }
 
-- (STPUserInformation *)prefilledInformation:(NSDictionary*)inputInformation {
-    STPUserInformation *prefilledInformation = [[STPUserInformation alloc] init];
+- (STPUserInformation *)userInformation:(NSDictionary*)inputInformation {
+    STPUserInformation *userInformation = [[STPUserInformation alloc] init];
 
-    [prefilledInformation setEmail:inputInformation[@"email"]];
-    [prefilledInformation setPhone:inputInformation[@"phone"]];
-    [prefilledInformation setBillingAddress: [self billingAddress:inputInformation[@"billingAddress"]]];
+    [userInformation setEmail:inputInformation[@"email"]];
+    [userInformation setPhone:inputInformation[@"phone"]];
+    [userInformation setBillingAddress: [self address:inputInformation[@"billingAddress"]]];
 
-    return prefilledInformation;
+    return userInformation;
 }
 
-- (STPAddress *)billingAddress:(NSDictionary*)inputAddress {
-    STPAddress *billingAddress = [[STPAddress alloc] init];
+- (STPAddress *)address:(NSDictionary*)inputAddress {
+    STPAddress *address = [[STPAddress alloc] init];
 
-    [billingAddress setName:inputAddress[@"name"]];
-    [billingAddress setLine1:inputAddress[@"line1"]];
-    [billingAddress setLine2:inputAddress[@"line2"]];
-    [billingAddress setCity:inputAddress[@"city"]];
-    [billingAddress setState:inputAddress[@"state"]];
-    [billingAddress setPostalCode:inputAddress[@"postalCode"]];
-    [billingAddress setCountry:inputAddress[@"country"]];
-    [billingAddress setPhone:inputAddress[@"phone"]];
-    [billingAddress setEmail:inputAddress[@"email"]];
+    [address setName:inputAddress[@"name"]];
+    [address setLine1:inputAddress[@"line1"]];
+    [address setLine2:inputAddress[@"line2"]];
+    [address setCity:inputAddress[@"city"]];
+    [address setState:inputAddress[@"state"]];
+    [address setPostalCode:inputAddress[@"postalCode"]];
+    [address setCountry:inputAddress[@"country"]];
+    [address setPhone:inputAddress[@"phone"]];
+    [address setEmail:inputAddress[@"email"]];
 
-    return billingAddress;
+    return address;
 }
 
 - (STPTheme *)formTheme:(NSDictionary*)options {
