@@ -34,7 +34,7 @@ test('Test if user can use Card Form', async (t) => {
   // Iterate over billing address fields (iOS only)
   // Verifies that all fields are filled
   if (platform('ios')) {
-    for (index of new Array(7)) {
+    for (const index of new Array(7)) { // eslint-disable-line no-unused-vars
       await driver.waitForVisible(nextButtonId, 10000)
       await driver.click(nextButtonId)
     }
