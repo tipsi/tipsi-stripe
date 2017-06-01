@@ -17,8 +17,12 @@ project_path = @project_paths.first
 project = Xcodeproj::Project.open(project_path)
 main_target = project.targets.first
 
-puts "Checking Podfile in iOS project #{@podfile_path}"
+def install_pods
+  puts 'Installing Pods'
+  system 'pod install'
+end
 
+puts "Checking Podfile in iOS project #{@podfile_path}"
 
 if File.exist? @podfile_path
   puts 'Found an existing Podfile'
@@ -27,8 +31,9 @@ if File.exist? @podfile_path
   begin
     escaped_target_name = main_target.name.gsub(/'/, "\\\\\'")
     File.readlines(@podfile_path).each do |line|
-      if line =~ /pod\s'Stripe'/
+      if line =~ /pod\s'Stipe'/
         puts 'Stripe pod is already added'
+        install_pods()
         exit
       end
     temp_file.puts(line)
@@ -56,6 +61,4 @@ else
   File.write(@podfile_path, podfile)
 end
 
-puts 'Installing Pods'
-
-system 'pod install'
+install_pods()
