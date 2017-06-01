@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 // This code is taken from
 // https://github.com/maxs15/react-native-spinkit
 
