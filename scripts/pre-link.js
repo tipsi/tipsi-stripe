@@ -4,7 +4,7 @@ console.log('Preparing to link tipsi-stripe for iOS')
 console.log('Checking CocoaPods...')
 
 try {
-  cp.execSync('which pod', { encoding: 'utf-8' })
+  cp.execSync('which pod')
   console.log('CocoaPods already installed')
 } catch (e) {
   console.log('Installing CocoaPods...')
