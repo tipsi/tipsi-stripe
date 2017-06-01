@@ -41,6 +41,11 @@ RCT_EXPORT_METHOD(init:(NSDictionary *)options) {
     [Stripe setDefaultPublishableKey:publishableKey];
 }
 
+RCT_EXPORT_METHOD(openPaymentSetup) {
+  PKPassLibrary* lib = [[PKPassLibrary alloc] init];
+  [lib openPaymentSetup];
+}
+
 RCT_EXPORT_METHOD(deviceSupportsApplePay:(RCTPromiseResolveBlock)resolve
                                 rejecter:(RCTPromiseRejectBlock)reject) {
     resolve(@([Stripe deviceSupportsApplePay]));
