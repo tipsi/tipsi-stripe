@@ -14,6 +14,7 @@ test('Test if user can use Card Form', async (t) => {
     ios: idFromAccessId('Done'),
     android: idFromResourceId('android:id/button1'),
   })
+  const nextButtonId = idFromAccessId('Next')
   const tokenId = idFromAccessId('cardFormToken')
 
   await openTestSuite('Card Form')
@@ -29,6 +30,15 @@ test('Test if user can use Card Form', async (t) => {
 
   await driver.keys('4242424242424242 1234 123')
   t.pass('User should be able write card data')
+
+  // Iterate over billing address fields (iOS only)
+  // Verifies that all fields are filled
+  if (platform('ios')) {
+    for (const index of new Array(7)) { // eslint-disable-line no-unused-vars
+      await driver.waitForVisible(nextButtonId, 10000)
+      await driver.click(nextButtonId)
+    }
+  }
 
   await driver.waitForEnabled(doneButtonId, 20000)
   await driver.click(doneButtonId)

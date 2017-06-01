@@ -124,6 +124,8 @@ RCT_EXPORT_METHOD(paymentRequestWithCardForm:(NSDictionary *)options
     NSUInteger requiredBillingAddressFields = [self billingType:options[@"requiredBillingAddressFields"]];
     NSString *companyName = options[@"companyName"] ? options[@"companyName"] : @"";
     BOOL smsAutofillDisabled = [options[@"smsAutofillDisabled"] boolValue];
+    STPUserInformation *prefilledInformation = [self userInformation:options[@"prefilledInformation"]];
+    NSString *managedAccountCurrency = options[@"managedAccountCurrency"];
     NSString *nextPublishableKey = options[@"publishableKey"] ? options[@"publishableKey"] : publishableKey;
     UIModalPresentationStyle formPresentation = [self formPresentation:options[@"presentation"]];
     STPTheme *theme = [self formTheme:options[@"theme"]];
@@ -136,7 +138,9 @@ RCT_EXPORT_METHOD(paymentRequestWithCardForm:(NSDictionary *)options
 
 
     STPAddCardViewController *addCardViewController = [[STPAddCardViewController alloc] initWithConfiguration:configuration theme:theme];
-    addCardViewController.delegate = self;
+    [addCardViewController setDelegate:self];
+    [addCardViewController setPrefilledInformation:prefilledInformation];
+    [addCardViewController setManagedAccountCurrency:managedAccountCurrency];
     // STPAddCardViewController must be shown inside a UINavigationController.
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:addCardViewController];
     [navigationController setModalPresentationStyle:formPresentation];
@@ -206,16 +210,16 @@ RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
         promiseResolver = nil;
         requestIsCompleted = YES;
         reject(
-               [NSString stringWithFormat:@"%ld", (long)1],
-               @"Apple Pay configuration error",
-               [NSError errorWithDomain:@"StipeNative" code:1 userInfo:@{NSLocalizedDescriptionKey:@"Apple Pay configuration error"}]
-               );
+            [NSString stringWithFormat:@"%ld", (long)1],
+            @"Apple Pay configuration error",
+            [NSError errorWithDomain:@"StipeNative" code:1 userInfo:@{NSLocalizedDescriptionKey:@"Apple Pay configuration error"}]
+        );
     }
 }
 
 RCT_EXPORT_METHOD(openApplePaySetup) {
     PKPassLibrary *library = [[PKPassLibrary alloc] init];
-    
+
     // Here we should check, if openPaymentSetup selector exist
     if ([library respondsToSelector:NSSelectorFromString(@"openPaymentSetup")]) {
         [library openPaymentSetup];
@@ -265,7 +269,7 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
         } else {
             NSDictionary *result = [self convertTokenObject:token];
             NSDictionary *extra = @{
-                                    @"billingContact": [self contactDetails:payment.billingContact] ?: [NSNull null],
+                @"billingContact": [self contactDetails:payment.billingContact] ?: [NSNull null],
                 @"shippingContact": [self contactDetails:payment.shippingContact] ?: [NSNull null],
                 @"shippingMethod": [self shippingDetails:payment.shippingMethod] ?: [NSNull null]
             };
@@ -298,19 +302,18 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     [result setValue:card forKey:@"card"];
 
     // Token
-
     [result setValue:token.tokenId forKey:@"tokenId"];
     [result setValue:@([token.created timeIntervalSince1970]) forKey:@"created"];
     [result setValue:@(token.livemode) forKey:@"livemode"];
 
     // Card
-
     [card setValue:token.card.cardId forKey:@"cardId"];
 
     [card setValue:[self cardBrand:token.card.brand] forKey:@"brand"];
     [card setValue:[self cardFunding:token.card.funding] forKey:@"funding"];
     [card setValue:token.card.last4 forKey:@"last4"];
     [card setValue:token.card.dynamicLast4 forKey:@"dynamicLast4"];
+    [card setValue:@(token.card.isApplePayCard) forKey:@"isApplePayCard"];
     [card setValue:@(token.card.expMonth) forKey:@"expMonth"];
     [card setValue:@(token.card.expYear) forKey:@"expYear"];
     [card setValue:token.card.country forKey:@"country"];
@@ -463,6 +466,32 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     return STPBillingAddressFieldsNone;
 }
 
+- (STPUserInformation *)userInformation:(NSDictionary*)inputInformation {
+    STPUserInformation *userInformation = [[STPUserInformation alloc] init];
+
+    [userInformation setEmail:inputInformation[@"email"]];
+    [userInformation setPhone:inputInformation[@"phone"]];
+    [userInformation setBillingAddress: [self address:inputInformation[@"billingAddress"]]];
+
+    return userInformation;
+}
+
+- (STPAddress *)address:(NSDictionary*)inputAddress {
+    STPAddress *address = [[STPAddress alloc] init];
+
+    [address setName:inputAddress[@"name"]];
+    [address setLine1:inputAddress[@"line1"]];
+    [address setLine2:inputAddress[@"line2"]];
+    [address setCity:inputAddress[@"city"]];
+    [address setState:inputAddress[@"state"]];
+    [address setPostalCode:inputAddress[@"postalCode"]];
+    [address setCountry:inputAddress[@"country"]];
+    [address setPhone:inputAddress[@"phone"]];
+    [address setEmail:inputAddress[@"email"]];
+
+    return address;
+}
+
 - (STPTheme *)formTheme:(NSDictionary*)options {
     STPTheme *theme = [[STPTheme alloc] init];
 
@@ -496,6 +525,5 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     });
     return kSharedFormatter;
 }
-
 
 @end
