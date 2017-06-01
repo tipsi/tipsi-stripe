@@ -31,7 +31,7 @@ if File.exist? @podfile_path
   begin
     escaped_target_name = main_target.name.gsub(/'/, "\\\\\'")
     File.readlines(@podfile_path).each do |line|
-      if line =~ /pod\s'Stipe'/
+      if line =~ /pod\s'Stripe'/
         puts 'Stripe pod is already added'
         install_pods()
         exit
