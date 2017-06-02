@@ -28,9 +28,7 @@ export default class Root extends PureComponent {
       }),
       CardFormScreen,
       CustomCardScreen,
-      Platform.select({
-        android: CustomBankScreen,
-      }),
+      CustomBankScreen,
       CardTextFieldScreen,
     ].filter(item => item),
   }
