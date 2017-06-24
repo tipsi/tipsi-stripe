@@ -257,7 +257,10 @@
 		3A3A7F241DC27B520030F9DC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = "${BUILT_PRODUCTS_DIR}/**";
+				FRAMEWORK_SEARCH_PATHS = (
+					"${BUILT_PRODUCTS_DIR}/**",
+					"$BUILD_DIR/$CONFIGURATION$EFFECTIVE_PLATFORM_NAME/Stripe/**",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -267,7 +270,10 @@
 		3A3A7F251DC27B520030F9DC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = "${BUILT_PRODUCTS_DIR}/**";
+				FRAMEWORK_SEARCH_PATHS = (
+					"${BUILT_PRODUCTS_DIR}/**",
+					"$BUILD_DIR/$CONFIGURATION$EFFECTIVE_PLATFORM_NAME/Stripe/**",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
