@@ -328,7 +328,7 @@ Indicates whether or not the device supports Android Pay. Returns a `Boolean` va
 
 #### `paymentRequestWithAndroidPay(options) -> Promise`
 
-Launch the `Android Pay` view to to accept payment.
+Launch the `Android Pay` view to accept payment.
 
 ##### `options`
 
