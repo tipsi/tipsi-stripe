@@ -12,7 +12,7 @@ try {
   var cfg = fs.readFileSync(GRADLE_SCRIPT_PATH);
 } catch(err) {
   console.log(err.stack);
-  console.log('Failed to load `android/build.gralde` when linking tipsi-stripe');
+  console.log('Failed to load `android/build.gradle` when linking tipsi-stripe');
 }
 
 var depStr = String(cfg).match(/allprojects(.|[\r\n])+/);
