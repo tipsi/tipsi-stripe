@@ -545,13 +545,13 @@ A text field component specialized for collecting credit/debit card information.
 * `styles` _Object_ - Accepts all `View` styles, also support `color` param.
 * `cursorColor` _String_ (IOS only) - The cursor color for the field.
 * `textErrorColor` _String_ (IOS only) - The text color to be used when the user has entered invalid information, such as an invalid card number.
-* `placeholderColor` _String_ (IOS only)- The text placeholder color used in each child field.
+* `placeholderColor` _String_ (IOS only) - The text placeholder color used in each child field.
 * `numberPlaceholder` _String_ - The placeholder for the card number field.
 * `expirationPlaceholder` _String_ - The placeholder for the expiration field.
 * `cvcPlaceholder` _String_ - The placeholder for the cvc field.
 * `disabled` _Bool_ - Enable/disable selecting or editing the field. Useful when submitting card details to Stripe.
 * `onChange` _Func_ - This function will be called each input change.
-* `card` _Object_ - Accept a card object for the default value
+* `card` _Object_ (Android only) - Accept a card object for the default value
   * `valid` _Bool_ - Whether or not the form currently contains a valid card number, expiration date, and CVC.
   * `number` _String_ Credit card number.
   * `expMonth` _String_ Credit card month expiration.

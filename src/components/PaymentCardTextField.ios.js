@@ -15,14 +15,6 @@ export default class PaymentCardTextField extends Component {
     ...View.propTypes,
     style: StyleSheetPropType(FieldStylePropType), // eslint-disable-line new-cap
 
-    card: PropTypes.shape({
-      valid: PropTypes.bool,
-      number: PropTypes.string,
-      expMonth: PropTypes.string,
-      expYear: PropTypes.string,
-      cvc: PropTypes.string,
-    }),
-
     cursorColor: PropTypes.string,
     textErrorColor: PropTypes.string,
     placeholderColor: PropTypes.string,
@@ -103,7 +95,6 @@ export default class PaymentCardTextField extends Component {
       numberPlaceholder,
       expirationPlaceholder,
       cvcPlaceholder,
-      card,
       ...rest
     } = this.props
     const {
@@ -138,10 +129,6 @@ export default class PaymentCardTextField extends Component {
           fontStyle={fontStyle}
           fontSize={fontSize}
           enabled={!disabled}
-          cardNumber={card.number || null}
-          expirationMonth={card.expMonth || null}
-          expirationYear={card.expYear || null}
-          cvc={card.cvc || null}
           cursorColor={cursorColor}
           textErrorColor={textErrorColor}
           placeholderColor={placeholderColor}
@@ -178,10 +165,6 @@ const NativePaymentCardTextField = requireNativeComponent('TPSCardField', Paymen
     fontSize: true,
     enabled: true,
     params: true,
-    cardNumber: true,
-    expirationMonth: true,
-    expirationYear: true,
-    cvc: true,
     onChange: true,
   },
 })
