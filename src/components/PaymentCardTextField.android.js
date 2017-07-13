@@ -15,14 +15,22 @@ export default class PaymentCardTextField extends Component {
     ...View.propTypes,
     style: StyleSheetPropType(FieldStylePropType), // eslint-disable-line new-cap
 
-    setEnabled: PropTypes.bool,
+    // Android only
     backgroundColor: PropTypes.string,
-    cardNumber: PropTypes.string,
-    expDate: PropTypes.string,
-    securityCode: PropTypes.string,
+
+    card: PropTypes.shape({
+      valid: PropTypes.bool,
+      number: PropTypes.string,
+      expMonth: PropTypes.string,
+      expYear: PropTypes.string,
+      cvc: PropTypes.string,
+    }),
+
     expirationPlaceholder: PropTypes.string,
     cvcPlaceholder: PropTypes.string,
     numberPlaceholder: PropTypes.string,
+
+    disabled: PropTypes.bool,
 
     onChange: PropTypes.func,
     onValueChange: PropTypes.func,
@@ -81,7 +89,7 @@ export default class PaymentCardTextField extends Component {
   }
 
   render() {
-    const { style, disabled, ...rest } = this.props
+    const { style, disabled, card, ...rest } = this.props
     const {
       borderColor,
       borderWidth,
@@ -113,6 +121,9 @@ export default class PaymentCardTextField extends Component {
           fontStyle={fontStyle}
           fontSize={fontSize}
           enabled={!disabled}
+          cardNumber={ card.number || null }
+          expDate={ card.expMonth || card.expYear ? `${card.expMonth}/${card.expYear}` : null }
+          securityCode={ card.cvc || null }
           {...rest}
           onChange={this.handleChange}
         />
@@ -143,6 +154,9 @@ const NativePaymentCardTextField = requireNativeComponent('CreditCardForm', Paym
     fontStyle: true,
     fontSize: true,
     enabled: true,
+    cardNumber: true,
+    expDate: true,
+    securityCode: true,
     onChange: true,
   },
 })

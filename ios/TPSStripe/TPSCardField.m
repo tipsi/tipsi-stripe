@@ -144,6 +144,62 @@
     _paymentCardTextField.placeholderColor = placeholderColor;
 }
 
+- (NSString *)numberPlaceholder {
+    return _paymentCardTextField.numberPlaceholder;
+}
+
+- (void)setNumberPlaceholder:(NSString *)numberPlaceholder {
+    _paymentCardTextField.numberPlaceholder = numberPlaceholder;
+}
+
+- (NSString *)expirationPlaceholder {
+    return _paymentCardTextField.expirationPlaceholder;
+}
+
+- (void)setExpirationPlaceholder:(NSString *)expirationPlaceholder {
+    _paymentCardTextField.expirationPlaceholder = expirationPlaceholder;
+}
+
+- (NSString *)cvcPlaceholder {
+    return _paymentCardTextField.cvcPlaceholder;
+}
+
+- (void)setCvcPlaceholder:(NSString *)cvcPlaceholder {
+    _paymentCardTextField.cvcPlaceholder = cvcPlaceholder;
+}
+
+- (NSString *)cardNumber {
+    return _paymentCardTextField.cardNumber;
+}
+
+- (void)setCardNumber:(NSString *)cardNumber {
+    _paymentCardTextField.cardNumber = cardNumber;
+}
+
+- (NSUInteger)expirationMonth {
+    return _paymentCardTextField.expirationMonth;
+}
+
+- (void)setExpirationMonth(NSUInteger)expirationMonth {
+    _paymentCardTextField.expirationMonth = expirationMonth;
+}
+
+- (NSUInteger)expirationYear {
+    return _paymentCardTextField.expirationYear;
+}
+
+- (void)setExpirationYear(NSUInteger)expirationYear {
+    _paymentCardTextField.expirationYear = expirationYear;
+}
+
+- (NSString *)cvc {
+    return _paymentCardTextField.cvc;
+}
+
+- (void)setCvc:(NSString *)cvc {
+    _paymentCardTextField.cvc = cvc;
+}
+
 - (void)setCardParams:(STPCardParams *)cardParams {
     // Remove delegate before update paymentCardTextField with prefilled card
     // for preventing call paymentCardTextFieldDidChange for every fields
