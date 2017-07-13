@@ -549,9 +549,14 @@ A text field component specialized for collecting credit/debit card information.
 * `numberPlaceholder` _String_ - The placeholder for the card number field.
 * `expirationPlaceholder` _String_ - The placeholder for the expiration field.
 * `cvcPlaceholder` _String_ - The placeholder for the cvc field.
-* `disabled` _Bool_ (IOS only) - Enable/disable selecting or editing the field. Useful when submitting card details to Stripe.
-* `enabled` _Bool_ (Android only) - Enable/disable selecting or editing the field. Useful when submitting card details to Stripe.
+* `disabled` _Bool_ - Enable/disable selecting or editing the field. Useful when submitting card details to Stripe.
 * `onChange` _Func_ - This function will be called each input change.
+* `card` _Object_ - Accept a card object for the default value
+  * `valid` _Bool_ - Whether or not the form currently contains a valid card number, expiration date, and CVC.
+  * `number` _String_ Credit card number.
+  * `expMonth` _String_ Credit card month expiration.
+  * `expYear` _String_ Credit card year expiration.
+  * `cvc` _String_ Credit card CVC.
 * `onParamsChange` _Func_ - This function will be called each input change, it takes two argumants:
   * `valid` _Bool_ - Whether or not the form currently contains a valid card number, expiration date, and CVC.
   * `params` _Object_ - Contains entered card params: `number`, `expMonth`, `expYear` and `cvc`.
