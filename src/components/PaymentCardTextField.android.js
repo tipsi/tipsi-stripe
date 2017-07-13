@@ -21,8 +21,8 @@ export default class PaymentCardTextField extends Component {
     card: PropTypes.shape({
       valid: PropTypes.bool,
       number: PropTypes.string,
-      expMonth: PropTypes.string,
-      expYear: PropTypes.string,
+      expMonth: PropTypes.number,
+      expYear: PropTypes.number,
       cvc: PropTypes.string,
     }),
 

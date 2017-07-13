@@ -15,6 +15,14 @@ export default class PaymentCardTextField extends Component {
     ...View.propTypes,
     style: StyleSheetPropType(FieldStylePropType), // eslint-disable-line new-cap
 
+    card: PropTypes.shape({
+      valid: PropTypes.bool,
+      number: PropTypes.string,
+      expMonth: PropTypes.number,
+      expYear: PropTypes.number,
+      cvc: PropTypes.string,
+    }),
+
     cursorColor: PropTypes.string,
     textErrorColor: PropTypes.string,
     placeholderColor: PropTypes.string,
@@ -47,6 +55,14 @@ export default class PaymentCardTextField extends Component {
     }
   }
 
+  componentDidMount() {
+    const { card } = this.props
+
+    if (this.field && card) {
+      this.setParams(card)
+    }
+  }
+
   isFocused = () => (
     TextInputState.currentlyFocusedField() === findNodeHandle(this)
   )
@@ -60,7 +76,9 @@ export default class PaymentCardTextField extends Component {
   }
 
   setParams = (params) => {
-    this.field.setNativeProps({ params })
+    if (this.field) {
+      this.field.setNativeProps({ params })
+    }
   }
 
   handlePress = () => {
@@ -95,6 +113,7 @@ export default class PaymentCardTextField extends Component {
       numberPlaceholder,
       expirationPlaceholder,
       cvcPlaceholder,
+      card,
       ...rest
     } = this.props
     const {
@@ -135,8 +154,7 @@ export default class PaymentCardTextField extends Component {
           numberPlaceholder={numberPlaceholder}
           expirationPlaceholder={expirationPlaceholder}
           cvcPlaceholder={cvcPlaceholder}
-          onChange={this.handleChange}
-        />
+          onChange={this.handleChange}/>
       </TouchableWithoutFeedback>
     )
   }
