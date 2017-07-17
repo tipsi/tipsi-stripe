@@ -100,7 +100,7 @@ export default class PaymentCardTextField extends Component {
       ...fieldStyles
     } = StyleSheet.flatten(style)
     const cardNumber = card.number || null;
-    const expDate = (card.expMonth || card.expYear ? `${card.expMonth}/${card.expYear}` : null);
+    const expDate = card.expMonth || card.expYear ? `${card.expMonth}/${card.expYear}` : null;
     const securityCode = card.cvc || null;
 
     return (
