@@ -16,7 +16,6 @@ export default class PaymentCardTextField extends Component {
     style: StyleSheetPropType(FieldStylePropType), // eslint-disable-line new-cap
 
     card: PropTypes.shape({
-      valid: PropTypes.bool,
       number: PropTypes.string,
       expMonth: PropTypes.number,
       expYear: PropTypes.number,

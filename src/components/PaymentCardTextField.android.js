@@ -18,7 +18,6 @@ export default class PaymentCardTextField extends Component {
     backgroundColor: PropTypes.string,
 
     card: PropTypes.shape({
-      valid: PropTypes.bool,
       number: PropTypes.string,
       expMonth: PropTypes.number,
       expYear: PropTypes.number,
