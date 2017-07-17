@@ -552,7 +552,6 @@ A text field component specialized for collecting credit/debit card information.
 * `disabled` _Bool_ - Enable/disable selecting or editing the field. Useful when submitting card details to Stripe.
 * `onChange` _Func_ - This function will be called each input change.
 * `card` _Object_ - Accept a card object for the default value
-  * `valid` _Bool_ - Whether or not the form currently contains a valid card number, expiration date, and CVC.
   * `number` _String_ Credit card number.
   * `expMonth` _String_ Credit card month expiration.
   * `expYear` _String_ Credit card year expiration.
