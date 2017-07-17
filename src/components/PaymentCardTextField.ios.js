@@ -154,7 +154,8 @@ export default class PaymentCardTextField extends Component {
           numberPlaceholder={numberPlaceholder}
           expirationPlaceholder={expirationPlaceholder}
           cvcPlaceholder={cvcPlaceholder}
-          onChange={this.handleChange}/>
+          onChange={this.handleChange}
+        />
       </TouchableWithoutFeedback>
     )
   }
