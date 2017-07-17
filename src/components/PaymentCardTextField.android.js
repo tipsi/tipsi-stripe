@@ -15,7 +15,6 @@ export default class PaymentCardTextField extends Component {
     ...View.propTypes,
     style: StyleSheetPropType(FieldStylePropType), // eslint-disable-line new-cap
 
-    // Android only
     backgroundColor: PropTypes.string,
 
     card: PropTypes.shape({
