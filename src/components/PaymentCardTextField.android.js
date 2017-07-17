@@ -99,9 +99,9 @@ export default class PaymentCardTextField extends Component {
       color,
       ...fieldStyles
     } = StyleSheet.flatten(style)
-    const cardNumber = card.number || null;
-    const expDate = card.expMonth || card.expYear ? `${card.expMonth}/${card.expYear}` : null;
-    const securityCode = card.cvc || null;
+    const cardNumber = card.number || null
+    const expDate = card.expMonth || card.expYear ? `${card.expMonth}/${card.expYear}` : null
+    const securityCode = card.cvc || null
 
     return (
       <TouchableWithoutFeedback
