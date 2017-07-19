@@ -49,7 +49,7 @@ Run `react-native link tipsi-stripe` so your project is linked against your Xcod
 
 #### Running Apple Pay in a Real Device
 
-In order to run Apple Pay on an Apple device (as opposed to a simulator), there's an extra step you need to complete in XCode.
+In order to run Apple Pay on an Apple device (as opposed to a simulator), there's an extra step you need to complete in XCode. Without completing this step, Apple Pay will say that it is not supported - even if Apple Pay is set up correctly on the device.
 
 Navigate to the Capabilities tab in your XCode project and turn Apple Pay on. Then, add your Apple Pay Merchant ID
 to the 'Merchant IDs' section by clicking the '+' icon. Finally, make sure that the checkbox next to your merchant ID is blue and checked off.
