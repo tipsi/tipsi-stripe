@@ -55,6 +55,7 @@ Navigate to the Capabilities tab in your XCode project and turn Apple Pay on. Th
 to the 'Merchant IDs' section by clicking the '+' icon. Finally, make sure that the checkbox next to your merchant ID is blue and checked off.
 
 ![tipsiapplepay](https://user-images.githubusercontent.com/24738825/28348524-4bbd78e6-6bf2-11e7-97ed-b6e4b4ee0f0e.png)
+
 ### Android
 
 #### react-native cli
