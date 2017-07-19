@@ -47,6 +47,14 @@ Run `react-native link tipsi-stripe` so your project is linked against your Xcod
 5. Whenever you want to use it within React code now you can:
   * `import stripe from 'tipsi-stripe'`
 
+#### Running Apple Pay in a Real Device
+
+In order to run Apple Pay on an Apple device (as opposed to a simulator), there's an extra step you need to complete in XCode.
+
+Navigate to the Capabilities tab in your XCode project and turn Apple Pay on. Then, add your Apple Pay Merchant ID
+to the 'Merchant IDs' section by clicking the '+' icon. Finally, make sure that the checkbox next to your merchant ID is blue and checked off.
+
+![tipsiapplepay](https://user-images.githubusercontent.com/24738825/28348524-4bbd78e6-6bf2-11e7-97ed-b6e4b4ee0f0e.png)
 ### Android
 
 #### react-native cli
