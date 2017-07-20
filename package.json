@@ -35,5 +35,8 @@
   "devDependencies": {
     "eslint": "^3.13.1",
     "eslint-config-tipsi": "1.5.0"
+  },
+  "dependencies": {
+    "prop-types": "^15.5.10"
   }
 }
