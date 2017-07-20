@@ -3,7 +3,7 @@ import { NativeModules } from 'react-native'
 const { StripeModule } = NativeModules
 
 class Stripe {
-  init = (options: { publishableKey, merchantId } = {}) => {
+  init = ({ publishableKey, merchantId } = {}) => {
     if (typeof publishableKey !== 'string') {
       throw new Error(
         'You need to provide `publishableKey` property. \n'+
