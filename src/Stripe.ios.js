@@ -4,9 +4,15 @@ import processTheme from './utils/processTheme'
 const { TPSStripeManager } = NativeModules
 
 class Stripe {
-  init = (options = {}) => (
-    TPSStripeManager.init(options)
-  )
+  init = (options: { publishableKey, merchantId } = {}) => {
+    if (typeof publishableKey !== 'string') {
+      throw new Error(
+        'You need to provide `publishableKey` property. \n'+
+        'See https://github.com/tipsi/tipsi-stripe#usage for more information'
+      )
+    }
+    TPSStripeManager.init({ publishableKey, merchantId })
+  }
   deviceSupportsApplePay = () => (
     TPSStripeManager.deviceSupportsApplePay()
   )
