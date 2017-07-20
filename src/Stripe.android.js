@@ -1,6 +1,6 @@
 import { NativeModules } from 'react-native'
 import PropTypes from 'prop-types'
-import initOptionsPropTypes from './utils/types'
+import { initOptionsPropTypes } from './utils/types'
 
 const { StripeModule } = NativeModules
 

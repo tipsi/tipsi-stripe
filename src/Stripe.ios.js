@@ -1,7 +1,7 @@
 import { NativeModules } from 'react-native'
 import PropTypes from 'prop-types'
 import processTheme from './utils/processTheme'
-import initOptionsPropTypes from './utils/types'
+import { initOptionsPropTypes } from './utils/types'
 
 const { TPSStripeManager } = NativeModules
 

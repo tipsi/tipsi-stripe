@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-export default {
+export const initOptionsPropTypes = {
   publishableKey: PropTypes.string.isRequired,
   merchantId: PropTypes.string,
 }
