@@ -6,7 +6,7 @@ export default function checkPropTypes(typeSpecs, values, location, componentNam
       if (typeSpecs.hasOwnProperty(typeSpecName)) {
         const error = typeSpecs[typeSpecName](values, typeSpecName, componentName, location, null, ReactPropTypesSecret)
         if (error instanceof Error) {
-          throw new Error('Failed %s type: %s%s', location, error.message)
+          throw new Error(`Failed ${location} type: ${error.message}`)
         }
       }
     }
