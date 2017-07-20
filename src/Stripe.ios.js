@@ -1,18 +1,13 @@
 import { NativeModules } from 'react-native'
-import PropTypes from 'prop-types'
 import processTheme from './utils/processTheme'
 import { initOptionsPropTypes } from './utils/types'
+import checkPropTypes from './utils/checkPropTypes'
 
 const { TPSStripeManager } = NativeModules
 
 class Stripe {
   init = (options = {}) => {
-    PropTypes.checkPropTypes(
-      initOptionsPropTypes,
-      options,
-      'options',
-      'Stripe.init'
-    )
+    checkPropTypes(initOptionsPropTypes, options, 'options', 'Stripe.init')
     TPSStripeManager.init(options)
   }
   deviceSupportsApplePay = () => (

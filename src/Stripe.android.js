@@ -1,17 +1,12 @@
 import { NativeModules } from 'react-native'
-import PropTypes from 'prop-types'
 import { initOptionsPropTypes } from './utils/types'
+import checkPropTypes from './utils/checkPropTypes'
 
 const { StripeModule } = NativeModules
 
 class Stripe {
   init = (options = {}) => {
-    PropTypes.checkPropTypes(
-      initOptionsPropTypes,
-      options,
-      'options',
-      'Stripe.init'
-    )
+    checkPropTypes(initOptionsPropTypes, options, 'options', 'Stripe.init')
     StripeModule.init(options)
   }
   deviceSupportsAndroidPay = () => (
