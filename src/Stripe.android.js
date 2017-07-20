@@ -1,17 +1,18 @@
 import { NativeModules } from 'react-native'
+import PropTypes from 'prop-types'
+import initOptionsPropTypes from './utils/types'
 
 const { StripeModule } = NativeModules
 
 class Stripe {
-  init = ({ publishableKey, merchantId } = {}) => {
-    if (typeof publishableKey !== 'string') {
-      throw new Error(
-        'You need to provide `publishableKey` property. \n'+
-        'See https://github.com/tipsi/tipsi-stripe#usage for more information'
-      )
-    }
-
-    StripeModule.init({ publishableKey, merchantId })
+  init = (options = {}) => {
+    PropTypes.checkPropTypes(
+      initOptionsPropTypes,
+      options,
+      'options',
+      'Stripe.init'
+    )
+    StripeModule.init(options)
   }
   deviceSupportsAndroidPay = () => (
     StripeModule.deviceSupportsAndroidPay()

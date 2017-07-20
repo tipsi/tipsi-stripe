@@ -1,17 +1,19 @@
 import { NativeModules } from 'react-native'
+import PropTypes from 'prop-types'
 import processTheme from './utils/processTheme'
+import initOptionsPropTypes from './utils/types'
 
 const { TPSStripeManager } = NativeModules
 
 class Stripe {
-  init = ({ publishableKey, merchantId } = {}) => {
-    if (typeof publishableKey !== 'string') {
-      throw new Error(
-        'You need to provide `publishableKey` property. \n'+
-        'See https://github.com/tipsi/tipsi-stripe#usage for more information'
-      )
-    }
-    TPSStripeManager.init({ publishableKey, merchantId })
+  init = (options = {}) => {
+    PropTypes.checkPropTypes(
+      initOptionsPropTypes,
+      options,
+      'options',
+      'Stripe.init'
+    )
+    TPSStripeManager.init(options)
   }
   deviceSupportsApplePay = () => (
     TPSStripeManager.deviceSupportsApplePay()
