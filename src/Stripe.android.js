@@ -32,14 +32,14 @@ class Stripe {
   createTokenWithCard = (params = {}) => {
     checkArgs(
       types.createTokenWithCardParamsPropTypes,
-      options, 'options', 'Stripe.createTokenWithCard'
+      params, 'params', 'Stripe.createTokenWithCard'
     )
     return StripeModule.createTokenWithCard(params)
   }
   createTokenWithBankAccount = (params = {}) => {
     checkArgs(
       types.createTokenWithBankAccountParamsPropTypes,
-      options, 'options', 'Stripe.createTokenWithBankAccount'
+      params, 'params', 'Stripe.createTokenWithBankAccount'
     )
     return StripeModule.createTokenWithBankAccount(params)
   }
