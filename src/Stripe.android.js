@@ -10,7 +10,7 @@ class Stripe {
       types.initOptionsPropTypes,
       options, 'options', 'Stripe.init'
     )
-    StripeModule.init(options)
+    return StripeModule.init(options)
   }
   deviceSupportsAndroidPay = () => (
     StripeModule.deviceSupportsAndroidPay()
@@ -20,28 +20,28 @@ class Stripe {
       types.paymentRequestWithAndroidPayOptionsPropTypes,
       options, 'options', 'Stripe.paymentRequestWithAndroidPay'
     )
-    StripeModule.paymentRequestWithAndroidPay(options)
+    return StripeModule.paymentRequestWithAndroidPay(options)
   }
   paymentRequestWithCardForm = (options = {}) => {
     checkArgs(
       types.paymentRequestWithCardFormOptionsPropTypes,
       options, 'options', 'Stripe.paymentRequestWithCardForm'
     )
-    StripeModule.paymentRequestWithCardForm(options)
+    return StripeModule.paymentRequestWithCardForm(options)
   }
   createTokenWithCard = (params = {}) => {
     checkArgs(
       types.createTokenWithCardParamsPropTypes,
       options, 'options', 'Stripe.createTokenWithCard'
     )
-    StripeModule.createTokenWithCard(params)
+    return StripeModule.createTokenWithCard(params)
   }
   createTokenWithBankAccount = (params = {}) => {
     checkArgs(
       types.createTokenWithBankAccountParamsPropTypes,
       options, 'options', 'Stripe.createTokenWithBankAccount'
     )
-    StripeModule.createTokenWithBankAccount(params)
+    return StripeModule.createTokenWithBankAccount(params)
   }
 }
 
