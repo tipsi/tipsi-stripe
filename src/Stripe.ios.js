@@ -1,6 +1,6 @@
 import { NativeModules } from 'react-native'
-import checkArgs from './utils/checkArgs'
 import processTheme from './utils/processTheme'
+import checkArgs from './utils/checkArgs'
 import * as types from './utils/types'
 
 const { TPSStripeManager } = NativeModules
