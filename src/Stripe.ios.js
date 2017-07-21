@@ -1,45 +1,72 @@
 import { NativeModules } from 'react-native'
+import checkArgs from './utils/checkArgs'
 import processTheme from './utils/processTheme'
-import { initOptionsPropTypes } from './utils/types'
-import checkPropTypes from './utils/checkPropTypes'
+import * as types from './utils/types'
 
 const { TPSStripeManager } = NativeModules
 
 class Stripe {
   init = (options = {}) => {
-    checkPropTypes(initOptionsPropTypes, options, 'options', 'Stripe.init')
-    TPSStripeManager.init(options)
+    checkArgs(
+      types.initOptionsPropTypes,
+      options, 'options', 'Stripe.init'
+    )
+    return TPSStripeManager.init(options)
   }
   deviceSupportsApplePay = () => (
     TPSStripeManager.deviceSupportsApplePay()
   )
-  canMakeApplePayPayments = (options = {}) => (
-    TPSStripeManager.canMakeApplePayPayments(options)
-  )
-  paymentRequestWithApplePay = (items = [], options = {}) => (
-    TPSStripeManager.paymentRequestWithApplePay(items, options)
-  )
+  canMakeApplePayPayments = (options = {}) => {
+    checkArgs(
+      types.canMakeApplePayPaymentsOptionsPropTypes,
+      options, 'options', 'Stripe.canMakeApplePayPayments'
+    )
+    return TPSStripeManager.canMakeApplePayPayments(options)
+  }
+  paymentRequestWithApplePay = (items = [], options = {}) => {
+    checkArgs(
+      types.paymentRequestWithApplePayItemsPropTypes,
+      { items }, 'items', 'Stripe.paymentRequestWithApplePay'
+    )
+    checkArgs(
+      types.paymentRequestWithApplePayOptionsPropTypes,
+      options, 'options', 'Stripe.paymentRequestWithApplePay'
+    )
+    return TPSStripeManager.paymentRequestWithApplePay(items, options)
+  }
   completeApplePayRequest = () => (
     TPSStripeManager.completeApplePayRequest()
   )
   cancelApplePayRequest = () => (
     TPSStripeManager.cancelApplePayRequest()
   )
-  paymentRequestWithCardForm = (options = {}) => (
-    TPSStripeManager.paymentRequestWithCardForm({
-      ...options,
-      theme: processTheme(options.theme),
-    })
-  )
-  createTokenWithCard = (params = {}) => (
-    TPSStripeManager.createTokenWithCard(params)
-  )
   openApplePaySetup = () => (
     TPSStripeManager.openApplePaySetup()
   )
-  createTokenWithBankAccount = (params = {}) => (
-    TPSStripeManager.createTokenWithBankAccount(params)
-  )
+  paymentRequestWithCardForm = (options = {}) => {
+    checkArgs(
+      types.paymentRequestWithCardFormOptionsPropTypes,
+      options, 'options', 'Stripe.paymentRequestWithCardForm'
+    )
+    return TPSStripeManager.paymentRequestWithCardForm({
+      ...options,
+      theme: processTheme(options.theme),
+    })
+  }
+  createTokenWithCard = (params = {}) => {
+    checkArgs(
+      types.createTokenWithCardParamsPropTypes,
+      params, 'params', 'Stripe.createTokenWithCard'
+    )
+    return TPSStripeManager.createTokenWithCard(params)
+  }
+  createTokenWithBankAccount = (params = {}) => {
+    checkArgs(
+      types.createTokenWithBankAccountParamsPropTypes,
+      params, 'params', 'Stripe.createTokenWithBankAccount'
+    )
+    return TPSStripeManager.createTokenWithBankAccount(params)
+  }
 }
 
 export default new Stripe()
