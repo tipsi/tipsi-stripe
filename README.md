@@ -361,8 +361,8 @@ Launch the `Android Pay` view to accept payment.
 
 An object with the following keys:
 
-* `price` _String_ - Price of the item.
-* `currency` _String_ - Three-letter ISO currency code representing the currency paid out to the bank account.
+* `total_price` _String_ - Price of the item.
+* `currency_code` _String_ - Three-letter ISO currency code representing the currency paid out to the bank account.
 
 #### Example
 

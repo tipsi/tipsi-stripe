@@ -74,6 +74,12 @@ export const createTokenWithCardParamsPropTypes = {
   addressCountry: PropTypes.string,
   country: PropTypes.string,
   currency: PropTypes.string,
+
+  // Android Only
+  brand: PropTypes.string,
+  last4: PropTypes.string,
+  fingerprint: PropTypes.string,
+  funding: PropTypes.string,
 }
 
 export const createTokenWithBankAccountParamsPropTypes = {
@@ -83,4 +89,9 @@ export const createTokenWithBankAccountParamsPropTypes = {
   routingNumber: PropTypes.string,
   accountHolderName: PropTypes.string,
   accountHolderType: PropTypes.oneOf(['company', 'individual']),
+}
+
+export const paymentRequestWithAndroidPayOptionsPropTypes = {
+  total_price: PropTypes.string.isRequired,
+  currency_code: PropTypes.string.isRequired,
 }
