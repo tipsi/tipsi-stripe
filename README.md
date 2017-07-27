@@ -267,6 +267,7 @@ An object with the following keys:
 * `requiredBillingAddressFields` _String_ - A bit field of billing address fields that you need in order to process the transaction. Can be one of: `all`|`name`|`email`|`phone`|`postal_address` or not specify to disable.
 * `requiredShippingAddressFields` _String_ - A bit field of shipping address fields that you need in order to process the transaction. Can be one of: `all`|`name`|`email`|`phone`|`postal_address` or not specify to disable.
 * `shippingMethods` _Array_ - An array of `shippingMethod` objects that describe the supported shipping methods.
+* `currencyCode` _String_ - The three-letter ISO 4217 currency code.
 
 ##### `shippingMethod`
 
@@ -361,8 +362,8 @@ Launch the `Android Pay` view to accept payment.
 
 An object with the following keys:
 
-* `price` _String_ - Price of the item.
-* `currency` _String_ - Three-letter ISO currency code representing the currency paid out to the bank account.
+* `total_price` _String_ - Price of the item.
+* `currency_code` _String_ - Three-letter ISO currency code representing the currency paid out to the bank account.
 
 #### Example
 

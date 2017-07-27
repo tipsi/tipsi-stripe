@@ -1,5 +1,6 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import { requireNativeComponent, findNodeHandle, StyleSheet, View, TouchableWithoutFeedback } from 'react-native'
+import PropTypes from 'prop-types'
 import StyleSheetPropType from 'react-native/Libraries/StyleSheet/StyleSheetPropType'
 import ViewStylePropTypes from 'react-native/Libraries/Components/View/ViewStylePropTypes'
 
