@@ -1,5 +1,6 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
 import { Text, TouchableOpacity, StyleSheet } from 'react-native'
+import PropTypes from 'prop-types'
 
 export default function MenuItem({ title, active, onPress, ...rest }) {
   return (

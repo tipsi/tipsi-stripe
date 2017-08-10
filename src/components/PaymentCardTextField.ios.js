@@ -1,5 +1,12 @@
 import React, { Component } from 'react'
-import { requireNativeComponent, findNodeHandle, StyleSheet, View, TouchableWithoutFeedback } from 'react-native'
+import {
+  requireNativeComponent,
+  findNodeHandle,
+  StyleSheet,
+  View,
+  TouchableWithoutFeedback,
+  ViewPropTypes,
+} from 'react-native'
 import PropTypes from 'prop-types'
 import StyleSheetPropType from 'react-native/Libraries/StyleSheet/StyleSheetPropType'
 import ViewStylePropTypes from 'react-native/Libraries/Components/View/ViewStylePropTypes'
@@ -13,7 +20,7 @@ const FieldStylePropType = {
 
 export default class PaymentCardTextField extends Component {
   static propTypes = {
-    ...View.propTypes,
+    ...ViewPropTypes,
     style: StyleSheetPropType(FieldStylePropType), // eslint-disable-line new-cap
 
     cursorColor: PropTypes.string,

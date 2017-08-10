@@ -1,5 +1,13 @@
-import React, { PureComponent, PropTypes } from 'react'
-import { View, Text, TouchableHighlight, ActivityIndicator, Platform, StyleSheet } from 'react-native'
+import React, { PureComponent } from 'react'
+import {
+  View,
+  Text,
+  TouchableHighlight,
+  ActivityIndicator,
+  Platform,
+  StyleSheet,
+} from 'react-native'
+import PropTypes from 'prop-types'
 
 export default class Button extends PureComponent {
   static propTypes = {
