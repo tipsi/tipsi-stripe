@@ -36,6 +36,7 @@ export default class PaymentCardTextField extends Component {
 
   static defaultProps = {
     ...View.defaultProps,
+    card: {},
   }
 
   valid = false // eslint-disable-line react/sort-comp
