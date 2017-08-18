@@ -698,6 +698,17 @@ To solve this problem please be sure that `Stripe.framework` is added to `Link B
 
 We have fixed this issue, but if you somehow facing this bug again - please, create an issue or a pull request and we will take another look.
 
+#### jest
+To make jest work with tipsi-stripe, you should change `transformIgnorePatterns` in `package.json` file. Please refer to [here](https://facebook.github.io/jest/docs/tutorial-react-native.html#transformignorepatterns-customization)
+```js
+"jest": {
+  "preset": "react-native",
+  "transformIgnorePatterns": [
+    "node_modules/(?!(jest-)?react-native|tipsi-stripe)"
+  ]
+}
+```
+
 ## Example
 
 To see more of the `tipsi-stripe` in action, you can check out the source in [example](https://github.com/tipsi/tipsi-stripe/tree/master/example) folder.
