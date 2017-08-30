@@ -114,6 +114,23 @@ Ensure that you have Google Play Services installed:
 For `Genymotion` you can follow [these instructions](http://stackoverflow.com/questions/20121883/how-to-install-google-play-services-in-a-genymotion-vm-with-no-drag-and-drop-su/20137324#20137324).
 For a physical device you need to search on Google for 'Google Play Services'. There will be a link that takes you to the `Play Store` and from there you will see a button to update it (do not search within the `Play Store`).
 
+#### Android Pay
+
+For using Android Pay in your `android/app/src/main/AndroidManifest.xml` add:
+
+
+```diff
+<application
+...     
++  <meta-data
++    android:name="com.google.android.gms.wallet.api.enabled"
++    android:value="true" />
+...
+</application>
+```
+
+More information about Android Pay [deployment and testing](https://developers.google.com/android-pay/deployment).
+
 ## Usage
 
 Let's require `tipsi-stripe` module:
@@ -128,8 +145,12 @@ And initialize it with your Stripe credentials that you can get from [dashboard]
 stripe.init({
   publishableKey: 'PUBLISHABLE_KEY',
   merchantId: 'MERCHANT_ID', // Optional
+  androidPayMode: 'test', // Optional, android only, 'production' by default
 })
 ```
+
+`androidPayMode` _String_ (Android only) - Corresponds to [WALLET_ENVIRONMENT](https://developers.google.com/android-pay/tutorial#about_constants
+). Can be one of: test|production. 
 
 ### Token
 
@@ -364,6 +385,7 @@ An object with the following keys:
 
 * `total_price` _String_ - Price of the item.
 * `currency_code` _String_ - Three-letter ISO currency code representing the currency paid out to the bank account.
+* `shipping_address_required` _Boolean_ (Optional) - Is shipping address menu required. Default `true`.
 
 #### Example
 
@@ -371,6 +393,7 @@ An object with the following keys:
 const options = {
   total_price: '80.00',
   currency_code: 'USD',
+  shipping_address_required: false,
   line_items: [{
     currency_code: 'USD',
     description: 'Whisky',
@@ -559,7 +582,7 @@ const params = {
   accountHolderType: 'company', // "company" or "individual"
 }
 
-const token = await stripe.createTokenWithCard(params)
+const token = await stripe.createTokenWithBankAccount(params)
 
 // Client specific code
 // api.sendTokenToBackend(token)
