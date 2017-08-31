@@ -15,6 +15,7 @@ import testID from './utils/testID'
 stripe.init({
   publishableKey: '<PUBLISHABLE_KEY>',
   merchantId: '<MERCHANT_ID>',
+  androidPayMode: 'test',
 })
 
 export default class Root extends PureComponent {

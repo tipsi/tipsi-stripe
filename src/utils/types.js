@@ -6,6 +6,7 @@ const availableApplePayAddressFields = ['all', 'name', 'email', 'phone', 'postal
 export const initOptionsPropTypes = {
   publishableKey: PropTypes.string.isRequired,
   merchantId: PropTypes.string,
+  androidPayMode: PropTypes.string,
 }
 
 export const canMakeApplePayPaymentsOptionsPropTypes = {
@@ -94,4 +95,6 @@ export const createTokenWithBankAccountParamsPropTypes = {
 export const paymentRequestWithAndroidPayOptionsPropTypes = {
   total_price: PropTypes.string.isRequired,
   currency_code: PropTypes.string.isRequired,
+  shipping_address_required: PropTypes.bool,
+  line_items: PropTypes.array.isRequired,
 }

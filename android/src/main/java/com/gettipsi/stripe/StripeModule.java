@@ -54,18 +54,20 @@ public class StripeModule extends ReactContextBaseJavaModule {
   private static final int LOAD_MASKED_WALLET_REQUEST_CODE = 100502;
   private static final int LOAD_FULL_WALLET_REQUEST_CODE = 100503;
 
-  public static final int mEnvironment = WalletConstants.ENVIRONMENT_TEST;
   private static final String PURCHASE_CANCELLED = "PURCHASE_CANCELLED";
 
   //androidPayParams keys:
+  private static final String ANDROID_PAY_MODE = "androidPayMode";
+  private static final String PRODUCTION = "production";
   private static final String CURRENCY_CODE = "currency_code";
+  private static final String SHIPPING_ADDRESS_REQUIRED = "shipping_address_required";
   private static final String TOTAL_PRICE = "total_price";
   private static final String UNIT_PRICE = "unit_price";
   private static final String LINE_ITEMS = "line_items";
   private static final String QUANTITY = "quantity";
   private static final String DESCRIPTION = "description";
 
-
+  private int mEnvironment = WalletConstants.ENVIRONMENT_PRODUCTION;
   private Promise payPromise;
 
   private String publicKey;
@@ -78,7 +80,6 @@ public class StripeModule extends ReactContextBaseJavaModule {
 
     @Override
     public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
-
       if (payPromise != null) {
         if (requestCode == LOAD_MASKED_WALLET_REQUEST_CODE) { // Unique, identifying constant
 
@@ -88,18 +89,12 @@ public class StripeModule extends ReactContextBaseJavaModule {
           if (resultCode == Activity.RESULT_OK) {
             FullWallet fullWallet = data.getParcelableExtra(WalletConstants.EXTRA_FULL_WALLET);
             String tokenJSON = fullWallet.getPaymentMethodToken().getToken();
-
-            //A token will only be returned in production mode,
-            //i.e. WalletConstants.ENVIRONMENT_PRODUCTION
-            if (mEnvironment == WalletConstants.ENVIRONMENT_PRODUCTION) {
-              try {
-                Token token = TokenParser.parseToken(tokenJSON);
-                Log.d(TAG, "onActivityResult: Stripe Token: " + token.toString());
-                payPromise.resolve(token.toString());
-              } catch (JSONException jsonException) {
-                // Log the error and notify Stripe helpß
-                Log.e(TAG, "onActivityResult: ", jsonException);
-              }
+            try {
+              Token token = TokenParser.parseToken(tokenJSON);
+              payPromise.resolve(convertTokenToWritableMap(token));
+            } catch (JSONException jsonException) {
+              // Log the error and notify Stripe helpß
+              Log.e(TAG, "onActivityResult: ", jsonException);
             }
           }
         } else {
@@ -124,7 +119,13 @@ public class StripeModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void init(ReadableMap options) {
+    if(exist(options, ANDROID_PAY_MODE, PRODUCTION).toLowerCase().equals("test")) {
+      mEnvironment = WalletConstants.ENVIRONMENT_TEST;
+      Log.d(TAG, "Environment: test mode");
+    }
+
     publicKey = options.getString("publishableKey");
+
     try {
       stripe = new Stripe(publicKey);
     } catch (AuthenticationException e) {
@@ -172,7 +173,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
           }
         })
         .addApi(Wallet.API, new Wallet.WalletOptions.Builder()
-          .setEnvironment(WalletConstants.ENVIRONMENT_TEST)
+          .setEnvironment(mEnvironment)
           .setTheme(WalletConstants.THEME_LIGHT)
           .build())
         .build();
@@ -269,7 +270,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
           }
         })
         .addApi(Wallet.API, new Wallet.WalletOptions.Builder()
-          .setEnvironment(WalletConstants.ENVIRONMENT_TEST)
+          .setEnvironment(mEnvironment)
           .setTheme(WalletConstants.THEME_LIGHT)
           .build())
         .build();
@@ -281,11 +282,12 @@ public class StripeModule extends ReactContextBaseJavaModule {
     androidPayParams = map;
     final String estimatedTotalPrice = map.getString(TOTAL_PRICE);
     final String currencyCode = map.getString(CURRENCY_CODE);
-    final MaskedWalletRequest maskedWalletRequest = createWalletRequest(estimatedTotalPrice, currencyCode);
+    final Boolean shippingAddressRequired = exist(map, SHIPPING_ADDRESS_REQUIRED, true);
+    final MaskedWalletRequest maskedWalletRequest = createWalletRequest(estimatedTotalPrice, currencyCode, shippingAddressRequired);
     Wallet.Payments.loadMaskedWallet(googleApiClient, maskedWalletRequest, LOAD_MASKED_WALLET_REQUEST_CODE);
   }
 
-  private MaskedWalletRequest createWalletRequest(final String estimatedTotalPrice, final String currencyCode) {
+  private MaskedWalletRequest createWalletRequest(final String estimatedTotalPrice, final String currencyCode, final Boolean shippingAddressRequired) {
 
     final MaskedWalletRequest maskedWalletRequest = MaskedWalletRequest.newBuilder()
 
@@ -297,7 +299,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
         .addParameter("stripe:version", StripeApiHandler.VERSION)
         .build())
       // You want the shipping address:
-      .setShippingAddressRequired(true)
+      .setShippingAddressRequired(shippingAddressRequired)
 
       // Price set as a decimal:
       .setEstimatedTotalPrice(estimatedTotalPrice)
@@ -507,7 +509,16 @@ public class StripeModule extends ReactContextBaseJavaModule {
     }
   }
 
+  private Boolean exist(final ReadableMap map, final String key, final Boolean def) {
+    if (map.hasKey(key)) {
+      return map.getBoolean(key);
+    } else {
+      // If map don't have some key - we must pass to constructor default value.
+      return def;
+    }
+  }
+
   private String exist(final ReadableMap map, final String key) {
-    return exist(map, key, null);
+    return exist(map, key, (String) null);
   }
 }
