@@ -386,6 +386,12 @@ An object with the following keys:
 * `total_price` _String_ - Price of the item.
 * `currency_code` _String_ - Three-letter ISO currency code representing the currency paid out to the bank account.
 * `shipping_address_required` _Boolean_ (Optional) - Is shipping address menu required. Default `true`.
+* `line_items` _Array_ - Array of purchased items. Each item contains:
+    * `currency_code` _String_ - Currency code string.
+    * `description`  _String_ - Short description that will shown to user.
+    * `total_price`  _String_ - Total order price.
+    * `unit_price`  _String_ - Price per unit.
+    * `quantity`  _String_ - Number of items.
 
 #### Example
 

@@ -63,7 +63,6 @@ export default class AndroidPayScreen extends PureComponent {
 
   render() {
     const { loading, allowed, token } = this.state
-
     return (
       <View style={styles.container}>
         <Text style={styles.header} {...testID('headerText')}>
@@ -85,7 +84,7 @@ export default class AndroidPayScreen extends PureComponent {
           {...testID('androidPayToken')}>
           {token &&
             <Text style={styles.instruction}>
-              Token: {token}
+              Token: {token.tokenId}
             </Text>
           }
         </View>

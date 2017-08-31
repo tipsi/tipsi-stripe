@@ -80,7 +80,6 @@ public class StripeModule extends ReactContextBaseJavaModule {
 
     @Override
     public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
-
       if (payPromise != null) {
         if (requestCode == LOAD_MASKED_WALLET_REQUEST_CODE) { // Unique, identifying constant
 
@@ -92,14 +91,14 @@ public class StripeModule extends ReactContextBaseJavaModule {
             String tokenJSON = fullWallet.getPaymentMethodToken().getToken();
             try {
               Token token = TokenParser.parseToken(tokenJSON);
-              Log.d(TAG, "onActivityResult: Stripe Token: " + token.toString());
-              payPromise.resolve(token.toString());
+              payPromise.resolve(convertTokenToWritableMap(token));
             } catch (JSONException jsonException) {
               // Log the error and notify Stripe helpß
               Log.e(TAG, "onActivityResult: ", jsonException);
             }
           }
         } else {
+          Log.e(TAG, "# onActivityResult: requestCode: " + requestCode);
           super.onActivityResult(activity, requestCode, resultCode, data);
         }
       }
