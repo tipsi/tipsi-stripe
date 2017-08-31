@@ -98,7 +98,6 @@ public class StripeModule extends ReactContextBaseJavaModule {
             }
           }
         } else {
-          Log.e(TAG, "# onActivityResult: requestCode: " + requestCode);
           super.onActivityResult(activity, requestCode, resultCode, data);
         }
       }
