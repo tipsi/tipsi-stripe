@@ -75,3 +75,4 @@ npm-debug.log
 
 tmp
 example_tmp
+*.tgz

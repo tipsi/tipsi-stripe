@@ -19,6 +19,7 @@ proj_dir_new=example_tmp
 
 react_native_version=$(cat $proj_dir_old/package.json | sed -n 's/"react-native": "\(\^|~\)*\(.*\)",*/\2/p')
 library_name=$(node -p "require('./package.json').name")
+library_version=$(node -p "require('./package.json').version")
 
 files_to_copy=(
   .appiumhelperrc
@@ -46,6 +47,14 @@ isMacOS() {
 if ! type react-native > /dev/null; then
   npm install -g react-native-cli
 fi
+
+# Remove existing tarball
+rm -rf *.tgz
+
+# Create new tarball
+npm pack
+
+tarball_name="$library_name-$library_version.tgz" ./scripts/replaceToTarball.js
 
 if ($skip_new && ! $use_old); then
   echo "Creating new example project skipped"
@@ -84,7 +93,7 @@ fi
 ###################
 
 # Install dependencies
-npm install
+rm -rf node_modules && npm install
 # Link project
 react-native unlink $library_name
 react-native link

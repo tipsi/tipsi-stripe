@@ -3,6 +3,8 @@
 .travis
 .travis.yml
 example
+example_tmp
+tmp
 *~
 Makefile
 *.tgz
