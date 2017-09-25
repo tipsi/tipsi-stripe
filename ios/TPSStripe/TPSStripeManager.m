@@ -130,7 +130,6 @@ RCT_EXPORT_METHOD(canMakeApplePayPayments:(NSDictionary *)options
 
 RCT_EXPORT_METHOD(completeApplePayRequest:(RCTPromiseResolveBlock)resolve
                                  rejecter:(RCTPromiseRejectBlock)reject) {
-
     promiseResolver = resolve;
 
     if (applePayCompletion) {
@@ -140,10 +139,11 @@ RCT_EXPORT_METHOD(completeApplePayRequest:(RCTPromiseResolveBlock)resolve
 
 RCT_EXPORT_METHOD(cancelApplePayRequest:(RCTPromiseResolveBlock)resolve
                                rejecter:(RCTPromiseRejectBlock)reject) {
+    promiseResolver = resolve;
+
     if (applePayCompletion) {
         applePayCompletion(PKPaymentAuthorizationStatusFailure);
     }
-    resolve(nil);
 }
 
 RCT_EXPORT_METHOD(createTokenWithCard:(NSDictionary *)params
