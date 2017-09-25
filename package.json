@@ -31,7 +31,7 @@
   },
   "peerDependencies": {
     "react": "^15.4.0 || ^16.0.0",
-    "react-native": "^0.43"
+    "react-native": "^0.40"
   },
   "devDependencies": {
     "eslint": "^3.13.1",
