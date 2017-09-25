@@ -133,7 +133,7 @@ export default class ApplePayScreen extends PureComponent {
           {...testID('applePayButton')}
         />
         <Text style={styles.instruction}>
-          Complete the operation on tokent
+          Complete the operation on token
         </Text>
         <Switch
           style={styles.switch}

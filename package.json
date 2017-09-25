@@ -1,6 +1,6 @@
 {
   "name": "tipsi-stripe",
-  "version": "3.7.0",
+  "version": "3.7.1",
   "description": "React Native Stripe binding for iOS/Andriod platforms",
   "main": "src/index.js",
   "scripts": {
@@ -30,8 +30,8 @@
     }
   },
   "peerDependencies": {
-    "react": ">=15.4.0 || ^16.0.0-alpha",
-    "react-native": ">=0.40"
+    "react": "^15.4.0 || ^16.0.0",
+    "react-native": "^0.40"
   },
   "devDependencies": {
     "eslint": "^3.13.1",
