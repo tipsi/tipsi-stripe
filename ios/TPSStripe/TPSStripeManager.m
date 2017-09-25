@@ -123,17 +123,19 @@ RCT_EXPORT_METHOD(canMakeApplePayPayments:(NSDictionary *)options
                   rejecter:(RCTPromiseRejectBlock)reject) {
     NSArray <NSString *> *paymentNetworksStrings =
     options[@"networks"] ?: [TPSStripeManager supportedPaymentNetworksStrings];
-    
+
     NSArray <PKPaymentNetwork> *networks = [self paymentNetworks:paymentNetworksStrings];
     resolve(@([PKPaymentAuthorizationViewController canMakePaymentsUsingNetworks:networks]));
 }
 
 RCT_EXPORT_METHOD(completeApplePayRequest:(RCTPromiseResolveBlock)resolve
                                  rejecter:(RCTPromiseRejectBlock)reject) {
+
+    promiseResolver = resolve;
+
     if (applePayCompletion) {
         applePayCompletion(PKPaymentAuthorizationStatusSuccess);
     }
-    resolve(nil);
 }
 
 RCT_EXPORT_METHOD(cancelApplePayRequest:(RCTPromiseResolveBlock)resolve
@@ -196,11 +198,11 @@ RCT_EXPORT_METHOD(createTokenWithBankAccount:(NSDictionary *)params
                );
         return;
     }
-    
+
     requestIsCompleted = NO;
-    
+
     STPBankAccountParams *bankAccount = [[STPBankAccountParams alloc] init];
-    
+
     [bankAccount setAccountNumber: params[@"accountNumber"]];
     [bankAccount setCountry: params[@"countryCode"]];
     [bankAccount setCurrency: params[@"currency"]];
@@ -209,10 +211,10 @@ RCT_EXPORT_METHOD(createTokenWithBankAccount:(NSDictionary *)params
     STPBankAccountHolderType accountHolderType =
     [RCTConvert STPBankAccountHolderType:params[@"accountHolderType"]];
     [bankAccount setAccountHolderType: accountHolderType];
-    
+
     [[STPAPIClient sharedClient] createTokenWithBankAccount:bankAccount completion:^(STPToken *token, NSError *error) {
         requestIsCompleted = YES;
-        
+
         if (error) {
             reject(nil, nil, error);
         } else {
@@ -409,6 +411,8 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
             @"User canceled Apple Pay",
             [[NSError alloc] initWithDomain:@"StripeNative" code:2 userInfo:@{NSLocalizedDescriptionKey:@"User canceled Apple Pay"}]
         );
+    } else {
+        promiseResolver(nil);
     }
 }
 
@@ -665,14 +669,14 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
 
 - (NSArray <PKPaymentNetwork> *)paymentNetworks:(NSArray <NSString *> *)paymentNetworkStrings {
     NSMutableArray <PKPaymentNetwork> *results = [@[] mutableCopy];
-    
+
     for (NSString *paymentNetworkString in paymentNetworkStrings) {
         PKPaymentNetwork paymentNetwork = [self paymentNetwork:paymentNetworkString];
         if (paymentNetwork) {
             [results addObject:paymentNetwork];
         }
     }
-    
+
     return [results copy];
 }
 
@@ -681,26 +685,26 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         NSMutableDictionary *mutableMap = [@{} mutableCopy];
-        
+
         if ((&PKPaymentNetworkAmex) != NULL) {
             mutableMap[TPSPaymentNetworkAmex] = PKPaymentNetworkAmex;
         }
-        
+
         if ((&PKPaymentNetworkDiscover) != NULL) {
             mutableMap[TPSPaymentNetworkDiscover] = PKPaymentNetworkDiscover;
         }
-        
+
         if ((&PKPaymentNetworkMasterCard) != NULL) {
             mutableMap[TPSPaymentNetworkMasterCard] = PKPaymentNetworkMasterCard;
         }
-        
+
         if ((&PKPaymentNetworkVisa) != NULL) {
             mutableMap[TPSPaymentNetworkVisa] = PKPaymentNetworkVisa;
         }
-        
+
         paymentNetworksMap = [mutableMap copy];
     });
-    
+
     return paymentNetworksMap[paymentNetworkString];
 }
 
