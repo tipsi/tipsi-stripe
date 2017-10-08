@@ -27,6 +27,7 @@ files_to_copy=(
   package.json
   index.{ios,android}.js
   android/app/build.gradle
+  ios/example/AppDelegate.m
   src
   scripts
   __tests__
@@ -55,8 +56,6 @@ rm -rf *.tgz
 
 # Create new tarball
 npm pack
-
-tarball_name="$library_name-$library_version.tgz" ./scripts/replaceToTarball.js
 
 if ($skip_new && ! $use_old); then
   echo "Creating new example project skipped"
@@ -91,6 +90,10 @@ else
   # Go to old test project
   cd $proj_dir_old
 fi
+
+tarball_name="$library_name-$library_version.tgz" npm run replace-tarball
+
+npm run set-stripe-url-type
 
 ###################
 # INSTALL         #
@@ -145,6 +148,9 @@ isMacOS && npm run test:ios
 
 if isMacOS; then
   cd ../$proj_dir_podspec
+
+  tarball_name="$library_name-$library_version.tgz" npm run replace-tarball
+  npm run set-stripe-url-type
 
   # Install dependencies
   rm -rf node_modules && npm install

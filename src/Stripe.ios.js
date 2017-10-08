@@ -102,6 +102,15 @@ class Stripe {
     )
     return TPSStripeManager.createTokenWithBankAccount(params)
   }
+
+  createSourceWithParams = (params = {}) => {
+    checkInit(this)
+    checkArgs(
+      types.createSourceWithParamsPropType,
+      params, 'params', 'Stripe.createSourceWithParams'
+    )
+    return TPSStripeManager.createSourceWithParams(params)
+  }
 }
 
 export default new Stripe()

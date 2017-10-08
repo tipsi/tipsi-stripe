@@ -11,6 +11,7 @@ init_new_example_project() {
     package.json
     index.{ios,android}.js
     android/app/build.gradle
+    ios/example/AppDelegate.m
     src
     scripts
     __tests__
@@ -45,15 +46,10 @@ esac
 
 npm install -g react-native-cli
 
-library_name=$(node -p "require('./package.json').name")
-library_version=$(node -p "require('./package.json').version")
-
 # Remove existing tarball
 rm -rf *.tgz
 
 # Create new tarball
 npm pack
-
-tarball_name="$library_name-$library_version.tgz" ./scripts/replaceToTarball.js
 
 init_new_example_project

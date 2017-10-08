@@ -22,6 +22,7 @@ export const paymentRequestWithApplePayItemsPropTypes = {
 
 export const paymentRequestWithApplePayOptionsPropTypes = {
   currencyCode: PropTypes.string,
+  countryCode: PropTypes.string,
   requiredBillingAddressFields: PropTypes.arrayOf(PropTypes.oneOf(availableApplePayAddressFields)),
   requiredShippingAddressFields: PropTypes.arrayOf(PropTypes.oneOf(availableApplePayAddressFields)),
   shippingMethods: PropTypes.arrayOf(PropTypes.shape({
@@ -97,4 +98,21 @@ export const paymentRequestWithAndroidPayOptionsPropTypes = {
   currency_code: PropTypes.string.isRequired,
   shipping_address_required: PropTypes.bool,
   line_items: PropTypes.array.isRequired,
+}
+
+export const createSourceWithParamsPropType = {
+  type: PropTypes.oneOf(['bancontact', 'bitcoin', 'griopay', 'ideal', 'sepaDebit', 'sofort', 'threeDSecure', 'alipay']).isRequired,
+  amount: PropTypes.number,
+  name: PropTypes.string,
+  returnURL: PropTypes.string,
+  statementDescriptor: PropTypes.string,
+  currency: PropTypes.string,
+  email: PropTypes.string,
+  bank: PropTypes.string,
+  iban: PropTypes.string,
+  addressLine1: PropTypes.string,
+  city: PropTypes.string,
+  postalCode: PropTypes.string,
+  country: PropTypes.string,
+  card: PropTypes.string,
 }
