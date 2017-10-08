@@ -6,7 +6,7 @@ workspace 'example'
 
 target 'example' do
   # Stripe
-  pod 'Stripe', '~> 10.1.0'
+  pod 'Stripe', '~> 11.2.0'
 
   # Install additional dependencies
   pod 'Firebase/Core'

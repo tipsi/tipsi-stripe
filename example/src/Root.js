@@ -10,6 +10,7 @@ import CardFormScreen from './scenes/CardFormScreen'
 import CustomCardScreen from './scenes/CustomCardScreen'
 import CustomBankScreen from './scenes/CustomBankScreen'
 import CardTextFieldScreen from './scenes/CardTextFieldScreen'
+import SourceScreen from './scenes/SourceScreen'
 import testID from './utils/testID'
 
 stripe.init({
@@ -31,6 +32,7 @@ export default class Root extends PureComponent {
       CustomCardScreen,
       CustomBankScreen,
       CardTextFieldScreen,
+      SourceScreen,
     ].filter(item => item),
   }
 

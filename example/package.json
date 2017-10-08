@@ -12,7 +12,9 @@
     "test:android": "appium-helper --platform android",
     "test:ios": "appium-helper --platform ios",
     "test": "npm-run-all test:*",
-    "add-podfile": "scripts/add-podfile.sh"
+    "add-podfile": "scripts/add-podfile.sh",
+    "replace-tarball": "scripts/replaceToTarball.js",
+    "set-stripe-url-type": "scripts/setUrlTypeForStripe.js"
   },
   "dependencies": {
     "prop-types": "^15.5.10",

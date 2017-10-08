@@ -150,7 +150,7 @@ stripe.init({
 ```
 
 `androidPayMode` _String_ (Android only) - Corresponds to [WALLET_ENVIRONMENT](https://developers.google.com/android-pay/tutorial#about_constants
-). Can be one of: test|production. 
+). Can be one of: test|production.
 
 ### Token
 
@@ -240,6 +240,119 @@ An object with the following keys:
 }
 ```
 
+### Source
+
+A source object returned from creating a source (via `createSourceWithParams`) with the Stripe API.
+
+##### `source`
+
+An object with the following keys:
+
+* `amount` _Number_ - The amount associated with the source.
+* `clientSecret` _String_ - The client secret of the source. Used for client-side polling using a publishable key.
+* `created` _Number_ - When the source was created.
+* `currency` _String_ - The currency associated with the source.
+* `flow` _String_ - The authentication flow of the source. Can be one of: `none`|`redirect`|`verification`|`receiver`|`unknown`.
+* `livemode` _Bool_ - Whether or not this source was created in livemode. Will be `true` if you used your `Live Publishable Key`, and `false` if you used your `Test Publishable Key`.
+* `metadata` _Object_ - A set of key/value pairs associated with the source object.
+* `owner` _Object_ - Information about the owner of the payment instrument.
+* `receiver` _Object_ (Optional) - Information related to the receiver flow. Present if the source is a receiver.
+* `redirect` _Object_ (Optional) - Information related to the redirect flow. Present if the source is authenticated by a redirect.
+* `status` _String_ - The status of the source. Can be one of: `pending`|`chargable`|`consumed`|`cancelled`|`failed`.
+* `type` _String_ - The type of the source. Can be one of: `bancontact`|`bitcoin`|`card`|`griopay`|`ideal`|`sepaDebit`|`sofort`|`threeDSecure`|`alipay`|`unknown`.
+* `usage` _String_ - Whether this source should be reusable or not. Can be one of: `reusable`|`single`|`unknown`.
+* `verification` _Object_ (Optional) - Information related to the verification flow. Present if the source is authenticated by a verification.
+* `details` _Object_ - Information about the source specific to its type.
+* `cardDetails` _Object_ (Optional) - If this is a card source, this property contains information about the card.
+* `sepaDebitDetails` _Object_ (Optional) - If this is a SEPA Debit source, this property contains information about the sepaDebit.
+
+##### `owner`
+
+An object with the following keys:
+
+* `address` _Object_ (Optional) - Owner’s address.
+* `email` _String_ (Optional) - Owner’s email address.
+* `name` _String_ (Optional) - Owner’s full name.
+* `phone` _String_ (Optional) - Owner’s phone number.
+* `verifiedAddress` _Object_ (Optional) - Verified owner’s address.
+* `verifiedEmail` _String_ (Optional) - Verified owner’s email address.
+* `verifiedName` _String_ (Optional) - Verified owner’s full name.
+* `verifiedPhone` _String_ (Optional) - Verified owner’s phone number.
+
+##### `receiver`
+
+An object with the following keys:
+
+* `address` _Object_ - The address of the receiver source. This is the value that should be communicated to the customer to send their funds to.
+* `amountCharged` _Number_ - The total amount charged by you.
+* `amountReceived` _Number_ - The total amount received by the receiver source.
+* `amountReturned` _Number_ - The total amount that was returned to the customer.
+
+##### `redirect`
+
+An object with the following keys:
+
+* `returnURL` _String_ - The URL you provide to redirect the customer to after they authenticated their payment.
+* `status` _String_ - The status of the redirect. Can be one of: `pending`|`succeeded`|`failed`|`unknown`.
+* `url` _String_ - The URL provided to you to redirect a customer to as part of a redirect authentication flow.
+
+##### `verification`
+
+An object with the following keys:
+
+* `attemptsRemaining` _Number_ - The number of attempts remaining to authenticate the source object with a verification code.
+* `status` _String_ - The status of the verification. Can be one of: `pending`|`succeeded`|`failed`|`unknown`.
+
+##### `cardDetails`
+
+An object with the following keys:
+
+* `last4` _String_ - The last 4 digits of the card.
+* `expMonth` _Number_ - The card’s expiration month. 1-indexed (i.e. 1 == January)
+* `expYear` _Number_ - The card’s expiration year.
+* `brand` _String_ - The issuer of the card. Can be one of: `JCB`|`American Express`|`Visa`|`Discover`|`Diners Club`|`MasterCard`|`Unknown`.
+* `funding` _String_ (iOS only) - The funding source for the card. Can be one of: `debit`|`credit`|`prepaid`|`unknown`.
+* `country` _String_ - Two-letter ISO code representing the issuing country of the card.
+* `threeDSecure` _String_ Whether 3D Secure is supported or required by the card. Can be one of: `required`|`optional`|`notSupported`|`unknown`.
+
+##### `sepaDebitDetails`
+
+An object with the following keys:
+
+* `last4` _String_ - The last 4 digits of the account number.
+* `bankCode` _String_ - The account’s bank code.
+* `country` _String_ - Two-letter ISO code representing the country of the bank account.
+* `fingerprint` _String_ - The account’s fingerprint.
+* `mandateReference` _String_ The reference of the mandate accepted by your customer.
+* `mandateURL` _String_ - The details of the mandate accepted by your customer.
+
+#### Example
+
+```js
+{
+  livemode: false,
+  amount: 50,
+  owner: {},
+  metadata: {},
+  clientSecret: 'src_client_secret_BLnXIZxZprDmdhw3zv12123L',
+  details: {
+    native_url: null,
+    statement_descriptor: null
+  },
+  type: 'alipay',
+  redirect: {
+    url: 'https://hooks.stripe.com/redirect/authenticate/src_1Az5vzE5aJKqY779Kes5s61m?client_secret=src_client_secret_BLnXIZxZprDmdhw3zv12123L',
+    returnURL: 'example://stripe-redirect?redirect_merchant_name=example',
+    status: 'succeeded'
+  },
+  usage: 'single',
+  created: 1504713563,
+  flow: 'redirect',
+  currency: 'eur',
+  status: 'chargable',
+}
+```
+
 ### Apple Pay (iOS only)
 
 #### `openApplePaySetup()`
@@ -288,7 +401,8 @@ An object with the following keys:
 * `requiredBillingAddressFields` _Array\<String\>_ - A bit field of billing address fields that you need in order to process the transaction. Can be one of: `all`|`name`|`email`|`phone`|`postal_address` or not specify to disable.
 * `requiredShippingAddressFields` _Array\<String\>_ - A bit field of shipping address fields that you need in order to process the transaction. Can be one of: `all`|`name`|`email`|`phone`|`postal_address` or not specify to disable.
 * `shippingMethods` _Array_ - An array of `shippingMethod` objects that describe the supported shipping methods.
-* `currencyCode` _String_ - The three-letter ISO 4217 currency code.
+* `currencyCode` _String_ - The three-letter ISO 4217 currency code. Default `USD`.
+* `countryCode` _String_ - The two-letter code for the country where the payment will be processed. Default `US`.
 
 ##### `shippingMethod`
 
@@ -434,7 +548,6 @@ An object with the following keys:
 * `requiredBillingAddressFields` _String_ - The billing address fields the user must fill out when prompted for their payment details. Can be one of: `full`|`zip` or not specify to disable.
 * `prefilledInformation` _Object_ - You can set this property to pre-fill any information you’ve already collected from your user.
 * `managedAccountCurrency` _String_ - Required to be able to add the card to an account (in all other cases, this parameter is not used). [More info](https://stripe.com/docs/api#create_card_token-card-currency).
-* `smsAutofillDisabled` _Bool_ - When entering their payment information, users who have a saved card with Stripe will be prompted to autofill it by entering an SMS code. Set this property to `true` to disable this feature.
 * `theme` _Object_ - Can be used to visually style Stripe-provided UI.
 
 ##### `prefilledInformation`
@@ -477,7 +590,6 @@ An object with the following keys:
 
 ```js
 const options = {
-  smsAutofillDisabled: true,
   requiredBillingAddressFields: 'full',
   prefilledInformation: {
     billingAddress: {
@@ -666,6 +778,57 @@ class FieldExample extends Component {
     )
   }
 }
+```
+
+### Create source object with params (iOS only at the moment)
+
+#### `createSourceWithParams(params) -> Promise`
+
+Creates source object based on params. Sources are used to create payments for a variety of [payment methods](https://stripe.com/docs/sources)
+
+_NOTE_: For sources that require redirecting your customer to authorize the payment, you need to specify a return URL when you create the source. This allows your customer to be redirected back to your app after they authorize the payment. For this return URL, you can either use a custom URL scheme or a universal link supported by your app. For more information on registering and handling URLs in your app, refer to the Apple documentation:
+
+* [Implementing Custom URL Schemes](https://developer.apple.com/library/content/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html#//apple_ref/doc/uid/TP40007072-CH6-SW10)
+* [Supporting Universal Links](https://developer.apple.com/library/content/documentation/General/Conceptual/AppSearch/UniversalLinks.html)
+
+You also need to setup your `AppDelegate.m` app delegate to forward URLs to the Stripe SDK according to the [official iOS implementation](https://stripe.com/docs/mobile/ios/sources#redirecting-your-customer)
+
+##### `params`
+
+An object with the following keys:
+(Depending on the type you need to provide different params. Check the [STPSourceParams docs](https://stripe.github.io/stripe-ios/docs/Classes/STPSourceParams.html) for reference)
+
+* `type` _String_ (Required) - The type of the source to create. Can be one of: `bancontact`|`bitcoin`|`card`|`griopay`|`ideal`|`sepaDebit`|`sofort`|`threeDSecure`|`alipay`.
+* `amount` _Number_ - A positive number in the smallest currency unit representing the amount to charge the customer (e.g., 1099 for a €10.99 payment).
+* `name` _String_ - The full name of the account holder.
+* `returnURL` _String_ The URL the customer should be redirected to after they have successfully verified the payment.
+* `statementDescriptor` _String_ A custom statement descriptor for the payment.
+* `currency` _String_ - The currency associated with the source. This is the currency for which the source will be chargeable once ready.
+* `email` _String_ - The customer’s email address.
+* `bank` _String_ - The customer’s bank.
+* `iban` _String_ - The IBAN number for the bank account you wish to debit.
+* `addressLine1` _String_ - The bank account holder’s first address line (optional).
+* `city` _String_ - The bank account holder’s city.
+* `postalCode` _String_ - The bank account holder’s postal code.
+* `country` _String_ - The bank account holder’s two-letter country code (`sepaDebit`) or the country code of the customer’s bank (`sofort`).
+* `card` _String_ - The ID of the card source.
+
+##### Example
+
+![Source Params iOS](https://user-images.githubusercontent.com/5305150/30137085-019fa90e-9362-11e7-9e6b-b934d6e68b60.gif)
+
+```js
+const params = {
+  type: 'alipay',
+  amount: 5,
+  currency: 'EUR',
+  returnURL: 'example://stripe-redirect',
+}
+
+const source = await stripe.createSourceWithParams(params)
+
+// Client specific code
+// api.sendSourceToBackend(source)
 ```
 
 ## Tests

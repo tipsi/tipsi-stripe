@@ -7,7 +7,7 @@ require 'fileutils'
 Dir.chdir('ios')
 
 @podfile_path = Pathname.pwd + 'Podfile'
-@pod_dep = "  pod 'Stripe', '~> 10.1.0'\n"
+@pod_dep = "  pod 'Stripe', '~> 11.2.0'\n"
 
 @project_paths= Pathname.pwd.children.select { |pn| pn.extname == '.xcodeproj' }
 raise 'No Xcode project found' unless @project_paths.length > 0
