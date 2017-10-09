@@ -22,8 +22,8 @@ export const paymentRequestWithApplePayItemsPropTypes = {
 
 export const paymentRequestWithApplePayOptionsPropTypes = {
   currencyCode: PropTypes.string,
-  requiredBillingAddressFields: PropTypes.oneOf(availableApplePayAddressFields),
-  requiredShippingAddressFields: PropTypes.oneOf(availableApplePayAddressFields),
+  requiredBillingAddressFields: PropTypes.arrayOf(PropTypes.oneOf(availableApplePayAddressFields)),
+  requiredShippingAddressFields: PropTypes.arrayOf(PropTypes.oneOf(availableApplePayAddressFields)),
   shippingMethods: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
