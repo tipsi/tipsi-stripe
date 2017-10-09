@@ -261,6 +261,11 @@
 					"${BUILT_PRODUCTS_DIR}/**",
 					"$BUILD_DIR/$CONFIGURATION$EFFECTIVE_PLATFORM_NAME/Stripe/**",
 				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../../react-native/React/**",
+					"${SRCROOT}/../../../ios/Pods/Stripe/**",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -273,6 +278,11 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"${BUILT_PRODUCTS_DIR}/**",
 					"$BUILD_DIR/$CONFIGURATION$EFFECTIVE_PLATFORM_NAME/Stripe/**",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../../react-native/React/**",
+					"${SRCROOT}/../../../ios/Pods/Stripe/**",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
