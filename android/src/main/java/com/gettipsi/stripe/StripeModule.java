@@ -20,6 +20,7 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.gettipsi.stripe.dialog.AddCardDialogFragment;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.BooleanResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -135,6 +136,10 @@ public class StripeModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void deviceSupportsAndroidPay(final Promise promise) {
+    if (!isPlayServicesAvailable()) {
+      promise.reject(TAG, "Play services are not available!");
+      return;
+    }
     if (googleApiClient != null && googleApiClient.isConnected()) {
       checkAndroidPayAvaliable(googleApiClient, promise);
     } else if (googleApiClient != null && !googleApiClient.isConnected()) {
@@ -306,6 +311,15 @@ public class StripeModule extends ReactContextBaseJavaModule {
       .setCurrencyCode(currencyCode)
       .build();
     return maskedWalletRequest;
+  }
+
+  private boolean isPlayServicesAvailable() {
+    GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
+    int result = googleAPI.isGooglePlayServicesAvailable(getCurrentActivity());
+    if (result != ConnectionResult.SUCCESS) {
+      return false;
+    }
+    return true;
   }
 
   private void androidPayUnavaliableDialog() {
