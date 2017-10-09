@@ -557,21 +557,31 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     return shippingDetails;
 }
 
-- (PKAddressField)applePayAddressFields:(NSString*)inputType {
+- (PKAddressField)applePayAddressFields:(NSArray <NSString *> *)addressFieldStrings {
     PKAddressField addressField = PKAddressFieldNone;
-    if ([inputType isEqualToString:@"postal_address"]) {
+
+    for (NSString *addressFieldString in addressFieldStrings) {
+        addressField |= [self applePayAddressField:addressFieldString];
+    }
+
+    return addressField;
+}
+
+- (PKAddressField)applePayAddressField:(NSString *)addressFieldString {
+    PKAddressField addressField = PKAddressFieldNone;
+    if ([addressFieldString isEqualToString:@"postal_address"]) {
         addressField = PKAddressFieldPostalAddress;
     }
-    if ([inputType isEqualToString:@"phone"]) {
+    if ([addressFieldString isEqualToString:@"phone"]) {
         addressField = PKAddressFieldPhone;
     }
-    if ([inputType isEqualToString:@"email"]) {
+    if ([addressFieldString isEqualToString:@"email"]) {
         addressField = PKAddressFieldEmail;
     }
-    if ([inputType isEqualToString:@"name"]) {
+    if ([addressFieldString isEqualToString:@"name"]) {
         addressField = PKAddressFieldName;
     }
-    if ([inputType isEqualToString:@"all"]) {
+    if ([addressFieldString isEqualToString:@"all"]) {
         addressField = PKAddressFieldAll;
     }
     return addressField;
