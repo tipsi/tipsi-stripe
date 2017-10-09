@@ -263,6 +263,7 @@ RCT_EXPORT_METHOD(paymentRequestWithCardForm:(NSDictionary *)options
     // STPAddCardViewController must be shown inside a UINavigationController.
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:addCardViewController];
     [navigationController setModalPresentationStyle:formPresentation];
+    navigationController.navigationBar.stp_theme = theme;
     [RCTPresentedViewController() presentViewController:navigationController animated:YES completion:nil];
 }
 
