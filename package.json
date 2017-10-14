@@ -1,11 +1,10 @@
 {
   "name": "tipsi-stripe",
-  "version": "3.8.0",
+  "version": "3.8.1",
   "description": "React Native Stripe binding for iOS/Andriod platforms",
   "main": "src/index.js",
   "scripts": {
-    "ci": "scripts/local-ci.sh",
-    "postinstall": "scripts/post-install.js"
+    "ci": "scripts/local-ci.sh"
   },
   "repository": {
     "type": "git",
