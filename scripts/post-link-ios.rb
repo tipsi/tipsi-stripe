@@ -15,35 +15,47 @@ raise 'Multiple Xcode projects found' unless @project_paths.length == 1
 project_path = @project_paths.first
 
 project = Xcodeproj::Project.open(project_path)
-project_name = File.basename(project_path, '.xcodeproj')
 main_target = project.targets.first
 
+puts "Checking Podfile in iOS project #{@podfile_path}"
+
+
 if File.exist? @podfile_path
-  puts "\n\n"
-  puts '=============================================================================='
-  puts ' TIPSI-STRIPE                                                                 '
-  puts ' [iOS] Make sure, that you configured your Podfile correctly!                 '
-  puts '                                                                              '
-  puts ' Checkout Migration Guide:                                                    '
-  puts " https://tipsi.gitbooks.io/tipsi-stripe/content/migration-guides/374-380.html "
-  puts '=============================================================================='
-  puts "\n\n"
+  puts 'Found an existing Podfile'
+  puts "Adding the following pod to Podfile\n#{@pod_dep}"
+  temp_file = Tempfile.new('Podfile_temp')
+  begin
+    escaped_target_name = main_target.name.gsub(/'/, "\\\\\'")
+    File.readlines(@podfile_path).each do |line|
+      if line =~ /pod\s'Stripe'/
+        puts 'Stripe pod is already added'
+        exit
+      end
+    temp_file.puts(line)
+      unless line =~ /^\s*(\#{0})use_frameworks!/
+        temp_file.puts(@pod_dep) if line =~ /target\s+'#{escaped_target_name}'\s+do/
+      else
+        puts 'Your project using use_frameworks! directive, please check README and issue https://github.com/tipsi/tipsi-stripe/issues/29'
+      end
+    end
+    temp_file.close
+    FileUtils.mv(temp_file.path, @podfile_path)
+  ensure
+    temp_file.delete
+  end
 else
-  puts "Adding Podfile to iOS project:\n\n"
+  puts 'Adding Podfile to iOS project'
   podfile = ''
-  podfile << "platform :ios, '10.0'\n\n"
-  podfile << "workspace '#{project_name}'\n\n"
-  podfile << "target '#{main_target.name.gsub(/'/, "\\\\\'")}' do\n"
+
+  podfile << "# Uncomment the next line to define a global platform for your project\n# platform :ios, '9.0'\n"
+  podfile << "\ntarget '#{main_target.name.gsub(/'/, "\\\\\'")}' do\n"
   podfile << @pod_dep
-  podfile << "end\n\n"
-  podfile << "target 'TPSStripe' do\n"
-  podfile << "  project '../node_modules/tipsi-stripe/ios/TPSStripe'\n"
-  podfile << @pod_dep
+  podfile << "  inherit! :search_paths\n"
   podfile << "end\n"
   puts podfile
-  puts "\n"
   File.write(@podfile_path, podfile)
 end
 
-puts "Sync dependencies:\n\n"
+puts 'Installing Pods'
+
 system 'pod install'
