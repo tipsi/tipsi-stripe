@@ -47,7 +47,7 @@ else
   puts 'Adding Podfile to iOS project'
   podfile = ''
 
-  podfile << "# Uncomment the next line to define a global platform for your project\n# platform :ios, '9.0'\n"
+  podfile << "# Uncomment the next line to define a global platform for your project\n# platform :ios, '8.0'\n"
   podfile << "\ntarget '#{main_target.name.gsub(/'/, "\\\\\'")}' do\n"
   podfile << @pod_dep
   podfile << "  inherit! :search_paths\n"

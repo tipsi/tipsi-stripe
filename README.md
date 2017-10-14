@@ -10,7 +10,7 @@ React Native Stripe binding for iOS/Android platforms
 ### iOS
 
 * Xcode 8+
-* iOS 10+
+* iOS 8.0+
 * [CocoaPods](https://cocoapods.org) 1.1.1+
 
 ### Android
