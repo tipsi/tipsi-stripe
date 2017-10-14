@@ -98,6 +98,9 @@ rm -rf node_modules && npm install
 react-native unlink $library_name
 react-native link
 
+# Make sure that dependencies work correctly after reinstallation
+rm -rf node_modules && npm install
+
 ###################
 # BEFORE BUILD    #
 ###################
