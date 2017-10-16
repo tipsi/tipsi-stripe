@@ -29,6 +29,7 @@ files_to_copy=(
   src
   scripts
   __tests__
+  ios/Podfile
 )
 
 isMacOS() {
@@ -97,6 +98,12 @@ rm -rf node_modules && npm install
 # Link project
 react-native unlink $library_name
 react-native link
+
+# Install iOS dependencies
+isMacOS && cd ./ios
+isMacOS && pod install
+isMacOS && cd ../
+
 # Make sure that dependencies work correctly after reinstallation
 rm -rf node_modules && npm install
 
