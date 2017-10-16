@@ -2,6 +2,7 @@
 
 case "${TRAVIS_OS_NAME}" in
   linux)
+    yes | $ANDROID_HOME/tools/bin/sdkmanager "build-tools;26.0.1"
     echo no | android create avd --force -n test -t android-21 --abi armeabi-v7a --skin WVGA800
     emulator -avd test -scale 96dpi -dpi-device 160 -no-audio -no-window &
     android-wait-for-emulator
