@@ -9,6 +9,7 @@ matrix:
       sudo: required
       android:
         components:
+          - tools
           - platform-tools
           - tools
           - build-tools-26.0.1
