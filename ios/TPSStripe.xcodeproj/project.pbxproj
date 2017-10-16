@@ -199,7 +199,8 @@
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../../../React/**",
 					"$(SRCROOT)/../../react-native/React/**",
-					"${SRCROOT}/../../../ios/Pods/Headers/Public/**",
+					"${SRCROOT}/../../../ios/Pods/Headers/Public",
+					"${SRCROOT}/../../../ios/Pods/Headers/Public/Stripe",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -245,7 +246,8 @@
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../../../React/**",
 					"$(SRCROOT)/../../react-native/React/**",
-					"${SRCROOT}/../../../ios/Pods/Headers/Public/**",
+					"${SRCROOT}/../../../ios/Pods/Headers/Public",
+					"${SRCROOT}/../../../ios/Pods/Headers/Public/Stripe",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
