@@ -10,7 +10,7 @@ react-native link
 
 case "${TRAVIS_OS_NAME}" in
   osx)
-    cd ./ios
+    cd ios
     pod install
     cd ../
   ;;
