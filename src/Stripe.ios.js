@@ -9,13 +9,18 @@ const { TPSStripeManager } = NativeModules
 class Stripe {
   stripeInitialized = false
 
-  // Error domain
-  TPSErrorDomain = TPSStripeManager.TPSErrorDomain
+  constructor() {
+    if (TPSStripeManager) {
 
-  // Error codes
-  TPSErrorCodeApplePayNotConfigured = TPSStripeManager.TPSErrorCodeApplePayNotConfigured
-  TPSErrorCodePreviousRequestNotCompleted = TPSStripeManager.TPSErrorCodePreviousRequestNotCompleted
-  TPSErrorCodeUserCancel = TPSStripeManager.TPSErrorCodeUserCancel
+      // Error domain
+      this.TPSErrorDomain = TPSStripeManager.TPSErrorDomain
+
+      // Error codes
+      this.TPSErrorCodeApplePayNotConfigured = TPSStripeManager.TPSErrorCodeApplePayNotConfigured
+      this.TPSErrorCodePreviousRequestNotCompleted = TPSStripeManager.TPSErrorCodePreviousRequestNotCompleted
+      this.TPSErrorCodeUserCancel = TPSStripeManager.TPSErrorCodeUserCancel
+    }
+  }
 
   init = (options = {}) => {
     checkArgs(
