@@ -10,6 +10,8 @@
 #import <React/RCTUtils.h>
 #import <React/RCTConvert.h>
 
+#import "TPSError.h"
+
 @implementation RCTConvert (STPBankAccountHolderType)
 
 RCT_ENUM_CONVERTER(STPBankAccountHolderType,
@@ -105,6 +107,16 @@ NSString * const TPSPaymentNetworkVisa = @"visa";
     return dispatch_get_main_queue();
 }
 
+- (NSDictionary *)constantsToExport
+{
+    return @{
+             @"TPSErrorDomain": TPSErrorDomain,
+             @"TPSErrorCodeApplePayNotConfigured": [@(TPSErrorCodeApplePayNotConfigured) stringValue],
+             @"TPSErrorCodePreviousRequestNotCompleted": [@(TPSErrorCodePreviousRequestNotCompleted) stringValue],
+             @"TPSErrorCodeUserCancel": [@(TPSErrorCodeUserCancel) stringValue],
+             };
+}
+
 RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(init:(NSDictionary *)options) {
@@ -150,11 +162,8 @@ RCT_EXPORT_METHOD(createTokenWithCard:(NSDictionary *)params
                              resolver:(RCTPromiseResolveBlock)resolve
                              rejecter:(RCTPromiseRejectBlock)reject) {
     if(!requestIsCompleted) {
-        reject(
-            [NSString stringWithFormat:@"%ld", (long)3],
-            @"Previous request is not completed",
-            [[NSError alloc] initWithDomain:@"StripeNative" code:3 userInfo:@{NSLocalizedDescriptionKey:@"Previous request is not completed"}]
-        );
+        NSError *error = [TPSError previousRequestNotCompletedError];
+        reject([NSString stringWithFormat:@"%ld", error.code], error.localizedDescription, error);
         return;
     }
 
@@ -191,11 +200,8 @@ RCT_EXPORT_METHOD(createTokenWithBankAccount:(NSDictionary *)params
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
     if(!requestIsCompleted) {
-        reject(
-               [NSString stringWithFormat:@"%ld", (long)3],
-               @"Previous request is not completed",
-               [[NSError alloc] initWithDomain:@"StripeNative" code:3 userInfo:@{NSLocalizedDescriptionKey:@"Previous request is not completed"}]
-               );
+        NSError *error = [TPSError previousRequestNotCompletedError];
+        reject([NSString stringWithFormat:@"%ld", error.code], error.localizedDescription, error);
         return;
     }
 
@@ -227,11 +233,8 @@ RCT_EXPORT_METHOD(paymentRequestWithCardForm:(NSDictionary *)options
                                     resolver:(RCTPromiseResolveBlock)resolve
                                     rejecter:(RCTPromiseRejectBlock)reject) {
     if(!requestIsCompleted) {
-        reject(
-            [NSString stringWithFormat:@"%ld", (long)3],
-            @"Previous request is not completed",
-            [[NSError alloc] initWithDomain:@"StripeNative" code:3 userInfo:@{NSLocalizedDescriptionKey:@"Previous request is not completed"}]
-        );
+        NSError *error = [TPSError previousRequestNotCompletedError];
+        reject([NSString stringWithFormat:@"%ld", error.code], error.localizedDescription, error);
         return;
     }
 
@@ -272,11 +275,8 @@ RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
                                     resolver:(RCTPromiseResolveBlock)resolve
                                     rejecter:(RCTPromiseRejectBlock)reject) {
     if(!requestIsCompleted) {
-        reject(
-           [NSString stringWithFormat:@"%ld", (long)3],
-           @"Previous request is not completed",
-           [[NSError alloc] initWithDomain:@"StripeNative" code:3 userInfo:@{NSLocalizedDescriptionKey:@"Previous request is not completed"}]
-        );
+        NSError *error = [TPSError previousRequestNotCompletedError];
+        reject([NSString stringWithFormat:@"%ld", error.code], error.localizedDescription, error);
         return;
     }
 
@@ -329,11 +329,9 @@ RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
         promiseRejector = nil;
         promiseResolver = nil;
         requestIsCompleted = YES;
-        reject(
-            [NSString stringWithFormat:@"%ld", (long)1],
-            @"Apple Pay configuration error",
-            [NSError errorWithDomain:@"StipeNative" code:1 userInfo:@{NSLocalizedDescriptionKey:@"Apple Pay configuration error"}]
-        );
+        
+        NSError *error = [TPSError applePayNotConfiguredError];
+        reject([NSString stringWithFormat:@"%ld", error.code], error.localizedDescription, error);
     }
 }
 
@@ -363,11 +361,8 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
 
     if (!requestIsCompleted) {
         requestIsCompleted = YES;
-        promiseRejector(
-            [NSString stringWithFormat:@"%ld", (long)2],
-            @"User canceled payment via card",
-            [[NSError alloc] initWithDomain:@"StripeNative" code:2 userInfo:@{NSLocalizedDescriptionKey:@"User canceled payment via card"}]
-        );
+        NSError *error = [TPSError userCancelError];
+        promiseRejector([NSString stringWithFormat:@"%ld", error.code], error.localizedDescription, error);
     }
 
 }
@@ -407,11 +402,9 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
 
     if (!requestIsCompleted) {
         requestIsCompleted = YES;
-        promiseRejector(
-            [NSString stringWithFormat:@"%ld", (long)2],
-            @"User canceled Apple Pay",
-            [[NSError alloc] initWithDomain:@"StripeNative" code:2 userInfo:@{NSLocalizedDescriptionKey:@"User canceled Apple Pay"}]
-        );
+        
+        NSError *error = [TPSError userCancelError];
+        promiseRejector([NSString stringWithFormat:@"%ld", error.code], error.localizedDescription, error);
     } else {
         promiseResolver(nil);
     }
