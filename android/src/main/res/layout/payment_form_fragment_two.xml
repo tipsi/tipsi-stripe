@@ -56,7 +56,7 @@
         android:paddingTop="8dp"
         app:include_helper="true"
         app:include_zip="false"
-        app:input_background="@drawable/card_input_custom_background"
+        app:input_background="@color/transparent_background"
         app:cursor_color="@color/colorAccent"
         app:text_size="18sp"/>
 
