@@ -64,8 +64,8 @@ export default class ApplePayScreen extends PureComponent {
         label: 'Tipsi',
         amount: '110.00',
       }], {
-        // requiredBillingAddressFields: 'all',
-        // requiredShippingAddressFields: 'all',
+        // requiredBillingAddressFields: ['all'],
+        // requiredShippingAddressFields: ['all'],
         shippingMethods: [{
           id: 'fedex',
           label: 'FedEX',
