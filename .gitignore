@@ -75,4 +75,5 @@ npm-debug.log
 
 tmp
 example_tmp
+example_podspec
 *.tgz
