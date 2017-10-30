@@ -3,6 +3,12 @@ matrix:
     - os: osx
       language: objective-c
       osx_image: xcode8
+    - os: osx
+      language: objective-c
+      osx_image: xcode8
+      install: echo "PODSPEC install"
+      before_script: echo "PODSPEC before_script"
+      script: .travis/podspec/ci.sh
     - os: linux
       language: android
       jdk: oraclejdk8
@@ -26,8 +32,8 @@ cache:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
 
-before_cache: .travis/before-cache.sh
 before_install: . .travis/before-install.sh
 install: .travis/install.sh
 before_script: .travis/before-ci.sh
 script: .travis/ci.sh
+before_cache: .travis/before-cache.sh

@@ -12,7 +12,7 @@ case "${TRAVIS_OS_NAME}" in
   osx)
     cd ios
     pod install
-    cd ../
+    cd ..
   ;;
 esac
 
