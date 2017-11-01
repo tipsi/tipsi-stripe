@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.util.Xml;
 import android.widget.EditText;
+import android.view.inputmethod.InputMethodManager;
 
 import com.devmarvel.creditcardentry.library.CreditCardForm;
 import com.facebook.react.bridge.Arguments;
@@ -44,7 +45,7 @@ public class CustomCardInputReactManager extends SimpleViewManager<CreditCardFor
   }
 
   @Override
-  protected CreditCardForm createViewInstance(ThemedReactContext reactContext) {
+  protected CreditCardForm createViewInstance(final ThemedReactContext reactContext) {
     XmlPullParser parser = reactContext.getResources().getXml(R.xml.stub_material);
     try {
       parser.next();
@@ -57,6 +58,14 @@ public class CustomCardInputReactManager extends SimpleViewManager<CreditCardFor
     final CreditCardForm creditCardForm = new CreditCardForm(reactContext, attr);
     setListeners(creditCardForm);
     this.reactContext = reactContext;
+    creditCardForm.post(new Runnable() {
+      @Override
+      public void run() {
+        InputMethodManager inputMethodManager = (InputMethodManager) reactContext.getSystemService(reactContext.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInputFromWindow(creditCardForm.getApplicationWindowToken(), InputMethodManager.SHOW_IMPLICIT, 0);
+        creditCardForm.focusCreditCard();
+      }
+    });
     return creditCardForm;
   }
 
