@@ -7,6 +7,11 @@ case "${TRAVIS_OS_NAME}" in
     android-wait-for-emulator
     sleep 60
     adb shell input keyevent 82 &
+    yes | $ANDROID_HOME/tools/bin/sdkmanager "build-tools;25.0.1"
+    yes | $ANDROID_HOME/tools/bin/sdkmanager "build-tools;25.0.2"
+    yes | $ANDROID_HOME/tools/bin/sdkmanager "build-tools;25.0.3"
+    yes | $ANDROID_HOME/tools/bin/sdkmanager "build-tools;25.2.3"
+    yes | $ANDROID_HOME/tools/bin/sdkmanager "build-tools;25.2.5"
   ;;
 esac
 
