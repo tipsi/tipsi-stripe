@@ -780,19 +780,73 @@ class FieldExample extends Component {
 }
 ```
 
-### Create source object with params (iOS only at the moment)
+### Create source object with params
 
 #### `createSourceWithParams(params) -> Promise`
 
 Creates source object based on params. Sources are used to create payments for a variety of [payment methods](https://stripe.com/docs/sources)
 
-_NOTE_: For sources that require redirecting your customer to authorize the payment, you need to specify a return URL when you create the source. This allows your customer to be redirected back to your app after they authorize the payment. For this return URL, you can either use a custom URL scheme or a universal link supported by your app. For more information on registering and handling URLs in your app, refer to the Apple documentation:
+_NOTE_: For sources that require redirecting your customer to authorize the payment, you need to specify a return URL when you create the source. This allows your customer to be redirected back to your app after they authorize the payment. For this return URL, you can either use a custom URL scheme or a universal link supported by your app.
+
+##### iOS
+
+For more information on registering and handling URLs in your app, refer to the Apple documentation:
 
 * [Implementing Custom URL Schemes](https://developer.apple.com/library/content/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html#//apple_ref/doc/uid/TP40007072-CH6-SW10)
 * [Supporting Universal Links](https://developer.apple.com/library/content/documentation/General/Conceptual/AppSearch/UniversalLinks.html)
 
 You also need to setup your `AppDelegate.m` app delegate to forward URLs to the Stripe SDK according to the [official iOS implementation](https://stripe.com/docs/mobile/ios/sources#redirecting-your-customer)
 
+##### Android
+
+When declaring your activity that creates redirect-based sources, list an intent-filter item in your AndroidManifest.xml file. This allows you to accept links into your application. Your activity must include android:launchMode="singleTask" or else a new copy of it is opened when your customer comes back from the browser.
+
+```xml
+<activity
+    android:name=".activity.PollingActivity"
+    android:launchMode="singleTask"
+    android:theme="@style/SampleTheme">
+    <intent-filter>
+        <action android:name="android.intent.action.VIEW"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        <category android:name="android.intent.category.BROWSABLE"/>
+        <data
+            android:host="yourcompany"
+            android:scheme="yourpath"/>
+    </intent-filter>
+</activity>
+```
+
+To receive information from this event, listen for your activity getting started back up with a new Intent using the onNewIntent lifecycle method.
+
+```java
+@Override
+protected void onNewIntent(Intent intent) {
+    super.onNewIntent(intent);
+    if (intent.getData() != null && intent.getData().getQuery() != null) {
+        // The client secret and source ID found here is identical to
+        // that of the source used to get the redirect URL.
+
+        String host = intent.getData().getHost();
+        // Note: you don't have to get the client secret
+        // and source ID here. They are the same as the
+        // values already in your source.
+        String clientSecret = intent.getData().getQueryParameter(QUERY_CLIENT_SECRET);
+        String sourceId = intent.getData().getQueryParameter(QUERY_SOURCE_ID);
+        if (clientSecret != null
+                && sourceId != null
+                && clientSecret.equals(mRedirectSource.getClientSecret())
+                && sourceId.equals(mRedirectSource.getId())) {
+            // Then this is a redirect back for the original source.
+            // You should poll your own backend to update based on
+            // source status change webhook events it may receive, and display the results
+            // of that here.
+        }
+        // If you had a dialog open when your user went elsewhere, remember to close it here.
+        mRedirectDialogController.dismissDialog();
+    }
+}
+```
 ##### `params`
 
 An object with the following keys:

@@ -18,6 +18,8 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.WritableNativeArray;
+import com.facebook.react.bridge.WritableNativeMap;
 import com.gettipsi.stripe.dialog.AddCardDialogFragment;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -35,16 +37,25 @@ import com.google.android.gms.wallet.PaymentMethodTokenizationParameters;
 import com.google.android.gms.wallet.PaymentMethodTokenizationType;
 import com.google.android.gms.wallet.Wallet;
 import com.google.android.gms.wallet.WalletConstants;
+import com.stripe.android.BuildConfig;
+import com.stripe.android.SourceCallback;
 import com.stripe.android.Stripe;
 import com.stripe.android.TokenCallback;
-import com.stripe.android.exception.AuthenticationException;
+import com.stripe.android.model.Address;
 import com.stripe.android.model.BankAccount;
 import com.stripe.android.model.Card;
+import com.stripe.android.model.Source;
+import com.stripe.android.model.SourceCodeVerification;
+import com.stripe.android.model.SourceOwner;
+import com.stripe.android.model.SourceParams;
+import com.stripe.android.model.SourceReceiver;
+import com.stripe.android.model.SourceRedirect;
 import com.stripe.android.model.Token;
-import com.stripe.android.net.StripeApiHandler;
-import com.stripe.android.net.TokenParser;
 
-import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class StripeModule extends ReactContextBaseJavaModule {
 
@@ -69,6 +80,17 @@ public class StripeModule extends ReactContextBaseJavaModule {
   private static final String DESCRIPTION = "description";
 
   private int mEnvironment = WalletConstants.ENVIRONMENT_PRODUCTION;
+
+  private static StripeModule instance = null;
+
+  public static StripeModule getInstance() {
+    return instance;
+  }
+
+  public Stripe getStripe() {
+    return stripe;
+  }
+
   private Promise payPromise;
 
   private String publicKey;
@@ -90,12 +112,13 @@ public class StripeModule extends ReactContextBaseJavaModule {
           if (resultCode == Activity.RESULT_OK) {
             FullWallet fullWallet = data.getParcelableExtra(WalletConstants.EXTRA_FULL_WALLET);
             String tokenJSON = fullWallet.getPaymentMethodToken().getToken();
-            try {
-              Token token = TokenParser.parseToken(tokenJSON);
+            Token token = Token.fromString(tokenJSON);
+            if (token == null) {
+              // Log the error and notify Stripe help
+              Log.e(TAG, "onActivityResult: failed to create token from JSON string.");
+              payPromise.reject("JsonParsingError", "Failed to create token from JSON string.");
+            } else {
               payPromise.resolve(convertTokenToWritableMap(token));
-            } catch (JSONException jsonException) {
-              // Log the error and notify Stripe helpß
-              Log.e(TAG, "onActivityResult: ", jsonException);
             }
           }
         } else {
@@ -111,6 +134,8 @@ public class StripeModule extends ReactContextBaseJavaModule {
 
     // Add the listener for `onActivityResult`
     reactContext.addActivityEventListener(mActivityEventListener);
+
+    instance = this;
   }
 
   @Override
@@ -127,11 +152,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
 
     publicKey = options.getString("publishableKey");
 
-    try {
-      stripe = new Stripe(publicKey);
-    } catch (AuthenticationException e) {
-      Log.e(TAG, "init: ", e);
-    }
+    stripe = new Stripe(getReactApplicationContext(), publicKey);
   }
 
   @ReactMethod
@@ -249,6 +270,97 @@ public class StripeModule extends ReactContextBaseJavaModule {
     }
   }
 
+  @ReactMethod
+  public void createSourceWithParams(final ReadableMap options, final Promise promise) {
+    String sourceType = options.getString("type");
+    SourceParams sourceParams = null;
+    switch (sourceType) {
+      case "alipay":
+        sourceParams = SourceParams.createCustomParams();
+        sourceParams.setType("alipay");
+        sourceParams.setCurrency(options.getString("currency"));
+        sourceParams.setAmount(options.getInt("amount"));
+        Map<String, Object> redirect = new HashMap<>();
+        redirect.put("return_url", options.getString("redirectURL"));
+        sourceParams.setRedirect(redirect);
+        break;
+      case "bancontact":
+        sourceParams = SourceParams.createBancontactParams(
+            options.getInt("amount"),
+            options.getString("name"),
+            options.getString("returnURL"),
+            options.getString("statementDescriptor"));
+        break;
+      case "bitcoin":
+        sourceParams = SourceParams.createBitcoinParams(
+            options.getInt("amount"), options.getString("currency"), options.getString("email"));
+        break;
+      case "giropay":
+        sourceParams = SourceParams.createGiropayParams(
+            options.getInt("amount"),
+            options.getString("name"),
+            options.getString("returnURL"),
+            options.getString("statementDescriptor"));
+        break;
+      case "ideal":
+        sourceParams = SourceParams.createIdealParams(
+            options.getInt("amount"),
+            options.getString("name"),
+            options.getString("redirectURL"),
+            options.getString("statementDescriptor"),
+            options.getString("bank"));
+        break;
+      case "sepaDebit":
+        sourceParams = SourceParams.createSepaDebitParams(
+            options.getString("name"),
+            options.getString("iban"),
+            options.getString("addressLine1"),
+            options.getString("city"),
+            options.getString("postalCode"),
+            options.getString("country"));
+        break;
+      case "sofort":
+        sourceParams = SourceParams.createSofortParams(
+            options.getInt("amount"),
+            options.getString("redirectURL"),
+            options.getString("country"),
+            options.getString("statementDescriptor"));
+        break;
+      case "threeDSecure":
+        sourceParams = SourceParams.createThreeDSecureParams(
+            options.getInt("amount"),
+            options.getString("currency"),
+            options.getString("returnURL"),
+            options.getString("card"));
+        break;
+
+    }
+
+    stripe.createSource(sourceParams, new SourceCallback() {
+      @Override
+      public void onError(Exception error) {
+        promise.reject(error);
+      }
+
+      @Override
+      public void onSuccess(Source source) {
+        switch (source.getStatus()) {
+          case Source.CHARGEABLE:
+          case Source.CONSUMED:
+            promise.resolve(convertSourceToWritableMap(source));
+            break;
+          case Source.CANCELED:
+            promise.reject(TAG, "User cancelled source redirect");
+            break;
+          case Source.PENDING:
+          case Source.FAILED:
+          case Source.UNKNOWN:
+            promise.reject(TAG, "Source redirect failed");
+        }
+      }
+    });
+  }
+
   private void startApiClientAndAndroidPay(final Activity activity, final ReadableMap map) {
     if (googleApiClient != null && googleApiClient.isConnected()) {
       startAndroidPay(map);
@@ -301,7 +413,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
         .setPaymentMethodTokenizationType(PaymentMethodTokenizationType.PAYMENT_GATEWAY)
         .addParameter("gateway", "stripe")
         .addParameter("stripe:publishableKey", publicKey)
-        .addParameter("stripe:version", StripeApiHandler.VERSION)
+        .addParameter("stripe:version", BuildConfig.VERSION_NAME)
         .build())
       // You want the shipping address:
       .setShippingAddressRequired(shippingAddressRequired)
@@ -432,7 +544,8 @@ public class StripeModule extends ReactContextBaseJavaModule {
       exist(cardData, "fingerprint"),
       exist(cardData, "funding"),
       exist(cardData, "country"),
-      exist(cardData, "currency")
+      exist(cardData, "currency"),
+      exist(cardData, "id")
     );
   }
 
@@ -454,6 +567,159 @@ public class StripeModule extends ReactContextBaseJavaModule {
     }
 
     return newToken;
+  }
+
+  @NonNull
+  private WritableMap convertSourceToWritableMap(@Nullable Source source) {
+    WritableMap newSource = Arguments.createMap();
+
+    if (source == null) {
+      return newSource;
+    }
+
+    newSource.putString("sourceId", source.getId());
+    newSource.putInt("amount", source.getAmount().intValue());
+    newSource.putInt("created", source.getCreated().intValue());
+    newSource.putString("currency", source.getCurrency());
+    newSource.putString("flow", source.getFlow());
+    newSource.putBoolean("livemode", source.isLiveMode());
+    newSource.putMap("metadata", stringMapToWritableMap(source.getMetaData()));
+    newSource.putMap("owner", convertOwnerToWritableMap(source.getOwner()));
+    newSource.putMap("receiver", convertReceiverToWritableMap(source.getReceiver()));
+    newSource.putMap("redirect", convertRedirectToWritableMap(source.getRedirect()));
+    newSource.putMap("sourceTypeData", mapToWritableMap(source.getSourceTypeData()));
+    newSource.putString("status", source.getStatus());
+    newSource.putString("type", source.getType());
+    newSource.putString("typeRaw", source.getTypeRaw());
+    newSource.putString("usage", source.getUsage());
+
+    // TODO: source.getCodeVerification(), it doesn't have public properties to get data.
+    // Waiting for a new stripe-android version containing PR https://github.com/stripe/stripe-android/pull/366
+    // newSource.putMap("codeVerification", source.getCodeVerification());
+
+    return newSource;
+  }
+
+  @NonNull
+  private WritableMap stringMapToWritableMap(@Nullable Map<String, String> map) {
+    WritableMap writableMap = Arguments.createMap();
+
+    if (map == null) {
+      return writableMap;
+    }
+
+    for (Map.Entry<String, String> entry : map.entrySet()) {
+      writableMap.putString(entry.getKey(), entry.getValue());
+    }
+
+    return writableMap;
+  }
+
+  @NonNull
+  private WritableMap convertOwnerToWritableMap(@Nullable final SourceOwner owner) {
+    WritableMap map = Arguments.createMap();
+
+    if (owner == null) {
+      return map;
+    }
+
+    map.putMap("address", convertAddressToWritableMap(owner.getAddress()));
+    map.putString("email", owner.getEmail());
+    map.putString("name", owner.getName());
+    map.putString("phone", owner.getPhone());
+    map.putString("verifiedEmail", owner.getVerifiedEmail());
+    map.putString("verifiedPhone", owner.getVerifiedPhone());
+    map.putString("verifiedName", owner.getVerifiedName());
+    map.putMap("verifiedAddress", convertAddressToWritableMap(owner.getVerifiedAddress()));
+
+    return map;
+  }
+
+  @NonNull
+  private WritableMap convertAddressToWritableMap(@Nullable final Address address) {
+    WritableMap map = Arguments.createMap();
+
+    if (address == null) {
+      return map;
+    }
+
+    map.putString("city", address.getCity());
+    map.putString("country", address.getCountry());
+    map.putString("line1", address.getLine1());
+    map.putString("line2", address.getLine2());
+    map.putString("postalCode", address.getPostalCode());
+    map.putString("state", address.getState());
+
+    return map;
+  }
+
+  @NonNull
+  private WritableMap convertReceiverToWritableMap(@Nullable final SourceReceiver receiver) {
+    WritableMap map = Arguments.createMap();
+
+    if (receiver == null) {
+      return map;
+    }
+
+    map.putInt("amountCharged", (int) receiver.getAmountCharged());
+    map.putInt("amountReceived", (int) receiver.getAmountReceived());
+    map.putInt("amountReturned", (int) receiver.getAmountReturned());
+    map.putString("address", receiver.getAddress());
+
+    return map;
+  }
+
+  @NonNull
+  private WritableMap convertRedirectToWritableMap(@Nullable SourceRedirect redirect) {
+    WritableMap map = Arguments.createMap();
+
+    if (redirect == null) {
+      return map;
+    }
+
+    map.putString("returnUrl", redirect.getReturnUrl());
+    map.putString("status", redirect.getStatus());
+    map.putString("url", redirect.getUrl());
+
+    return map;
+  }
+
+  @NonNull
+  private WritableMap mapToWritableMap(@Nullable Map<String, Object> map){
+    WritableMap writableMap = Arguments.createMap();
+
+    if (map == null) {
+      return writableMap;
+    }
+
+    for (String key: map.keySet()) {
+      pushRightTypeToMap(writableMap, key, map.get(key));
+    }
+
+    return writableMap;
+  }
+
+  private void pushRightTypeToMap(@NonNull WritableMap map, @NonNull String key, @NonNull Object object) {
+    Class argumentClass = object.getClass();
+    if (argumentClass == Boolean.class) {
+      map.putBoolean(key, (Boolean) object);
+    } else if (argumentClass == Integer.class) {
+      map.putDouble(key, ((Integer)object).doubleValue());
+    } else if (argumentClass == Double.class) {
+      map.putDouble(key, (Double) object);
+    } else if (argumentClass == Float.class) {
+      map.putDouble(key, ((Float)object).doubleValue());
+    } else if (argumentClass == String.class) {
+      map.putString(key, object.toString());
+    } else if (argumentClass == WritableNativeMap.class) {
+      map.putMap(key, (WritableNativeMap)object);
+    } else if (argumentClass == WritableNativeArray.class) {
+      map.putArray(key, (WritableNativeArray) object);
+    } else {
+      Log.e(TAG, "Can't map "+ key + "value of " + argumentClass.getSimpleName() + " to any valid js type,");
+    }
+    // TODO: use https://github.com/facebook/facebook-android-sdk/blob/master/facebook/src/main/java/com/facebook/internal/BundleJSONConverter.java
+    // for JSONObjects conversion like https://github.com/facebook/react-native/issues/3881 */
   }
 
   private WritableMap convertCardToWritableMap(final Card card) {

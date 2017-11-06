@@ -21,6 +21,7 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.WritableMap;
 import com.gettipsi.stripe.R;
+import com.gettipsi.stripe.StripeModule;
 import com.gettipsi.stripe.util.CardFlipAnimator;
 import com.gettipsi.stripe.util.Utils;
 import com.stripe.android.Stripe;
@@ -169,7 +170,7 @@ public class AddCardDialogFragment extends DialogFragment {
 
     String errorMessage = Utils.validateCard(card);
     if (errorMessage == null) {
-      new Stripe().createToken(
+      StripeModule.getInstance().getStripe().createToken(
         card,
         PUBLISHABLE_KEY,
         new TokenCallback() {
