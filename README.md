@@ -259,7 +259,7 @@ An object with the following keys:
 * `receiver` _Object_ (Optional) - Information related to the receiver flow. Present if the source is a receiver.
 * `redirect` _Object_ (Optional) - Information related to the redirect flow. Present if the source is authenticated by a redirect.
 * `status` _String_ - The status of the source. Can be one of: `pending`|`chargable`|`consumed`|`cancelled`|`failed`.
-* `type` _String_ - The type of the source. Can be one of: `bancontact`|`bitcoin`|`card`|`griopay`|`ideal`|`sepaDebit`|`sofort`|`threeDSecure`|`alipay`|`unknown`.
+* `type` _String_ - The type of the source. Can be one of: `bancontact`|`bitcoin`|`card`|`giropay`|`ideal`|`sepaDebit`|`sofort`|`threeDSecure`|`alipay`|`unknown`.
 * `usage` _String_ - Whether this source should be reusable or not. Can be one of: `reusable`|`single`|`unknown`.
 * `verification` _Object_ (Optional) - Information related to the verification flow. Present if the source is authenticated by a verification.
 * `details` _Object_ - Information about the source specific to its type.
@@ -852,7 +852,7 @@ protected void onNewIntent(Intent intent) {
 An object with the following keys:
 (Depending on the type you need to provide different params. Check the [STPSourceParams docs](https://stripe.github.io/stripe-ios/docs/Classes/STPSourceParams.html) for reference)
 
-* `type` _String_ (Required) - The type of the source to create. Can be one of: `bancontact`|`bitcoin`|`card`|`griopay`|`ideal`|`sepaDebit`|`sofort`|`threeDSecure`|`alipay`.
+* `type` _String_ (Required) - The type of the source to create. Can be one of: `bancontact`|`bitcoin`|`card`|`giropay`|`ideal`|`sepaDebit`|`sofort`|`threeDSecure`|`alipay`.
 * `amount` _Number_ - A positive number in the smallest currency unit representing the amount to charge the customer (e.g., 1099 for a €10.99 payment).
 * `name` _String_ - The full name of the account holder.
 * `returnURL` _String_ The URL the customer should be redirected to after they have successfully verified the payment.
