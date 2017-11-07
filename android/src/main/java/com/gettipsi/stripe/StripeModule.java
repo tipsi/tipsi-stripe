@@ -281,7 +281,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
         sourceParams.setCurrency(options.getString("currency"));
         sourceParams.setAmount(options.getInt("amount"));
         Map<String, Object> redirect = new HashMap<>();
-        redirect.put("return_url", options.getString("redirectURL"));
+        redirect.put("return_url", options.getString("returnURL"));
         sourceParams.setRedirect(redirect);
         break;
       case "bancontact":
@@ -306,7 +306,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
         sourceParams = SourceParams.createIdealParams(
             options.getInt("amount"),
             options.getString("name"),
-            options.getString("redirectURL"),
+            options.getString("returnURL"),
             options.getString("statementDescriptor"),
             options.getString("bank"));
         break;
@@ -322,7 +322,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
       case "sofort":
         sourceParams = SourceParams.createSofortParams(
             options.getInt("amount"),
-            options.getString("redirectURL"),
+            options.getString("returnURL"),
             options.getString("country"),
             options.getString("statementDescriptor"));
         break;
@@ -580,6 +580,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
     newSource.putString("sourceId", source.getId());
     newSource.putInt("amount", source.getAmount().intValue());
     newSource.putInt("created", source.getCreated().intValue());
+    newSource.putMap("codeVerification", convertCodeVerificationToWritableMap(source.getCodeVerification()));
     newSource.putString("currency", source.getCurrency());
     newSource.putString("flow", source.getFlow());
     newSource.putBoolean("livemode", source.isLiveMode());
@@ -592,10 +593,6 @@ public class StripeModule extends ReactContextBaseJavaModule {
     newSource.putString("type", source.getType());
     newSource.putString("typeRaw", source.getTypeRaw());
     newSource.putString("usage", source.getUsage());
-
-    // TODO: source.getCodeVerification(), it doesn't have public properties to get data.
-    // Waiting for a new stripe-android version containing PR https://github.com/stripe/stripe-android/pull/366
-    // newSource.putMap("codeVerification", source.getCodeVerification());
 
     return newSource;
   }
@@ -685,6 +682,20 @@ public class StripeModule extends ReactContextBaseJavaModule {
   }
 
   @NonNull
+  private WritableMap convertCodeVerificationToWritableMap(@Nullable SourceCodeVerification codeVerification) {
+    WritableMap map = Arguments.createMap();
+
+    if (codeVerification == null) {
+      return map;
+    }
+
+    map.putInt("attemptsRemaining", codeVerification.getAttemptsRemaining());
+    map.putString("status", codeVerification.getStatus());
+
+    return map;
+  }
+
+  @NonNull
   private WritableMap mapToWritableMap(@Nullable Map<String, Object> map){
     WritableMap writableMap = Arguments.createMap();
 
@@ -718,8 +729,6 @@ public class StripeModule extends ReactContextBaseJavaModule {
     } else {
       Log.e(TAG, "Can't map "+ key + "value of " + argumentClass.getSimpleName() + " to any valid js type,");
     }
-    // TODO: use https://github.com/facebook/facebook-android-sdk/blob/master/facebook/src/main/java/com/facebook/internal/BundleJSONConverter.java
-    // for JSONObjects conversion like https://github.com/facebook/react-native/issues/3881 */
   }
 
   private WritableMap convertCardToWritableMap(final Card card) {

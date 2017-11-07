@@ -53,12 +53,10 @@ class Stripe {
     checkInit(this)
     checkArgs(
       types.createTokenWithBankAccountParamsPropTypes,
-      params,
-      'params',
-      'Stripe.createTokenWithBankAccount'
+      params, 'params', 'Stripe.createTokenWithBankAccount'
     )
     return StripeModule.createTokenWithBankAccount(params)
-  };
+  }
 
   createSourceWithParams = (params = {}) => {
     checkInit(this)
@@ -67,7 +65,7 @@ class Stripe {
       params, 'params', 'Stripe.createSourceWithParams'
     )
     return StripeModule.createSourceWithParams(params)
-  };
+  }
 }
 
 export default new Stripe()

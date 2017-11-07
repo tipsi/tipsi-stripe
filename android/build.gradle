@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 
 android {
   compileSdkVersion 26
-  buildToolsVersion '26.0.1'
+  buildToolsVersion "26.0.1"
 
   defaultConfig {
     minSdkVersion 16
@@ -25,6 +25,6 @@ dependencies {
   compile 'com.android.support:support-v4:26.0.1'
   compile 'com.android.support:appcompat-v7:26.0.1'
   compile 'com.google.android.gms:play-services-wallet:10.+'
-  compile 'com.stripe:stripe-android:5.0.0'
+  compile 'com.stripe:stripe-android:5.1.1'
   compile 'com.github.tipsi:CreditCardEntry:1.4.8.8'
 }
