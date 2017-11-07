@@ -26,7 +26,9 @@ files_to_copy=(
   .appiumhelperrc
   package.json
   index.{ios,android}.js
+  android/build.gradle
   android/app/build.gradle
+  android/gradle/wrapper/gradle-wrapper.properties
   ios/example/AppDelegate.m
   src
   scripts
