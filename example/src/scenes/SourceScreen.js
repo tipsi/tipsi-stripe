@@ -22,9 +22,9 @@ export default class SourceScreen extends PureComponent {
         currency: 'EUR',
         returnURL: 'example://stripe-redirect',
       })
-
       this.setState({ loading: false, source })
     } catch (error) {
+      console.warn("Failed to create source", error);
       this.setState({ loading: false })
     }
   }

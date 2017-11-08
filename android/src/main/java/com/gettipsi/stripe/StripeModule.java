@@ -3,6 +3,8 @@ package com.gettipsi.stripe;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -41,6 +43,11 @@ import com.stripe.android.BuildConfig;
 import com.stripe.android.SourceCallback;
 import com.stripe.android.Stripe;
 import com.stripe.android.TokenCallback;
+import com.stripe.android.exception.APIConnectionException;
+import com.stripe.android.exception.APIException;
+import com.stripe.android.exception.AuthenticationException;
+import com.stripe.android.exception.CardException;
+import com.stripe.android.exception.InvalidRequestException;
 import com.stripe.android.model.Address;
 import com.stripe.android.model.BankAccount;
 import com.stripe.android.model.Card;
@@ -52,9 +59,6 @@ import com.stripe.android.model.SourceReceiver;
 import com.stripe.android.model.SourceRedirect;
 import com.stripe.android.model.Token;
 
-import org.json.JSONObject;
-
-import java.util.HashMap;
 import java.util.Map;
 
 public class StripeModule extends ReactContextBaseJavaModule {
@@ -91,7 +95,12 @@ public class StripeModule extends ReactContextBaseJavaModule {
     return stripe;
   }
 
+  @Nullable
+  private Promise createSourcePromise;
   private Promise payPromise;
+
+  @Nullable
+  private Source createdSource;
 
   private String publicKey;
   private Stripe stripe;
@@ -276,20 +285,19 @@ public class StripeModule extends ReactContextBaseJavaModule {
     SourceParams sourceParams = null;
     switch (sourceType) {
       case "alipay":
-        sourceParams = SourceParams.createCustomParams();
-        sourceParams.setType("alipay");
-        sourceParams.setCurrency(options.getString("currency"));
-        sourceParams.setAmount(options.getInt("amount"));
-        Map<String, Object> redirect = new HashMap<>();
-        redirect.put("return_url", options.getString("returnURL"));
-        sourceParams.setRedirect(redirect);
+        sourceParams = SourceParams.createAlipaySingleUseParams(
+            options.getInt("amount"),
+            options.getString("currency"),
+            getStringOrNull(options, "name"),
+            getStringOrNull(options, "email"),
+            options.getString("returnURL"));
         break;
       case "bancontact":
         sourceParams = SourceParams.createBancontactParams(
             options.getInt("amount"),
             options.getString("name"),
             options.getString("returnURL"),
-            options.getString("statementDescriptor"));
+            getStringOrNull(options, "statementDescriptor"));
         break;
       case "bitcoin":
         sourceParams = SourceParams.createBitcoinParams(
@@ -300,21 +308,21 @@ public class StripeModule extends ReactContextBaseJavaModule {
             options.getInt("amount"),
             options.getString("name"),
             options.getString("returnURL"),
-            options.getString("statementDescriptor"));
+            getStringOrNull(options, "statementDescriptor"));
         break;
       case "ideal":
         sourceParams = SourceParams.createIdealParams(
             options.getInt("amount"),
             options.getString("name"),
             options.getString("returnURL"),
-            options.getString("statementDescriptor"),
-            options.getString("bank"));
+            getStringOrNull(options, "statementDescriptor"),
+            getStringOrNull(options, "bank"));
         break;
       case "sepaDebit":
         sourceParams = SourceParams.createSepaDebitParams(
             options.getString("name"),
             options.getString("iban"),
-            options.getString("addressLine1"),
+            getStringOrNull(options, "addressLine1"),
             options.getString("city"),
             options.getString("postalCode"),
             options.getString("country"));
@@ -324,7 +332,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
             options.getInt("amount"),
             options.getString("returnURL"),
             options.getString("country"),
-            options.getString("statementDescriptor"));
+            getStringOrNull(options, "statementDescriptor"));
         break;
       case "threeDSecure":
         sourceParams = SourceParams.createThreeDSecureParams(
@@ -344,6 +352,62 @@ public class StripeModule extends ReactContextBaseJavaModule {
 
       @Override
       public void onSuccess(Source source) {
+        if (Source.REDIRECT.equals(source.getFlow())) {
+          createSourcePromise = promise;
+          createdSource = source;
+          String redirectUrl = source.getRedirect().getUrl();
+          Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(redirectUrl));
+          getReactApplicationContext().startActivity(browserIntent);
+        } else {
+          promise.resolve(convertSourceToWritableMap(source));
+        }
+      }
+    });
+  }
+
+  private String getStringOrNull(@NonNull ReadableMap map, @NonNull String key) {
+    return map.hasKey(key) ? map.getString(key) : null;
+  }
+
+  void processRedirect(Uri redirectData) {
+    if (createdSource == null || createSourcePromise == null) {
+      Log.d(TAG, "Received redirect uri but there is no source to process");
+      return;
+    }
+
+    final String clientSecret = redirectData.getQueryParameter("client_secret");
+    if (!createdSource.getClientSecret().equals(clientSecret)) {
+      createSourcePromise.reject(TAG, "Received redirect uri but there is no source to process");
+      createdSource = null;
+      createSourcePromise = null;
+      return;
+    }
+
+    final String sourceId = redirectData.getQueryParameter("source");
+    if (!createdSource.getId().equals(sourceId)) {
+      createSourcePromise.reject(TAG, "Received wrong source id in redirect uri");
+      createdSource = null;
+      createSourcePromise = null;
+      return;
+    }
+
+    final Promise promise = createSourcePromise;
+
+    // Nulls those properties to avoid processing them twice
+    createdSource = null;
+    createSourcePromise = null;
+
+    new AsyncTask<Void, Void, Void>() {
+      @Override
+      protected Void doInBackground(Void... voids) {
+        Source source = null;
+        try {
+          source = stripe.retrieveSourceSynchronous(sourceId, clientSecret);
+        } catch (Exception e) {
+          Log.w(TAG, "Failed to retrieve source", e);
+          return null;
+        }
+
         switch (source.getStatus()) {
           case Source.CHARGEABLE:
           case Source.CONSUMED:
@@ -357,8 +421,9 @@ public class StripeModule extends ReactContextBaseJavaModule {
           case Source.UNKNOWN:
             promise.reject(TAG, "Source redirect failed");
         }
+        return null;
       }
-    });
+    }.execute();
   }
 
   private void startApiClientAndAndroidPay(final Activity activity, final ReadableMap map) {

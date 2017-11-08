@@ -799,54 +799,28 @@ You also need to setup your `AppDelegate.m` app delegate to forward URLs to the 
 
 ##### Android
 
-When declaring your activity that creates redirect-based sources, list an intent-filter item in your AndroidManifest.xml file. This allows you to accept links into your application. Your activity must include android:launchMode="singleTask" or else a new copy of it is opened when your customer comes back from the browser.
+You have to declare your return url in application's `build.gradle` file.
+In order to do that, add the following code replacing `CUSTOM_SCHEME` with the your custom scheme inside `android.defaultConfig` block.
 
-```xml
-<activity
-    android:name=".activity.PollingActivity"
-    android:launchMode="singleTask"
-    android:theme="@style/SampleTheme">
-    <intent-filter>
-        <action android:name="android.intent.action.VIEW"/>
-        <category android:name="android.intent.category.DEFAULT"/>
-        <category android:name="android.intent.category.BROWSABLE"/>
-        <data
-            android:host="yourcompany"
-            android:scheme="yourpath"/>
-    </intent-filter>
-</activity>
-```
-
-To receive information from this event, listen for your activity getting started back up with a new Intent using the onNewIntent lifecycle method.
-
-```java
-@Override
-protected void onNewIntent(Intent intent) {
-    super.onNewIntent(intent);
-    if (intent.getData() != null && intent.getData().getQuery() != null) {
-        // The client secret and source ID found here is identical to
-        // that of the source used to get the redirect URL.
-
-        String host = intent.getData().getHost();
-        // Note: you don't have to get the client secret
-        // and source ID here. They are the same as the
-        // values already in your source.
-        String clientSecret = intent.getData().getQueryParameter(QUERY_CLIENT_SECRET);
-        String sourceId = intent.getData().getQueryParameter(QUERY_SOURCE_ID);
-        if (clientSecret != null
-                && sourceId != null
-                && clientSecret.equals(mRedirectSource.getClientSecret())
-                && sourceId.equals(mRedirectSource.getId())) {
-            // Then this is a redirect back for the original source.
-            // You should poll your own backend to update based on
-            // source status change webhook events it may receive, and display the results
-            // of that here.
-        }
-        // If you had a dialog open when your user went elsewhere, remember to close it here.
-        mRedirectDialogController.dismissDialog();
+```groovy
+android {
+    // ...
+    defaultConfig {
+        // ...
+        manifestPlaceholders = [
+            tipsiStripeRedirectScheme: "CUSTOM_SCHEME"
+        ]
     }
+    // ...
 }
 ```
+> Example: if the return url used is `my_custom_scheme://callback`, replace `CUSTOM_SCHEME` with `my_custom_scheme`.
+
+**NOTE**: the redirection will be automatically handled by tipsi-stripe **on its own activity**.
+In case of your app makes use of its own custom URL scheme for other purpose rather than handling stripe payments, be sure that `CUSTOM_SCHEME` value is not exaclty the same that the one used in the rest of the app.
+
+> In such case you might end up using `my_custom_scheme_tipsi://callback` as return URL and setting `CUSTOM_SCHEME` equals to `my_custom_scheme_tipsi`, following the previous example.
+
 ##### `params`
 
 An object with the following keys:
