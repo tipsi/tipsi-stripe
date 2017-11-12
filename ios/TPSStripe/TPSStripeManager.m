@@ -1073,4 +1073,9 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     return kSharedFormatter;
 }
 
+(BOOL)requiresMainQueueSetup
+{
+    return YES;
+}
+
 @end
