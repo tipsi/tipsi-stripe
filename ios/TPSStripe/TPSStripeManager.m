@@ -142,19 +142,21 @@ RCT_EXPORT_METHOD(canMakeApplePayPayments:(NSDictionary *)options
 
 RCT_EXPORT_METHOD(completeApplePayRequest:(RCTPromiseResolveBlock)resolve
                                  rejecter:(RCTPromiseRejectBlock)reject) {
-    promiseResolver = resolve;
-
     if (applePayCompletion) {
-        applePayCompletion(PKPaymentAuthorizationStatusSuccess);
+        promiseResolver = resolve;
+        [self resolveApplePayCompletion:PKPaymentAuthorizationStatusSuccess];
+    } else {
+        resolve(nil);
     }
 }
 
 RCT_EXPORT_METHOD(cancelApplePayRequest:(RCTPromiseResolveBlock)resolve
                                rejecter:(RCTPromiseRejectBlock)reject) {
-    promiseResolver = resolve;
-
     if (applePayCompletion) {
-        applePayCompletion(PKPaymentAuthorizationStatusFailure);
+        promiseResolver = resolve;
+        [self resolveApplePayCompletion:PKPaymentAuthorizationStatusFailure];
+    } else {
+        resolve(nil);
     }
 }
 
@@ -458,6 +460,17 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     promiseRejector = nil;
 }
 
+- (void)resolveApplePayCompletion:(PKPaymentAuthorizationStatus)status {
+    if (applePayCompletion) {
+        applePayCompletion(status);
+    }
+    [self resetApplePayCallback];
+}
+
+- (void)resetApplePayCallback {
+    applePayCompletion = nil;
+}
+
 #pragma mark - STPAddCardViewControllerDelegate
 
 - (void)addCardViewController:(STPAddCardViewController *)controller
@@ -492,7 +505,7 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
         requestIsCompleted = YES;
 
         if (error) {
-            completion(PKPaymentAuthorizationStatusFailure);
+            [self resolveApplePayCompletion:PKPaymentAuthorizationStatusFailure];
             [self rejectPromiseWithCode:nil message:nil error:error];
         } else {
             NSDictionary *result = [self convertTokenObject:token];
@@ -512,6 +525,8 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
 
 - (void)paymentAuthorizationViewControllerDidFinish:(PKPaymentAuthorizationViewController *)controller {
     [RCTPresentedViewController() dismissViewControllerAnimated:YES completion:nil];
+    
+    [self resetApplePayCallback];
 
     if (!requestIsCompleted) {
         requestIsCompleted = YES;
