@@ -414,8 +414,7 @@ RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
         [RCTPresentedViewController() presentViewController:paymentAuthorizationVC animated:YES completion:nil];
     } else {
         // There is a problem with your Apple Pay configuration.
-        promiseRejector = nil;
-        promiseResolver = nil;
+        [self resetPromiseCallbacks];
         requestIsCompleted = YES;
         
         NSError *error = [TPSError applePayNotConfiguredError];
@@ -432,7 +431,34 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     }
 }
 
-#pragma mark STPAddCardViewControllerDelegate
+#pragma mark - Private
+
+- (void)resolvePromise:(id)result {
+    if (promiseResolver) {
+        promiseResolver(result);
+    }
+    [self resetPromiseCallbacks];
+}
+
+- (void)rejectPromiseWithError:(NSError *)error {
+    [self rejectPromiseWithCode:[NSString stringWithFormat:@"%ld", error.code]
+                        message:error.localizedDescription
+                          error:error];
+}
+
+- (void)rejectPromiseWithCode:(NSString *)code message:(NSString *)message error:(NSError *)error {
+    if (promiseRejector) {
+        promiseRejector(code, message, error);
+    }
+    [self resetPromiseCallbacks];
+}
+
+- (void)resetPromiseCallbacks {
+    promiseResolver = nil;
+    promiseRejector = nil;
+}
+
+#pragma mark - STPAddCardViewControllerDelegate
 
 - (void)addCardViewController:(STPAddCardViewController *)controller
                didCreateToken:(STPToken *)token
@@ -441,7 +467,7 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
 
     requestIsCompleted = YES;
     completion(nil);
-    promiseResolver([self convertTokenObject:token]);
+    [self resolvePromise:[self convertTokenObject:token]];
 }
 
 - (void)addCardViewControllerDidCancel:(STPAddCardViewController *)addCardViewController {
@@ -449,8 +475,7 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
 
     if (!requestIsCompleted) {
         requestIsCompleted = YES;
-        NSError *error = [TPSError userCancelError];
-        promiseRejector([NSString stringWithFormat:@"%ld", error.code], error.localizedDescription, error);
+        [self rejectPromiseWithError:[TPSError userCancelError]];
     }
 
 }
@@ -468,7 +493,7 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
 
         if (error) {
             completion(PKPaymentAuthorizationStatusFailure);
-            promiseRejector(nil, nil, error);
+            [self rejectPromiseWithCode:nil message:nil error:error];
         } else {
             NSDictionary *result = [self convertTokenObject:token];
             NSDictionary *extra = @{
@@ -479,7 +504,7 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
 
             [result setValue:extra forKey:@"extra"];
 
-            promiseResolver(result);
+            [self resolvePromise:result];
         }
     }];
 }
@@ -491,10 +516,9 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     if (!requestIsCompleted) {
         requestIsCompleted = YES;
         
-        NSError *error = [TPSError userCancelError];
-        promiseRejector([NSString stringWithFormat:@"%ld", error.code], error.localizedDescription, error);
+        [self rejectPromiseWithError:[TPSError userCancelError]];
     } else {
-        promiseResolver(nil);
+        [self resolvePromise:nil];
     }
 }
 
