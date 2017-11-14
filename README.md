@@ -667,7 +667,7 @@ const token = await stripe.createTokenWithCard(params)
 // api.sendTokenToBackend(token)
 ```
 
-### Request with external (bank) account params object (Android only at the moment)
+### Request with external (bank) account params object
 
 #### `createTokenWithBankAccount(params) -> Promise`
 
