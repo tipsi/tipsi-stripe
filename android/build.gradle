@@ -1,8 +1,8 @@
 apply plugin: 'com.android.library'
 
 android {
-  compileSdkVersion 25
-  buildToolsVersion "25.0.0"
+  compileSdkVersion 26
+  buildToolsVersion "26.0.1"
 
   defaultConfig {
     minSdkVersion 16
@@ -24,7 +24,7 @@ dependencies {
   compile 'com.facebook.react:react-native:+'
   compile 'com.android.support:support-v4:25.0.1'
   compile 'com.android.support:appcompat-v7:25.0.1'
-  compile 'com.google.android.gms:play-services-wallet:10.+'
+  compile 'com.google.android.gms:play-services-wallet:11.+'
   compile 'com.stripe:stripe-android:2.1.+'
   compile 'com.github.tipsi:CreditCardEntry:1.4.8.8'
 }
