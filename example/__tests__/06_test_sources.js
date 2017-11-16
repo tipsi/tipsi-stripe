@@ -4,7 +4,7 @@ import openTestSuite from './common/openTestSuite'
 import swipeUp from './common/swipeUp'
 import idFromLabel from './common/idFromLabel'
 
-const { driver, idFromAccessId } = helper
+const { driver, idFromAccessId, select } = helper
 
 test('Test if user can create a source object for Alipay', async (t) => {
   const expectedSourcesResults = [false, true]
@@ -20,6 +20,14 @@ test('Test if user can create a source object for Alipay', async (t) => {
 
     await driver.click(sourceButtonId)
     t.pass('User should be able to tap on `Create source for Alipay payment` button')
+
+    const pageHeaderId = select({
+      ios: idFromLabel,
+      android: idFromAccessId,
+    })('Authorize a payment for a test mode source object')
+    await driver.waitForVisible(pageHeaderId, 60000)
+    await swipeUp(pageHeaderId, 300)
+
 
     const paymentParametersHeaderId = idFromLabel('Payment parameters')
     await driver.waitForVisible(paymentParametersHeaderId, 60000)
