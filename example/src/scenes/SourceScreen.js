@@ -22,7 +22,7 @@ export default class SourceScreen extends PureComponent {
         currency: 'EUR',
         returnURL: 'example://stripe-redirect',
       })
-      this.setState({ loading: false, source })
+      this.setState({ loading: false, source: source })
     } catch (error) {
       console.warn("Failed to create source", error);
       this.setState({ loading: false })
@@ -75,6 +75,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   source: {
-    height: 20,
+    width: '100%',
+    height: 120,
   },
 })

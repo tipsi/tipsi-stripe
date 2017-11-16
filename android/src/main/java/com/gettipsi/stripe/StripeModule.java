@@ -353,25 +353,39 @@ public class StripeModule extends ReactContextBaseJavaModule {
       @Override
       public void onSuccess(Source source) {
         if (Source.REDIRECT.equals(source.getFlow())) {
-          createSourcePromise = promise;
-          createdSource = source;
-          String redirectUrl = source.getRedirect().getUrl();
-          Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(redirectUrl));
-          getReactApplicationContext().startActivity(browserIntent);
+          if (getCurrentActivity() == null) {
+            promise.reject(TAG, "Cannot start payment process with no current activity");
+          } else {
+            createSourcePromise = promise;
+            createdSource = source;
+            String redirectUrl = source.getRedirect().getUrl();
+            Intent browserIntent = new Intent(getCurrentActivity(), OpenBrowserActivity.class)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                .putExtra(OpenBrowserActivity.EXTRA_URL, redirectUrl);
+            getCurrentActivity().startActivity(browserIntent);
+          }
         } else {
           promise.resolve(convertSourceToWritableMap(source));
         }
       }
     });
   }
-
+  
   private String getStringOrNull(@NonNull ReadableMap map, @NonNull String key) {
     return map.hasKey(key) ? map.getString(key) : null;
   }
 
-  void processRedirect(Uri redirectData) {
+  void processRedirect(@Nullable Uri redirectData) {
     if (createdSource == null || createSourcePromise == null) {
       Log.d(TAG, "Received redirect uri but there is no source to process");
+      return;
+    }
+
+    if (redirectData == null) {
+      Log.d(TAG, "Received null `redirectData`");
+      createSourcePromise.reject(TAG, "Cancelled");
+      createdSource = null;
+      createSourcePromise = null;
       return;
     }
 
