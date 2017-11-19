@@ -5,7 +5,7 @@ import swipeUp from './common/swipeUp'
 import clickUntilVisible from './common/clickUntilVisible'
 import idFromLabel from './common/idFromLabel'
 
-const { driver, idFromAccessId, platform, select } = helper
+const { driver, idFromAccessId, idFromXPath, platform, select } = helper
 
 test('Test if user can create a source object for Alipay', async (t) => {
   const expectedSourcesResults = [false, true]
@@ -27,7 +27,7 @@ test('Test if user can create a source object for Alipay', async (t) => {
         'Authorize a payment for a test mode source object'
       )
       await driver.waitForVisible(authorizePaymentTitleId, 60000)
-      await swipeUp(authorizePaymentTitleId, 65)
+      await swipeUp(authorizePaymentTitleId, 50)
       t.pass('User should swipe to button')
     }
 
@@ -37,9 +37,12 @@ test('Test if user can create a source object for Alipay', async (t) => {
     t.pass('User should swipe to button')
 
     const testPaymentButtonId = select({
-      ios: idFromLabel,
-      android: idFromAccessId,
-    })(sourcesVisibility ? 'Authorize Test Payment' : 'Fail Test Payment')
+      ios: idFromLabel(sourcesVisibility ? 'Authorize Test Payment' : 'Fail Test Payment'),
+      android: idFromXPath(sourcesVisibility
+        ? '//android.view.View[3]/android.view.View[2]/android.view.View[2]'
+        : '//android.view.View[3]/android.view.View[2]/android.view.View[1]'
+      ),
+    })
 
     await driver.waitForVisible(testPaymentButtonId, 60000)
     await clickUntilVisible({ selector: testPaymentButtonId })
