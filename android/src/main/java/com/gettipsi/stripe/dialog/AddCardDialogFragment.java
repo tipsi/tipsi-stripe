@@ -1,5 +1,6 @@
 package com.gettipsi.stripe.dialog;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -207,7 +208,11 @@ public class AddCardDialogFragment extends DialogFragment {
           public void onError(Exception error) {
             doneButton.setEnabled(true);
             progressBar.setVisibility(View.GONE);
-            Toast.makeText(getActivity(), error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+
+            Activity activity = getActivity();
+            if(activity != null) {
+              Toast.makeText(activity, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+            }
           }
         });
     } else {
