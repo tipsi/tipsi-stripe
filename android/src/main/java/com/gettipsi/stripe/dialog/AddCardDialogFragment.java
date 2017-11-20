@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+import android.content.Context;
+import android.text.TextUtils;
 
 import com.devmarvel.creditcardentry.fields.SecurityCodeText;
 import com.devmarvel.creditcardentry.library.CreditCard;
@@ -208,13 +210,20 @@ public class AddCardDialogFragment extends DialogFragment {
           public void onError(Exception error) {
             doneButton.setEnabled(true);
             progressBar.setVisibility(View.GONE);
-            Toast.makeText(getActivity(), error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+            showToast(error.getLocalizedMessage());
           }
         });
     } else {
       doneButton.setEnabled(true);
       progressBar.setVisibility(View.GONE);
-      Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_LONG).show();
+      showToast(errorMessage);
+    }
+  }
+
+  public void showToast(String message) {
+    Context context = getActivity();
+    if(context != null && !TextUtils.isEmpty(message)) {
+      Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
   }
 }
