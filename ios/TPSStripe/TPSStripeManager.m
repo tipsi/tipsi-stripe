@@ -94,6 +94,7 @@ NSString * const TPSPaymentNetworkVisa = @"visa";
     BOOL requestIsCompleted;
 
     void (^applePayCompletion)(PKPaymentAuthorizationStatus);
+    NSError *applePayStripeError;
 }
 
 - (instancetype)init {
@@ -505,8 +506,9 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
         requestIsCompleted = YES;
 
         if (error) {
+            // Save for deffered use
+            applePayStripeError = error;
             [self resolveApplePayCompletion:PKPaymentAuthorizationStatusFailure];
-            [self rejectPromiseWithCode:nil message:nil error:error];
         } else {
             NSDictionary *result = [self convertTokenObject:token];
             NSDictionary *extra = @{
@@ -524,17 +526,24 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
 
 
 - (void)paymentAuthorizationViewControllerDidFinish:(PKPaymentAuthorizationViewController *)controller {
-    [RCTPresentedViewController() dismissViewControllerAnimated:YES completion:nil];
-    
     [self resetApplePayCallback];
 
-    if (!requestIsCompleted) {
-        requestIsCompleted = YES;
-        
-        [self rejectPromiseWithError:[TPSError userCancelError]];
-    } else {
-        [self resolvePromise:nil];
-    }
+    void(^completion)() = ^{
+        if (!requestIsCompleted) {
+            requestIsCompleted = YES;
+            
+            [self rejectPromiseWithError:[TPSError userCancelError]];
+        } else {
+            if (applePayStripeError) {
+                [self rejectPromiseWithCode:nil message:nil error:applePayStripeError];
+                applePayStripeError = nil;
+            } else {
+                [self resolvePromise:nil];
+            }
+        }
+    };
+    
+    [RCTPresentedViewController() dismissViewControllerAnimated:YES completion:completion];
 }
 
 - (NSDictionary *)convertTokenObject:(STPToken*)token {
