@@ -13,6 +13,7 @@ init_new_example_project() {
     android/build.gradle
     android/app/build.gradle
     android/gradle/wrapper/gradle-wrapper.properties
+    android/gradle.properties
     ios/example/AppDelegate.m
     src
     scripts
