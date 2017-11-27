@@ -121,7 +121,7 @@ For using Android Pay in your `android/app/src/main/AndroidManifest.xml` add:
 
 ```diff
 <application
-...     
+...
 +  <meta-data
 +    android:name="com.google.android.gms.wallet.api.enabled"
 +    android:value="true" />
@@ -500,7 +500,7 @@ An object with the following keys:
 * `total_price` _String_ - Price of the item.
 * `currency_code` _String_ - Three-letter ISO currency code representing the currency paid out to the bank account.
 * `shipping_address_required` _Boolean_ (Optional) - Is shipping address menu required. Default `true`.
-* `shipping_countries` _Array_ (Optional) - Set of country specifications that should be allowed for shipping. If omitted or an empty array is provided the API will default to using a country specification that only allows shipping in the US. Country code allowed in [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) format. 
+* `shipping_countries` _Array_ (Optional) - Set of country specifications that should be allowed for shipping. If omitted or an empty array is provided the API will default to using a country specification that only allows shipping in the US. Country code allowed in [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) format.
 * `line_items` _Array_ - Array of purchased items. Each item contains:
     * `currency_code` _String_ - Currency code string.
     * `description`  _String_ - Short description that will shown to user.
@@ -539,7 +539,7 @@ const token = await stripe.paymentRequestWithAndroidPay(options)
 
 Example of token:
 ```
-{ card: 
+{ card:
   { currency: null,
     fingerprint: null,
     funding: "credit",
@@ -556,27 +556,65 @@ Example of token:
     last4: "4448",
     addressLine2: null,
     addressCity: null,
-    addressZip: null 
+    addressZip: null
   },
   created: 1512322244000,
   used: false,
-  extra: { 
+  extra: {
     email: "randomemail@mail.com",
-    billingContact: { 
+    billingContact: {
       postalCode: "220019",
       name: "John Doe",
       locality: "NY",
       countryCode: "US",
       administrativeArea: "US",
-      address1: "Time square 1/11" 
+      address1: "Time square 1/11"
     },
-    shippingContact: {} 
+    shippingContact: {}
   },
   livemode: false,
-  tokenId: "tok_1BV1IeDZwqOES60ZphBXBoDr" 
+  tokenId: "tok_1BV1IeDZwqOES60ZphBXBoDr"
 }
 ```
 Where `billingContact` and `shippingContact` are representation of the[UserAddress](https://developers.google.com/android/reference/com/google/android/gms/identity/intents/model/UserAddress).
+
+### Pay With Google (Android only)
+(Under active development)
+payment using new [google payment api](https://developers.google.com/payments/setup) that will supersede Android pay.
+
+#### `deviceSupportsPayWithGoogle() -> Promise`
+
+Indicates whether or not the device supports Pay With Google. Returns a `Boolean` value.
+
+#### `paymentRequestWithPayWithGoogle(options) -> Promise`
+
+Launch the `Pay With Google` view to accept payment.
+It will aggregate data from Android Pay and all credit cards from available google accounts.
+
+##### `options`
+
+An object with the following keys:
+
+* `price` _String_ (Required) - Total price of the item. The price provided to the API should include taxes and shipping.
+* `phoneNumberRequired` _Bool_ - Should we ask user for phone number.
+* `emailRequired` _Bool_ - Should we ask user for email.
+* `shippingAddressRequired` _Bool_ - Should we ask user for shipping address.
+
+#### Example
+
+```js
+const options = {
+  price: '100.00',
+  phoneNumberRequired: false,
+  emailRequired: false,
+  shippingAddressRequired: false,
+}
+
+const token = await stripe.paymentRequestWithPayWithGoogle(options)
+
+// Client specific code
+// api.sendTokenToBackend(token)
+```
 
 ### Request with Card Form
 

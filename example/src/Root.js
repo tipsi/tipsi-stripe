@@ -12,9 +12,10 @@ import CustomBankScreen from './scenes/CustomBankScreen'
 import CardTextFieldScreen from './scenes/CardTextFieldScreen'
 import SourceScreen from './scenes/SourceScreen'
 import testID from './utils/testID'
+import PayWithGoogleScreen from "./scenes/PayWithGoogleScreen";
 
 stripe.init({
-  publishableKey: '<PUBLISHABLE_KEY>',
+  publishableKey: 'pk_test_GtfVKECNWBBXQZnDIfcoS9vw',
   merchantId: '<MERCHANT_ID>',
   androidPayMode: 'test',
 })
@@ -33,6 +34,9 @@ export default class Root extends PureComponent {
       CustomBankScreen,
       CardTextFieldScreen,
       SourceScreen,
+      Platform.select({
+        android: PayWithGoogleScreen,
+      }),
     ].filter(item => item),
   }
 

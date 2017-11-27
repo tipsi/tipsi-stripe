@@ -100,6 +100,13 @@ export const paymentRequestWithAndroidPayOptionsPropTypes = {
   line_items: PropTypes.array.isRequired,
 }
 
+export const paymentRequestWithPayWithGooglePropTypes = {
+  price: PropTypes.string.isRequired,
+  phoneNumberRequired: PropTypes.bool,
+  emailRequired: PropTypes.bool,
+  shippingAddressRequired: PropTypes.bool,
+}
+
 export const createSourceWithParamsPropType = {
   type: PropTypes.oneOf(['bancontact', 'bitcoin', 'giropay', 'ideal', 'sepaDebit', 'sofort', 'threeDSecure', 'alipay']).isRequired,
   amount: PropTypes.number,

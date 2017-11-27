@@ -19,12 +19,10 @@ buildscript {
 allprojects {
     repositories {
         // Add jitpack repository (added by tipsi-stripe)
+        maven { url "https://jitpack.io" }
         maven {
-            url "https://jitpack.io"
-        }
-        maven {
-            url "https://maven.google.com"
-            name "Google"
+          url 'https://maven.google.com/'
+          name 'Google'
         }
         mavenLocal()
         jcenter()

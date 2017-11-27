@@ -22,6 +22,20 @@ class Stripe {
     return StripeModule.deviceSupportsAndroidPay()
   }
 
+  deviceSupportsPayWithGoogle = () => {
+    checkInit(this)
+    return StripeModule.deviceSupportsPayWithGoogle()
+  }
+
+  paymentRequestWithPayWithGoogle = (options = {}) => {
+    checkInit(this)
+    checkArgs(
+      types.paymentRequestWithPayWithGooglePropTypes,
+      options, 'options', 'Stripe.paymentRequestWithPayWithGooglePropTypes'
+    )
+    return StripeModule.paymentRequestWithPayWithGoogle(options)
+  }
+
   paymentRequestWithAndroidPay = (options = {}) => {
     checkInit(this)
     checkArgs(

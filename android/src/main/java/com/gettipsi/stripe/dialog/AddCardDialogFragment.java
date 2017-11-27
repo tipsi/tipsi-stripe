@@ -30,7 +30,7 @@ import com.stripe.android.Stripe;
 import com.stripe.android.TokenCallback;
 import com.stripe.android.model.Card;
 import com.stripe.android.model.Token;
-
+import com.gettipsi.stripe.StripeModule;
 
 /**
  * Created by dmitriy on 11/13/16
