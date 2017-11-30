@@ -35,12 +35,12 @@ init_new_example_project() {
   done
 }
 
-# $HOME/.nvm/nvm.sh
-# nvm ls-remote
-# nvm install node
-# npm i npm@5 -g
+export NVM_NODEJS_ORG_MIRROR=http://nodejs.org/dist
 
-node -v
+$HOME/.nvm/nvm.sh
+nvm ls-remote
+nvm install 8.9.0
+npm i npm@5 -g
 
 case "${TRAVIS_OS_NAME}" in
   osx)
