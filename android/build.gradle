@@ -26,5 +26,5 @@ dependencies {
   compile 'com.android.support:appcompat-v7:26.0.1'
   compile 'com.google.android.gms:play-services-wallet:10.+'
   compile 'com.stripe:stripe-android:5.1.1'
-  compile 'com.github.tipsi:CreditCardEntry:1.4.8.8'
+  compile 'com.github.tipsi:CreditCardEntry:1.4.8.9'
 }
