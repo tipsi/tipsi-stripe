@@ -6,10 +6,10 @@ npm run configure
 case "${TRAVIS_OS_NAME}" in
   osx)
     set -o pipefail && npm run build:ios | xcpretty -c -f `xcpretty-travis-formatter`
-    npm run test:ios
+    TEST_SUITE=ios npm run test:ios
   ;;
   linux)
     npm run build:android
-    npm run test:android
+    TEST_SUITE=$TEST_SUITE npm run test:android
   ;;
 esac

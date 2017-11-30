@@ -2,7 +2,7 @@
 
 case "${TRAVIS_OS_NAME}" in
   linux)
-    echo no | android create avd --force -n test -t android-21 --abi armeabi-v7a --skin WVGA800
+    echo no | android create avd --force -n test -t android-${ANDROID_VERSION} --abi armeabi-v7a --skin WVGA800
     emulator -avd test -scale 96dpi -dpi-device 160 -no-audio -no-window &
     android-wait-for-emulator
     sleep 60

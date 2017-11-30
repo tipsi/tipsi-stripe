@@ -8,11 +8,13 @@ matrix:
       osx_image: xcode8
       install: echo "PODSPEC install"
       before_script: echo "PODSPEC before_script"
-      script: .travis/podspec/ci.sh
+      script: TEST_SUITE=ios .travis/podspec/ci.sh
     - os: linux
       language: android
       jdk: oraclejdk8
       sudo: required
+      before_script: ANDROID_VERSION=21 .travis/before-ci.sh
+      script: TEST_SUITE=android_5 .travis/ci.sh
       android:
         components:
           - platform-tools
@@ -22,6 +24,23 @@ matrix:
           - android-21
           - android-26
           - sys-img-armeabi-v7a-android-21
+          - extra-android-m2repository
+          - extra-google-m2repository
+          - extra-google-google_play_services
+    - os: linux
+      language: android
+      jdk: oraclejdk8
+      sudo: required
+      before_script: ANDROID_VERSION=26 .travis/before-ci.sh
+      script: TEST_SUITE=android_7 .travis/ci.sh
+      android:
+        components:
+          - platform-tools
+          - tools
+          - build-tools-25.0.0
+          - build-tools-26.0.1
+          - android-26
+          - sys-img-armeabi-v7a-android-26
           - extra-android-m2repository
           - extra-google-m2repository
           - extra-google-google_play_services
@@ -37,5 +56,4 @@ cache:
 before_install: . .travis/before-install.sh
 install: .travis/install.sh
 before_script: .travis/before-ci.sh
-script: .travis/ci.sh
 before_cache: .travis/before-cache.sh

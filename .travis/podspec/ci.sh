@@ -26,4 +26,4 @@ npm run configure
 set -o pipefail && npm run build:ios | xcpretty -c -f `xcpretty-travis-formatter`
 
 # Run iOS e2e tests
-npm run test:ios
+TEST_SUITE=$TEST_SUITE npm run test:ios
