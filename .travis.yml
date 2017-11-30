@@ -23,7 +23,7 @@ matrix:
           - build-tools-26.0.1
           - android-21
           - android-26
-          - sys-img-armeabi-v7a-addon-google_apis-google-21
+          - sys-img-armeabi-v7a-android-21
           - extra-android-m2repository
           - extra-google-m2repository
           - extra-google-google_play_services
