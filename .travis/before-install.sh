@@ -40,6 +40,8 @@ init_new_example_project() {
 # nvm install node
 # npm i npm@5 -g
 
+node -v
+
 case "${TRAVIS_OS_NAME}" in
   osx)
     gem install cocoapods -v 1.3.1
