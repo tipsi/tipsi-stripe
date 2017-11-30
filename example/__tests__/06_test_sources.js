@@ -2,6 +2,7 @@ import helper from 'tipsi-appium-helper'
 import test from './utils/tape'
 import openTestSuite from './common/openTestSuite'
 import swipeUp from './common/swipeUp'
+import nativeSwipe from './common/nativeSwipe'
 import clickUntilVisible from './common/clickUntilVisible'
 import idFromLabel from './common/idFromLabel'
 
@@ -22,27 +23,26 @@ test('Test if user can create a source object for Alipay', async (t) => {
     await driver.click(sourceButtonId)
     t.pass('User should be able to tap on `Create source for Alipay payment` button')
 
+    const paymentParametersTitleId = idFromAccessId('Payment parameters')
+
+    const testPaymentButtonId = select({
+      ios: idFromLabel,
+      android: idFromAccessId,
+    })(sourcesVisibility ? 'Authorize Test Payment' : 'Fail Test Payment')
+
     if (platform('android')) {
       const authorizePaymentTitleId = idFromAccessId(
         'Authorize a payment for a test mode source object'
       )
       await driver.waitForVisible(authorizePaymentTitleId, 60000)
-      await swipeUp(authorizePaymentTitleId, 50)
-      t.pass('User should swipe to button')
+      const swipeTimes = [1, 2, 3, 4, 5]
+      swipeTimes.forEach(nativeSwipe)
+    } else {
+      await driver.waitForVisible(paymentParametersTitleId, 60000)
+      await swipeUp(paymentParametersTitleId, 300)
     }
 
-    const paymentParametersTitleId = idFromAccessId('Payment parameters')
-    await driver.waitForVisible(paymentParametersTitleId, 60000)
-    await swipeUp(paymentParametersTitleId, select({ ios: 300, android: 65 }))
     t.pass('User should swipe to button')
-
-    const testPaymentButtonId = select({
-      ios: idFromLabel(sourcesVisibility ? 'Authorize Test Payment' : 'Fail Test Payment'),
-      android: idFromXPath(sourcesVisibility
-        ? '//android.view.View[3]/android.view.View[2]/android.view.View[2]'
-        : '//android.view.View[3]/android.view.View[2]/android.view.View[1]'
-      ),
-    })
 
     await driver.waitForVisible(testPaymentButtonId, 60000)
     await clickUntilVisible({ selector: testPaymentButtonId })
@@ -51,7 +51,7 @@ test('Test if user can create a source object for Alipay', async (t) => {
     const returnToTheAppButtonId = select({
       ios: idFromLabel,
       android: idFromAccessId,
-    })(select({ ios: 'Return to example', android: ' Return to Merchant' }))
+    })(select({ ios: 'Return to example', android: 'arrow--left--white Return to Merchant' }))
 
     await driver.waitForVisible(returnToTheAppButtonId, 60000)
     await driver.click(returnToTheAppButtonId)

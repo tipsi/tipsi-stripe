@@ -133,7 +133,7 @@ npm run appium > /dev/null 2>&1 &
 npm run configure
 
 # Build Android app
-TEST_SUITE=android_5 npm run build:android
+npm run build:android
 
 # Build iOS app
 isMacOS && npm run build:ios
@@ -143,7 +143,7 @@ isMacOS && npm run build:ios
 ###################
 
 # Run Android e2e tests
-npm run test:android
+TEST_SUITE=android_5 npm run test:android
 
 # Run iOS e2e tests
 isMacOS && npm run test:ios
