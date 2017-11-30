@@ -11,8 +11,8 @@ function requireFile(file, throwText) {
 
 function requireTestFile(file) {
   return requireFile(
-    `../${file}.test`,
-    `Can not find test file with name: ${file}.test.js`
+    `../${file}`,
+    `Can not find test file with name: ${file}.js`
   )
 }
 
