@@ -36,6 +36,7 @@ init_new_example_project() {
 }
 
 $HOME/.nvm/nvm.sh
+nvm ls-remote
 nvm install node
 npm i npm@5 -g
 
