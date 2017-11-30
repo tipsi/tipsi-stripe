@@ -38,7 +38,7 @@ init_new_example_project() {
 export NVM_NODEJS_ORG_MIRROR=http://nodejs.org/dist
 
 $HOME/.nvm/nvm.sh
-nvm install 9.2.0
+nvm install 8.9.0
 npm i npm@5 -g
 
 case "${TRAVIS_OS_NAME}" in
