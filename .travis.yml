@@ -3,12 +3,16 @@ matrix:
     - os: osx
       language: objective-c
       osx_image: xcode8
+      env:
+        - JOB_NAME=DEFAULT_IOS
     - os: osx
       language: objective-c
       osx_image: xcode8
       install: echo "PODSPEC install"
       before_script: echo "PODSPEC before_script"
       script: TEST_SUITE=ios .travis/podspec/ci.sh
+      env:
+        - JOB_NAME=PODSPEC_IOS
     - os: linux
       language: android
       jdk: oraclejdk8
@@ -27,6 +31,8 @@ matrix:
           - extra-android-m2repository
           - extra-google-m2repository
           - extra-google-google_play_services
+      env:
+        - JOB_NAME=ANDROID_5
     - os: linux
       language: android
       jdk: oraclejdk8
@@ -45,6 +51,8 @@ matrix:
           - extra-android-m2repository
           - extra-google-m2repository
           - extra-google-google_play_services
+      env:
+        - JOB_NAME=ANDROID_7
 
 cache:
   directories:
