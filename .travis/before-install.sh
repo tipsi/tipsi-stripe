@@ -36,7 +36,7 @@ init_new_example_project() {
 }
 
 $HOME/.nvm/nvm.sh
-nvm install 8.4.0
+nvm install node
 npm i npm@5 -g
 
 case "${TRAVIS_OS_NAME}" in
