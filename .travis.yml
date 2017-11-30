@@ -58,3 +58,4 @@ install: .travis/install.sh
 before_script: .travis/before-ci.sh
 before_cache: .travis/before-cache.sh
 script: .travis/ci.sh
+node_js: 8.9.0

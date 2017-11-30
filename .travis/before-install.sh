@@ -35,11 +35,10 @@ init_new_example_project() {
   done
 }
 
-NVM_NODEJS_ORG_MIRROR=http://nodejs.org/dist
-$HOME/.nvm/nvm.sh
-nvm ls-remote
-nvm install node
-npm i npm@5 -g
+# $HOME/.nvm/nvm.sh
+# nvm ls-remote
+# nvm install node
+# npm i npm@5 -g
 
 case "${TRAVIS_OS_NAME}" in
   osx)
