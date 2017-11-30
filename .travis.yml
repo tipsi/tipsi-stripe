@@ -40,7 +40,7 @@ matrix:
           - build-tools-25.0.0
           - build-tools-26.0.1
           - android-26
-          - sys-img-armeabi-v7a-addon-google_apis-google-26
+          - sys-img-armeabi-v7a-addon-google_apis-google-25
           - extra-android-m2repository
           - extra-google-m2repository
           - extra-google-google_play_services
@@ -58,4 +58,3 @@ install: .travis/install.sh
 before_script: .travis/before-ci.sh
 before_cache: .travis/before-cache.sh
 script: .travis/ci.sh
-node_js: 8.9.0
