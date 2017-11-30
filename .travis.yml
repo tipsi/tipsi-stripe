@@ -31,7 +31,7 @@ matrix:
       language: android
       jdk: oraclejdk8
       sudo: required
-      before_script: ANDROID_VERSION=26 .travis/before-ci.sh
+      before_script: ANDROID_VERSION=24 .travis/before-ci.sh
       script: TEST_SUITE=android_7 .travis/ci.sh
       android:
         components:
@@ -41,7 +41,6 @@ matrix:
           - build-tools-26.0.1
           - android-24
           - android-26
-          - sys-img-armeabi-v7a-addon-google_apis-google-26
           - sys-img-armeabi-v7a-android-24
           - extra-android-m2repository
           - extra-google-m2repository
