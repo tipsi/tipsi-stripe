@@ -10,6 +10,6 @@ case "${TRAVIS_OS_NAME}" in
   ;;
   linux)
     npm run build:android
-    TEST_SUITE=android npm run test:android
+    npm run test:android
   ;;
 esac
