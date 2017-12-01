@@ -1,5 +1,9 @@
-import { execSync } from 'child_process'
+import { exec } from 'child_process'
 
 export default function nativeClick(x, y) {
-  execSync(`adb shell input tap ${x} ${y}`)
+  return new Promise((resolve, reject) => (
+    exec(`adb shell input tap ${x} ${y}`, (error, stdout, stderr) => (
+      error ? reject(error) : resolve(stdout)
+    )
+  ))
 }
