@@ -7,7 +7,7 @@ export default function tape(name, callback) {
       await callback(t)
     } catch (error) {
       await helper.source()
-      // await helper.screenshot()
+      await helper.screenshot()
 
       throw error
     }
