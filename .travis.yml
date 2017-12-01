@@ -10,7 +10,7 @@ matrix:
       osx_image: xcode8
       install: echo "PODSPEC install"
       before_script: echo "PODSPEC before_script"
-      script: TEST_SUITE=ios .travis/podspec/ci.sh
+      script: .travis/podspec/ci.sh
       env:
         - JOB_NAME=PODSPEC_IOS
     - os: linux
