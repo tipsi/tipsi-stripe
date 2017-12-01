@@ -3,10 +3,11 @@ import test from './utils/tape'
 import openTestSuite from './common/openTestSuite'
 import swipeUp from './common/swipeUp'
 import nativeSwipe from './common/nativeSwipe'
+import nativeClick from './common/nativeClick'
 import clickUntilVisible from './common/clickUntilVisible'
 import idFromLabel from './common/idFromLabel'
 
-const { driver, idFromAccessId, idFromXPath, platform, select } = helper
+const { driver, idFromAccessId, platform, select } = helper
 
 test('Test if user can create a source object for Alipay', async (t) => {
   const expectedSourcesResults = [false, true]
@@ -45,13 +46,24 @@ test('Test if user can create a source object for Alipay', async (t) => {
     t.pass('User should swipe to button')
 
     await driver.waitForVisible(testPaymentButtonId, 60000)
-    await clickUntilVisible({ selector: testPaymentButtonId })
+
+    if (platform('android')) {
+      const testPaymentButton = await driver.element(testPaymentButtonId)
+      const { value: buttonCoords } = await driver.elementIdLocation(
+        testPaymentButton.value.ELEMENT
+      )
+
+      nativeClick(buttonCoords.x + 10, buttonCoords.y + 10)
+    } else {
+      await clickUntilVisible({ selector: testPaymentButtonId })
+    }
+
     t.pass('User should click on "Authorize Test Payment" button')
 
     const returnToTheAppButtonId = select({
       ios: idFromLabel,
       android: idFromAccessId,
-    })(select({ ios: 'Return to example', android: 'arrow--left--white Return to Merchant' }))
+    })(select({ ios: 'Return to example', android: ' Return to Merchant' }))
 
     await driver.waitForVisible(returnToTheAppButtonId, 60000)
     await driver.click(returnToTheAppButtonId)

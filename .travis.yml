@@ -18,7 +18,6 @@ matrix:
       jdk: oraclejdk8
       sudo: required
       before_script: ANDROID_VERSION=21 .travis/before-ci.sh
-      script: TEST_SUITE=android_5 .travis/ci.sh
       android:
         components:
           - platform-tools
@@ -33,27 +32,6 @@ matrix:
           - extra-google-google_play_services
       env:
         - JOB_NAME=ANDROID_5
-    - os: linux
-      language: android
-      jdk: oraclejdk8
-      sudo: required
-      before_script: ANDROID_VERSION=24 .travis/before-ci.sh
-      script: TEST_SUITE=android_7 .travis/ci.sh
-      android:
-        components:
-          - platform-tools
-          - tools
-          - build-tools-25.0.0
-          - build-tools-26.0.1
-          - android-24
-          - android-26
-          - sys-img-armeabi-v7a-android-24
-          - sys-img-armeabi-v7a-addon-google_apis-google-24
-          - extra-android-m2repository
-          - extra-google-m2repository
-          - extra-google-google_play_services
-      env:
-        - JOB_NAME=ANDROID_7
 
 cache:
   directories:
