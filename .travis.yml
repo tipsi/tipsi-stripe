@@ -17,7 +17,6 @@ matrix:
       language: android
       jdk: oraclejdk8
       sudo: required
-      before_script: ANDROID_VERSION=21 .travis/before-ci.sh
       android:
         components:
           - platform-tools
