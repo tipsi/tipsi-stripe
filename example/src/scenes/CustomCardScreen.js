@@ -13,8 +13,8 @@ export default class CustomCardScreen extends PureComponent {
     token: null,
     params: {
       number: '4242424242424242',
-      expMonth: 11,
-      expYear: 17,
+      expMonth: 12,
+      expYear: 20,
       cvc: '223',
       name: 'Test User',
       currency: 'usd',
