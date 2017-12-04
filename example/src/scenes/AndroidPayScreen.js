@@ -27,7 +27,8 @@ export default class AndroidPayScreen extends PureComponent {
       const token = await stripe.paymentRequestWithAndroidPay({
         total_price: '100.00',
         currency_code: 'USD',
-        shipping_address_required: false,
+        shipping_address_required: true,
+        shipping_countries: ["US", "CA"],
         line_items: [{
           currency_code: 'USD',
           description: 'Whisky',
