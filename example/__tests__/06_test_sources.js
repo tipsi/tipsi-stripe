@@ -35,7 +35,7 @@ test('Test if user can create a source object for Alipay', async (t) => {
       const authorizePaymentTitleId = idFromAccessId(
         'Authorize a payment for a test mode source object'
       )
-      await driver.waitForVisible(authorizePaymentTitleId, 60000)
+      await driver.waitForVisible(authorizePaymentTitleId, 100000)
       const swipeTimes = [1, 2, 3, 4]
       for (const swipe of swipeTimes) {
         await nativeSwipe(200, 400, 200, 200)
