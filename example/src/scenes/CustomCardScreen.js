@@ -11,10 +11,11 @@ export default class CustomCardScreen extends PureComponent {
   state = {
     loading: false,
     token: null,
+    error: null,
     params: {
       number: '4242424242424242',
-      expMonth: 11,
-      expYear: 17,
+      expMonth: 12,
+      expYear: 24,
       cvc: '223',
       name: 'Test User',
       currency: 'usd',
@@ -29,26 +30,17 @@ export default class CustomCardScreen extends PureComponent {
 
   handleCustomPayPress = async () => {
     try {
-      this.setState({
-        loading: true,
-        token: null,
-      })
+      this.setState({ loading: true, token: null, error: null })
+
       const token = await stripe.createTokenWithCard(this.state.params)
-      console.log('Result:', token) // eslint-disable-line no-console
-      this.setState({
-        loading: false,
-        token,
-      })
+      this.setState({ loading: false, error: undefined, token })
     } catch (error) {
-      console.log('Error:', error) // eslint-disable-line no-console
-      this.setState({
-        loading: false,
-      })
+      this.setState({ loading: false, error })
     }
   }
 
   render() {
-    const { loading, token, params } = this.state
+    const { loading, token, error, params } = this.state
 
     return (
       <View style={styles.container}>
@@ -57,66 +49,41 @@ export default class CustomCardScreen extends PureComponent {
         </Text>
         <Spoiler title="Mandatory Fields">
           <View style={styles.params}>
-            <Text style={styles.param}>
-              Number: {params.number}
-            </Text>
-            <Text style={styles.param}>
-              Month: {params.expMonth}
-            </Text>
-            <Text style={styles.param}>
-              Year: {params.expYear}
-            </Text>
+            <Text style={styles.param}>Number: {params.number}</Text>
+            <Text style={styles.param}>Month: {params.expMonth}</Text>
+            <Text style={styles.param}>Year: {params.expYear}</Text>
           </View>
         </Spoiler>
         <Spoiler title="Optional Fields" defaultOpen={false}>
           <View style={styles.params}>
-            <Text style={styles.param}>
-              CVC: {params.cvc}
-            </Text>
-            <Text style={styles.param}>
-              Name: {params.name}
-            </Text>
-            <Text style={styles.param}>
-              Currency: {params.currency}
-            </Text>
-            <Text style={styles.param}>
-              Address Line 1: {params.addressLine1}
-            </Text>
-            <Text style={styles.param}>
-              Address Line 2: {params.addressLine2}
-            </Text>
-            <Text style={styles.param}>
-              Address City: {params.addressCity}
-            </Text>
-            <Text style={styles.param}>
-              Address State: {params.addressState}
-            </Text>
-            <Text style={styles.param}>
-              Address Country: {params.addressCountry}
-            </Text>
-            <Text style={styles.param}>
-              Address Zip: {params.addressZip}
-            </Text>
+            <Text style={styles.param}>CVC: {params.cvc}</Text>
+            <Text style={styles.param}>Name: {params.name}</Text>
+            <Text style={styles.param}>Currency: {params.currency}</Text>
+            <Text style={styles.param}>Address Line 1: {params.addressLine1}</Text>
+            <Text style={styles.param}>Address Line 2: {params.addressLine2}</Text>
+            <Text style={styles.param}>Address City: {params.addressCity}</Text>
+            <Text style={styles.param}>Address State: {params.addressState}</Text>
+            <Text style={styles.param}>Address Country: {params.addressCountry}</Text>
+            <Text style={styles.param}>Address Zip: {params.addressZip}</Text>
           </View>
         </Spoiler>
-        <Text style={styles.instruction}>
-          Click button to get token based on params.
-        </Text>
+        <Text style={styles.instruction}>Click button to get token based on params.</Text>
         <Button
           text="Pay with custom params"
           loading={loading}
           onPress={this.handleCustomPayPress}
           {...testID('customCardButton')}
         />
-        <View
-          style={styles.token}
-          {...testID('customCardToken')}>
-          {token &&
-            <Text style={styles.instruction}>
-              Token: {token.tokenId}
-            </Text>
-          }
-        </View>
+        {token &&
+          <View style={styles.token} {...testID('customCardToken')}>
+            <Text style={styles.instruction}>Token: {token.tokenId}</Text>
+          </View>
+        }
+        {error &&
+          <View style={styles.token} {...testID('customCardTokenError')}>
+            <Text style={styles.instruction}>Error: {error}</Text>
+          </View>
+        }
       </View>
     )
   }

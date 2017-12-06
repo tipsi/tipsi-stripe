@@ -10,7 +10,9 @@ init_new_example_project() {
     .appiumhelperrc
     package.json
     index.{ios,android}.js
+    android/build.gradle
     android/app/build.gradle
+    android/gradle/wrapper/gradle-wrapper.properties
     ios/example/AppDelegate.m
     src
     scripts
@@ -33,8 +35,10 @@ init_new_example_project() {
   done
 }
 
+export NVM_NODEJS_ORG_MIRROR=http://nodejs.org/dist
+
 $HOME/.nvm/nvm.sh
-nvm install 8.4.0
+nvm install 8.9.0
 npm i npm@5 -g
 
 case "${TRAVIS_OS_NAME}" in

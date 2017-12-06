@@ -259,7 +259,7 @@ An object with the following keys:
 * `receiver` _Object_ (Optional) - Information related to the receiver flow. Present if the source is a receiver.
 * `redirect` _Object_ (Optional) - Information related to the redirect flow. Present if the source is authenticated by a redirect.
 * `status` _String_ - The status of the source. Can be one of: `pending`|`chargable`|`consumed`|`cancelled`|`failed`.
-* `type` _String_ - The type of the source. Can be one of: `bancontact`|`bitcoin`|`card`|`griopay`|`ideal`|`sepaDebit`|`sofort`|`threeDSecure`|`alipay`|`unknown`.
+* `type` _String_ - The type of the source. Can be one of: `bancontact`|`bitcoin`|`card`|`giropay`|`ideal`|`sepaDebit`|`sofort`|`threeDSecure`|`alipay`|`unknown`.
 * `usage` _String_ - Whether this source should be reusable or not. Can be one of: `reusable`|`single`|`unknown`.
 * `verification` _Object_ (Optional) - Information related to the verification flow. Present if the source is authenticated by a verification.
 * `details` _Object_ - Information about the source specific to its type.
@@ -780,25 +780,53 @@ class FieldExample extends Component {
 }
 ```
 
-### Create source object with params (iOS only at the moment)
+### Create source object with params
 
 #### `createSourceWithParams(params) -> Promise`
 
 Creates source object based on params. Sources are used to create payments for a variety of [payment methods](https://stripe.com/docs/sources)
 
-_NOTE_: For sources that require redirecting your customer to authorize the payment, you need to specify a return URL when you create the source. This allows your customer to be redirected back to your app after they authorize the payment. For this return URL, you can either use a custom URL scheme or a universal link supported by your app. For more information on registering and handling URLs in your app, refer to the Apple documentation:
+_NOTE_: For sources that require redirecting your customer to authorize the payment, you need to specify a return URL when you create the source. This allows your customer to be redirected back to your app after they authorize the payment. For this return URL, you can either use a custom URL scheme or a universal link supported by your app.
+
+##### iOS
+
+For more information on registering and handling URLs in your app, refer to the Apple documentation:
 
 * [Implementing Custom URL Schemes](https://developer.apple.com/library/content/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html#//apple_ref/doc/uid/TP40007072-CH6-SW10)
 * [Supporting Universal Links](https://developer.apple.com/library/content/documentation/General/Conceptual/AppSearch/UniversalLinks.html)
 
 You also need to setup your `AppDelegate.m` app delegate to forward URLs to the Stripe SDK according to the [official iOS implementation](https://stripe.com/docs/mobile/ios/sources#redirecting-your-customer)
 
+##### Android
+
+You have to declare your return url in application's `build.gradle` file.
+In order to do that, add the following code replacing `CUSTOM_SCHEME` with the your custom scheme inside `android.defaultConfig` block.
+
+```groovy
+android {
+    // ...
+    defaultConfig {
+        // ...
+        manifestPlaceholders = [
+            tipsiStripeRedirectScheme: "CUSTOM_SCHEME"
+        ]
+    }
+    // ...
+}
+```
+> Example: if the return url used is `my_custom_scheme://callback`, replace `CUSTOM_SCHEME` with `my_custom_scheme`.
+
+**NOTE**: the redirection will be automatically handled by tipsi-stripe **on its own activity**.
+In case of your app makes use of its own custom URL scheme for other purpose rather than handling stripe payments, be sure that `CUSTOM_SCHEME` value is not exaclty the same that the one used in the rest of the app.
+
+> In such case you might end up using `my_custom_scheme_tipsi://callback` as return URL and setting `CUSTOM_SCHEME` equals to `my_custom_scheme_tipsi`, following the previous example.
+
 ##### `params`
 
 An object with the following keys:
 (Depending on the type you need to provide different params. Check the [STPSourceParams docs](https://stripe.github.io/stripe-ios/docs/Classes/STPSourceParams.html) for reference)
 
-* `type` _String_ (Required) - The type of the source to create. Can be one of: `bancontact`|`bitcoin`|`card`|`griopay`|`ideal`|`sepaDebit`|`sofort`|`threeDSecure`|`alipay`.
+* `type` _String_ (Required) - The type of the source to create. Can be one of: `bancontact`|`bitcoin`|`card`|`giropay`|`ideal`|`sepaDebit`|`sofort`|`threeDSecure`|`alipay`.
 * `amount` _Number_ - A positive number in the smallest currency unit representing the amount to charge the customer (e.g., 1099 for a €10.99 payment).
 * `name` _String_ - The full name of the account holder.
 * `returnURL` _String_ The URL the customer should be redirected to after they have successfully verified the payment.

@@ -26,7 +26,9 @@ files_to_copy=(
   .appiumhelperrc
   package.json
   index.{ios,android}.js
+  android/build.gradle
   android/app/build.gradle
+  android/gradle/wrapper/gradle-wrapper.properties
   ios/example/AppDelegate.m
   src
   scripts
@@ -141,7 +143,7 @@ isMacOS && npm run build:ios
 ###################
 
 # Run Android e2e tests
-npm run test:android
+TEST_SUITE=android_5 npm run test:android
 
 # Run iOS e2e tests
 isMacOS && npm run test:ios

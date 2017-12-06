@@ -1,4 +1,5 @@
 {
+  "testsGlob": "./__tests__/suites",
   "ios": {
     "appPath": "./ios/build/Build/Products/Release-iphonesimulator/example.app"
   },
