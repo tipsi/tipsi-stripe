@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.text.TextUtils;
 
 import com.facebook.react.bridge.ActivityEventListener;
 import com.facebook.react.bridge.Arguments;
@@ -39,6 +40,8 @@ import com.google.android.gms.wallet.PaymentMethodTokenizationParameters;
 import com.google.android.gms.wallet.PaymentMethodTokenizationType;
 import com.google.android.gms.wallet.Wallet;
 import com.google.android.gms.wallet.WalletConstants;
+import com.google.android.gms.identity.intents.model.UserAddress;
+import com.google.android.gms.identity.intents.model.CountrySpecification;
 import com.stripe.android.BuildConfig;
 import com.stripe.android.SourceCallback;
 import com.google.android.gms.identity.intents.model.CountrySpecification;
@@ -873,6 +876,28 @@ public class StripeModule extends ReactContextBaseJavaModule {
     return result;
   }
 
+  private WritableMap convertAddressToWritableMap(final UserAddress address){
+    WritableMap result = Arguments.createMap();
+
+    if(address == null) return result;
+
+    putIfExist(result, "address1", address.getAddress1());
+    putIfExist(result, "address2", address.getAddress2());
+    putIfExist(result, "address3", address.getAddress3());
+    putIfExist(result, "address4", address.getAddress4());
+    putIfExist(result, "address5", address.getAddress5());
+    putIfExist(result, "administrativeArea", address.getAdministrativeArea());
+    putIfExist(result, "companyName", address.getCompanyName());
+    putIfExist(result, "countryCode", address.getCountryCode());
+    putIfExist(result, "locality", address.getLocality());
+    putIfExist(result, "name", address.getName());
+    putIfExist(result, "phoneNumber", address.getPhoneNumber());
+    putIfExist(result, "postalCode", address.getPostalCode());
+    putIfExist(result, "sortingCode", address.getSortingCode());
+
+    return result;
+  }
+
   private BankAccount createBankAccount(ReadableMap accountData) {
     BankAccount account = new BankAccount(
       // required fields only
@@ -893,6 +918,12 @@ public class StripeModule extends ReactContextBaseJavaModule {
     } else {
       // If map don't have some key - we must pass to constructor default value.
       return def;
+    }
+  }
+
+  private void putIfExist(final WritableMap map, final String key, final String value) {
+    if (!TextUtils.isEmpty(value)) {
+      map.putString(key, value);
     }
   }
 

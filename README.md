@@ -537,6 +537,47 @@ const token = await stripe.paymentRequestWithAndroidPay(options)
 // api.sendTokenToBackend(token)
 ```
 
+Example of token:
+```
+{ card: 
+  { currency: null,
+    fingerprint: null,
+    funding: "credit",
+    brand: "MasterCard",
+    number: null,
+    addressState: null,
+    country: "US",
+    cvc: null,
+    expMonth: 12,
+    addressLine1: null,
+    expYear: 2022,
+    addressCountry: null,
+    name: null,
+    last4: "4448",
+    addressLine2: null,
+    addressCity: null,
+    addressZip: null 
+  },
+  created: 1512322244000,
+  used: false,
+  extra: { 
+    email: "randomemail@mail.com",
+    billingContact: { 
+      postalCode: "220019",
+      name: "John Doe",
+      locality: "NY",
+      countryCode: "US",
+      administrativeArea: "US",
+      address1: "Time square 1/11" 
+    },
+    shippingContact: {} 
+  },
+  livemode: false,
+  tokenId: "tok_1BV1IeDZwqOES60ZphBXBoDr" 
+}
+```
+Where `billingContact` and `shippingContact` are representation of the[UserAddress](https://developers.google.com/android/reference/com/google/android/gms/identity/intents/model/UserAddress).
+
 ### Request with Card Form
 
 #### `paymentRequestWithCardForm(options) -> Promise`
