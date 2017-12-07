@@ -91,7 +91,7 @@ def enableProguardInReleaseBuilds = false
 
 android {
     compileSdkVersion 26
-    buildToolsVersion '26.0.1'
+    buildToolsVersion "26.0.2"
 
     defaultConfig {
         applicationId "com.example"
@@ -100,7 +100,7 @@ android {
         versionCode 1
         versionName "1.0"
         manifestPlaceholders = [
-                tipsiStripeRedirectScheme: "example"
+            tipsiStripeRedirectScheme: "example"
         ]
         ndk {
             abiFilters "armeabi-v7a", "x86"
@@ -147,7 +147,9 @@ android {
 dependencies {
     compile project(':tipsi-stripe')
     compile fileTree(dir: "libs", include: ["*.jar"])
-    compile "com.android.support:appcompat-v7:26.0.1"
+    compile "com.android.support:support-v4:26.1.0"
+    compile "com.android.support:design:26.1.0"
+    compile "com.android.support:appcompat-v7:26.1.0"
     compile "com.facebook.react:react-native:+"  // From node_modules
 }
 
@@ -156,4 +158,11 @@ dependencies {
 task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.compile
     into 'libs'
+}
+
+repositories {
+    maven {
+        url 'https://maven.google.com/'
+        name 'Google'
+    }
 }
