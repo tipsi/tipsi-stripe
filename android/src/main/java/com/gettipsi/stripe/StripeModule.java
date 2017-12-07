@@ -44,6 +44,7 @@ import com.google.android.gms.identity.intents.model.UserAddress;
 import com.google.android.gms.identity.intents.model.CountrySpecification;
 import com.stripe.android.BuildConfig;
 import com.stripe.android.SourceCallback;
+import com.google.android.gms.identity.intents.model.CountrySpecification;
 import com.stripe.android.Stripe;
 import com.stripe.android.TokenCallback;
 import com.stripe.android.exception.APIConnectionException;
