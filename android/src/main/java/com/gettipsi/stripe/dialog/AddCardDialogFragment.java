@@ -139,7 +139,7 @@ public class AddCardDialogFragment extends DialogFragment {
 
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                  doneButton.setEnabled(charSequence.length() == 3);
+                  doneButton.setEnabled(charSequence.length() >= 3);
                 }
 
                 @Override
