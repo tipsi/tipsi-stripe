@@ -150,7 +150,7 @@ stripe.init({
 ```
 
 `androidPayMode` _String_ (Android only) - Corresponds to [WALLET_ENVIRONMENT](https://developers.google.com/android-pay/tutorial#about_constants
-). Can be one of: test|production.
+). Can be one of: `test|production`.
 
 ### Token
 
@@ -500,6 +500,7 @@ An object with the following keys:
 * `total_price` _String_ - Price of the item.
 * `currency_code` _String_ - Three-letter ISO currency code representing the currency paid out to the bank account.
 * `shipping_address_required` _Boolean_ (Optional) - Is shipping address menu required. Default `true`.
+* `shipping_countries` _Array_ (Optional) - Set of country specifications that should be allowed for shipping. If omitted or an empty array is provided the API will default to using a country specification that only allows shipping in the US. Country code allowed in [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) format. 
 * `line_items` _Array_ - Array of purchased items. Each item contains:
     * `currency_code` _String_ - Currency code string.
     * `description`  _String_ - Short description that will shown to user.
@@ -514,6 +515,7 @@ const options = {
   total_price: '80.00',
   currency_code: 'USD',
   shipping_address_required: false,
+  shipping_countries: ["US", "CA"],
   line_items: [{
     currency_code: 'USD',
     description: 'Whisky',
