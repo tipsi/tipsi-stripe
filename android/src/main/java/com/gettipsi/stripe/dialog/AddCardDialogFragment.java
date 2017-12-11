@@ -31,6 +31,7 @@ import com.stripe.android.TokenCallback;
 import com.stripe.android.model.Card;
 import com.stripe.android.model.Token;
 
+import com.gettipsi.stripe.util.PlainAddress;
 
 /**
  * Created by dmitriy on 11/13/16
@@ -43,13 +44,16 @@ public class AddCardDialogFragment extends DialogFragment {
   private static final String CCV_INPUT_CLASS_NAME = SecurityCodeText.class.getSimpleName();
   private String PUBLISHABLE_KEY;
 
+  private PlainAddress address = null;
+
   private ProgressBar progressBar;
-  private CreditCardForm from;
+  private CreditCardForm form;
   private ImageView imageFlipedCard;
   private ImageView imageFlipedCardBack;
 
   private volatile Promise promise;
   private boolean successful;
+  private boolean isZipEnabled = false;
   private CardFlipAnimator cardFlipAnimator;
   private Button doneButton;
 
@@ -61,6 +65,9 @@ public class AddCardDialogFragment extends DialogFragment {
     return fragment;
   }
 
+  public void setAddress(PlainAddress address) {
+    this.address = address;
+  }
 
   public void setPromise(Promise promise) {
     this.promise = promise;
@@ -75,7 +82,12 @@ public class AddCardDialogFragment extends DialogFragment {
 
   @Override
   public Dialog onCreateDialog(Bundle savedInstanceState) {
-    final View view = View.inflate(getActivity(), R.layout.payment_form_fragment_two, null);
+    final View view;
+    if (isZipEnabled) {
+      view = View.inflate(getActivity(), R.layout.payment_form_fragment_two_zip, null);
+    } else {
+      view = View.inflate(getActivity(), R.layout.payment_form_fragment_two, null);
+    }
     final AlertDialog dialog = new AlertDialog.Builder(getActivity())
       .setView(view)
       .setTitle("Enter your card")
@@ -116,14 +128,13 @@ public class AddCardDialogFragment extends DialogFragment {
 
   private void bindViews(final View view) {
     progressBar = (ProgressBar) view.findViewById(R.id.buttonProgress);
-    from = (CreditCardForm) view.findViewById(R.id.credit_card_form);
+    form = (CreditCardForm) view.findViewById(R.id.credit_card_form);
     imageFlipedCard = (ImageView) view.findViewById(R.id.imageFlippedCard);
     imageFlipedCardBack = (ImageView) view.findViewById(R.id.imageFlippedCardBack);
   }
 
-
   private void init() {
-    from.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+    form.setOnFocusChangeListener(new View.OnFocusChangeListener() {
       @Override
       public void onFocusChange(final View view, boolean b) {
         if (CCV_INPUT_CLASS_NAME.equals(view.getClass().getSimpleName())) {
@@ -160,10 +171,14 @@ public class AddCardDialogFragment extends DialogFragment {
     successful = false;
   }
 
+  public void setZipEnabled(boolean enabled) {
+    isZipEnabled = enabled;
+  }
+
   public void onSaveCLick() {
     doneButton.setEnabled(false);
     progressBar.setVisibility(View.VISIBLE);
-    final CreditCard fromCard = from.getCreditCard();
+    final CreditCard fromCard = form.getCreditCard();
     final Card card = new Card(
       fromCard.getCardNumber(),
       fromCard.getExpMonth(),
@@ -189,15 +204,31 @@ public class AddCardDialogFragment extends DialogFragment {
             cardMap.putString("last4", card.getLast4());
             cardMap.putInt("expMonth", card.getExpMonth());
             cardMap.putInt("expYear", card.getExpYear());
-            cardMap.putString("country", card.getCountry());
             cardMap.putString("currency", card.getCurrency());
-            cardMap.putString("name", card.getName());
-            cardMap.putString("addressLine1", card.getAddressLine1());
-            cardMap.putString("addressLine2", card.getAddressLine2());
-            cardMap.putString("addressCity", card.getAddressCity());
-            cardMap.putString("addressState", card.getAddressState());
-            cardMap.putString("addressCountry", card.getAddressCountry());
-            cardMap.putString("addressZip", card.getAddressZip());
+
+            if (address == null) {
+              cardMap.putString("country", card.getCountry());
+              cardMap.putString("name", card.getName());
+              cardMap.putString("addressLine1", card.getAddressLine1());
+              cardMap.putString("addressLine2", card.getAddressLine2());
+              cardMap.putString("addressCity", card.getAddressCity());
+              cardMap.putString("addressState", card.getAddressState());
+              cardMap.putString("addressCountry", card.getAddressCountry());
+              cardMap.putString("addressZip", card.getAddressZip());
+            } else {
+              cardMap.putString("name", address.name);
+              cardMap.putString("addressLine1", address.address);
+              cardMap.putString("addressLine2", address.apartment);
+              cardMap.putString("addressCity", address.city);
+              cardMap.putString("addressState", address.state);
+              cardMap.putString("addressCountry", address.country);
+              cardMap.putString("addressZip", address.zip);
+              cardMap.putString("email", address.email);
+              cardMap.putString("phone", address.phone);
+            }
+            if (isZipEnabled) {
+              cardMap.putString("addressZip", fromCard.getZipCode());
+            }
             newToken.putMap("card", cardMap);
             if (promise != null) {
               promise.resolve(newToken);
@@ -222,7 +253,7 @@ public class AddCardDialogFragment extends DialogFragment {
 
   public void showToast(String message) {
     Context context = getActivity();
-    if(context != null && !TextUtils.isEmpty(message)) {
+    if (context != null && !TextUtils.isEmpty(message)) {
       Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
   }

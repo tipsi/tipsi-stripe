@@ -25,6 +25,11 @@ test('Test if user can use Card Form', async (t) => {
   await driver.click(cardFormButton)
   t.pass('User should be able to tap on `Enter you card and pay` button')
 
+  if (platform('android')) { // done on android address fragment
+    await driver.waitForEnabled(doneButtonId, 20000)
+    await driver.click(doneButtonId)
+  }
+
   await driver.waitForVisible(numberInputId, 10000)
   await driver.click(numberInputId)
   await driver.setValue(numberInputId, '42424242424242421234123')

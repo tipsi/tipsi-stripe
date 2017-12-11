@@ -584,14 +584,14 @@ Where `billingContact` and `shippingContact` are representation of the[UserAddre
 
 Launch `Add Card` view to to accept payment.
 
-##### `options (iOS only)`
+##### `options`
 
 An object with the following keys:
 
 * `requiredBillingAddressFields` _String_ - The billing address fields the user must fill out when prompted for their payment details. Can be one of: `full`|`zip` or not specify to disable.
 * `prefilledInformation` _Object_ - You can set this property to pre-fill any information you’ve already collected from your user.
-* `managedAccountCurrency` _String_ - Required to be able to add the card to an account (in all other cases, this parameter is not used). [More info](https://stripe.com/docs/api#create_card_token-card-currency).
-* `theme` _Object_ - Can be used to visually style Stripe-provided UI.
+* `managedAccountCurrency` _String_ (iOS only) - Required to be able to add the card to an account (in all other cases, this parameter is not used). [More info](https://stripe.com/docs/api#create_card_token-card-currency).
+* `theme` _Object_ (iOS only) - Can be used to visually style Stripe-provided UI.
 
 ##### `prefilledInformation`
 
@@ -615,7 +615,7 @@ An object with the following keys:
 * `phone` _String_ - The phone number of the address (e.g. "8885551212").
 * `email` _String_ - The email of the address (e.g. "jane@doe.com").
 
-##### `theme`
+##### `theme (iOS only)`
 
 An object with the following keys:
 
