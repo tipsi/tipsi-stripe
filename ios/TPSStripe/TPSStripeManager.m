@@ -381,7 +381,7 @@ RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
     PKShippingType shippingType = [self applePayShippingType:options[@"shippingType"]];
     NSMutableArray *shippingMethodsItems = options[@"shippingMethods"] ? options[@"shippingMethods"] : [NSMutableArray array];
     NSString* currencyCode = options[@"currencyCode"] ? options[@"currencyCode"] : @"USD";
-    NSString* countryCode = options[@"countryCode"] ? options[@"currencyCode"] : @"US";
+    NSString* countryCode = options[@"countryCode"] ? options[@"countryCode"] : @"US";
 
     NSMutableArray *shippingMethods = [NSMutableArray array];
 
