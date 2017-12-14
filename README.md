@@ -864,6 +864,24 @@ In case of your app makes use of its own custom URL scheme for other purpose rat
 
 > In such case you might end up using `my_custom_scheme_tipsi://callback` as return URL and setting `CUSTOM_SCHEME` equals to `my_custom_scheme_tipsi`, following the previous example.
 
+You also need to add into your application's manifest section with redirect activity:
+```xml
+<activity android:name=".RedirectUriReceiver">
+  <intent-filter>
+    <action android:name="android.intent.action.VIEW" />
+    <category android:name="android.intent.category.DEFAULT" />
+    <category android:name="android.intent.category.BROWSABLE" />
+    <data android:scheme="${tipsiStripeRedirectScheme}" tools:replace="android:scheme" />
+  </intent-filter>
+</activity>
+```
+Thouse explicit designation of RedirectUriReceiver need to override default `example` redirect scheme, that has been already defined into tipsi-stripe library.
+
+Also you need to add:
+```xmlns:tools="http://schemas.android.com/tools" ``` as an attribute into the root node of your manifest.
+
+**NOTE**: This is **only** necessary if you are going to use Sources!
+
 ##### `params`
 
 An object with the following keys:
