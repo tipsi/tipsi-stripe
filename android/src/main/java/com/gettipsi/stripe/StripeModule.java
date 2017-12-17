@@ -837,6 +837,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
 
     if(card == null) return result;
 
+    result.putString("cardId", card.getId());
     result.putString("number", card.getNumber());
     result.putString("cvc", card.getCVC() );
     result.putInt("expMonth", card.getExpMonth() );

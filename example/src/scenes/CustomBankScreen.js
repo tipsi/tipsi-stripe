@@ -23,21 +23,12 @@ export default class CustomBankScreen extends PureComponent {
 
   handleBankAccountPayPress = async () => {
     try {
-      this.setState({
-        loading: true,
-        token: null,
-      })
+      this.setState({ loading: true, token: null })
+
       const token = await stripe.createTokenWithBankAccount(this.state.params)
-      console.log('Result:', token) // eslint-disable-line no-console
-      this.setState({
-        loading: false,
-        token,
-      })
+      this.setState({ loading: false, token })
     } catch (error) {
-      console.log('Error:', error) // eslint-disable-line no-console
-      this.setState({
-        loading: false,
-      })
+      this.setState({ loading: false })
     }
   }
 

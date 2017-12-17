@@ -14,10 +14,7 @@ export default class CardFormScreen extends PureComponent {
 
   handleCardPayPress = async () => {
     try {
-      this.setState({
-        loading: true,
-        token: null,
-      })
+      this.setState({ loading: true, token: null })
       const token = await stripe.paymentRequestWithCardForm({
         // Only iOS support this options
         smsAutofillDisabled: true,
@@ -36,16 +33,9 @@ export default class CardFormScreen extends PureComponent {
         },
       })
 
-      console.log('Result:', token) // eslint-disable-line no-console
-      this.setState({
-        loading: false,
-        token,
-      })
+      this.setState({ loading: false, token })
     } catch (error) {
-      console.log('Error:', error) // eslint-disable-line no-console
-      this.setState({
-        loading: false,
-      })
+      this.setState({ loading: false })
     }
   }
 

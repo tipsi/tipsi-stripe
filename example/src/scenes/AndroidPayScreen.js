@@ -28,7 +28,7 @@ export default class AndroidPayScreen extends PureComponent {
         total_price: '100.00',
         currency_code: 'USD',
         shipping_address_required: true,
-        shipping_countries: ["US", "CA"],
+        shipping_countries: ['US', 'CA'],
         line_items: [{
           currency_code: 'USD',
           description: 'Whisky',
@@ -49,16 +49,9 @@ export default class AndroidPayScreen extends PureComponent {
           quantity: '1',
         }],
       })
-      console.log('Result:', token) // eslint-disable-line no-console
-      this.setState({
-        loading: false,
-        token,
-      })
+      this.setState({ loading: false, token })
     } catch (error) {
-      console.log('Error:', error) // eslint-disable-line no-console
-      this.setState({
-        loading: false,
-      })
+      this.setState({ loading: false })
     }
   }
 

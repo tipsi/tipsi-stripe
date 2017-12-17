@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { View, Text, Switch, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import stripe from 'tipsi-stripe'
 import Button from '../components/Button'
 import testID from '../utils/testID'
@@ -16,15 +16,15 @@ export default class SourceScreen extends PureComponent {
   handleCreacteSourcePress = async () => {
     try {
       this.setState({ loading: true, source: null })
+
       const source = await stripe.createSourceWithParams({
         type: 'alipay',
         amount: 50,
         currency: 'EUR',
         returnURL: 'example://stripe-redirect',
       })
-      this.setState({ loading: false, source: source })
+      this.setState({ loading: false, source })
     } catch (error) {
-      console.warn("Failed to create source", error);
       this.setState({ loading: false })
     }
   }

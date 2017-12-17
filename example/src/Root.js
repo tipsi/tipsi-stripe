@@ -36,9 +36,7 @@ export default class Root extends PureComponent {
     ].filter(item => item),
   }
 
-  getCurrentScene = () => {
-    return this.state.routes[this.state.index]
-  }
+  getCurrentScene = () => this.state.routes[this.state.index]
 
   handleChangeTab = (index) => {
     this.drawer.closeDrawer()
@@ -65,6 +63,7 @@ export default class Root extends PureComponent {
     this.setState({ isDrawerOpen: false })
   }
 
+  /* eslint-disable react/no-array-index-key */
   renderNavigation = () => (
     <View style={styles.drawer}>
       {this.state.routes.map((Scene, index) => (

@@ -74,20 +74,16 @@ export default class ApplePayScreen extends PureComponent {
         }],
       })
 
-      console.log('Result:', token)
       this.setState({ loading: false, token })
 
       if (this.state.complete) {
         await stripe.completeApplePayRequest()
-        console.log('Apple Pay payment completed')
         this.setState({ status: 'Apple Pay payment completed' })
       } else {
         await stripe.cancelApplePayRequest()
-        console.log('Apple Pay payment cenceled')
         this.setState({ status: 'Apple Pay payment cenceled' })
       }
     } catch (error) {
-      console.log('Error:', error)
       this.setState({ loading: false, status: `Error: ${error.message}` })
     }
   }
@@ -143,16 +139,12 @@ export default class ApplePayScreen extends PureComponent {
         />
         <View>
           {token &&
-            <Text
-              style={styles.instruction}
-              {...testID('applePayToken')}>
+            <Text style={styles.instruction} {...testID('applePayToken')}>
               Token: {token.tokenId}
             </Text>
           }
           {status &&
-            <Text
-              style={styles.instruction}
-              {...testID('applePayStatus')}>
+            <Text style={styles.instruction} {...testID('applePayStatus')}>
               {status}
             </Text>
           }
@@ -166,13 +158,11 @@ export default class ApplePayScreen extends PureComponent {
             {...testID('setupApplePayButton')}
           />
           <Text style={styles.hint}>
-            ('Setup Pay' works only on real device)
+            Setup Pay works only on real device
           </Text>
         </View>
         <View style={styles.statusContainer}>
-          <Text
-            style={styles.status}
-            {...testID('deviceSupportsApplePayStatus')}>
+          <Text style={styles.status} {...testID('deviceSupportsApplePayStatus')}>
             Device {allowed ? 'supports' : 'doesn\'t support' } Pay
           </Text>
           {Object.entries(cards).map(([id, { name, isAvailable }]) => (

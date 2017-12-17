@@ -184,7 +184,7 @@ public class AddCardDialogFragment extends DialogFragment {
             newToken.putBoolean("user", token.getUsed());
             final WritableMap cardMap = Arguments.createMap();
             final Card card = token.getCard();
-            cardMap.putString("cardId", card.getFingerprint());
+            cardMap.putString("cardId", card.getId());
             cardMap.putString("brand", card.getBrand());
             cardMap.putString("last4", card.getLast4());
             cardMap.putInt("expMonth", card.getExpMonth());
