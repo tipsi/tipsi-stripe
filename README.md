@@ -749,6 +749,17 @@ const token = await stripe.createTokenWithBankAccount(params)
 // api.sendTokenToBackend(token)
 ```
 
+**NOTE** The Routing number is a 7 digit number which is a combination of `Bank code` and `Branch code`. Bank code is 4 digit number and Branch code is 3 digit number. By combine that two respected number we can make routing number. Parameter to pass in createTokenWithBankAccount method
+
+```
+const params = {
+  accountNumber: this.state.accountNo,
+  countryCode: 'sg',
+  currency: 'sgd',
+  routingNumber: `${this.state.bankCode}${this.state.branchCode}`
+}
+```
+
 ### PaymentCardTextField component
 
 A text field component specialized for collecting credit/debit card information. It manages multiple text fields under the hood to collect this information. It’s designed to fit on a single line.
