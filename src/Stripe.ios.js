@@ -31,13 +31,11 @@ class Stripe {
     return TPSStripeManager.init(options)
   }
 
-  deviceSupportsApplePay = () => {
-    checkInit(this)
-    return TPSStripeManager.deviceSupportsApplePay()
-  }
+  deviceSupportsApplePay = () => (
+    TPSStripeManager.deviceSupportsApplePay()
+  )
 
   canMakeApplePayPayments = (options = {}) => {
-    checkInit(this)
     checkArgs(
       types.canMakeApplePayPaymentsOptionsPropTypes,
       options, 'options', 'Stripe.canMakeApplePayPayments'
@@ -68,10 +66,9 @@ class Stripe {
     return TPSStripeManager.cancelApplePayRequest()
   }
 
-  openApplePaySetup = () => {
-    checkInit(this)
-    return TPSStripeManager.openApplePaySetup()
-  }
+  openApplePaySetup = () => (
+    TPSStripeManager.openApplePaySetup()
+  )
 
   paymentRequestWithCardForm = (options = {}) => {
     checkInit(this)

@@ -188,7 +188,9 @@ RCT_EXPORT_METHOD(createTokenWithCard:(NSDictionary *)params
     [cardParams setAddressCountry: params[@"addressCountry"]];
     [cardParams setAddressZip: params[@"addressZip"]];
 
-    [[STPAPIClient sharedClient] createTokenWithCard:cardParams completion:^(STPToken *token, NSError *error) {
+    STPAPIClient *stripeAPIClient = [self newAPIClient];
+
+    [stripeAPIClient createTokenWithCard:cardParams completion:^(STPToken *token, NSError *error) {
         requestIsCompleted = YES;
 
         if (error) {
@@ -221,7 +223,9 @@ RCT_EXPORT_METHOD(createTokenWithBankAccount:(NSDictionary *)params
     [RCTConvert STPBankAccountHolderType:params[@"accountHolderType"]];
     [bankAccount setAccountHolderType: accountHolderType];
 
-    [[STPAPIClient sharedClient] createTokenWithBankAccount:bankAccount completion:^(STPToken *token, NSError *error) {
+    STPAPIClient *stripeAPIClient = [self newAPIClient];
+
+    [stripeAPIClient createTokenWithBankAccount:bankAccount completion:^(STPToken *token, NSError *error) {
         requestIsCompleted = YES;
 
         if (error) {
@@ -273,7 +277,9 @@ RCT_EXPORT_METHOD(createSourceWithParams:(NSDictionary *)params
          sourceParams = [STPSourceParams alipayParamsWithAmount:[[params objectForKey:@"amount"] unsignedIntegerValue] currency:params[@"currency"] returnURL:params[@"returnURL"]];
     }
 
-    [[STPAPIClient sharedClient] createSourceWithParams:sourceParams completion:^(STPSource *source, NSError *error) {
+    STPAPIClient* stripeAPIClient = [self newAPIClient];
+
+    [stripeAPIClient createSourceWithParams:sourceParams completion:^(STPSource *source, NSError *error) {
         requestIsCompleted = YES;
 
         if (error) {
@@ -284,7 +290,7 @@ RCT_EXPORT_METHOD(createSourceWithParams:(NSDictionary *)params
                     if (error) {
                         reject(nil, nil, error);
                     } else {
-                        [[STPAPIClient sharedClient] startPollingSourceWithId:sourceID clientSecret:clientSecret timeout:10 completion:^(STPSource *source, NSError *error) {
+                        [stripeAPIClient startPollingSourceWithId:sourceID clientSecret:clientSecret timeout:10 completion:^(STPSource *source, NSError *error) {
                             if (error) {
                                 reject(nil, nil, error);
                             } else {
@@ -502,7 +508,9 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     // Save for deffered call
     applePayCompletion = completion;
 
-    [[STPAPIClient sharedClient] createTokenWithPayment:payment completion:^(STPToken * _Nullable token, NSError * _Nullable error) {
+    STPAPIClient *stripeAPIClient = [self newAPIClient];
+
+    [stripeAPIClient createTokenWithPayment:payment completion:^(STPToken * _Nullable token, NSError * _Nullable error) {
         requestIsCompleted = YES;
 
         if (error) {
@@ -544,6 +552,10 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     };
     
     [RCTPresentedViewController() dismissViewControllerAnimated:YES completion:completion];
+}
+
+- (STPAPIClient *)newAPIClient {
+    return [[STPAPIClient alloc] initWithPublishableKey:[Stripe defaultPublishableKey]];
 }
 
 - (NSDictionary *)convertTokenObject:(STPToken*)token {
