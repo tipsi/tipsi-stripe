@@ -17,10 +17,9 @@ class Stripe {
     return StripeModule.init(options)
   }
 
-  deviceSupportsAndroidPay = () => {
-    checkInit(this)
-    return StripeModule.deviceSupportsAndroidPay()
-  }
+  deviceSupportsAndroidPay = () => (
+    StripeModule.deviceSupportsAndroidPay()
+  )
 
   paymentRequestWithAndroidPay = (options = {}) => {
     checkInit(this)
