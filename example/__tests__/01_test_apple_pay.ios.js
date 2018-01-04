@@ -10,6 +10,7 @@ test('Test if user can use Apple Pay', async (t) => {
   const payWithPasscodeButtonId = idFromAccessId('Pay with Passcode')
   const statusId = idFromAccessId('applePayStatus')
   const tokenId = idFromAccessId('applePayToken')
+  const deviceSupportsApplePayStatusId = idFromAccessId('deviceSupportsApplePayStatus')
   const setupApplePayButtonId = idFromAccessId('setupApplePayButton')
 
   await openTestSuite('Pay')
@@ -30,7 +31,7 @@ test('Test if user can use Apple Pay', async (t) => {
   t.pass('User should see token')
 
   t.equal(
-    await driver.waitForVisible(statusId).getText(statusId),
+    await driver.getText(statusId),
     'Apple Pay payment completed',
     'Apple Pay payment should be completed'
   )
@@ -51,10 +52,28 @@ test('Test if user can use Apple Pay', async (t) => {
   t.pass('User should see token')
 
   t.equal(
-    await driver.waitForVisible(statusId).getText(statusId),
+    await driver.getText(statusId),
     'Apple Pay payment cenceled',
     'Apple Pay payment should be cenceled'
   )
+
+  t.equal(
+    await driver.getText(deviceSupportsApplePayStatusId),
+    'Device supports Pay',
+    'Device should support Pay'
+  )
+
+  const cards = {
+    americanExpressAvailabilityStatus: 'American Express',
+    discoverAvailabilityStatus: 'Discover',
+    masterCardAvailabilityStatus: 'Master Card',
+    visaAvailabilityStatus: 'Visa',
+  }
+
+  for (const [id, title] of Object.entries(cards)) {
+    const text = await driver.getText(idFromAccessId(id))
+    t.equal(text, `${title} is available`, `${title} should be available`)
+  }
 
   await driver.waitForVisible(setupApplePayButtonId, 30000)
   t.pass('User should see `Setup Pay` button')

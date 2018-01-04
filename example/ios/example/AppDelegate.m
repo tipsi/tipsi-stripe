@@ -11,6 +11,7 @@
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+#import <Stripe/Stripe.h>
 
 @implementation AppDelegate
 
@@ -32,6 +33,18 @@
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   return YES;
+}
+
+// This method handles opening native URLs (e.g., "yourexampleapp://")
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+  BOOL stripeHandled = [Stripe handleStripeURLCallbackWithURL:url];
+  if (stripeHandled) {
+    return YES;
+  } else {
+    // This was not a stripe url – do whatever url handling your app
+    // normally does, if any.
+  }
+  return NO;
 }
 
 @end

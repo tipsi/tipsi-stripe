@@ -1,15 +1,18 @@
 apply plugin: 'com.android.library'
 
 android {
-  compileSdkVersion 25
-  buildToolsVersion "25.0.0"
+  compileSdkVersion 26
+  buildToolsVersion '26.0.2'
 
   defaultConfig {
     minSdkVersion 16
-    targetSdkVersion 25
+    targetSdkVersion 26
     versionCode 1
     versionName "1.0"
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    manifestPlaceholders = [
+      tipsiStripeRedirectScheme: "example"
+    ]
   }
   buildTypes {
     release {
@@ -22,8 +25,16 @@ android {
 dependencies {
   compile fileTree(include: ['*.jar'], dir: 'libs')
   compile 'com.facebook.react:react-native:+'
-  compile 'com.android.support:appcompat-v7:25.0.1'
+  compile 'com.android.support:support-v4:26.1.0'
+  compile 'com.android.support:appcompat-v7:26.1.0'
   compile 'com.google.android.gms:play-services-wallet:10.+'
-  compile 'com.stripe:stripe-android:2.1.+'
-  compile 'com.github.thefuntasty:CreditCardEntry:1.4.8.4'
+  compile 'com.stripe:stripe-android:6.0.0'
+  compile 'com.github.tipsi:CreditCardEntry:1.4.8.9'
+}
+
+repositories {
+  maven {
+    url 'https://maven.google.com/'
+    name 'Google'
+  }
 }

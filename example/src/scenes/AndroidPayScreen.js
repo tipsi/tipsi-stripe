@@ -27,6 +27,8 @@ export default class AndroidPayScreen extends PureComponent {
       const token = await stripe.paymentRequestWithAndroidPay({
         total_price: '100.00',
         currency_code: 'USD',
+        shipping_address_required: true,
+        shipping_countries: ['US', 'CA'],
         line_items: [{
           currency_code: 'USD',
           description: 'Whisky',
@@ -47,22 +49,14 @@ export default class AndroidPayScreen extends PureComponent {
           quantity: '1',
         }],
       })
-      console.log('Result:', token) // eslint-disable-line no-console
-      this.setState({
-        loading: false,
-        token,
-      })
+      this.setState({ loading: false, token })
     } catch (error) {
-      console.log('Error:', error) // eslint-disable-line no-console
-      this.setState({
-        loading: false,
-      })
+      this.setState({ loading: false })
     }
   }
 
   render() {
     const { loading, allowed, token } = this.state
-
     return (
       <View style={styles.container}>
         <Text style={styles.header} {...testID('headerText')}>
@@ -84,7 +78,7 @@ export default class AndroidPayScreen extends PureComponent {
           {...testID('androidPayToken')}>
           {token &&
             <Text style={styles.instruction}>
-              Token: {token}
+              Token: {token.tokenId}
             </Text>
           }
         </View>

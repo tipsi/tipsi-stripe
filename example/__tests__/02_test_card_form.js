@@ -27,8 +27,7 @@ test('Test if user can use Card Form', async (t) => {
 
   await driver.waitForVisible(numberInputId, 10000)
   await driver.click(numberInputId)
-
-  await driver.keys('4242424242424242 1234 123')
+  await driver.setValue(numberInputId, '42424242424242421234123')
   t.pass('User should be able write card data')
 
   // Iterate over billing address fields (iOS only)

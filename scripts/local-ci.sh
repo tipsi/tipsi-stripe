@@ -16,18 +16,25 @@ fi
 
 proj_dir_old=example
 proj_dir_new=example_tmp
+proj_dir_podspec=example_podspec
 
 react_native_version=$(cat $proj_dir_old/package.json | sed -n 's/"react-native": "\(\^|~\)*\(.*\)",*/\2/p')
 library_name=$(node -p "require('./package.json').name")
+library_version=$(node -p "require('./package.json').version")
 
 files_to_copy=(
   .appiumhelperrc
   package.json
   index.{ios,android}.js
+  android/build.gradle
   android/app/build.gradle
+  android/gradle/wrapper/gradle-wrapper.properties
+  android/gradle.properties
+  ios/example/AppDelegate.m
   src
   scripts
   __tests__
+  ios/Podfile
 )
 
 isMacOS() {
@@ -47,6 +54,12 @@ if ! type react-native > /dev/null; then
   npm install -g react-native-cli
 fi
 
+# Remove existing tarball
+rm -rf *.tgz
+
+# Create new tarball
+npm pack
+
 if ($skip_new && ! $use_old); then
   echo "Creating new example project skipped"
   # Go to new test project
@@ -54,7 +67,7 @@ if ($skip_new && ! $use_old); then
 elif (! $skip_new && ! $use_old); then
   echo "Creating new example project"
   # Remove old test project and tmp dir if exist
-  rm -rf $proj_dir_new tmp
+  rm -rf $proj_dir_new $proj_dir_podspec tmp
   # Init new test project in tmp directory
   mkdir tmp
   cd tmp
@@ -63,12 +76,14 @@ elif (! $skip_new && ! $use_old); then
   rm -rf $proj_dir_old/__tests__
   # Move new project from tmp dir and remove tmp dir
   cd ..
+  cp -R tmp/$proj_dir_old $proj_dir_podspec
   mv tmp/$proj_dir_old $proj_dir_new
   rm -rf tmp
   # Copy necessary files from example project
   for i in ${files_to_copy[@]}; do
     if [ -e $proj_dir_old/$i ]; then
       cp -Rp $proj_dir_old/$i $proj_dir_new/$i
+      cp -Rp $proj_dir_old/$i $proj_dir_podspec/$i
     fi
   done
   # Go to new test project
@@ -79,15 +94,29 @@ else
   cd $proj_dir_old
 fi
 
+tarball_name="$library_name-$library_version.tgz" npm run replace-tarball
+
+npm run set-stripe-url-type
+
 ###################
 # INSTALL         #
 ###################
 
 # Install dependencies
-npm install
+rm -rf node_modules && npm install
 # Link project
 react-native unlink $library_name
 react-native link
+
+# Install iOS dependencies
+if isMacOS; then
+  cd ios
+  pod install
+  cd ..
+fi
+
+# Make sure that dependencies work correctly after reinstallation
+rm -rf node_modules && npm install
 
 ###################
 # BEFORE BUILD    #
@@ -103,8 +132,10 @@ npm run appium > /dev/null 2>&1 &
 
 # Configure Stripe variables
 npm run configure
+
 # Build Android app
 npm run build:android
+
 # Build iOS app
 isMacOS && npm run build:ios
 
@@ -113,8 +144,32 @@ isMacOS && npm run build:ios
 ###################
 
 # Run Android e2e tests
-npm run test:android
+TEST_SUITE=android_5 npm run test:android
+
 # Run iOS e2e tests
+isMacOS && npm run test:ios
+
 if isMacOS; then
+  cd ../$proj_dir_podspec
+
+  tarball_name="$library_name-$library_version.tgz" npm run replace-tarball
+  npm run set-stripe-url-type
+
+  # Install dependencies
+  rm -rf node_modules && npm install
+
+  npm run add-podfile
+
+  cd ios
+  pod install
+  cd ..
+
+  # Configure Stripe variables
+  npm run configure
+
+  # Build iOS app
+  npm run build:ios
+
+  # Run iOS e2e tests
   npm run test:ios
 fi

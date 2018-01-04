@@ -1,5 +1,6 @@
-import React, { PureComponent, PropTypes } from 'react'
+import React, { PureComponent } from 'react'
 import { View, Text, TouchableHighlight, StyleSheet } from 'react-native'
+import PropTypes from 'prop-types'
 
 export default class Spoiler extends PureComponent {
   static propTypes = {

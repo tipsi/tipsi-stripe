@@ -1,5 +1,6 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
 import { View, Text, Image, TouchableOpacity, Platform, StyleSheet } from 'react-native'
+import PropTypes from 'prop-types'
 import testID from '../utils/testID'
 
 export default function Header({ title, onMenuPress }) {

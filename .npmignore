@@ -3,6 +3,9 @@
 .travis
 .travis.yml
 example
+example_tmp
+example_podspec
+tmp
 *~
 Makefile
 *.tgz

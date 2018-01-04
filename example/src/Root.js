@@ -10,11 +10,13 @@ import CardFormScreen from './scenes/CardFormScreen'
 import CustomCardScreen from './scenes/CustomCardScreen'
 import CustomBankScreen from './scenes/CustomBankScreen'
 import CardTextFieldScreen from './scenes/CardTextFieldScreen'
+import SourceScreen from './scenes/SourceScreen'
 import testID from './utils/testID'
 
 stripe.init({
   publishableKey: '<PUBLISHABLE_KEY>',
   merchantId: '<MERCHANT_ID>',
+  androidPayMode: 'test',
 })
 
 export default class Root extends PureComponent {
@@ -30,12 +32,11 @@ export default class Root extends PureComponent {
       CustomCardScreen,
       CustomBankScreen,
       CardTextFieldScreen,
+      SourceScreen,
     ].filter(item => item),
   }
 
-  getCurrentScene = () => {
-    return this.state.routes[this.state.index]
-  }
+  getCurrentScene = () => this.state.routes[this.state.index]
 
   handleChangeTab = (index) => {
     this.drawer.closeDrawer()
@@ -62,6 +63,7 @@ export default class Root extends PureComponent {
     this.setState({ isDrawerOpen: false })
   }
 
+  /* eslint-disable react/no-array-index-key */
   renderNavigation = () => (
     <View style={styles.drawer}>
       {this.state.routes.map((Scene, index) => (

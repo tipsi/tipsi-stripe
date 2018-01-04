@@ -1,7 +1,20 @@
-# Uncomment the next line to define a global platform for your project
-# platform :ios, '9.0'
+# Use iOS 8 and above
+platform :ios, '8.0'
+
+# Specify Workspace
+workspace 'example'
 
 target 'example' do
-  pod 'Stripe', '~> 10.1.0'
-  inherit! :search_paths
+  # Stripe
+  pod 'Stripe', '~> 11.2.0'
+
+  # Install additional dependencies
+  pod 'Firebase/Core'
+  pod 'Firebase/Auth'
+  pod 'Firebase/Crash'
+  pod 'Firebase/Database'
+  pod 'Firebase/Firestore'
+  pod 'Firebase/Messaging'
+  pod 'Firebase/Performance'
+  pod 'Firebase/Storage'
 end

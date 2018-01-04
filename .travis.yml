@@ -3,6 +3,16 @@ matrix:
     - os: osx
       language: objective-c
       osx_image: xcode8
+      env:
+        - JOB_NAME=DEFAULT_IOS
+    - os: osx
+      language: objective-c
+      osx_image: xcode8
+      install: echo "PODSPEC install"
+      before_script: echo "PODSPEC before_script"
+      script: .travis/podspec/ci.sh
+      env:
+        - JOB_NAME=PODSPEC_IOS
     - os: linux
       language: android
       jdk: oraclejdk8
@@ -12,11 +22,15 @@ matrix:
           - platform-tools
           - tools
           - build-tools-25.0.0
-          - android-25
-          - sys-img-armeabi-v7a-android-23
+          - build-tools-26.0.2
+          - android-21
+          - android-26
+          - sys-img-armeabi-v7a-android-21
           - extra-android-m2repository
           - extra-google-m2repository
           - extra-google-google_play_services
+      env:
+        - JOB_NAME=ANDROID_5
 
 cache:
   directories:
@@ -26,8 +40,8 @@ cache:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
 
-before_cache: .travis/before-cache.sh
 before_install: . .travis/before-install.sh
 install: .travis/install.sh
 before_script: .travis/before-ci.sh
+before_cache: .travis/before-cache.sh
 script: .travis/ci.sh

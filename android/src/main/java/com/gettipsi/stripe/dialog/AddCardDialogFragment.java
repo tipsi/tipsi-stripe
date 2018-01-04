@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+import android.content.Context;
+import android.text.TextUtils;
 
 import com.devmarvel.creditcardentry.fields.SecurityCodeText;
 import com.devmarvel.creditcardentry.library.CreditCard;
@@ -21,6 +23,7 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.WritableMap;
 import com.gettipsi.stripe.R;
+import com.gettipsi.stripe.StripeModule;
 import com.gettipsi.stripe.util.CardFlipAnimator;
 import com.gettipsi.stripe.util.Utils;
 import com.stripe.android.Stripe;
@@ -136,7 +139,7 @@ public class AddCardDialogFragment extends DialogFragment {
 
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                  doneButton.setEnabled(charSequence.length() == 3);
+                  doneButton.setEnabled(charSequence.length() >= 3);
                 }
 
                 @Override
@@ -169,7 +172,7 @@ public class AddCardDialogFragment extends DialogFragment {
 
     String errorMessage = Utils.validateCard(card);
     if (errorMessage == null) {
-      new Stripe().createToken(
+      StripeModule.getInstance().getStripe().createToken(
         card,
         PUBLISHABLE_KEY,
         new TokenCallback() {
@@ -181,7 +184,7 @@ public class AddCardDialogFragment extends DialogFragment {
             newToken.putBoolean("user", token.getUsed());
             final WritableMap cardMap = Arguments.createMap();
             final Card card = token.getCard();
-            cardMap.putString("cardId", card.getFingerprint());
+            cardMap.putString("cardId", card.getId());
             cardMap.putString("brand", card.getBrand());
             cardMap.putString("last4", card.getLast4());
             cardMap.putInt("expMonth", card.getExpMonth());
@@ -207,13 +210,20 @@ public class AddCardDialogFragment extends DialogFragment {
           public void onError(Exception error) {
             doneButton.setEnabled(true);
             progressBar.setVisibility(View.GONE);
-            Toast.makeText(getActivity(), error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+            showToast(error.getLocalizedMessage());
           }
         });
     } else {
       doneButton.setEnabled(true);
       progressBar.setVisibility(View.GONE);
-      Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_LONG).show();
+      showToast(errorMessage);
+    }
+  }
+
+  public void showToast(String message) {
+    Context context = getActivity();
+    if(context != null && !TextUtils.isEmpty(message)) {
+      Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
   }
 }

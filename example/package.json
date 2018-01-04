@@ -9,15 +9,19 @@
     "build:android": "scripts/build-android.sh",
     "build:ios": "scripts/build-ios.sh",
     "build": "npm-run-all build:*",
-    "test:android": "appium-helper --platform android",
-    "test:ios": "appium-helper --platform ios",
-    "test": "npm-run-all test:*"
+    "test:android": "TEST_SUITE=android appium-helper --platform android",
+    "test:ios": "TEST_SUITE=ios appium-helper --platform ios",
+    "test": "npm-run-all test:*",
+    "add-podfile": "scripts/add-podfile.sh",
+    "replace-tarball": "scripts/replaceToTarball.js",
+    "set-stripe-url-type": "scripts/setUrlTypeForStripe.js"
   },
   "dependencies": {
-    "react": "16.0.0-alpha.6",
-    "react-native": "0.44.0",
+    "prop-types": "^15.5.10",
+    "react": "16.0.0-alpha.12",
+    "react-native": "0.45.0",
     "react-native-drawer-layout-polyfill": "^1.3.1",
-    "tipsi-stripe": "../"
+    "tipsi-stripe": "file:../"
   },
   "devDependencies": {
     "appium": "1.6.4",

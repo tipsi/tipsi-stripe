@@ -12,6 +12,7 @@
 		3A4EF3251DC8F90100A7C0BD /* TPSCardFieldManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4EF3241DC8F90100A7C0BD /* TPSCardFieldManager.m */; };
 		3A4EF3281DC8FD4600A7C0BD /* TPSCardField.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4EF3271DC8FD4600A7C0BD /* TPSCardField.m */; };
 		3C0CB3831E6D765D00CF5D16 /* Stripe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C0CB3821E6D765D00CF5D16 /* Stripe.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		B81C8CDE1F978E320021EB09 /* TPSError.m in Sources */ = {isa = PBXBuildFile; fileRef = B81C8CDD1F978E320021EB09 /* TPSError.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -36,6 +37,8 @@
 		3A4EF3261DC8FD4600A7C0BD /* TPSCardField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPSCardField.h; sourceTree = "<group>"; };
 		3A4EF3271DC8FD4600A7C0BD /* TPSCardField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPSCardField.m; sourceTree = "<group>"; };
 		3C0CB3821E6D765D00CF5D16 /* Stripe.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Stripe.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B81C8CDC1F978E320021EB09 /* TPSError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPSError.h; sourceTree = "<group>"; };
+		B81C8CDD1F978E320021EB09 /* TPSError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPSError.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +89,8 @@
 				3A4EF3241DC8F90100A7C0BD /* TPSCardFieldManager.m */,
 				3A4EF3261DC8FD4600A7C0BD /* TPSCardField.h */,
 				3A4EF3271DC8FD4600A7C0BD /* TPSCardField.m */,
+				B81C8CDC1F978E320021EB09 /* TPSError.h */,
+				B81C8CDD1F978E320021EB09 /* TPSError.m */,
 			);
 			path = TPSStripe;
 			sourceTree = "<group>";
@@ -149,6 +154,7 @@
 			files = (
 				3A4EF3251DC8F90100A7C0BD /* TPSCardFieldManager.m in Sources */,
 				3A1FF6F81DC3857F00A43A04 /* TPSStripeManager.m in Sources */,
+				B81C8CDE1F978E320021EB09 /* TPSError.m in Sources */,
 				3A4EF3281DC8FD4600A7C0BD /* TPSCardField.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -199,7 +205,8 @@
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../../../React/**",
 					"$(SRCROOT)/../../react-native/React/**",
-					"${SRCROOT}/../../../ios/Pods/Headers/Public/**",
+					"${SRCROOT}/../../../ios/Pods/Headers/Public",
+					"${SRCROOT}/../../../ios/Pods/Headers/Public/Stripe",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -245,7 +252,8 @@
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../../../React/**",
 					"$(SRCROOT)/../../react-native/React/**",
-					"${SRCROOT}/../../../ios/Pods/Headers/Public/**",
+					"${SRCROOT}/../../../ios/Pods/Headers/Public",
+					"${SRCROOT}/../../../ios/Pods/Headers/Public/Stripe",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
