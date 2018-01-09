@@ -10,13 +10,40 @@ import {
 import PropTypes from 'prop-types'
 import StyleSheetPropType from 'react-native/Libraries/StyleSheet/StyleSheetPropType'
 import ViewStylePropTypes from 'react-native/Libraries/Components/View/ViewStylePropTypes'
-
 import TextInputState from 'react-native/Libraries/Components/TextInput/TextInputState'
 
 const FieldStylePropType = {
   ...ViewStylePropTypes,
   color: PropTypes.string,
 }
+
+const nativeComponents = {}
+
+function getNativeComponent(name) {
+  if (nativeComponents[name]) {
+    return nativeComponents[name]
+  }
+
+  nativeComponents[name] = requireNativeComponent(name, PaymentCardTextField, {
+    nativeOnly: {
+      borderColor: true,
+      borderWidth: true,
+      cornerRadius: true,
+      textColor: true,
+      fontFamily: true,
+      fontWeight: true,
+      fontStyle: true,
+      fontSize: true,
+      enabled: true,
+      params: true,
+      onChange: true,
+    },
+  })
+
+  return nativeComponents[name]
+}
+
+const NativePaymentCardTextField = getNativeComponent('TPSCardField')
 
 export default class PaymentCardTextField extends Component {
   static propTypes = {
@@ -85,11 +112,9 @@ export default class PaymentCardTextField extends Component {
     if (onChange) {
       onChange(event)
     }
+
     if (onParamsChange) {
-      onParamsChange(
-        nativeEvent.valid,
-        nativeEvent.params
-      )
+      onParamsChange(nativeEvent.valid, nativeEvent.params)
     }
   }
 
@@ -116,7 +141,6 @@ export default class PaymentCardTextField extends Component {
       color,
       ...fieldStyles
     } = StyleSheet.flatten(style)
-
     return (
       <TouchableWithoutFeedback
         onPress={this.handlePress}
@@ -158,21 +182,5 @@ const styles = StyleSheet.create({
     height: 44,
     // Set default background color to prevent transparent background
     backgroundColor: '#ffffff',
-  },
-})
-
-const NativePaymentCardTextField = requireNativeComponent('TPSCardField', PaymentCardTextField, {
-  nativeOnly: {
-    borderColor: true,
-    borderWidth: true,
-    cornerRadius: true,
-    textColor: true,
-    fontFamily: true,
-    fontWeight: true,
-    fontStyle: true,
-    fontSize: true,
-    enabled: true,
-    params: true,
-    onChange: true,
   },
 })
