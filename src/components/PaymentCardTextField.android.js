@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     // surrounding view to ensure it gets rendered.
     height: 44,
     // Set default background color to prevent transparent background
-    //backgroundColor: '#FFFFFF',
+    // backgroundColor: '#FFFFFF',
   },
 })
 
