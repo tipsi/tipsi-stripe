@@ -21,12 +21,12 @@
     <style name="CardNumber" parent="@style/TextField">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:inputType">numberDecimal</item>
-        <item name="android:hint">@string/cardNumber</item>
+        <item name="android:hint">@string/card_number</item>
     </style>
 
     <style name="CVC" parent="@style/TextField">
         <item name="android:inputType">numberDecimal</item>
-        <item name="android:hint">@string/cvc</item>
+        <item name="android:hint">@string/card_cvc</item>
         <item name="android:layout_width">match_parent</item>
     </style>
 

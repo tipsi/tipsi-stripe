@@ -1,8 +1,8 @@
 <resources>
 
-  <string name="cardNumber">Card Number</string>
+  <string name="card_number">Card Number</string>
   <string name="save">Save</string>
-  <string name="cvc">CVC</string>
+  <string name="card_cvc">CVC</string>
   <string name="android_pay_unavaliable">Android Pay unavailable on your device.</string>
   <string name="user_cancel_dialog">User cancel dialog. No card added!</string>
 
