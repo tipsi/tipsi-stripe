@@ -537,7 +537,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
 
   private void androidPayUnavaliableDialog() {
     new AlertDialog.Builder(getCurrentActivity())
-      .setMessage(R.string.android_pay_unavaliable)
+      .setMessage(R.string.gettipsi_android_pay_unavaliable)
       .setPositiveButton(android.R.string.ok, null)
       .show();
   }

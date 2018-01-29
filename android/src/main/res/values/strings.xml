@@ -1,14 +1,14 @@
 <resources>
 
-  <string name="card_number">Card Number</string>
-  <string name="save">Save</string>
-  <string name="card_cvc">CVC</string>
-  <string name="android_pay_unavaliable">Android Pay unavailable on your device.</string>
-  <string name="user_cancel_dialog">User cancel dialog. No card added!</string>
-  <string name="card_enter_dialog_title">Enter your card</string>
-  <string name="card_enter_dialog_positive_button">Done</string>
+  <string name="gettipsi_card_number">Card Number</string>
+  <string name="gettipsi_save">Save</string>
+  <string name="gettipsi_card_cvc">CVC</string>
+  <string name="gettipsi_android_pay_unavaliable">Android Pay unavailable on your device.</string>
+  <string name="gettipsi_user_cancel_dialog">User cancel dialog. No card added!</string>
+  <string name="gettipsi_card_enter_dialog_title">Enter your card</string>
+  <string name="gettipsi_card_enter_dialog_positive_button">Done</string>
 
-  <string-array name="currency_array">
+  <string-array name="gettipsi_currency_array">
     <item>Currency (optional)</item>
     <item>Unspecified</item>
     <item>USD</item>
