@@ -101,7 +101,7 @@ export const paymentRequestWithAndroidPayOptionsPropTypes = {
 }
 
 export const createSourceWithParamsPropType = {
-  type: PropTypes.oneOf(['bancontact', 'bitcoin', 'giropay', 'ideal', 'sepaDebit', 'sofort', 'threeDSecure', 'alipay']).isRequired,
+  type: PropTypes.oneOf(['bancontact', 'bitcoin', 'giropay', 'ideal', 'sepaDebit', 'sofort', 'threeDSecure', 'alipay', 'card']).isRequired,
   amount: PropTypes.number,
   name: PropTypes.string,
   returnURL: PropTypes.string,
