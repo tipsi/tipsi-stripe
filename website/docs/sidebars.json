@@ -15,6 +15,9 @@
       "token",
       "source"
     ],
+    "Stripe Connect": [
+      "stripeconnect"
+    ],
     " Pay": [
       "openapplepaysetup",
       "deviceSupportsApplePay",

@@ -31,6 +31,11 @@ class Stripe {
     return TPSStripeManager.init(options)
   }
 
+  setStripeAccount = stripeAccount => {
+    checkInit(this)
+    return TPSStripeManager.setStripeAccount(stripeAccount)
+  }
+
   deviceSupportsApplePay = () => (
     TPSStripeManager.deviceSupportsApplePay()
   )

@@ -17,6 +17,11 @@ class Stripe {
     return StripeModule.init(options)
   }
 
+  setStripeAccount = stripeAccount => {
+    checkInit(this)
+    return StripeModule.setStripeAccount(stripeAccount)
+  }
+
   deviceSupportsAndroidPay = () => (
     StripeModule.deviceSupportsAndroidPay()
   )
