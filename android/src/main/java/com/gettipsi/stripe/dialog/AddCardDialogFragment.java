@@ -78,8 +78,8 @@ public class AddCardDialogFragment extends DialogFragment {
     final View view = View.inflate(getActivity(), R.layout.payment_form_fragment_two, null);
     final AlertDialog dialog = new AlertDialog.Builder(getActivity())
       .setView(view)
-      .setTitle("Enter your card")
-      .setPositiveButton("Done", new DialogInterface.OnClickListener() {
+      .setTitle(R.string.gettipsi_card_enter_dialog_title)
+      .setPositiveButton(R.string.gettipsi_card_enter_dialog_positive_button, new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialogInterface, int i) {
           onSaveCLick();
@@ -108,7 +108,7 @@ public class AddCardDialogFragment extends DialogFragment {
   @Override
   public void onDismiss(DialogInterface dialog) {
     if (!successful && promise != null) {
-      promise.reject(TAG, getString(R.string.user_cancel_dialog));
+      promise.reject(TAG, getString(R.string.gettipsi_user_cancel_dialog));
       promise = null;
     }
     super.onDismiss(dialog);

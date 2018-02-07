@@ -21,12 +21,12 @@
     <style name="CardNumber" parent="@style/TextField">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:inputType">numberDecimal</item>
-        <item name="android:hint">@string/cardNumber</item>
+        <item name="android:hint">@string/gettipsi_card_number</item>
     </style>
 
     <style name="CVC" parent="@style/TextField">
         <item name="android:inputType">numberDecimal</item>
-        <item name="android:hint">@string/cvc</item>
+        <item name="android:hint">@string/gettipsi_card_cvc</item>
         <item name="android:layout_width">match_parent</item>
     </style>
 
@@ -41,7 +41,7 @@
     <style name="Save" parent="@style/Button">
         <item name="android:layout_width">160dp</item>
         <item name="android:layout_marginTop">8dp</item>
-        <item name="android:text">@string/save</item>
+        <item name="android:text">@string/gettipsi_save</item>
     </style>
 
     <style name="Spinner" parent="@android:style/Widget.Spinner">
@@ -72,7 +72,7 @@
     </style>
 
     <style name="Currency" parent="@style/Spinner">
-        <item name="android:entries">@array/currency_array</item>
+        <item name="android:entries">@array/gettipsi_currency_array</item>
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_weight">1.0</item>
     </style>
