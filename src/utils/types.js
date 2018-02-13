@@ -116,3 +116,19 @@ export const createSourceWithParamsPropType = {
   country: PropTypes.string,
   card: PropTypes.string,
 }
+
+export const updateSummaryItemsPropTypes = {
+  items: PropTypes.arrayOf(PropTypes.shape({
+    label: PropTypes.string.isRequired,
+    amount: PropTypes.string.isRequired,
+  })),
+}
+
+export const updateShippingMethodsPropTypes = {
+  shippingMethods: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
+    detail: PropTypes.string.isRequired,
+    amount: PropTypes.string.isRequired,
+  })),
+}

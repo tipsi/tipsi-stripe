@@ -92,6 +92,7 @@ NSString * const TPSPaymentNetworkVisa = @"visa";
     RCTPromiseRejectBlock promiseRejector;
 
     BOOL requestIsCompleted;
+    BOOL hasListeners;
 
     void (^applePayCompletion)(PKPaymentAuthorizationStatus);
     NSError *applePayStripeError;
@@ -367,6 +368,90 @@ RCT_EXPORT_METHOD(paymentRequestWithCardForm:(NSDictionary *)options
     [RCTPresentedViewController() presentViewController:navigationController animated:YES completion:nil];
 }
 
+- (void)startObserving {
+    hasListeners = YES;
+}
+
+- (void)stopObserving {
+    hasListeners = NO;
+}
+
+- (NSArray<NSString *> *)supportedEvents {
+    return @[@"onShippingMethodChanged",@"onShippingContactChanged"];
+}
+
+- (void) paymentAuthorizationViewController:(PKPaymentAuthorizationViewController *)controller didSelectShippingMethod: (PKShippingMethod *) shippingMethod completion:(nonnull void (^)(PKPaymentAuthorizationStatus, NSArray<PKPaymentSummaryItem *> * _Nonnull))completion {
+    if (hasListeners) {
+        self.shippingMethodCompletion = completion;
+        [self sendEventWithName: @"onShippingMethodChanged" body:@{@"selectedShippingMethodId": shippingMethod.identifier} ];
+    } else {
+        completion(PKPaymentAuthorizationStatusSuccess, nil);
+    }
+}
+
+- (void) paymentAuthorizationViewController:(PKPaymentAuthorizationViewController *) controller didSelectShippingContact:(nonnull PKContact *)contact completion:(nonnull void (^)(PKPaymentAuthorizationStatus, NSArray<PKShippingMethod *> * _Nonnull, NSArray<PKPaymentSummaryItem *> * _Nonnull))completion {
+    if (hasListeners) {
+        self.shippingContactCompletion = completion;
+        [self sendEventWithName: @"onShippingContactChanged" body:@{
+                                                                  @"city": contact.postalAddress.city,
+                                                                  @"region": contact.postalAddress.state,
+                                                                  @"country": [contact.postalAddress.ISOCountryCode uppercaseString],
+                                                                  @"postalCode": contact.postalAddress.postalCode,
+                                                                  @"city": contact.postalAddress.city
+                                                                  } ];
+    } else {
+        completion(PKPaymentAuthorizationStatusSuccess, nil, nil);
+    }
+}
+
+RCT_EXPORT_METHOD(updateSummaryItems: (NSArray *) items andShippingMethods: (NSArray *) methods callback: (RCTResponseSenderBlock) callback) {
+    if (!self.shippingContactCompletion && !self.shippingMethodCompletion) {
+        NSLog(@"Attempted to update payment summary items with no completion.");
+        return callback(@[@{@"error": @"Cannot update details"}]);
+    }
+    
+    NSArray<PKShippingMethod *> *shippingMethods = [self shippingMethodsFromDetails: methods];
+    NSArray<PKPaymentSummaryItem *> *paymentSummaryItems = [self summaryItemsFromDetails: items];
+    
+    if (self.shippingMethodCompletion) {
+        self.shippingMethodCompletion(PKPaymentAuthorizationStatusSuccess, paymentSummaryItems);
+        self.shippingMethodCompletion = nil;
+    }
+    
+    if (self.shippingContactCompletion) {
+        self.shippingContactCompletion(PKPaymentAuthorizationStatusSuccess, shippingMethods, paymentSummaryItems);
+        self.shippingContactCompletion = nil;
+    }
+    callback(nil);
+}
+
+- (NSArray*) shippingMethodsFromDetails: (NSArray *) details {
+    NSMutableArray *shippingMethods = [NSMutableArray array];
+    
+    for (NSDictionary *item in details) {
+        PKShippingMethod *shippingItem = [[PKShippingMethod alloc] init];
+        shippingItem.label = item[@"label"];
+        shippingItem.detail = item[@"detail"];
+        shippingItem.amount = [NSDecimalNumber decimalNumberWithString:item[@"amount"]];
+        shippingItem.identifier = item[@"id"];
+        [shippingMethods addObject:shippingItem];
+    }
+    
+    return shippingMethods;
+}
+
+- (NSArray*) summaryItemsFromDetails: (NSArray *)details {
+    NSMutableArray *summaryItems = [NSMutableArray array];
+    
+    for (NSDictionary *item in details) {
+        PKPaymentSummaryItem *summaryItem = [[PKPaymentSummaryItem alloc] init];
+        summaryItem.label = item[@"label"];
+        summaryItem.amount = [NSDecimalNumber decimalNumberWithString:item[@"amount"]];
+        [summaryItems addObject:summaryItem];
+    }
+    return summaryItems;
+}
+
 RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
                                  withOptions:(NSDictionary *)options
                                     resolver:(RCTPromiseResolveBlock)resolve
@@ -389,25 +474,8 @@ RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
     NSString* currencyCode = options[@"currencyCode"] ? options[@"currencyCode"] : @"USD";
     NSString* countryCode = options[@"countryCode"] ? options[@"countryCode"] : @"US";
 
-    NSMutableArray *shippingMethods = [NSMutableArray array];
-
-    for (NSDictionary *item in shippingMethodsItems) {
-        PKShippingMethod *shippingItem = [[PKShippingMethod alloc] init];
-        shippingItem.label = item[@"label"];
-        shippingItem.detail = item[@"detail"];
-        shippingItem.amount = [NSDecimalNumber decimalNumberWithString:item[@"amount"]];
-        shippingItem.identifier = item[@"id"];
-        [shippingMethods addObject:shippingItem];
-    }
-
-    NSMutableArray *summaryItems = [NSMutableArray array];
-
-    for (NSDictionary *item in items) {
-        PKPaymentSummaryItem *summaryItem = [[PKPaymentSummaryItem alloc] init];
-        summaryItem.label = item[@"label"];
-        summaryItem.amount = [NSDecimalNumber decimalNumberWithString:item[@"amount"]];
-        [summaryItems addObject:summaryItem];
-    }
+    NSArray *shippingMethods = [self shippingMethodsFromDetails: shippingMethodsItems];
+    NSArray *summaryItems = [self summaryItemsFromDetails: items];
 
     PKPaymentRequest *paymentRequest = [Stripe paymentRequestWithMerchantIdentifier:merchantId country:countryCode currency:currencyCode];
 

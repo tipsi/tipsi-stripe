@@ -482,6 +482,22 @@ stripe.completeApplePayRequest()
 // stripe.cancelApplePayRequest()
 ```
 
+#### Responding to a Change in Shipping Address or Method
+
+When the user chooses a shipping contact or changes the shipping method, you can update the summary items and change the available shipping methods as follows:
+
+```
+stripe.addListener('onShippingContactChanged', (contact) => {
+  // recaculate items and shipping methods
+  stripe.updateSummaryItemsAndShippingMethods(items, methods);
+})
+
+stripe.addListener('onShippingMethodChanged', (method) => {
+  // recaculate summary items and shipping methods
+  stripe.updateSummaryItemsAndShippingMethods(items, methods);
+})
+```
+
 ### Android Pay (Android only)
 (Under active development)
 
