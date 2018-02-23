@@ -391,6 +391,7 @@ An array of object with the following keys:
 
 * `label` _String_ - A short, localized description of the item.
 * `amount` _String_ - The summary item’s amount.
+* `type` _String_ - The summary item’s type. Must be "pending" or "final". Defaults to "final".
 
 _NOTE_: The final item should represent your company; it'll be prepended with the word "Pay" (i.e. "Pay Tipsi, Inc $50")
 

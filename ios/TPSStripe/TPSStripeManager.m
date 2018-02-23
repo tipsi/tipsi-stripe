@@ -406,6 +406,7 @@ RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
         PKPaymentSummaryItem *summaryItem = [[PKPaymentSummaryItem alloc] init];
         summaryItem.label = item[@"label"];
         summaryItem.amount = [NSDecimalNumber decimalNumberWithString:item[@"amount"]];
+        summaryItem.type = [@"pending" isEqualToString:item[@"type"]] ? PKPaymentSummaryItemTypePending : PKPaymentSummaryItemTypeFinal;
         [summaryItems addObject:summaryItem];
     }
 
@@ -425,7 +426,7 @@ RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
         // There is a problem with your Apple Pay configuration.
         [self resetPromiseCallbacks];
         requestIsCompleted = YES;
-        
+
         NSError *error = [TPSError applePayNotConfiguredError];
         reject([NSString stringWithFormat:@"%ld", error.code], error.localizedDescription, error);
     }
@@ -539,7 +540,7 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     void(^completion)() = ^{
         if (!requestIsCompleted) {
             requestIsCompleted = YES;
-            
+
             [self rejectPromiseWithError:[TPSError userCancelError]];
         } else {
             if (applePayStripeError) {
@@ -550,7 +551,7 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
             }
         }
     };
-    
+
     [RCTPresentedViewController() dismissViewControllerAnimated:YES completion:completion];
 }
 
