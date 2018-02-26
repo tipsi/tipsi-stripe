@@ -17,6 +17,7 @@ export const paymentRequestWithApplePayItemsPropTypes = {
   items: PropTypes.arrayOf(PropTypes.shape({
     label: PropTypes.string.isRequired,
     amount: PropTypes.string.isRequired,
+    type: PropTypes.oneOf('final', 'pending'),
   })),
 }
 
