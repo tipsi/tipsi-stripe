@@ -36,6 +36,7 @@ function getNativeComponent(name) {
       fontSize: true,
       enabled: true,
       params: true,
+      keyboardAppearance: true,
       onChange: true,
     },
   })
@@ -59,6 +60,12 @@ export default class PaymentCardTextField extends Component {
     cvcPlaceholder: PropTypes.string,
 
     disabled: PropTypes.bool,
+
+    /**
+     * Determines the color of the keyboard.
+     * @platform ios
+     */
+    keyboardAppearance: PropTypes.oneOf(['default', 'light', 'dark']),
 
     onChange: PropTypes.func,
     onValueChange: PropTypes.func,
@@ -128,6 +135,7 @@ export default class PaymentCardTextField extends Component {
       numberPlaceholder,
       expirationPlaceholder,
       cvcPlaceholder,
+      keyboardAppearance,
       ...rest
     } = this.props
     const {
@@ -167,6 +175,7 @@ export default class PaymentCardTextField extends Component {
           numberPlaceholder={numberPlaceholder}
           expirationPlaceholder={expirationPlaceholder}
           cvcPlaceholder={cvcPlaceholder}
+          keyboardAppearance={keyboardAppearance}
           onChange={this.handleChange}
         />
       </TouchableWithoutFeedback>

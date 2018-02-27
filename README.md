@@ -758,6 +758,7 @@ A text field component specialized for collecting credit/debit card information.
 * `cursorColor` _String_ (IOS only) - The cursor color for the field.
 * `textErrorColor` _String_ (IOS only) - The text color to be used when the user has entered invalid information, such as an invalid card number.
 * `placeholderColor` _String_ (IOS only)- The text placeholder color used in each child field.
+* `keyboardAppearance` _String_ (IOS only) - Determines the color of the keyboard. One of `default`, `light`, `dark`.
 * `numberPlaceholder` _String_ - The placeholder for the card number field.
 * `expirationPlaceholder` _String_ - The placeholder for the expiration field.
 * `cvcPlaceholder` _String_ - The placeholder for the cvc field.
