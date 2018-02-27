@@ -23,6 +23,7 @@
 @property(nonatomic, strong) UIColor *borderColor;
 @property(nonatomic, assign) CGFloat borderWidth;
 @property(nonatomic, assign) CGFloat cornerRadius;
+@property(nonatomic, assign) UIKeyboardAppearance keyboardAppearance;
 - (void)setCardParams:(STPCardParams *)cardParams;
 
 @end
