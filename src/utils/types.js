@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 const availableApplePayNetworks = ['american_express', 'discover', 'master_card', 'visa']
 const availableApplePayAddressFields = ['all', 'name', 'email', 'phone', 'postal_address']
 
-export const initOptionsPropTypes = {
-  publishableKey: PropTypes.string.isRequired,
+export const setOptionsOptionsPropTypes = {
+  publishableKey: PropTypes.string,
   merchantId: PropTypes.string,
   androidPayMode: PropTypes.string,
 }

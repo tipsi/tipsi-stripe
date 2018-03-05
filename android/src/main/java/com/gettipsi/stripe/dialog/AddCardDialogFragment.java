@@ -222,7 +222,7 @@ public class AddCardDialogFragment extends DialogFragment {
 
   public void showToast(String message) {
     Context context = getActivity();
-    if(context != null && !TextUtils.isEmpty(message)) {
+    if (context != null && !TextUtils.isEmpty(message)) {
       Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
   }
