@@ -3,18 +3,18 @@ package com.gettipsi.stripe.dialog;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-import android.content.Context;
-import android.text.TextUtils;
 
 import com.devmarvel.creditcardentry.fields.SecurityCodeText;
 import com.devmarvel.creditcardentry.library.CreditCard;
@@ -25,8 +25,7 @@ import com.facebook.react.bridge.WritableMap;
 import com.gettipsi.stripe.R;
 import com.gettipsi.stripe.StripeModule;
 import com.gettipsi.stripe.util.CardFlipAnimator;
-import com.gettipsi.stripe.util.Utils;
-import com.stripe.android.Stripe;
+import com.gettipsi.stripe.util.CardUtils;
 import com.stripe.android.TokenCallback;
 import com.stripe.android.model.Card;
 import com.stripe.android.model.Token;
@@ -170,7 +169,7 @@ public class AddCardDialogFragment extends DialogFragment {
       fromCard.getExpYear(),
       fromCard.getSecurityCode());
 
-    String errorMessage = Utils.validateCard(card);
+    String errorMessage = CardUtils.validateCard(card);
     if (errorMessage == null) {
       StripeModule.getInstance().getStripe().createToken(
         card,
@@ -222,7 +221,7 @@ public class AddCardDialogFragment extends DialogFragment {
 
   public void showToast(String message) {
     Context context = getActivity();
-    if(context != null && !TextUtils.isEmpty(message)) {
+    if (context != null && !TextUtils.isEmpty(message)) {
       Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
   }
