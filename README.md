@@ -903,6 +903,22 @@ An object with the following keys:
 * `postalCode` _String_ - The bank account holder’s postal code.
 * `country` _String_ - The bank account holder’s two-letter country code (`sepaDebit`) or the country code of the customer’s bank (`sofort`).
 * `card` _String_ - The ID of the card source.
+* `brand` _String_ - The card’s brand. Can be one of: `JCB`|`American Express`|`Visa`|`Discover`|`Diners Club`|`MasterCard`|`Unknown`.
+* `funding` _String_ (iOS only) - The card’s funding. Can be one of: `debit`|`credit`|`prepaid`|`unknown`.
+* `last4` _String_ - The last 4 digits of the card.
+* `dynamicLast4` _String_ (iOS only) - For cards made with `Apple Pay`, this refers to the last 4 digits of the `Device Account Number` for the tokenized card.
+* `isApplePayCard` _Bool_ (iOS only) - Whether or not the card originated from Apple Pay.
+* `expMonth` _Number_ - The card’s expiration month. 1-indexed (i.e. 1 == January)
+* `expYear` _Number_ - The card’s expiration year.
+* `country` _String_ - Two-letter ISO code representing the issuing country of the card.
+* `currency` _String_ - This is only applicable when tokenizing debit cards to issue payouts to managed accounts. The card can then be used as a transfer destination for funds in this currency.
+* `name` _String_ - The cardholder’s name.
+* `addressLine1` _String_ - The cardholder’s first address line.
+* `addressLine2` _String_ - The cardholder’s second address line.
+* `addressCity` _String_ - The cardholder’s city.
+* `addressState` _String_ - The cardholder’s state.
+* `addressCountry` _String_ - The cardholder’s country.
+* `addressZip` _String_ - The cardholder’s zip code.
 
 ##### Example
 
