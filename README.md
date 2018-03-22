@@ -17,6 +17,11 @@ React Native Stripe binding for iOS/Android platforms
 
 * SDK 17+
 
+## Changelog
+
+[[5.0.0] - 2018-03-21 **Breaking changes**](CHANGELOG.md)
+
+
 ## Compatibility
 
 This package is now built for React Native `0.40` or greater! If you need to support React Native < `0.40`, you should install this package `@1.4.0`.
@@ -142,7 +147,7 @@ import stripe from 'tipsi-stripe'
 And initialize it with your Stripe credentials that you can get from [dashboard](https://dashboard.stripe.com). If you want to use `Apple Pay` you must provide your `Merchant ID`.
 
 ```js
-stripe.init({
+stripe.setOptions({
   publishableKey: 'PUBLISHABLE_KEY',
   merchantId: 'MERCHANT_ID', // Optional
   androidPayMode: 'test', // Optional, android only, 'production' by default
@@ -154,7 +159,7 @@ stripe.init({
 
 ### Token
 
-A token object returned from submitting payment details (via `paymentRequestWithApplePay`, `paymentRequestWithCardForm` and `createTokenWithCard`) to the Stripe API.
+A token object returned from submitting payment details (via `paymentRequestWithApplePay`, `paymentRequestWithAndroidPay`, `paymentRequestWithCardForm` and `createTokenWithCard`) to the Stripe API.
 
 ##### `token`
 
@@ -165,7 +170,7 @@ An object with the following keys:
 * `livemode` _Number_ - Whether or not this token was created in livemode. Will be `1` if you used your `Live Publishable Key`, and `0` if you used your `Test Publishable Key`.
 * `card` _Object_ - The credit card details object that were used to create the token.
 * `bankAccount` _Object_ - The external (bank) account details object that were used to create the token.
-* `extra` _Object_  (iOS only)- An additional information that method can provide.
+* `extra` _Object_  - An additional information that method can provide.
 
 ##### `card`
 
@@ -426,7 +431,7 @@ Token's `extra` field
 
 An object with the following keys:
 
-* `shippingMethod` _Object_ - Selected `shippingMethod` object.
+* `shippingMethod` _Object_ (Optional) - Selected `shippingMethod` object.
 * `billingContact` _Object_ - The user's billing `contact` object.
 * `shippingContact` _Object_ - The user's shipping `contact` object.
 
@@ -500,7 +505,8 @@ An object with the following keys:
 
 * `total_price` _String_ - Price of the item.
 * `currency_code` _String_ - Three-letter ISO currency code representing the currency paid out to the bank account.
-* `shipping_address_required` _Boolean_ (Optional) - Is shipping address menu required. Default `true`.
+* `shipping_address_required` _Boolean_ (Optional) - Is shipping address menu required. Default `false`.
+* `billing_address_required` _Boolean_ (Optional) - Is shipping address menu required. Default `false`.
 * `shipping_countries` _Array_ (Optional) - Set of country specifications that should be allowed for shipping. If omitted or an empty array is provided the API will default to using a country specification that only allows shipping in the US. Country code allowed in [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) format. 
 * `line_items` _Array_ - Array of purchased items. Each item contains:
     * `currency_code` _String_ - Currency code string.
@@ -516,6 +522,7 @@ const options = {
   total_price: '80.00',
   currency_code: 'USD',
   shipping_address_required: false,
+  billing_address_required: true,
   shipping_countries: ["US", "CA"],
   line_items: [{
     currency_code: 'USD',
