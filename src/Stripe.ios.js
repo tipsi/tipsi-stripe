@@ -22,10 +22,10 @@ class Stripe {
     }
   }
 
-  init = (options = {}) => {
+  setOptions = (options = {}) => {
     checkArgs(
-      types.initOptionsPropTypes,
-      options, 'options', 'Stripe.init'
+      types.setOptionsOptionsPropTypes,
+      options, 'options', 'Stripe.setOptions'
     )
     this.stripeInitialized = true
     return TPSStripeManager.init(options)
