@@ -628,6 +628,7 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     NSMutableDictionary *result = [@{} mutableCopy];
 
     // Source
+    [result setValue:source.stripeID forKey:@"sourceId"];
     [result setValue:source.clientSecret forKey:@"clientSecret"];
     [result setValue:@([source.created timeIntervalSince1970]) forKey:@"created"];
     [result setValue:source.currency forKey:@"currency"];
