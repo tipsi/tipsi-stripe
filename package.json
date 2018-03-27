@@ -4,7 +4,9 @@
   "description": "React Native Stripe binding for iOS/Andriod platforms",
   "main": "src/index.js",
   "scripts": {
-    "ci": "scripts/local-ci.sh"
+    "ci": "scripts/local-ci.sh",
+    "build-docs": "scripts/build-docs.sh",
+    "start-docs": "npm start --prefix website/docs"
   },
   "repository": {
     "type": "git",
