@@ -1,5 +1,10 @@
 # Changelog
 
+## [5.1.0] - 2018-03-28
+
+### Changed
+- Method `deviceSupportAndroidPay()` now also checks if google pay has at least one existing payment method (for example user attached his card before)
+
 ## [5.0.0] - 2018-03-21
 
 ### Breaking changes:
