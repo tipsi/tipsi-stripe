@@ -19,8 +19,9 @@ React Native Stripe binding for iOS/Android platforms
 
 ## Changelog
 
+[[5.1.0] - 2018-03-28](CHANGELOG.md)
+  
 [[5.0.0] - 2018-03-21 **Breaking changes**](CHANGELOG.md)
-
 
 ## Compatibility
 

@@ -69,6 +69,7 @@ public final class GoogleApiPayFlowImpl extends PayFlow {
       IsReadyToPayRequest.newBuilder()
         .addAllowedPaymentMethod(WalletConstants.PAYMENT_METHOD_CARD)
         .addAllowedPaymentMethod(WalletConstants.PAYMENT_METHOD_TOKENIZED_CARD)
+        .setExistingPaymentMethodRequired(true)
         .build();
     mPaymentsClient = createPaymentsClient(activity);
     Task<Boolean> task = mPaymentsClient.isReadyToPay(request);
