@@ -21,6 +21,10 @@ class Stripe {
     StripeModule.deviceSupportsAndroidPay()
   )
 
+  canMakeAndroidPayPayments = () => (
+    StripeModule.canMakeAndroidPayPayments()
+  )
+
   paymentRequestWithAndroidPay = (options = {}) => {
     checkInit(this)
     checkArgs(

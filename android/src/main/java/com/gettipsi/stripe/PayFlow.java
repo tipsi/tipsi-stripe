@@ -77,7 +77,7 @@ public abstract class PayFlow {
 
   abstract void paymentRequestWithAndroidPay(final ReadableMap payParams, final Promise promise);
 
-  abstract void deviceSupportsAndroidPay(final Promise promise);
+  abstract void deviceSupportsAndroidPay(boolean isExistingPaymentMethodRequired, final Promise promise);
 
   abstract boolean onActivityResult(Activity activity, int requestCode, int resultCode, Intent data);
 

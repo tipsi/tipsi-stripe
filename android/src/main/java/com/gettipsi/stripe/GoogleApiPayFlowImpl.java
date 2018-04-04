@@ -61,7 +61,7 @@ public final class GoogleApiPayFlowImpl extends PayFlow {
       new Wallet.WalletOptions.Builder().setEnvironment(getEnvironment()).build());
   }
 
-  private void isReadyToPay(@NonNull Activity activity, @NonNull final Promise promise) {
+  private void isReadyToPay(@NonNull Activity activity, boolean isExistingPaymentMethodRequired, @NonNull final Promise promise) {
     ArgCheck.nonNull(activity);
     ArgCheck.nonNull(promise);
 
@@ -69,7 +69,7 @@ public final class GoogleApiPayFlowImpl extends PayFlow {
       IsReadyToPayRequest.newBuilder()
         .addAllowedPaymentMethod(WalletConstants.PAYMENT_METHOD_CARD)
         .addAllowedPaymentMethod(WalletConstants.PAYMENT_METHOD_TOKENIZED_CARD)
-        .setExistingPaymentMethodRequired(true)
+        .setExistingPaymentMethodRequired(isExistingPaymentMethodRequired)
         .build();
     mPaymentsClient = createPaymentsClient(activity);
     Task<Boolean> task = mPaymentsClient.isReadyToPay(request);
@@ -177,7 +177,7 @@ public final class GoogleApiPayFlowImpl extends PayFlow {
   }
 
   @Override
-  public void deviceSupportsAndroidPay(@NonNull Promise promise) {
+  public void deviceSupportsAndroidPay(boolean isExistingPaymentMethodRequired, @NonNull Promise promise) {
     Activity activity = activityProvider.call();
     if (activity == null) {
       promise.reject(TAG, NO_CURRENT_ACTIVITY_MSG);
@@ -189,7 +189,7 @@ public final class GoogleApiPayFlowImpl extends PayFlow {
       return;
     }
 
-    isReadyToPay(activity, promise);
+    isReadyToPay(activity, isExistingPaymentMethodRequired, promise);
   }
 
   public boolean onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {

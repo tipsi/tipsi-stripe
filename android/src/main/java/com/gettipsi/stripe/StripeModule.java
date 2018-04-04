@@ -131,7 +131,12 @@ public class StripeModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void deviceSupportsAndroidPay(final Promise promise) {
-    getPayFlow().deviceSupportsAndroidPay(promise);
+    getPayFlow().deviceSupportsAndroidPay(false, promise);
+  }
+
+  @ReactMethod
+  public void canMakeAndroidPayPayments(final Promise promise) {
+    getPayFlow().deviceSupportsAndroidPay(true, promise);
   }
 
   @ReactMethod

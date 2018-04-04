@@ -64,7 +64,8 @@ public class ObsoleteApiPayFlowImpl extends PayFlow {
   }
 
   @Override
-  public void deviceSupportsAndroidPay(final Promise promise) {
+  public void deviceSupportsAndroidPay(boolean isExistingPaymentMethodRequired, // unsupported
+                                       final Promise promise) {
     Activity activity = activityProvider.call();
     if (activity == null) {
       promise.reject(TAG, NO_CURRENT_ACTIVITY_MSG);
