@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.2.0] - 2018-04-04
+
+### Added 
+- Method `stripe.canMakeAndroidPayPayments()` checks if gpay supported and user has existing payment method
+
+### Changed
+- Method `stripe.deviceSupportsAndroidPay()` doesn’t require anymore user to have existing payment method
+
 ## [5.1.0] - 2018-03-28
 
 ### Changed

@@ -6,6 +6,8 @@
     "tagline": "A complete solution for payments on React-Native",
     "cancelapplepayrequest": ".cancelApplePayRequest() -> Promise",
     ".cancelApplePayRequest()": ".cancelApplePayRequest()",
+    "canmakeandroidpaypayments": ".canMakeAndroidPayPayments() -> Promise",
+    ".canMakeAndroidPayPayments()": ".canMakeAndroidPayPayments()",
     "canmakeapplepaypaymentsoptions": ".canMakeApplePayPayments([options]) -> Promise",
     ".canMakeApplePayPayments()": ".canMakeApplePayPayments()",
     "changelog": "Changelog",

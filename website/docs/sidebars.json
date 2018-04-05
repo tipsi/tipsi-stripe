@@ -25,6 +25,7 @@
     ],
     "G Pay": [
       "devicesupportsandroidpay",
+      "canmakeandroidpaypayments",
       "paymentrequestwithandroidpay"
     ],
     "Card Form": ["paymentrequestwithcardform"],

@@ -5,6 +5,7 @@
 <url> <loc>https://tipsi.github.io/users.html</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> <xhtml:link rel="alternate" hreflang="en" href="https://tipsi.github.io/en/users.html" /> </url>
 <url> <loc>https://tipsi.github.io/blog/2018/03/27/added-new-docs.html</loc> <changefreq>weekly</changefreq> <priority>0.3</priority> </url>
 <url> <loc>https://tipsi.github.io/docs/cancelapplepayrequest.html</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://tipsi.github.io/docs/cancelapplepayrequest.html" /> </url>
+<url> <loc>https://tipsi.github.io/docs/canmakeandroidpaypayments.html</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://tipsi.github.io/docs/canmakeandroidpaypayments.html" /> </url>
 <url> <loc>https://tipsi.github.io/docs/canmakeapplepaypaymentsoptions.html</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://tipsi.github.io/docs/canmakeapplepaypaymentsoptions.html" /> </url>
 <url> <loc>https://tipsi.github.io/docs/changelog.html</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://tipsi.github.io/docs/changelog.html" /> </url>
 <url> <loc>https://tipsi.github.io/docs/compatibility.html</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://tipsi.github.io/docs/compatibility.html" /> </url>
