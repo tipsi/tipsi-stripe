@@ -24,6 +24,8 @@ class Stripe extends EventEmitter {
       this.TPSErrorCodeApplePayNotConfigured = TPSStripeManager.TPSErrorCodeApplePayNotConfigured
       this.TPSErrorCodePreviousRequestNotCompleted = TPSStripeManager.TPSErrorCodePreviousRequestNotCompleted
       this.TPSErrorCodeUserCancel = TPSStripeManager.TPSErrorCodeUserCancel
+      this.TPSPaymentAuthorizationSuccess = TPSStripeManager.TPSPaymentAuthorizationSuccess
+      this.TPSPaymentAuthorizationFailure = TPSStripeManager.TPSPaymentAuthorizationFailure
     }
   }
 
