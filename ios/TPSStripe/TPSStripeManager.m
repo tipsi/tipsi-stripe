@@ -117,9 +117,7 @@ NSString * const TPSPaymentNetworkVisa = @"visa";
              @"TPSErrorDomain": TPSErrorDomain,
              @"TPSErrorCodeApplePayNotConfigured": [@(TPSErrorCodeApplePayNotConfigured) stringValue],
              @"TPSErrorCodePreviousRequestNotCompleted": [@(TPSErrorCodePreviousRequestNotCompleted) stringValue],
-             @"TPSErrorCodeUserCancel": [@(TPSErrorCodeUserCancel) stringValue],
-             @"TPSPaymentAuthorizationSuccess": [@(PKPaymentAuthorizationStatusSuccess) stringValue],
-             @"TPSPaymentAuthorizationFailure": [@(PKPaymentAuthorizationStatusFailure) stringValue]
+             @"TPSErrorCodeUserCancel": [@(TPSErrorCodeUserCancel) stringValue]
              };
 }
 

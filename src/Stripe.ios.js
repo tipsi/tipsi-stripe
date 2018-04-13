@@ -14,7 +14,7 @@ class Stripe extends EventEmitter {
   constructor() {
 
     super()
-    
+
     if (TPSStripeManager) {
 
       // Error domain
@@ -24,8 +24,6 @@ class Stripe extends EventEmitter {
       this.TPSErrorCodeApplePayNotConfigured = TPSStripeManager.TPSErrorCodeApplePayNotConfigured
       this.TPSErrorCodePreviousRequestNotCompleted = TPSStripeManager.TPSErrorCodePreviousRequestNotCompleted
       this.TPSErrorCodeUserCancel = TPSStripeManager.TPSErrorCodeUserCancel
-      this.TPSPaymentAuthorizationSuccess = TPSStripeManager.TPSPaymentAuthorizationSuccess
-      this.TPSPaymentAuthorizationFailure = TPSStripeManager.TPSPaymentAuthorizationFailure
     }
   }
 
@@ -72,7 +70,7 @@ class Stripe extends EventEmitter {
     return TPSStripeManager.paymentRequestWithApplePay(items, options)
   }
 
-  updateSummaryItemsAndShippingMethods = ( items = [], methods = [], callback = () => {}) => {
+  updateSummaryItemsAndShippingMethods = ( items = [], methods = [], errors = [], callback = () => {}) => {
     checkInit(this)
     checkArgs(
       types.updateSummaryItemsPropTypes,
@@ -82,7 +80,7 @@ class Stripe extends EventEmitter {
       types.updateShippingMethodsPropTypes,
       methods, 'methods', 'Stripe.updateSummaryItemsAndShippingMethods'
     )
-    return TPSStripeManager.updateSummaryItems(items, methods, callback)
+    return TPSStripeManager.updateSummaryItems(items, methods, errors, callback)
   }
 
   clearEventListeners = () => {
