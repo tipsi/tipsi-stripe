@@ -59,6 +59,8 @@ class Stripe extends EventEmitter {
       options, 'options', 'Stripe.paymentRequestWithApplePay'
     )
     let eventEmitter = this;
+    this.clearEventListeners();
+
     this.onShippingMethodChanged = stripeEventEmitter.addListener(
       'onShippingMethodChanged',
       (method) => { eventEmitter.emit('onShippingMethodChanged', method) }
@@ -84,8 +86,14 @@ class Stripe extends EventEmitter {
   }
 
   clearEventListeners = () => {
-    this.onShippingContactChanged.remove();
-    this.onShippingMethodChanged.remove();
+    if (this.onShippingContactChanged) {
+      this.onShippingContactChanged.remove();
+      this.onShippingContactChanged = null;
+    }
+    if (this.onShippingMethodChanged) {
+      this.onShippingMethodChanged.remove();
+      this.onShippingMethodChanged = null;
+    }
   }
 
   completeApplePayRequest = () => {
