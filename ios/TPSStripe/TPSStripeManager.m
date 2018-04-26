@@ -455,7 +455,7 @@ RCT_EXPORT_METHOD(updateSummaryItems: (NSArray *) items
         self.shippingContactCompletion(update);
         self.shippingContactCompletion = nil;
     }
-    callback(errors);
+    callback(nil);
 }
 
 - (NSArray*) shippingMethodsFromDetails: (NSArray *) details {
