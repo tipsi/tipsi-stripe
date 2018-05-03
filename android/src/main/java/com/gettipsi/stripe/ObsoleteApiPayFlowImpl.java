@@ -117,7 +117,8 @@ public class ObsoleteApiPayFlowImpl extends PayFlow {
         mPayPromise.resolve(putExtraToTokenMap(
           convertTokenToWritableMap(token),
           fullWallet.getBuyerBillingAddress(),
-          fullWallet.getBuyerShippingAddress()));
+          fullWallet.getBuyerShippingAddress(),
+          fullWallet.getEmail()));
       }
     } else if (resultCode == Activity.RESULT_CANCELED) {
       mPayPromise.reject(TAG, PURCHASE_CANCELLED_MSG);
