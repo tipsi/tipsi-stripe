@@ -136,6 +136,7 @@ public final class GoogleApiPayFlowImpl extends PayFlow {
           .build())
       .addAllowedPaymentMethod(WalletConstants.PAYMENT_METHOD_CARD)
       .addAllowedPaymentMethod(WalletConstants.PAYMENT_METHOD_TOKENIZED_CARD)
+      .setEmailRequired(true)
       .setShippingAddressRequired(shippingAddressRequired);
 
     if (countryCodes.size() > 0) {
