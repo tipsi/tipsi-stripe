@@ -53,13 +53,14 @@ public class Converters {
     return newToken;
   }
 
-  public static WritableMap putExtraToTokenMap(final WritableMap tokenMap, UserAddress billingAddress, UserAddress shippingAddress) {
+  public static WritableMap putExtraToTokenMap(final WritableMap tokenMap, UserAddress billingAddress, UserAddress shippingAddress, String emailAddress) {
     ArgCheck.nonNull(tokenMap);
 
     WritableMap extra = Arguments.createMap();
 
     extra.putMap("billingContact", convertAddressToWritableMap(billingAddress));
     extra.putMap("shippingContact", convertAddressToWritableMap(shippingAddress));
+    extra.putString("email", emailAddress);
     tokenMap.putMap("extra", extra);
 
     return tokenMap;

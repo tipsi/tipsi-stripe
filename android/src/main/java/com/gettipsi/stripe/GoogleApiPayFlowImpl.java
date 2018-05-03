@@ -212,7 +212,8 @@ public final class GoogleApiPayFlowImpl extends PayFlow {
               payPromise.resolve(putExtraToTokenMap(
                 convertTokenToWritableMap(token),
                 getBillingAddress(paymentData),
-                paymentData.getShippingAddress()));
+                paymentData.getShippingAddress(),
+                paymentData.getEmail()));
             }
             break;
           case Activity.RESULT_CANCELED:
