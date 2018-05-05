@@ -3,6 +3,7 @@ import checkArgs from '../checkArgs'
 import {
   availableApplePayNetworks,
   availableApplePayAddressFields,
+  availableApplePayShippingTypes,
   setOptionsOptionsPropTypes,
   availableApplePayNetworkPropTypes,
   canMakeApplePayPaymentsOptionsPropTypes,
@@ -174,6 +175,7 @@ test('paymentRequestWithApplePayOptionsPropTypes', (t) => {
       detail: 'detail',
       amount: 'amount',
     }],
+    shippingType: availableApplePayShippingTypes,
   }
 
   t.doesNotThrow(checkPropTypes(paymentRequestWithApplePayOptionsPropTypes, passedProps))
