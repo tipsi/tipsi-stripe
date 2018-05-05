@@ -51,6 +51,10 @@ esac
 
 npm install -g react-native-cli
 
+# Test propTypes
+npm install
+npm test
+
 # Remove existing tarball
 rm -rf *.tgz
 
