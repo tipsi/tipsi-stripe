@@ -25,7 +25,7 @@ Launch the  Pay view to accept payment.
 | shippingMethods | Array | An array of `shippingMethod` objects that describe the supported shipping methods. |
 | currencyCode | String | The three-letter ISO 4217 currency code. Default is **USD** |
 | countryCode | String | The two-letter code for the country where the payment will be processed. Default is **US** |
-| shippingType | String | An optional value that indicates how purchased items are to be shipped. Default is **shipping**. Available options are: **delivery ‖ store_pickup ‖ service_pickup** |
+| shippingType | String | An optional value that indicates how purchased items are to be shipped. Default is **shipping**. Available options are: **shipping ‖ delivery ‖ store_pickup ‖ service_pickup** |
 
 ##### `shippingMethod` — An object with the following keys:
 

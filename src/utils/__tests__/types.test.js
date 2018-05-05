@@ -11,6 +11,7 @@ import {
   paymentRequestWithApplePayItemsPropTypes,
   applePayAddressFieldsPropTypes,
   applePayOptionShippingMethodPropTypes,
+  paymentRequestWithApplePayShippingTypePropTypes,
   paymentRequestWithApplePayOptionsPropTypes,
   paymentRequestWithCardFormOptionsPropTypes,
   createTokenWithCardParamsPropTypes,
@@ -164,21 +165,23 @@ test('applePayOptionShippingMethodPropTypes', (t) => {
 })
 
 test('paymentRequestWithApplePayOptionsPropTypes', (t) => {
-  const passedProps = {
-    currencyCode: 'currencyCode',
-    countryCode: 'countryCode',
-    requiredBillingAddressFields: availableApplePayAddressFields,
-    requiredShippingAddressFields: availableApplePayAddressFields,
-    shippingMethods: [{
-      id: 'id',
-      label: 'label',
-      detail: 'detail',
-      amount: 'amount',
-    }],
-    shippingType: availableApplePayShippingTypes,
-  }
+  availableApplePayShippingTypes.forEach((shippingType) => {
+    const passedProps = {
+      currencyCode: 'currencyCode',
+      countryCode: 'countryCode',
+      requiredBillingAddressFields: availableApplePayAddressFields,
+      requiredShippingAddressFields: availableApplePayAddressFields,
+      shippingMethods: [{
+        id: 'id',
+        label: 'label',
+        detail: 'detail',
+        amount: 'amount',
+      }],
+      shippingType,
+    }
 
-  t.doesNotThrow(checkPropTypes(paymentRequestWithApplePayOptionsPropTypes, passedProps))
+    t.doesNotThrow(checkPropTypes(paymentRequestWithApplePayOptionsPropTypes, passedProps))
+  })
 
   t.end()
 })

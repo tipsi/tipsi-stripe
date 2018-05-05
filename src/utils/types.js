@@ -43,6 +43,10 @@ export const paymentRequestWithApplePayItemsPropTypes = {
   ).isRequired,
 }
 
+export const paymentRequestWithApplePayShippingTypePropTypes = {
+  shippingType: PropTypes.oneOf(availableApplePayShippingTypes),
+}
+
 export const applePayAddressFieldsPropTypes = PropTypes.oneOf(availableApplePayAddressFields)
 
 export const applePayOptionShippingMethodPropTypes = {
@@ -58,7 +62,7 @@ export const paymentRequestWithApplePayOptionsPropTypes = {
   requiredBillingAddressFields: PropTypes.arrayOf(applePayAddressFieldsPropTypes),
   requiredShippingAddressFields: PropTypes.arrayOf(applePayAddressFieldsPropTypes),
   shippingMethods: PropTypes.arrayOf(PropTypes.shape(applePayOptionShippingMethodPropTypes)),
-  shippingType: PropTypes.oneOf(['shipping', 'delivery', 'store_pickup', 'service_pickup']),
+  shippingType: PropTypes.oneOf(availableApplePayShippingTypes),
 }
 
 export const paymentRequestWithCardFormOptionsPropTypes = {
