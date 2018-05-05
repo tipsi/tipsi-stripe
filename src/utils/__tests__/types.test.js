@@ -11,7 +11,6 @@ import {
   paymentRequestWithApplePayItemsPropTypes,
   applePayAddressFieldsPropTypes,
   applePayOptionShippingMethodPropTypes,
-  paymentRequestWithApplePayShippingTypePropTypes,
   paymentRequestWithApplePayOptionsPropTypes,
   paymentRequestWithCardFormOptionsPropTypes,
   createTokenWithCardParamsPropTypes,
