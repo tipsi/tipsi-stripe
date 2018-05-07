@@ -2,6 +2,12 @@ import PropTypes from 'prop-types'
 
 export const availableApplePayNetworks = ['american_express', 'discover', 'master_card', 'visa']
 export const availableApplePayAddressFields = ['all', 'name', 'email', 'phone', 'postal_address']
+export const availableApplePayShippingTypes = [
+  'shipping',
+  'delivery',
+  'store_pickup',
+  'service_pickup',
+]
 export const availableSourceTypes = [
   'bancontact',
   'bitcoin',
@@ -52,6 +58,7 @@ export const paymentRequestWithApplePayOptionsPropTypes = {
   requiredBillingAddressFields: PropTypes.arrayOf(applePayAddressFieldsPropTypes),
   requiredShippingAddressFields: PropTypes.arrayOf(applePayAddressFieldsPropTypes),
   shippingMethods: PropTypes.arrayOf(PropTypes.shape(applePayOptionShippingMethodPropTypes)),
+  shippingType: PropTypes.oneOf(availableApplePayShippingTypes),
 }
 
 export const paymentRequestWithCardFormOptionsPropTypes = {

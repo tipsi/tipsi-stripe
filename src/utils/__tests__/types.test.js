@@ -3,6 +3,7 @@ import checkArgs from '../checkArgs'
 import {
   availableApplePayNetworks,
   availableApplePayAddressFields,
+  availableApplePayShippingTypes,
   setOptionsOptionsPropTypes,
   availableApplePayNetworkPropTypes,
   canMakeApplePayPaymentsOptionsPropTypes,
@@ -163,20 +164,23 @@ test('applePayOptionShippingMethodPropTypes', (t) => {
 })
 
 test('paymentRequestWithApplePayOptionsPropTypes', (t) => {
-  const passedProps = {
-    currencyCode: 'currencyCode',
-    countryCode: 'countryCode',
-    requiredBillingAddressFields: availableApplePayAddressFields,
-    requiredShippingAddressFields: availableApplePayAddressFields,
-    shippingMethods: [{
-      id: 'id',
-      label: 'label',
-      detail: 'detail',
-      amount: 'amount',
-    }],
-  }
+  availableApplePayShippingTypes.forEach((shippingType) => {
+    const passedProps = {
+      currencyCode: 'currencyCode',
+      countryCode: 'countryCode',
+      requiredBillingAddressFields: availableApplePayAddressFields,
+      requiredShippingAddressFields: availableApplePayAddressFields,
+      shippingMethods: [{
+        id: 'id',
+        label: 'label',
+        detail: 'detail',
+        amount: 'amount',
+      }],
+      shippingType,
+    }
 
-  t.doesNotThrow(checkPropTypes(paymentRequestWithApplePayOptionsPropTypes, passedProps))
+    t.doesNotThrow(checkPropTypes(paymentRequestWithApplePayOptionsPropTypes, passedProps))
+  })
 
   t.end()
 })
