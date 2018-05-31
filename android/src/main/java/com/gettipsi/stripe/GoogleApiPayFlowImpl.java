@@ -46,7 +46,7 @@ import static com.gettipsi.stripe.util.PayParams.TOTAL_PRICE;
 public final class GoogleApiPayFlowImpl extends PayFlow {
 
   private static final String TAG = GoogleApiPayFlowImpl.class.getSimpleName();
-  private static final int LOAD_PAYMENT_DATA_REQUEST_CODE = 100500;
+  private static final int LOAD_PAYMENT_DATA_REQUEST_CODE = 65534;
 
   private PaymentsClient mPaymentsClient;
   private Promise payPromise;
