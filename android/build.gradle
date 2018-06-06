@@ -26,8 +26,14 @@ android {
 }
 
 dependencies {
-  def googlePlayServicesVersion = project.hasProperty('googlePlayServicesVersion') ? project.googlePlayServicesVersion : DEFAULT_GOOGLE_PLAY_SERVICES_VERSION
-  def firebaseCoreVersion = project.hasProperty('firebaseCoreVersion') ? project.firebaseCoreVersion : DEFAULT_FIREBASE_CORE_VERSION
+  def googlePlayServicesVersion = project.hasProperty('googlePlayServicesVersion')
+    ? project.googlePlayServicesVersion
+    : DEFAULT_GOOGLE_PLAY_SERVICES_VERSION
+
+  def firebaseCoreVersion = project.hasProperty('firebaseCoreVersion')
+    ? project.firebaseCoreVersion
+    : DEFAULT_FIREBASE_CORE_VERSION
+
   compile fileTree(include: ['*.jar'], dir: 'libs')
   compile 'com.facebook.react:react-native:+'
   compile 'com.android.support:support-v4:26.1.0'
