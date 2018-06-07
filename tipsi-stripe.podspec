@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
   s.requires_arc   = true
   s.platform       = :ios, '8.0'
 
-  s.preserve_paths = 'LICENSE', 'README.md', 'package.json'
+  s.preserve_paths = 'LICENSE', 'README.md'
   s.source_files   = 'ios/TPSStripe/**/*.{h,m}'
 
   s.dependency 'React'
