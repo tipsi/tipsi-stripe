@@ -7,7 +7,8 @@
 //
 
 #import <React/UIView+React.h>
-#import <Stripe/Stripe.h>
+
+@import Stripe
 
 @interface TPSCardField : UIView
 
