@@ -61,5 +61,10 @@ RCT_CUSTOM_VIEW_PROPERTY(params, NSDictionary, TPSCardField)
     [view setCardParams:cardParams];
 }
 
+RCT_CUSTOM_VIEW_PROPERTY(keyboardAppearance, NSString, __unused TPSCardField)
+{
+    [view setKeyboardAppearance:[RCTConvert UIKeyboardAppearance:json]];
+}
+
 
 @end

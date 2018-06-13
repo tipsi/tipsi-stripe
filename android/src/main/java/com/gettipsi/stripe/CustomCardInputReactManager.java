@@ -145,7 +145,7 @@ public class CustomCardInputReactManager extends SimpleViewManager<CreditCardFor
         try {
           currentMonth = view.getCreditCard().getExpMonth();
         }catch (Exception e){
-          if(charSequence.length() == 0)
+          if (charSequence.length() == 0)
             currentMonth = 0;
         }
         try {

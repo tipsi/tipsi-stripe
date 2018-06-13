@@ -13,7 +13,7 @@ import CardTextFieldScreen from './scenes/CardTextFieldScreen'
 import SourceScreen from './scenes/SourceScreen'
 import testID from './utils/testID'
 
-stripe.init({
+stripe.setOptions({
   publishableKey: '<PUBLISHABLE_KEY>',
   merchantId: '<MERCHANT_ID>',
   androidPayMode: 'test',

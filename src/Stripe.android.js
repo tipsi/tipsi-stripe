@@ -8,10 +8,10 @@ const { StripeModule } = NativeModules
 class Stripe {
   stripeInitialized = false
 
-  init = (options = {}) => {
+  setOptions = (options = {}) => {
     checkArgs(
-      types.initOptionsPropTypes,
-      options, 'options', 'Stripe.init'
+      types.setOptionsOptionsPropTypes,
+      options, 'options', 'Stripe.setOptions'
     )
     this.stripeInitialized = true
     return StripeModule.init(options)
@@ -19,6 +19,10 @@ class Stripe {
 
   deviceSupportsAndroidPay = () => (
     StripeModule.deviceSupportsAndroidPay()
+  )
+
+  canMakeAndroidPayPayments = () => (
+    StripeModule.canMakeAndroidPayPayments()
   )
 
   paymentRequestWithAndroidPay = (options = {}) => {

@@ -24,30 +24,12 @@ test('Test if user can create a source object for Alipay', async (t) => {
     await driver.click(sourceButtonId)
     t.pass('User should be able to tap on `Create source for Alipay payment` button')
 
-    const paymentParametersTitleId = idFromAccessId('Payment parameters')
-
     const testPaymentButtonId = select({
       ios: idFromLabel,
       android: idFromAccessId,
-    })(sourcesVisibility ? 'Authorize Test Payment' : 'Fail Test Payment')
+    })(sourcesVisibility ? 'AUTHORIZE TEST PAYMENT' : 'FAIL TEST PAYMENT')
 
-    if (platform('android')) {
-      const authorizePaymentTitleId = idFromAccessId(
-        'Authorize a payment for a test mode source object'
-      )
-      await driver.waitForVisible(authorizePaymentTitleId, 100000)
-      const swipeTimes = [1, 2, 3, 4]
-      for (const swipe of swipeTimes) {
-        await nativeSwipe(200, 400, 200, 200)
-      }
-    } else {
-      await driver.waitForVisible(paymentParametersTitleId, 60000)
-      await swipeUp(paymentParametersTitleId, 300)
-    }
-
-    t.pass('User should swipe to button')
-
-    await driver.waitForVisible(testPaymentButtonId, 60000)
+    await driver.waitForVisible(testPaymentButtonId, 90000)
 
     if (platform('android')) {
       const testPaymentButton = await driver.element(testPaymentButtonId)

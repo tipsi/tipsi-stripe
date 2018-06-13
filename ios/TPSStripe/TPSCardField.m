@@ -154,6 +154,14 @@
     [self paymentCardTextFieldDidChange:nil];
 }
 
+- (UIKeyboardAppearance)keyboardAppearance {
+  return _paymentCardTextField.keyboardAppearance;
+}
+
+- (void)setKeyboardAppearance:(UIKeyboardAppearance)keyboardAppearance {
+  _paymentCardTextField.keyboardAppearance = keyboardAppearance;
+}
+
 #pragma mark - STPPaymentCardTextFieldDelegate
 
 - (void)paymentCardTextFieldDidChange:(STPPaymentCardTextField *)textField {
