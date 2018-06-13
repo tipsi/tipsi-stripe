@@ -187,13 +187,16 @@ public class StripeModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void paymentRequestWithCardForm(ReadableMap unused, final Promise promise) {
+  public void paymentRequestWithCardForm(ReadableMap params, final Promise promise) {
     Activity currentActivity = getCurrentActivity();
     try {
       ArgCheck.nonNull(currentActivity);
       ArgCheck.notEmptyString(mPublicKey);
 
-      final AddCardDialogFragment cardDialog = AddCardDialogFragment.newInstance(mPublicKey);
+      final AddCardDialogFragment cardDialog = AddCardDialogFragment.newInstance(
+        mPublicKey,
+        params.hasKey("createCardSource") && params.getBoolean("createCardSource")
+      );
       cardDialog.setPromise(promise);
       cardDialog.show(currentActivity.getFragmentManager(), "AddNewCard");
     } catch (Exception e) {

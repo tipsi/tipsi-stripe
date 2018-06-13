@@ -25,10 +25,14 @@ import com.facebook.react.bridge.WritableMap;
 import com.gettipsi.stripe.R;
 import com.gettipsi.stripe.StripeModule;
 import com.gettipsi.stripe.util.CardFlipAnimator;
+import com.gettipsi.stripe.util.Converters;
 import com.gettipsi.stripe.util.Utils;
+import com.stripe.android.SourceCallback;
 import com.stripe.android.Stripe;
 import com.stripe.android.TokenCallback;
 import com.stripe.android.model.Card;
+import com.stripe.android.model.Source;
+import com.stripe.android.model.SourceParams;
 import com.stripe.android.model.Token;
 
 
@@ -39,9 +43,11 @@ import com.stripe.android.model.Token;
 public class AddCardDialogFragment extends DialogFragment {
 
   private static final String KEY = "KEY";
+  private static final String CREATE_CARD_SOURCE_KEY = "CREATE_CARD_SOURCE_KEY";
   private static final String TAG = AddCardDialogFragment.class.getSimpleName();
   private static final String CCV_INPUT_CLASS_NAME = SecurityCodeText.class.getSimpleName();
   private String PUBLISHABLE_KEY;
+  private boolean CREATE_CARD_SOURCE;
 
   private ProgressBar progressBar;
   private CreditCardForm from;
@@ -53,9 +59,10 @@ public class AddCardDialogFragment extends DialogFragment {
   private CardFlipAnimator cardFlipAnimator;
   private Button doneButton;
 
-  public static AddCardDialogFragment newInstance(final String PUBLISHABLE_KEY) {
+  public static AddCardDialogFragment newInstance(final String PUBLISHABLE_KEY, boolean CREATE_CARD_SOURCE) {
     Bundle args = new Bundle();
     args.putString(KEY, PUBLISHABLE_KEY);
+    args.putBoolean(CREATE_CARD_SOURCE_KEY, CREATE_CARD_SOURCE);
     AddCardDialogFragment fragment = new AddCardDialogFragment();
     fragment.setArguments(args);
     return fragment;
@@ -69,8 +76,10 @@ public class AddCardDialogFragment extends DialogFragment {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    if (getArguments() != null)
+    if (getArguments() != null) {
       PUBLISHABLE_KEY = getArguments().getString(KEY);
+      CREATE_CARD_SOURCE = getArguments().getBoolean(CREATE_CARD_SOURCE_KEY);
+    }
   }
 
   @Override
@@ -172,47 +181,56 @@ public class AddCardDialogFragment extends DialogFragment {
 
     String errorMessage = Utils.validateCard(card);
     if (errorMessage == null) {
-      StripeModule.getInstance().getStripe().createToken(
-        card,
-        PUBLISHABLE_KEY,
-        new TokenCallback() {
-          public void onSuccess(Token token) {
-            final WritableMap newToken = Arguments.createMap();
-            newToken.putString("tokenId", token.getId());
-            newToken.putBoolean("livemode", token.getLivemode());
-            newToken.putDouble("created", token.getCreated().getTime());
-            newToken.putBoolean("user", token.getUsed());
-            final WritableMap cardMap = Arguments.createMap();
-            final Card card = token.getCard();
-            cardMap.putString("cardId", card.getId());
-            cardMap.putString("brand", card.getBrand());
-            cardMap.putString("last4", card.getLast4());
-            cardMap.putInt("expMonth", card.getExpMonth());
-            cardMap.putInt("expYear", card.getExpYear());
-            cardMap.putString("country", card.getCountry());
-            cardMap.putString("currency", card.getCurrency());
-            cardMap.putString("name", card.getName());
-            cardMap.putString("addressLine1", card.getAddressLine1());
-            cardMap.putString("addressLine2", card.getAddressLine2());
-            cardMap.putString("addressCity", card.getAddressCity());
-            cardMap.putString("addressState", card.getAddressState());
-            cardMap.putString("addressCountry", card.getAddressCountry());
-            cardMap.putString("addressZip", card.getAddressZip());
-            newToken.putMap("card", cardMap);
-            if (promise != null) {
-              promise.resolve(newToken);
-              promise = null;
-            }
-            successful = true;
-            dismiss();
-          }
+      if (CREATE_CARD_SOURCE) {
+        SourceParams cardSourceParams = SourceParams.createCardParams(card);
+        StripeModule.getInstance().getStripe().createSource(
+          cardSourceParams,
+          new SourceCallback() {
+            @Override
+            public void onSuccess(Source source) {
+              // Normalize data with iOS SDK
+              final WritableMap sourceMap = Converters.convertSourceToWritableMap(source);
+              sourceMap.putMap("card", Converters.mapToWritableMap(source.getSourceTypeData()));
+              sourceMap.putNull("sourceTypeData");
 
-          public void onError(Exception error) {
-            doneButton.setEnabled(true);
-            progressBar.setVisibility(View.GONE);
-            showToast(error.getLocalizedMessage());
+              if (promise != null) {
+                promise.resolve(sourceMap);
+                promise = null;
+              }
+              successful = true;
+              dismiss();
+            }
+
+            @Override
+            public void onError(Exception error) {
+              doneButton.setEnabled(true);
+              progressBar.setVisibility(View.GONE);
+              showToast(error.getLocalizedMessage());
+            }
           }
-        });
+        );
+      } else {
+        StripeModule.getInstance().getStripe().createToken(
+          card,
+          PUBLISHABLE_KEY,
+          new TokenCallback() {
+            public void onSuccess(Token token) {
+              if (promise != null) {
+                promise.resolve(Converters.convertTokenToWritableMap(token));
+                promise = null;
+              }
+              successful = true;
+              dismiss();
+            }
+
+            public void onError(Exception error) {
+              doneButton.setEnabled(true);
+              progressBar.setVisibility(View.GONE);
+              showToast(error.getLocalizedMessage());
+            }
+          });
+      }
+
     } else {
       doneButton.setEnabled(true);
       progressBar.setVisibility(View.GONE);
