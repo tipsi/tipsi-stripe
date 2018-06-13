@@ -14,4 +14,6 @@
 
 @interface StripeModule : NSObject <RCTBridgeModule, PKPaymentAuthorizationViewControllerDelegate, STPAddCardViewControllerDelegate>
 
+@property (nonatomic) STPRedirectContext *redirectContext;
+
 @end
