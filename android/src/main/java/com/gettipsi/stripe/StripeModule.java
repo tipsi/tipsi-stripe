@@ -191,7 +191,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void paymentRequestWithCardForm(ReadableMap unused, final Promise promise) {
+  public void paymentRequestWithCardForm(ReadableMap params, final Promise promise) {
     Activity currentActivity = getCurrentActivity();
     try {
       ArgCheck.nonNull(currentActivity);
@@ -199,8 +199,12 @@ public class StripeModule extends ReactContextBaseJavaModule {
 
       final AddCardDialogFragment cardDialog = AddCardDialogFragment.newInstance(
         mPublicKey,
+<<<<<<< HEAD
         getErrorCode(mErrorCodes, "cancelled"),
         getDescription(mErrorCodes, "cancelled")
+=======
+        params.hasKey("createCardSource") && params.getBoolean("createCardSource")
+>>>>>>> Fix 3D secure process
       );
       cardDialog.setPromise(promise);
       cardDialog.show(currentActivity.getFragmentManager(), "AddNewCard");
@@ -233,10 +237,6 @@ public class StripeModule extends ReactContextBaseJavaModule {
             options.getString("name"),
             options.getString("returnURL"),
             getStringOrNull(options, "statementDescriptor"));
-        break;
-      case "bitcoin":
-        sourceParams = SourceParams.createBitcoinParams(
-            options.getInt("amount"), options.getString("currency"), options.getString("email"));
         break;
       case "giropay":
         sourceParams = SourceParams.createGiropayParams(

@@ -10,7 +10,6 @@ export const availableApplePayShippingTypes = [
 ]
 export const availableSourceTypes = [
   'bancontact',
-  'bitcoin',
   'giropay',
   'ideal',
   'sepaDebit',
