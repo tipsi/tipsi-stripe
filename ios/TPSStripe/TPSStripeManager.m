@@ -271,9 +271,6 @@ RCT_EXPORT_METHOD(createSourceWithParams:(NSDictionary *)params
     if ([sourceType isEqualToString:@"bancontact"]) {
             sourceParams = [STPSourceParams bancontactParamsWithAmount:[[params objectForKey:@"amount"] unsignedIntegerValue] name:params[@"name"] returnURL:params[@"returnURL"] statementDescriptor:params[@"statementDescriptor"]];
     }
-    if ([sourceType isEqualToString:@"bitcoin"]) {
-            sourceParams = [STPSourceParams bitcoinParamsWithAmount:[[params objectForKey:@"amount"] unsignedIntegerValue] currency:params[@"currency"] email:params[@"email"]];
-    }
     if ([sourceType isEqualToString:@"giropay"]) {
             sourceParams = [STPSourceParams giropayParamsWithAmount:[[params objectForKey:@"amount"] unsignedIntegerValue] name:params[@"name"] returnURL:params[@"returnURL"] statementDescriptor:params[@"statementDescriptor"]];
     }
@@ -303,7 +300,7 @@ RCT_EXPORT_METHOD(createSourceWithParams:(NSDictionary *)params
             [self rejectPromiseWithCode:jsError[kErrorKeyCode] message:error.localizedDescription];
         } else {
             if (source.redirect) {
-                STPRedirectContext *redirectContext = [[STPRedirectContext alloc] initWithSource:source completion:^(NSString *sourceID, NSString *clientSecret, NSError *error) {
+                self.redirectContext = [[STPRedirectContext alloc] initWithSource:source completion:^(NSString *sourceID, NSString *clientSecret, NSError *error) {
                     if (error) {
                         NSDictionary *jsError = [errorCodes valueForKey:kErrorKeyRedirectSpecific];
                         reject(jsError[kErrorKeyCode], error.localizedDescription, nil);
@@ -343,7 +340,7 @@ RCT_EXPORT_METHOD(createSourceWithParams:(NSDictionary *)params
                         }];
                     }
                 }];
-                [redirectContext startSafariAppRedirectFlow];
+                [self.redirectContext startSafariAppRedirectFlow];
             } else {
                 resolve([self convertSourceObject:source]);
             }
@@ -377,7 +374,7 @@ RCT_EXPORT_METHOD(paymentRequestWithCardForm:(NSDictionary *)options
     [configuration setRequiredBillingAddressFields:requiredBillingAddressFields];
     [configuration setCompanyName:companyName];
     [configuration setPublishableKey:nextPublishableKey];
-
+    [configuration setCreateCardSources:options[@"createCardSource"] ? options[@"createCardSource"] : false];
 
     STPAddCardViewController *addCardViewController = [[STPAddCardViewController alloc] initWithConfiguration:configuration theme:theme];
     [addCardViewController setDelegate:self];
@@ -530,6 +527,16 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     [self resolvePromise:[self convertTokenObject:token]];
 }
 
+- (void)addCardViewController:(STPAddCardViewController *)controller
+               didCreateSource:(STPSource *)source
+                   completion:(STPErrorBlock)completion {
+    [RCTPresentedViewController() dismissViewControllerAnimated:YES completion:nil];
+    
+    requestIsCompleted = YES;
+    completion(nil);
+    [self resolvePromise:[self convertSourceObject:source]];
+}
+
 - (void)addCardViewControllerDidCancel:(STPAddCardViewController *)addCardViewController {
     [RCTPresentedViewController() dismissViewControllerAnimated:YES completion:nil];
 
@@ -613,7 +620,7 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
         NSMutableDictionary *card = [@{} mutableCopy];
         [result setValue:card forKey:@"card"];
 
-        [card setValue:token.card.cardId forKey:@"cardId"];
+        [card setValue:token.card.stripeID forKey:@"cardId"];
 
         [card setValue:[self cardBrand:token.card.brand] forKey:@"brand"];
         [card setValue:[self cardFunding:token.card.funding] forKey:@"funding"];
@@ -626,12 +633,12 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
         [card setValue:token.card.currency forKey:@"currency"];
 
         [card setValue:token.card.name forKey:@"name"];
-        [card setValue:token.card.addressLine1 forKey:@"addressLine1"];
-        [card setValue:token.card.addressLine2 forKey:@"addressLine2"];
-        [card setValue:token.card.addressCity forKey:@"addressCity"];
-        [card setValue:token.card.addressState forKey:@"addressState"];
-        [card setValue:token.card.addressCountry forKey:@"addressCountry"];
-        [card setValue:token.card.addressZip forKey:@"addressZip"];
+        [card setValue:token.card.address.line1 forKey:@"addressLine1"];
+        [card setValue:token.card.address.line2 forKey:@"addressLine2"];
+        [card setValue:token.card.address.city forKey:@"addressCity"];
+        [card setValue:token.card.address.state forKey:@"addressState"];
+        [card setValue:token.card.address.country forKey:@"addressCountry"];
+        [card setValue:token.card.address.postalCode forKey:@"addressZip"];
     }
 
     // Bank Account
@@ -644,7 +651,7 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
         [bankAccount setValue:bankAccountStatusString forKey:@"status"];
         [bankAccount setValue:token.bankAccount.country forKey:@"countryCode"];
         [bankAccount setValue:token.bankAccount.currency forKey:@"currency"];
-        [bankAccount setValue:token.bankAccount.bankAccountId forKey:@"bankAccountId"];
+        [bankAccount setValue:token.bankAccount.stripeID forKey:@"bankAccountId"];
         [bankAccount setValue:token.bankAccount.bankName forKey:@"bankName"];
         [bankAccount setValue:token.bankAccount.last4 forKey:@"last4"];
         [bankAccount setValue:token.bankAccount.accountHolderName forKey:@"accountHolderName"];
@@ -665,6 +672,7 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     [result setValue:source.currency forKey:@"currency"];
     [result setValue:@(source.livemode) forKey:@"livemode"];
     [result setValue:source.amount forKey:@"amount"];
+    [result setValue:source.stripeID forKey:@"sourceId"];
 
     // Flow
     [result setValue:[self sourceFlow:source.flow] forKey:@"flow"];
@@ -680,13 +688,14 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
         [result setValue:owner forKey:@"owner"];
 
         if (source.owner.address) {
-            [owner setValue:[self address:source.owner.address] forKey:@"address"];
+            [owner setObject:source.owner.address forKey:@"address"];
         }
         [owner setValue:source.owner.email forKey:@"email"];
         [owner setValue:source.owner.name forKey:@"name"];
         [owner setValue:source.owner.phone forKey:@"phone"];
+        
         if (source.owner.verifiedAddress) {
-            [owner setValue:[self address:source.owner.verifiedAddress] forKey:@"verifiedAddress"];
+            [owner setObject:source.owner.verifiedAddress forKey:@"verifiedAddress"];
         }
         [owner setValue:source.owner.verifiedEmail forKey:@"verifiedEmail"];
         [owner setValue:source.owner.verifiedName forKey:@"verifiedName"];
@@ -883,8 +892,6 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     switch (inputType) {
         case STPSourceTypeBancontact:
             return @"bancontact";
-        case STPSourceTypeBitcoin:
-            return @"bitcoin";
         case STPSourceTypeGiropay:
             return @"giropay";
         case STPSourceTypeIDEAL:

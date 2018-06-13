@@ -191,7 +191,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void paymentRequestWithCardForm(ReadableMap unused, final Promise promise) {
+  public void paymentRequestWithCardForm(ReadableMap params, final Promise promise) {
     Activity currentActivity = getCurrentActivity();
     try {
       ArgCheck.nonNull(currentActivity);
@@ -200,7 +200,8 @@ public class StripeModule extends ReactContextBaseJavaModule {
       final AddCardDialogFragment cardDialog = AddCardDialogFragment.newInstance(
         mPublicKey,
         getErrorCode(mErrorCodes, "cancelled"),
-        getDescription(mErrorCodes, "cancelled")
+        getDescription(mErrorCodes, "cancelled"),
+        params.hasKey("createCardSource") && params.getBoolean("createCardSource")
       );
       cardDialog.setPromise(promise);
       cardDialog.show(currentActivity.getFragmentManager(), "AddNewCard");
