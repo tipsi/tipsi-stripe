@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
+    "cold-start": "npm start -- --reset-cache",
     "appium": "appium",
     "configure": "scripts/configure.sh",
     "build:android": "scripts/build-android.sh",
@@ -23,9 +24,11 @@
   },
   "devDependencies": {
     "appium": "1.8.0",
-    "babel-preset-react-native": "1.9.2",
-    "tape-async": "^2.1.1",
-    "tipsi-appium-helper": "2.0.0",
+    "babel-core": "6.26.0",
+    "babel-preset-react-native": "4.0.0",
+    "babel-preset-react-native-stage-0": "1.0.1",
+    "tape-async": "2.3.0",
+    "tipsi-appium-helper": "2.1.0",
     "webdriverio": "4.7.1"
   }
 }
