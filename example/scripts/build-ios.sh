@@ -14,4 +14,4 @@ xcodebuild build \
   -destination 'platform=iOS Simulator,name=iPhone 6' \
   -derivedDataPath build \
   ONLY_ACTIVE_ARCH=NO \
-  OTHER_LDFLAGS='$(inherited) -ObjC -lc++'
+  OTHER_LDFLAGS='$(inherited) -ObjC -lc++' | xcpretty

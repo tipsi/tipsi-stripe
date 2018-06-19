@@ -8,10 +8,8 @@
     "configure": "scripts/configure.sh",
     "build:android": "scripts/build-android.sh",
     "build:ios": "scripts/build-ios.sh",
-    "build": "npm-run-all build:*",
     "test:android": "TEST_SUITE=android appium-helper --platform android",
     "test:ios": "TEST_SUITE=ios appium-helper --platform ios",
-    "test": "npm-run-all test:*",
     "add-podfile": "scripts/add-podfile.sh",
     "replace-tarball": "scripts/replaceToTarball.js",
     "set-stripe-url-type": "scripts/setUrlTypeForStripe.js"
@@ -24,9 +22,8 @@
     "tipsi-stripe": "file:../"
   },
   "devDependencies": {
-    "appium": "1.6.4",
+    "appium": "1.8.0",
     "babel-preset-react-native": "1.9.2",
-    "npm-run-all": "^3.1.1",
     "tape-async": "^2.1.1",
     "tipsi-appium-helper": "2.0.0",
     "webdriverio": "4.7.1"

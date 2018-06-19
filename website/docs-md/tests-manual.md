@@ -11,7 +11,6 @@ sidebar_label: Manual
 5. Build project:
    - `npm run build:ios` - for iOS
    - `npm run build:android` - for Android
-   - `npm run build` - for both iOS and Android
 6. Open Appium in other tab `npm run appium`
 7. Run tests:
    - `npm run test:ios` - for iOS
