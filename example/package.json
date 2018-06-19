@@ -25,10 +25,9 @@
   "devDependencies": {
     "appium": "1.8.0",
     "babel-core": "6.26.0",
-    "babel-preset-react-native": "4.0.0",
-    "babel-preset-react-native-stage-0": "1.0.1",
+    "babel-preset-react-native": "1.9.2",
     "tape-async": "2.3.0",
     "tipsi-appium-helper": "2.1.0",
-    "webdriverio": "4.7.1"
+    "webdriverio": "4.12.0"
   }
 }
