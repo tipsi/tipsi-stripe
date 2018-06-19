@@ -137,7 +137,7 @@ npm run configure
 npm run build:android
 
 # Build iOS app
-isMacOS && npm run build:ios
+isMacOS && npm run build:ios | xcpretty
 
 ###################
 # TESTS           #
