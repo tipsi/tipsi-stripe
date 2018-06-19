@@ -36,7 +36,9 @@ init_new_example_project() {
   done
 }
 
-export NVM_NODEJS_ORG_MIRROR=http://nodejs.org/dist
+# NVM_NODEJS_ORG_MIRROR is deprecated and will be removed in node-gyp v4,
+# please use NODEJS_ORG_MIRROR
+export NODEJS_ORG_MIRROR=http://nodejs.org/dist
 
 $HOME/.nvm/nvm.sh
 nvm install 8.9.0
