@@ -268,6 +268,15 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"${BUILT_PRODUCTS_DIR}/**",
 					"$BUILD_DIR/$CONFIGURATION$EFFECTIVE_PLATFORM_NAME/Stripe/**",
+					"${SRCROOT}/../../../ios/Frameworks/Stripe/**",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../../React/**",
+					"$(SRCROOT)/../../react-native/React/**",
+					"${SRCROOT}/../../../ios/Pods/Headers/Public",
+					"${SRCROOT}/../../../ios/Pods/Headers/Public/Stripe",
+					"${SRCROOT}/../../../ios/Frameworks/Stripe/**",
+					"${SRCROOT}/../../../ios/Frameworks/Stripe/Stripe.framework/Versions/A/Headers/Public/Stripe",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -281,6 +290,15 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"${BUILT_PRODUCTS_DIR}/**",
 					"$BUILD_DIR/$CONFIGURATION$EFFECTIVE_PLATFORM_NAME/Stripe/**",
+					"${SRCROOT}/../../../ios/Frameworks/Stripe/**",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../../React/**",
+					"$(SRCROOT)/../../react-native/React/**",
+					"${SRCROOT}/../../../ios/Pods/Headers/Public",
+					"${SRCROOT}/../../../ios/Pods/Headers/Public/Stripe",
+					"${SRCROOT}/../../../ios/Frameworks/Stripe/**",
+					"${SRCROOT}/../../../ios/Frameworks/Stripe/Stripe.framework/Versions/A/Headers/Public/Stripe",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";

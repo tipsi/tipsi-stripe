@@ -9,6 +9,7 @@ android {
     targetSdkVersion 26
     versionCode 1
     versionName "1.0"
+    multiDexEnabled true
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     manifestPlaceholders = [
       tipsiStripeRedirectScheme: "example"
@@ -27,8 +28,23 @@ dependencies {
   compile 'com.facebook.react:react-native:+'
   compile 'com.android.support:support-v4:26.1.0'
   compile 'com.android.support:appcompat-v7:26.1.0'
-  compile 'com.google.android.gms:play-services-wallet:11.8.0'
-  compile 'com.google.firebase:firebase-core:11.8.0'
+  compile 'com.android.support:design:27.1.0'
+  // compile 'com.google.android.gms:play-services-wallet:11.8.0'
+  // compile 'com.google.firebase:firebase-core:11.8.0'
+  // compile 'com.google.android.gms:play-services-wallet:11.8.0' {
+  //   force = true;
+  // } 
+  // compile 'com.google.firebase:firebase-core:11.8.0' {
+  //   force = true;
+  // }
+  // compile 'com.google.android.gms:play-services-wallet:+'
+  // compile 'com.google.firebase:firebase-core:+'
+  compile ('com.google.android.gms:play-services-wallet:+') {
+    force = true;
+  }
+  compile ('com.google.firebase:firebase-core:+') {
+    force = true;
+  }
   compile 'com.stripe:stripe-android:6.0.0'
   compile 'com.github.tipsi:CreditCardEntry:1.4.8.10'
 }

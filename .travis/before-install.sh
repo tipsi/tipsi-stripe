@@ -18,7 +18,6 @@ init_new_example_project() {
     src
     scripts
     __tests__
-    ios/Podfile
   )
 
   mkdir tmp
