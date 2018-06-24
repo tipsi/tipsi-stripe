@@ -3,8 +3,10 @@
   "version": "5.0.0",
   "description": "React Native Stripe binding for iOS/Andriod platforms",
   "main": "src/index.js",
+  "types": "types",
   "scripts": {
-    "ci": "scripts/local-ci.sh"
+    "ci": "scripts/local-ci.sh",
+    "dtslint": "dtslint types"
   },
   "repository": {
     "type": "git",
@@ -34,6 +36,7 @@
     "react-native": ">=0.40"
   },
   "devDependencies": {
+    "dtslint": "^0.3.0",
     "eslint": "^3.13.1",
     "eslint-config-tipsi": "1.5.0"
   },
