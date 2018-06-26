@@ -10,6 +10,7 @@ A source object returned from creating a source (via `createSourceWithParams`) w
 
 | Key | Type | Description |
 | :--- | :--- | :--- |
+| sourceId | String | The stripe ID of the source |
 | amount | Number | The amount associated with the source |
 | clientSecret | String | The client secret of the source. Used for client-side polling using a publishable key |
 | created | Number | When the source was created |
