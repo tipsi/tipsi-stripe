@@ -47,6 +47,9 @@ export default class CardTextFieldScreen extends PureComponent {
             accessible={false}
             style={styles.field}
             onParamsChange={this.handleFieldParamsChange}
+            numberPlaceholder="XXXX XXXX XXXX XXXX"
+            expirationPlaceholder="MM/YY"
+            cvcPlaceholder="CVC"
             {...testID('cardTextField')}
           />
           <Spoiler title="Params" style={styles.spoiler}>

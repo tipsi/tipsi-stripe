@@ -1,7 +1,22 @@
 # Changelog
 
-## [5.2.0] - 2018-04-04
+## [5.2.4] - 2018-06-28
+### Added
+- Added missing `{number|expiration|cvc}Placeholder` fields to iOS' `<PaymentCardTextField />`
 
+## [5.2.3] - 2018-06-07
+### Changed
+- Removed `package.json` from tipsi-stripe's podspec `preserve_paths` (to enable adding this pod via a `:git` key without hitting npm/yarn considering it a js package)
+
+## [5.2.2] - 2018-06-01
+### Changed
+- Fixed int LOAD_PAYMENT_DATA_REQUEST_CODE in GoogleApiPayFlowImpl.java (< 65535)
+
+## [5.2.1] - 2018-05-05
+### Added
+- Fixed an error with PropTypes
+
+## [5.2.0] - 2018-04-04
 ### Added 
 - Method `stripe.canMakeAndroidPayPayments()` checks if gpay supported and user has existing payment method
 
@@ -9,12 +24,10 @@
 - Method `stripe.deviceSupportsAndroidPay()` doesn’t require anymore user to have existing payment method
 
 ## [5.1.0] - 2018-03-28
-
 ### Changed
 - Method `deviceSupportAndroidPay()` now also checks if google pay has at least one existing payment method (for example user attached his card before)
 
 ## [5.0.0] - 2018-03-21
-
 ### Breaking changes:
 
 #### 1) Initialization
