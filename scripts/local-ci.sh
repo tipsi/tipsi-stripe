@@ -166,7 +166,7 @@ if isMacOS; then
   npm run configure
 
   # Build iOS app
-  npm run build:ios
+  npm run build:ios | xcpretty
 
   # Run iOS e2e tests
   npm run test:ios
