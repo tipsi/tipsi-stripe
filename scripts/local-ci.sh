@@ -34,6 +34,7 @@ files_to_copy=(
   src
   scripts
   __tests__
+  rn-cli.config.js
   ios/Podfile
 )
 
@@ -94,8 +95,6 @@ else
   cd $proj_dir_old
 fi
 
-tarball_name="$library_name-$library_version.tgz" npm run replace-tarball
-
 npm run set-stripe-url-type
 
 ###################
@@ -152,7 +151,6 @@ isMacOS && npm run test:ios
 if isMacOS; then
   cd ../$proj_dir_podspec
 
-  tarball_name="$library_name-$library_version.tgz" npm run replace-tarball
   npm run set-stripe-url-type
 
   # Install dependencies

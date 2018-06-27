@@ -5,8 +5,6 @@ library_version=$(node -p "require('./package.json').version")
 
 cd example_tmp
 
-tarball_name="$library_name-$library_version.tgz" npm run replace-tarball
-
 case "${TRAVIS_OS_NAME}" in
   osx)
     npm run set-stripe-url-type
