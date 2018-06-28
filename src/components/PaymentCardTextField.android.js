@@ -98,9 +98,13 @@ export default class PaymentCardTextField extends Component {
       fontWeight,
       fontStyle,
       fontSize,
+      overflow,
       color,
       ...fieldStyles
     } = StyleSheet.flatten(style)
+
+    const viewStyles = { overflow, width: fieldStyles.width }
+    const commonStyles = { borderColor, borderWidth, borderRadius }
 
     return (
       <TouchableWithoutFeedback
@@ -110,20 +114,22 @@ export default class PaymentCardTextField extends Component {
         accessibilityLabel={rest.accessibilityLabel}
         accessibilityTraits={rest.accessibilityTraits}
         rejectResponderTermination>
-        <NativePaymentCardTextField
-          style={[styles.field, fieldStyles]}
-          borderColor={borderColor}
-          borderWidth={borderWidth}
-          cornerRadius={borderRadius}
-          textColor={color}
-          fontFamily={fontFamily}
-          fontWeight={fontWeight}
-          fontStyle={fontStyle}
-          fontSize={fontSize}
-          enabled={!disabled}
-          {...rest}
-          onChange={this.handleChange}
-        />
+        <View style={[commonStyles, viewStyles]}>
+          <NativePaymentCardTextField
+            style={[styles.field, fieldStyles]}
+            borderColor={borderColor}
+            borderWidth={borderWidth}
+            cornerRadius={borderRadius}
+            textColor={color}
+            fontFamily={fontFamily}
+            fontWeight={fontWeight}
+            fontStyle={fontStyle}
+            fontSize={fontSize}
+            enabled={!disabled}
+            {...rest}
+            onChange={this.handleChange}
+          />
+        </View>
       </TouchableWithoutFeedback>
     )
   }

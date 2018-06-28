@@ -146,9 +146,11 @@ export default class PaymentCardTextField extends Component {
       fontWeight,
       fontStyle,
       fontSize,
+      overflow,
       color,
       ...fieldStyles
     } = StyleSheet.flatten(style)
+
     return (
       <TouchableWithoutFeedback
         onPress={this.handlePress}
@@ -157,27 +159,29 @@ export default class PaymentCardTextField extends Component {
         accessibilityLabel={rest.accessibilityLabel}
         accessibilityTraits={rest.accessibilityTraits}
         rejectResponderTermination>
-        <NativePaymentCardTextField
-          ref={field => this.field = field}
-          style={[styles.field, fieldStyles]}
-          borderColor={borderColor}
-          borderWidth={borderWidth}
-          cornerRadius={borderRadius}
-          textColor={color}
-          fontFamily={fontFamily}
-          fontWeight={fontWeight}
-          fontStyle={fontStyle}
-          fontSize={fontSize}
-          enabled={!disabled}
-          cursorColor={cursorColor}
-          textErrorColor={textErrorColor}
-          placeholderColor={placeholderColor}
-          numberPlaceholder={numberPlaceholder}
-          expirationPlaceholder={expirationPlaceholder}
-          cvcPlaceholder={cvcPlaceholder}
-          keyboardAppearance={keyboardAppearance}
-          onChange={this.handleChange}
-        />
+        <View style={{ overflow, borderRadius }}>
+          <NativePaymentCardTextField
+            ref={field => this.field = field}
+            style={[styles.field, fieldStyles]}
+            borderColor={borderColor}
+            borderWidth={borderWidth}
+            cornerRadius={borderRadius}
+            textColor={color}
+            fontFamily={fontFamily}
+            fontWeight={fontWeight}
+            fontStyle={fontStyle}
+            fontSize={fontSize}
+            enabled={!disabled}
+            cursorColor={cursorColor}
+            textErrorColor={textErrorColor}
+            placeholderColor={placeholderColor}
+            numberPlaceholder={numberPlaceholder}
+            expirationPlaceholder={expirationPlaceholder}
+            cvcPlaceholder={cvcPlaceholder}
+            keyboardAppearance={keyboardAppearance}
+            onChange={this.handleChange}
+          />
+        </View>
       </TouchableWithoutFeedback>
     )
   }
