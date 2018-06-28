@@ -27,7 +27,7 @@
     "appium": "1.8.1",
     "babel-preset-react-native": "4.0.0",
     "tape-async": "2.3.0",
-    "tipsi-appium-helper": "2.0.0",
+    "tipsi-appium-helper": "tipsi/tipsi-appium-helper#a8be75e",
     "webdriverio": "4.13.1"
   }
 }

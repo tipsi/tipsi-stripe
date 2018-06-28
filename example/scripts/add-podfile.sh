@@ -4,7 +4,7 @@ echo "# Use iOS 8 and above
 platform :ios, '8.0'
 
 target 'example' do
-  pod 'Yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
+  pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
   pod 'React', :path => '../node_modules/react-native', :subspecs => [
     'BatchedBridge', # Required For React Native 0.45.0+
     'Core',
