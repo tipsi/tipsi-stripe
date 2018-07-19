@@ -48,18 +48,12 @@ test('Test if user can use PaymentCardTextField component', async (t) => {
   await driver.click(cardTextFieldId)
   t.pass('User should be able focus on `PaymentCardTextField` component')
 
-  // Set card number
-  await driver.keys('4242424242424242')
+  // Set card credentials
+  await driver.keys('42424242424242421234123')
 
-  // Set expiration date
-  await driver.waitForVisible(inputExpData, 50000)
-  await driver.keys('1234')
-  await driver.waitForText(inputExpData)
-
-  // Set cvc
-  await driver.waitForVisible(inputCVC, 50000)
-  await driver.keys('123')
-  await driver.waitForText(inputCVC)
+  // Wait for expiration date and cvc
+  await driver.waitForVisible(inputExpData, 50000).waitForText(inputExpData)
+  await driver.waitForVisible(inputCVC, 50000).waitForText(inputCVC)
   t.pass('User should be able write card data on `PaymentCardTextField` component')
 
   t.equal(

@@ -90,19 +90,23 @@ export default class PaymentCardTextField extends Component {
   }
 
   isFocused = () => (
-    TextInputState.currentlyFocusedField() === findNodeHandle(this)
+    TextInputState.currentlyFocusedField() === findNodeHandle(this.cardTextFieldRef)
   )
 
   focus = () => {
-    TextInputState.focusTextInput(findNodeHandle(this))
+    TextInputState.focusTextInput(findNodeHandle(this.cardTextFieldRef))
   }
 
   blur = () => {
-    TextInputState.blurTextInput(findNodeHandle(this))
+    TextInputState.blurTextInput(findNodeHandle(this.cardTextFieldRef))
+  }
+
+  setCardTextFieldRef = (node) => {
+    this.cardTextFieldRef = node
   }
 
   setParams = (params) => {
-    this.field.setNativeProps({ params })
+    this.cardTextFieldRef.setNativeProps({ params })
   }
 
   handlePress = () => {
@@ -146,11 +150,14 @@ export default class PaymentCardTextField extends Component {
       fontWeight,
       fontStyle,
       fontSize,
+      overflow,
       color,
       ...fieldStyles
     } = StyleSheet.flatten(style)
+
     return (
       <TouchableWithoutFeedback
+        style={{ overflow, borderRadius }}
         onPress={this.handlePress}
         testID={rest.testID}
         accessible={rest.accessible}
@@ -158,7 +165,7 @@ export default class PaymentCardTextField extends Component {
         accessibilityTraits={rest.accessibilityTraits}
         rejectResponderTermination>
         <NativePaymentCardTextField
-          ref={field => this.field = field}
+          ref={this.setCardTextFieldRef}
           style={[styles.field, fieldStyles]}
           borderColor={borderColor}
           borderWidth={borderWidth}
