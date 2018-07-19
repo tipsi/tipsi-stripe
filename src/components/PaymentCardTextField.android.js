@@ -55,15 +55,19 @@ export default class PaymentCardTextField extends Component {
   }
 
   isFocused = () => (
-    TextInputState.currentlyFocusedField() === findNodeHandle(this)
+    TextInputState.currentlyFocusedField() === findNodeHandle(this.cardTextFieldRef)
   )
 
   focus = () => {
-    TextInputState.focusTextInput(findNodeHandle(this))
+    TextInputState.focusTextInput(findNodeHandle(this.cardTextFieldRef))
   }
 
   blur = () => {
-    TextInputState.blurTextInput(findNodeHandle(this))
+    TextInputState.blurTextInput(findNodeHandle(this.cardTextFieldRef))
+  }
+
+  setCardTextFieldRef = (node) => {
+    this.cardTextFieldRef = node
   }
 
   handlePress = () => {
@@ -98,33 +102,45 @@ export default class PaymentCardTextField extends Component {
       fontWeight,
       fontStyle,
       fontSize,
+      overflow,
+      backgroundColor,
       color,
       ...fieldStyles
     } = StyleSheet.flatten(style)
 
+    const viewStyles = {
+      overflow,
+      backgroundColor,
+      width: fieldStyles.width,
+    }
+    const commonStyles = { borderColor, borderWidth, borderRadius }
+
     return (
-      <TouchableWithoutFeedback
-        onPress={this.handlePress}
-        testID={rest.testID}
-        accessible={rest.accessible}
-        accessibilityLabel={rest.accessibilityLabel}
-        accessibilityTraits={rest.accessibilityTraits}
-        rejectResponderTermination>
-        <NativePaymentCardTextField
-          style={[styles.field, fieldStyles]}
-          borderColor={borderColor}
-          borderWidth={borderWidth}
-          cornerRadius={borderRadius}
-          textColor={color}
-          fontFamily={fontFamily}
-          fontWeight={fontWeight}
-          fontStyle={fontStyle}
-          fontSize={fontSize}
-          enabled={!disabled}
-          {...rest}
-          onChange={this.handleChange}
-        />
-      </TouchableWithoutFeedback>
+      <View style={[commonStyles, viewStyles]}>
+        <TouchableWithoutFeedback
+          onPress={this.handlePress}
+          testID={rest.testID}
+          accessible={rest.accessible}
+          accessibilityLabel={rest.accessibilityLabel}
+          accessibilityTraits={rest.accessibilityTraits}
+          rejectResponderTermination>
+          <NativePaymentCardTextField
+            ref={this.setCardTextFieldRef}
+            style={[styles.field, fieldStyles]}
+            borderColor={borderColor}
+            borderWidth={borderWidth}
+            cornerRadius={borderRadius}
+            textColor={color}
+            fontFamily={fontFamily}
+            fontWeight={fontWeight}
+            fontStyle={fontStyle}
+            fontSize={fontSize}
+            enabled={!disabled}
+            {...rest}
+            onChange={this.handleChange}
+          />
+        </TouchableWithoutFeedback>
+      </View>
     )
   }
 }
