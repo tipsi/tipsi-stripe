@@ -85,7 +85,7 @@ public class AddCardDialogFragment extends DialogFragment {
           onSaveCLick();
         }
       })
-      .setNegativeButton(android.R.string.cancel, null).create();
+      .setNegativeButton(R.string.gettipsi_card_enter_dialog_negative_button, null).create();
     dialog.show();
 
     doneButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);

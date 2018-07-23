@@ -1,5 +1,19 @@
 # Changelog
 
+## [5.3.0] - 2018-07-23
+### Changed
+- `REACT_CLASS` for Native Android implementation of PaymentCardTextField renamed `CreditCardForm => TPSCardField`
+- `PaymentCardTextField` merged into one compoment. It's a first step to clearing the difference between iOS and Android
+- `Android Pay => Google Pay` in `android/src/main/res/values/strings.xml`
+- `prop-types` in example updated `15.5.10 => 15.6.1`, appium `1.8.0 => 1.8.1`
+
+### Added
+- Default string value for Cancel button in Card Form `gettipsi_card_enter_dialog_negative_button`
+- Support `overflow` style property on PaymentCardTextField (now it has <View /> wrapper inside)
+
+### Removed
+- Obsolete AndroidPay flow
+
 ## [5.2.4] - 2018-06-28
 ### Added
 - Added missing `{number|expiration|cvc}Placeholder` fields to iOS' `<PaymentCardTextField />`

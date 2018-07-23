@@ -24,8 +24,6 @@ public abstract class PayFlow {
   public static final String JSON_PARSING_ERROR_MSG = "Failed to create token from JSON string";
   public static final String PLAY_SERVICES_ARE_NOT_AVAILABLE_MSG = "Play services are not available!";
 
-  private static final boolean useObsoleteFlow = false;
-
   protected final @NonNull Fun0<Activity> activityProvider;
   private String publishableKey; // invalid value by default
   private int environment; // invalid value by default
@@ -37,11 +35,7 @@ public abstract class PayFlow {
   }
 
   public static PayFlow create(Fun0<Activity> activityProvider) {
-    if (!useObsoleteFlow) {
-      return new GoogleApiPayFlowImpl(activityProvider);
-    } else {
-      return new ObsoleteApiPayFlowImpl(activityProvider);
-    }
+    return new GoogleApiPayFlowImpl(activityProvider);
   }
 
   private static boolean isValidEnvironment(int environment) {

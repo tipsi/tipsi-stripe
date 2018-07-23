@@ -6,11 +6,11 @@ import {
   View,
   TouchableWithoutFeedback,
   ViewPropTypes,
+  Platform,
 } from 'react-native'
 import PropTypes from 'prop-types'
 import StyleSheetPropType from 'react-native/Libraries/StyleSheet/StyleSheetPropType'
 import ViewStylePropTypes from 'react-native/Libraries/Components/View/ViewStylePropTypes'
-
 import TextInputState from 'react-native/Libraries/Components/TextInput/TextInputState'
 
 const FieldStylePropType = {
@@ -18,22 +18,50 @@ const FieldStylePropType = {
   color: PropTypes.string,
 }
 
+const NativePaymentCardTextField = requireNativeComponent('TPSCardField', PaymentCardTextField, {
+  nativeOnly: {
+    borderColor: true,
+    borderWidth: true,
+    cornerRadius: true,
+    textColor: true,
+    fontFamily: true,
+    fontWeight: true,
+    fontStyle: true,
+    fontSize: true,
+    enabled: true,
+    onChange: true,
+    params: true, // Currently iOS only
+    keyboardAppearance: true, // iOS only
+  },
+})
+
 export default class PaymentCardTextField extends Component {
   static propTypes = {
     ...ViewPropTypes,
     style: StyleSheetPropType(FieldStylePropType), // eslint-disable-line new-cap
 
-    setEnabled: PropTypes.bool,
-    backgroundColor: PropTypes.string,
-    cardNumber: PropTypes.string,
-    expDate: PropTypes.string,
-    securityCode: PropTypes.string,
+    // Common
     expirationPlaceholder: PropTypes.string,
-    cvcPlaceholder: PropTypes.string,
     numberPlaceholder: PropTypes.string,
-
+    cvcPlaceholder: PropTypes.string,
+    disabled: PropTypes.bool,
     onChange: PropTypes.func,
-    onValueChange: PropTypes.func,
+
+    ...Platform.select({
+      ios: {
+        cursorColor: PropTypes.string,
+        textErrorColor: PropTypes.string,
+        placeholderColor: PropTypes.string,
+        keyboardAppearance: PropTypes.oneOf(['default', 'light', 'dark']),
+      },
+      android: {
+        setEnabled: PropTypes.bool,
+        backgroundColor: PropTypes.string,
+        cardNumber: PropTypes.string,
+        expDate: PropTypes.string,
+        securityCode: PropTypes.string,
+      },
+    }),
   }
 
   static defaultProps = {
@@ -66,10 +94,6 @@ export default class PaymentCardTextField extends Component {
     TextInputState.blurTextInput(findNodeHandle(this.cardTextFieldRef))
   }
 
-  setCardTextFieldRef = (node) => {
-    this.cardTextFieldRef = node
-  }
-
   handlePress = () => {
     this.focus()
   }
@@ -84,16 +108,38 @@ export default class PaymentCardTextField extends Component {
     if (onChange) {
       onChange(event)
     }
+
     if (onParamsChange) {
-      onParamsChange(
-        nativeEvent.valid,
-        nativeEvent.params
-      )
+      onParamsChange(nativeEvent.valid, nativeEvent.params)
     }
   }
 
+  setCardTextFieldRef = (node) => {
+    this.cardTextFieldRef = node
+  }
+
+  // Previously on iOS only
+  setParams = (params) => {
+    this.cardTextFieldRef.setNativeProps({ params })
+  }
+
   render() {
-    const { style, disabled, ...rest } = this.props
+    const {
+      style,
+      disabled,
+      expDate,
+      cardNumber,
+      securityCode,
+      cursorColor,
+      textErrorColor,
+      placeholderColor,
+      numberPlaceholder,
+      expirationPlaceholder,
+      cvcPlaceholder,
+      keyboardAppearance,
+      ...rest
+    } = this.props
+
     const {
       borderColor,
       borderWidth,
@@ -110,25 +156,30 @@ export default class PaymentCardTextField extends Component {
 
     const viewStyles = {
       overflow,
-      backgroundColor,
       width: fieldStyles.width,
     }
-    const commonStyles = { borderColor, borderWidth, borderRadius }
+
+    const commonStyles = {
+      borderColor,
+      borderWidth,
+      borderRadius,
+      backgroundColor,
+    }
 
     return (
       <View style={[commonStyles, viewStyles]}>
         <TouchableWithoutFeedback
-          onPress={this.handlePress}
+          rejectResponderTermination
           testID={rest.testID}
+          onPress={this.handlePress}
           accessible={rest.accessible}
           accessibilityLabel={rest.accessibilityLabel}
-          accessibilityTraits={rest.accessibilityTraits}
-          rejectResponderTermination>
+          accessibilityTraits={rest.accessibilityTraits}>
           <NativePaymentCardTextField
             ref={this.setCardTextFieldRef}
             style={[styles.field, fieldStyles]}
-            borderColor={borderColor}
-            borderWidth={borderWidth}
+            borderColor="transparent"
+            borderWidth={0}
             cornerRadius={borderRadius}
             textColor={color}
             fontFamily={fontFamily}
@@ -136,8 +187,21 @@ export default class PaymentCardTextField extends Component {
             fontStyle={fontStyle}
             fontSize={fontSize}
             enabled={!disabled}
-            {...rest}
+            numberPlaceholder={numberPlaceholder}
+            expirationPlaceholder={expirationPlaceholder}
+            cvcPlaceholder={cvcPlaceholder}
             onChange={this.handleChange}
+
+            // iOS only
+            cursorColor={cursorColor}
+            textErrorColor={textErrorColor}
+            placeholderColor={placeholderColor}
+            keyboardAppearance={keyboardAppearance}
+
+            // Android only
+            cardNumber={cardNumber}
+            expDate={expDate}
+            securityCode={securityCode}
           />
         </TouchableWithoutFeedback>
       </View>
@@ -151,22 +215,6 @@ const styles = StyleSheet.create({
     // have to set the component's height explicitly on the
     // surrounding view to ensure it gets rendered.
     height: 44,
-    // Set default background color to prevent transparent background
-    // backgroundColor: '#FFFFFF',
   },
 })
 
-const NativePaymentCardTextField = requireNativeComponent('CreditCardForm', PaymentCardTextField, {
-  nativeOnly: {
-    borderColor: true,
-    borderWidth: true,
-    cornerRadius: true,
-    textColor: true,
-    fontFamily: true,
-    fontWeight: true,
-    fontStyle: true,
-    fontSize: true,
-    enabled: true,
-    onChange: true,
-  },
-})
