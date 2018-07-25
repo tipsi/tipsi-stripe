@@ -4,6 +4,8 @@ title: .canMakeApplePayPayments([options]) -> Promise
 sidebar_label: .canMakeApplePayPayments()
 ---
 
+__Method is deprecated, use canMakeNativePayPayments() instead__
+
 Returns whether the user can make Apple Pay payments with specified options.
 If there are no configured payment cards, this method always returns `false`.
 Return `true` if the user can make Apple Pay payments through any of the specified networks; otherwise, `false`.

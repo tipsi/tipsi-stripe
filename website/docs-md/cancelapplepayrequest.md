@@ -4,6 +4,8 @@ title: .cancelApplePayRequest() -> Promise
 sidebar_label: .cancelApplePayRequest()
 ---
 
+__Method is deprecated, use cancelNativePayRequest() instead__
+
 After `paymentRequestWithApplePay` you should complete the operation by calling `cancelApplePayRequest` if an error occurred.
 
 ```js

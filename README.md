@@ -6,6 +6,8 @@
 React Native Stripe binding for iOS/Android platforms
 
 ## Changelog
+[[5.4.0] - 2018-07-27](/CHANGELOG.md#540---2018-07-27)
+
 [[5.3.0] - 2018-07-23](/CHANGELOG.md#530---2018-07-23)
 
 [[5.1.0] - 2018-03-28](/CHANGELOG.md#510---2018-03-28)

@@ -83,7 +83,7 @@ NSString * const TPSPaymentNetworkDiscover = @"discover";
 NSString * const TPSPaymentNetworkMasterCard = @"master_card";
 NSString * const TPSPaymentNetworkVisa = @"visa";
 
-@implementation TPSStripeManager
+@implementation StripeModule
 {
     NSString *publishableKey;
     NSString *merchantId;
@@ -135,7 +135,7 @@ RCT_EXPORT_METHOD(canMakeApplePayPayments:(NSDictionary *)options
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
     NSArray <NSString *> *paymentNetworksStrings =
-    options[@"networks"] ?: [TPSStripeManager supportedPaymentNetworksStrings];
+    options[@"networks"] ?: [StripeModule supportedPaymentNetworksStrings];
 
     NSArray <PKPaymentNetwork> *networks = [self paymentNetworks:paymentNetworksStrings];
     resolve(@([PKPaymentAuthorizationViewController canMakePaymentsUsingNetworks:networks]));

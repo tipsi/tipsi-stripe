@@ -1,5 +1,27 @@
 # Changelog
 
+## [5.4.0] - 2018-07-27
+From this release we are starting unify our Public API.  
+There was a difference between iOS and Android API, now we've created new methods that currently work as a proxy.  
+So, we have marked deprecated methods inside `src/Stripe.js`, and yes there is no more Stripe.${platform}.js files.  
+But, you won't see any changes. Breaking changes will be introduced in version 6.
+
+### DEPRECATED METHODS
+- `deviceSupportsAndroidPay` and `deviceSupportsApplePay` => `deviceSupportsNativePay`
+- `canMakeAndroidPayPayments` and `canMakeApplePayPayments` => `canMakeNativePayPayments`
+- `paymentRequestWithAndroidPay` and `paymentRequestWithApplePay` => `paymentRequestWithNativePay`
+- `completeApplePayRequest` => `completeNativePayRequest` (Android implementation doesn't exist)
+- `cancelApplePayRequest` => `cancelNativePayRequest` (Android implementation doesn't exist)
+- `openApplePaySetup` => `openNativePaySetup` (Android implementation doesn't exist)
+
+As you can see all platform specific methods are now unified.  
+We called them `Native Methods` because `Google/Android Pay` and `ApplePay` are native payments systems unlike Credit Cards.  
+
+### Changed
+- `Stripe.ios.js` and `Stripe.android.js` => `Stripe.js`
+- Native iOS `TPSStripeManager` renamed to `StripeModule`
+- Example App now uses new unified methods
+
 ## [5.3.0] - 2018-07-23
 ### Changed
 - `REACT_CLASS` for Native Android implementation of PaymentCardTextField renamed `CreditCardForm => TPSCardField`
