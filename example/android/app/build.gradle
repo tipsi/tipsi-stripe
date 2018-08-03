@@ -89,6 +89,9 @@ def enableSeparateBuildPerCPUArchitecture = false
  */
 def enableProguardInReleaseBuilds = false
 
+def googlePlayServicesVersion = project.googlePlayServicesVersion
+def firebaseCoreVersion = project.firebaseCoreVersion
+
 android {
     compileSdkVersion 26
     buildToolsVersion "26.0.2"
