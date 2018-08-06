@@ -3,24 +3,12 @@ import processTheme from './utils/processTheme'
 import checkArgs from './utils/checkArgs'
 import checkInit from './utils/checkInit'
 import * as types from './utils/types'
+import errorCodes from './errorCodes'
 
 const { StripeModule } = NativeModules
 
 class Stripe {
   stripeInitialized = false
-
-  constructor() {
-    if (StripeModule) {
-
-      // Error domain
-      this.TPSErrorDomain = StripeModule.TPSErrorDomain
-
-      // Error codes
-      this.TPSErrorCodeApplePayNotConfigured = StripeModule.TPSErrorCodeApplePayNotConfigured
-      this.TPSErrorCodePreviousRequestNotCompleted = StripeModule.TPSErrorCodePreviousRequestNotCompleted
-      this.TPSErrorCodeUserCancel = StripeModule.TPSErrorCodeUserCancel
-    }
-  }
 
   setOptions = (options = {}) => {
     checkArgs(
@@ -28,7 +16,7 @@ class Stripe {
       options, 'options', 'Stripe.setOptions'
     )
     this.stripeInitialized = true
-    return StripeModule.init(options)
+    return StripeModule.init(options, Stripe.errorCodes)
   }
 
   // @deprecated use deviceSupportsNativePay
@@ -179,6 +167,11 @@ class Stripe {
       params, 'params', 'Stripe.createSourceWithParams'
     )
     return StripeModule.createSourceWithParams(params)
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  static get errorCodes() {
+    return errorCodes
   }
 }
 
