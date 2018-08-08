@@ -20,6 +20,6 @@ stripe.setOptions({
 })
 ```
 
-`androidPayMode` _String_ (Android only) - Corresponds to [WALLET_ENVIRONMENT](https://developers.google.com/android-pay/tutorial#about_constants
-).  
+`androidPayMode` _String_ (Android only) - Corresponds to [WALLET_ENVIRONMENT](https://developers.google.com/android/reference/com/google/android/gms/wallet/WalletConstants
+).
 Can be one of: `test|production`.
