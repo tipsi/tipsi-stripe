@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.5.1] - 2018-08-10
+### Added
+- `paymentRequestWithAndroidPay` now supports _boolean_ `phone_number_required` field to ask a user for phone number  
+
+## [5.5.0] - 2018-08-08
+### Added
+- `tipsi-stripe` now respects [project-level GMS version](https://github.com/tipsi/tipsi-stripe/pull/350) on Android 
+
 ## [5.4.0] - 2018-07-27
 From this release we are starting unify our Public API.  
 There was a difference between iOS and Android API, now we've created new methods that currently work as a proxy.  

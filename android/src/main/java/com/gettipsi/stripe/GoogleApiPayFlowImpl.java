@@ -34,9 +34,10 @@ import static com.gettipsi.stripe.util.Converters.convertTokenToWritableMap;
 import static com.gettipsi.stripe.util.Converters.getAllowedShippingCountryCodes;
 import static com.gettipsi.stripe.util.Converters.getBillingAddress;
 import static com.gettipsi.stripe.util.Converters.putExtraToTokenMap;
-import static com.gettipsi.stripe.util.PayParams.BILLING_ADDRESS_REQUIRED;
 import static com.gettipsi.stripe.util.PayParams.CURRENCY_CODE;
+import static com.gettipsi.stripe.util.PayParams.BILLING_ADDRESS_REQUIRED;
 import static com.gettipsi.stripe.util.PayParams.SHIPPING_ADDRESS_REQUIRED;
+import static com.gettipsi.stripe.util.PayParams.PHONE_NUMBER_REQUIRED;
 import static com.gettipsi.stripe.util.PayParams.TOTAL_PRICE;
 
 /**
@@ -99,16 +100,25 @@ public final class GoogleApiPayFlowImpl extends PayFlow {
     final String estimatedTotalPrice = payParams.getString(TOTAL_PRICE);
     final String currencyCode = payParams.getString(CURRENCY_CODE);
     final boolean billingAddressRequired = Converters.getValue(payParams, BILLING_ADDRESS_REQUIRED, false);
-    final Boolean shippingAddressRequired = Converters.getValue(payParams, SHIPPING_ADDRESS_REQUIRED, false);
+    final boolean shippingAddressRequired = Converters.getValue(payParams, SHIPPING_ADDRESS_REQUIRED, false);
+    final boolean phoneNumberRequired = Converters.getValue(payParams, PHONE_NUMBER_REQUIRED, false);
     final Collection<String> allowedCountryCodes = getAllowedShippingCountryCodes(payParams);
 
-    return createPaymentDataRequest(estimatedTotalPrice, currencyCode, billingAddressRequired, shippingAddressRequired, allowedCountryCodes);
+    return createPaymentDataRequest(
+      estimatedTotalPrice,
+      currencyCode,
+      billingAddressRequired,
+      shippingAddressRequired,
+      phoneNumberRequired,
+      allowedCountryCodes
+    );
   }
 
   private PaymentDataRequest createPaymentDataRequest(@NonNull final String totalPrice,
                                                       @NonNull final String currencyCode,
                                                       final boolean billingAddressRequired,
                                                       final boolean shippingAddressRequired,
+                                                      final boolean phoneNumberRequired,
                                                       @NonNull final Collection<String> countryCodes
   ) {
 
@@ -136,7 +146,8 @@ public final class GoogleApiPayFlowImpl extends PayFlow {
           .build())
       .addAllowedPaymentMethod(WalletConstants.PAYMENT_METHOD_CARD)
       .addAllowedPaymentMethod(WalletConstants.PAYMENT_METHOD_TOKENIZED_CARD)
-      .setShippingAddressRequired(shippingAddressRequired);
+      .setShippingAddressRequired(shippingAddressRequired)
+      .setPhoneNumberRequired(phoneNumberRequired);
 
     if (countryCodes.size() > 0) {
       builder.setShippingAddressRequirements(

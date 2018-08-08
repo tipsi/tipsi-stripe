@@ -28,6 +28,7 @@ export default class AndroidPayScreen extends PureComponent {
         total_price: '100.00',
         currency_code: 'USD',
         shipping_address_required: true,
+        phone_number_required: true,
         shipping_countries: ['US', 'CA'],
         line_items: [{
           currency_code: 'USD',
