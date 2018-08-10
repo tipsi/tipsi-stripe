@@ -16,7 +16,14 @@ class Stripe {
       options, 'options', 'Stripe.setOptions'
     )
     this.stripeInitialized = true
-    return StripeModule.init(options, Stripe.errorCodes)
+
+    const args = [options]
+
+    if (Platform.OS === 'ios') {
+      args.push(Stripe.errorCodes)
+    }
+
+    return StripeModule.init(...args)
   }
 
   // @deprecated use deviceSupportsNativePay
