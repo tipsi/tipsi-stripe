@@ -255,9 +255,6 @@ RCT_EXPORT_METHOD(createSourceWithParams:(NSDictionary *)params
     if ([sourceType isEqualToString:@"bancontact"]) {
          sourceParams = [STPSourceParams bancontactParamsWithAmount:[[params objectForKey:@"amount"] unsignedIntegerValue] name:params[@"name"] returnURL:params[@"returnURL"] statementDescriptor:params[@"statementDescriptor"]];
     }
-    if ([sourceType isEqualToString:@"bitcoin"]) {
-         sourceParams = [STPSourceParams bitcoinParamsWithAmount:[[params objectForKey:@"amount"] unsignedIntegerValue] currency:params[@"currency"] email:params[@"email"]];
-    }
     if ([sourceType isEqualToString:@"giropay"]) {
          sourceParams = [STPSourceParams giropayParamsWithAmount:[[params objectForKey:@"amount"] unsignedIntegerValue] name:params[@"name"] returnURL:params[@"returnURL"] statementDescriptor:params[@"statementDescriptor"]];
     }
@@ -842,8 +839,6 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     switch (inputType) {
         case STPSourceTypeBancontact:
             return @"bancontact";
-        case STPSourceTypeBitcoin:
-            return @"bitcoin";
         case STPSourceTypeGiropay:
             return @"giropay";
         case STPSourceTypeIDEAL:
