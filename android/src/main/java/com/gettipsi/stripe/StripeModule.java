@@ -27,7 +27,7 @@ import com.stripe.android.model.Source;
 import com.stripe.android.model.SourceParams;
 import com.stripe.android.model.Token;
 
-import static com.gettipsi.stripe.PayFlow.NO_CURRENT_ACTIVITY_MSG;
+import static com.gettipsi.stripe.Errors.*;
 import static com.gettipsi.stripe.util.Converters.convertSourceToWritableMap;
 import static com.gettipsi.stripe.util.Converters.convertTokenToWritableMap;
 import static com.gettipsi.stripe.util.Converters.createBankAccount;
@@ -35,13 +35,12 @@ import static com.gettipsi.stripe.util.Converters.createCard;
 import static com.gettipsi.stripe.util.Converters.getStringOrNull;
 import static com.gettipsi.stripe.util.InitializationOptions.ANDROID_PAY_MODE_KEY;
 import static com.gettipsi.stripe.util.InitializationOptions.ANDROID_PAY_MODE_PRODUCTION;
-import static com.gettipsi.stripe.util.InitializationOptions.PUBLISHABLE_KEY;
 import static com.gettipsi.stripe.util.InitializationOptions.ANDROID_PAY_MODE_TEST;
+import static com.gettipsi.stripe.util.InitializationOptions.PUBLISHABLE_KEY;
 
 public class StripeModule extends ReactContextBaseJavaModule {
 
   private static final String MODULE_NAME = StripeModule.class.getSimpleName();
-  private static final String TAG = "### " + MODULE_NAME + ": ";
 
   private static StripeModule sInstance = null;
 
@@ -62,7 +61,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
   private String mPublicKey;
   private Stripe mStripe;
   private PayFlow mPayFlow;
-
+  private ReadableMap mErrorCodes;
 
   private final ActivityEventListener mActivityEventListener = new BaseActivityEventListener() {
 
@@ -91,7 +90,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void init(@NonNull ReadableMap options) {
+  public void init(@NonNull ReadableMap options, @NonNull ReadableMap errorCodes) {
     ArgCheck.nonNull(options);
 
     String newPubKey = Converters.getStringOrNull(options, PUBLISHABLE_KEY);
@@ -109,6 +108,10 @@ public class StripeModule extends ReactContextBaseJavaModule {
       ArgCheck.isTrue(ANDROID_PAY_MODE_TEST.equals(newAndroidPayMode) || ANDROID_PAY_MODE_PRODUCTION.equals(newAndroidPayMode));
 
       getPayFlow().setEnvironment(androidPayModeToEnvironment(newAndroidPayMode));
+    }
+
+    if (mErrorCodes == null) {
+      mErrorCodes = errorCodes;
     }
   }
 
@@ -154,11 +157,11 @@ public class StripeModule extends ReactContextBaseJavaModule {
           }
           public void onError(Exception error) {
             error.printStackTrace();
-            promise.reject(TAG, error.getMessage());
+            promise.reject(toErrorCode(error), error.getMessage());
           }
         });
     } catch (Exception e) {
-      promise.reject(TAG, e.getMessage());
+      promise.reject(toErrorCode(e), e.getMessage());
     }
   }
 
@@ -178,11 +181,11 @@ public class StripeModule extends ReactContextBaseJavaModule {
           }
           public void onError(Exception error) {
             error.printStackTrace();
-            promise.reject(TAG, error.getMessage());
+            promise.reject(toErrorCode(error), error.getMessage());
           }
         });
     } catch (Exception e) {
-      promise.reject(TAG, e.getMessage());
+      promise.reject(toErrorCode(e), e.getMessage());
     }
   }
 
@@ -193,11 +196,15 @@ public class StripeModule extends ReactContextBaseJavaModule {
       ArgCheck.nonNull(currentActivity);
       ArgCheck.notEmptyString(mPublicKey);
 
-      final AddCardDialogFragment cardDialog = AddCardDialogFragment.newInstance(mPublicKey);
+      final AddCardDialogFragment cardDialog = AddCardDialogFragment.newInstance(
+        mPublicKey,
+        getErrorCode(mErrorCodes, "cancelled"),
+        getDescription(mErrorCodes, "cancelled")
+      );
       cardDialog.setPromise(promise);
       cardDialog.show(currentActivity.getFragmentManager(), "AddNewCard");
     } catch (Exception e) {
-      promise.reject(TAG, e.getMessage());
+      promise.reject(toErrorCode(e), e.getMessage());
     }
   }
 
@@ -275,7 +282,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
     mStripe.createSource(sourceParams, new SourceCallback() {
       @Override
       public void onError(Exception error) {
-        promise.reject(error);
+        promise.reject(toErrorCode(error));
       }
 
       @Override
@@ -283,7 +290,10 @@ public class StripeModule extends ReactContextBaseJavaModule {
         if (Source.REDIRECT.equals(source.getFlow())) {
           Activity currentActivity = getCurrentActivity();
           if (currentActivity == null) {
-            promise.reject(TAG, NO_CURRENT_ACTIVITY_MSG);
+            promise.reject(
+              getErrorCode(mErrorCodes, "activityUnavailable"),
+              getDescription(mErrorCodes, "activityUnavailable")
+            );
           } else {
             mCreateSourcePromise = promise;
             mCreatedSource = source;
@@ -308,7 +318,10 @@ public class StripeModule extends ReactContextBaseJavaModule {
 
     if (redirectData == null) {
 
-      mCreateSourcePromise.reject(TAG, "Cancelled");
+      mCreateSourcePromise.reject(
+        getErrorCode(mErrorCodes, "redirectCancelled"),
+        getDescription(mErrorCodes, "redirectCancelled")
+      );
       mCreatedSource = null;
       mCreateSourcePromise = null;
       return;
@@ -316,7 +329,10 @@ public class StripeModule extends ReactContextBaseJavaModule {
 
     final String clientSecret = redirectData.getQueryParameter("client_secret");
     if (!mCreatedSource.getClientSecret().equals(clientSecret)) {
-      mCreateSourcePromise.reject(TAG, "Received redirect uri but there is no source to process");
+      mCreateSourcePromise.reject(
+        getErrorCode(mErrorCodes, "redirectNoSource"),
+        getDescription(mErrorCodes, "redirectNoSource")
+      );
       mCreatedSource = null;
       mCreateSourcePromise = null;
       return;
@@ -324,7 +340,10 @@ public class StripeModule extends ReactContextBaseJavaModule {
 
     final String sourceId = redirectData.getQueryParameter("source");
     if (!mCreatedSource.getId().equals(sourceId)) {
-      mCreateSourcePromise.reject(TAG, "Received wrong source id in redirect uri");
+      mCreateSourcePromise.reject(
+        getErrorCode(mErrorCodes, "redirectWrongSourceId"),
+        getDescription(mErrorCodes, "redirectWrongSourceId")
+      );
       mCreatedSource = null;
       mCreateSourcePromise = null;
       return;
@@ -353,12 +372,18 @@ public class StripeModule extends ReactContextBaseJavaModule {
             promise.resolve(convertSourceToWritableMap(source));
             break;
           case Source.CANCELED:
-            promise.reject(TAG, "User cancelled source redirect");
+            promise.reject(
+              getErrorCode(mErrorCodes, "redirectCancelled"),
+              getDescription(mErrorCodes, "redirectCancelled")
+            );
             break;
           case Source.PENDING:
           case Source.FAILED:
           case Source.UNKNOWN:
-            promise.reject(TAG, "Source redirect failed");
+            promise.reject(
+              getErrorCode(mErrorCodes, "redirectFailed"),
+              getDescription(mErrorCodes, "redirectFailed")
+            );
         }
         return null;
       }
