@@ -15,6 +15,16 @@ import com.google.android.gms.wallet.WalletConstants;
 
 public abstract class PayFlow {
 
+  // XXX: TEMPORARY ONLY FOR TEST FOR ONE COMMIT. REMOVE AFTER TEST :XXX
+  public static final String NO_CURRENT_ACTIVITY_MSG = "Cannot start process with no current activity";
+  public static final String PURCHASE_CANCELLED_MSG = "Purchase was cancelled";
+  public static final String PURCHASE_LOAD_MASKED_WALLET_ERROR_MSG = "Purchase masked wallet error";
+  public static final String PURCHASE_LOAD_FULL_WALLET_ERROR_MSG = "Purchase full wallet error";
+  public static final String ANDROID_PAY_UNAVAILABLE_ERROR_MSG = "Android Pay is unavailable";
+  public static final String MAKING_IS_READY_TO_PAY_CALL_ERROR_MSG = "Error making isReadyToPay call";
+  public static final String JSON_PARSING_ERROR_MSG = "Failed to create token from JSON string";
+  public static final String PLAY_SERVICES_ARE_NOT_AVAILABLE_MSG = "Play services are not available!";
+
   protected final @NonNull Fun0<Activity> activityProvider;
   private String publishableKey; // invalid value by default
   private int environment; // invalid value by default
