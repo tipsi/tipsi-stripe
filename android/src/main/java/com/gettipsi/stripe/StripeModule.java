@@ -27,7 +27,9 @@ import com.stripe.android.model.Source;
 import com.stripe.android.model.SourceParams;
 import com.stripe.android.model.Token;
 
-import static com.gettipsi.stripe.Errors.*;
+import static com.gettipsi.stripe.Errors.toErrorCode;
+import static com.gettipsi.stripe.Errors.getErrorCode;
+import static com.gettipsi.stripe.Errors.getDescription;
 import static com.gettipsi.stripe.util.Converters.convertSourceToWritableMap;
 import static com.gettipsi.stripe.util.Converters.convertTokenToWritableMap;
 import static com.gettipsi.stripe.util.Converters.createBankAccount;
