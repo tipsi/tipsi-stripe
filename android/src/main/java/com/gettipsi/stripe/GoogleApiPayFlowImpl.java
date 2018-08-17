@@ -30,6 +30,7 @@ import com.stripe.android.model.Token;
 import java.util.Arrays;
 import java.util.Collection;
 
+import static com.gettipsi.stripe.Errors.toErrorCode;
 import static com.gettipsi.stripe.util.Converters.convertTokenToWritableMap;
 import static com.gettipsi.stripe.util.Converters.getAllowedShippingCountryCodes;
 import static com.gettipsi.stripe.util.Converters.getBillingAddress;
@@ -81,7 +82,7 @@ public final class GoogleApiPayFlowImpl extends PayFlow {
             boolean result = task.getResult(ApiException.class);
             promise.resolve(result);
           } catch (ApiException exception) {
-            promise.reject(TAG, String.format("Error, statusCode: %d", exception.getStatusCode()));
+            promise.reject(toErrorCode(exception), exception.getMessage());
           }
         }
       });
@@ -179,7 +180,10 @@ public final class GoogleApiPayFlowImpl extends PayFlow {
 
     Activity activity = activityProvider.call();
     if (activity == null) {
-      promise.reject(TAG, NO_CURRENT_ACTIVITY_MSG);
+      promise.reject(
+        getErrorCode("activityUnavailable"),
+        getErrorDescription("activityUnavailable")
+      );
       return;
     }
 
@@ -191,12 +195,18 @@ public final class GoogleApiPayFlowImpl extends PayFlow {
   public void deviceSupportsAndroidPay(boolean isExistingPaymentMethodRequired, @NonNull Promise promise) {
     Activity activity = activityProvider.call();
     if (activity == null) {
-      promise.reject(TAG, NO_CURRENT_ACTIVITY_MSG);
+      promise.reject(
+        getErrorCode("activityUnavailable"),
+        getErrorDescription("activityUnavailable")
+      );
       return;
     }
 
     if (!isPlayServicesAvailable(activity)) {
-      promise.reject(TAG, PLAY_SERVICES_ARE_NOT_AVAILABLE_MSG);
+      promise.reject(
+        getErrorCode("playServicesUnavailable"),
+        getErrorDescription("playServicesUnavailable")
+      );
       return;
     }
 
@@ -217,7 +227,10 @@ public final class GoogleApiPayFlowImpl extends PayFlow {
             String tokenJson = paymentData.getPaymentMethodToken().getToken();
             Token token = Token.fromString(tokenJson);
             if (token == null) {
-              payPromise.reject(TAG, JSON_PARSING_ERROR_MSG);
+              payPromise.reject(
+                getErrorCode("parseResponse"),
+                getErrorDescription("parseResponse")
+              );
             } else {
               payPromise.resolve(putExtraToTokenMap(
                 convertTokenToWritableMap(token),
@@ -226,14 +239,20 @@ public final class GoogleApiPayFlowImpl extends PayFlow {
             }
             break;
           case Activity.RESULT_CANCELED:
-            payPromise.reject(TAG, PURCHASE_CANCELLED_MSG);
+            payPromise.reject(
+              getErrorCode("purchaseCancelled"),
+              getErrorDescription("purchaseCancelled")
+            );
             break;
           case AutoResolveHelper.RESULT_ERROR:
             Status status = AutoResolveHelper.getStatusFromIntent(data);
             // Log the status for debugging.
             // Generally, there is no need to show an error to
             // the user as the Google Pay API will do that.
-            payPromise.reject(TAG, status.getStatusMessage());
+            payPromise.reject(
+              getErrorCode("stripe"),
+              status.getStatusMessage()
+            );
             break;
 
           default:

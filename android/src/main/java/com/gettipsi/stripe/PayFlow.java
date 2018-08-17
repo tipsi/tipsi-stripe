@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.gettipsi.stripe.Errors;
+
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReadableMap;
 import com.gettipsi.stripe.util.ArgCheck;
@@ -13,8 +15,10 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.wallet.WalletConstants;
 
+
 public abstract class PayFlow {
 
+  // XXX: TEMPORARY ONLY FOR TEST FOR ONE COMMIT. REMOVE AFTER TEST :XXX
   public static final String NO_CURRENT_ACTIVITY_MSG = "Cannot start process with no current activity";
   public static final String PURCHASE_CANCELLED_MSG = "Purchase was cancelled";
   public static final String PURCHASE_LOAD_MASKED_WALLET_ERROR_MSG = "Purchase masked wallet error";
@@ -27,7 +31,7 @@ public abstract class PayFlow {
   protected final @NonNull Fun0<Activity> activityProvider;
   private String publishableKey; // invalid value by default
   private int environment; // invalid value by default
-
+  private ReadableMap errorCodes; // invalid value by default, set in runtime
 
   public PayFlow(@NonNull Fun0<Activity> activityProvider) {
     ArgCheck.nonNull(activityProvider);
@@ -67,6 +71,24 @@ public abstract class PayFlow {
 
   public void setPublishableKey(@NonNull String publishableKey) {
     this.publishableKey = ArgCheck.notEmptyString(publishableKey);
+  }
+
+  public void setErrorCodes(ReadableMap errorCodes) {
+    if (this.errorCodes == null) {
+      this.errorCodes = errorCodes;
+    }
+  }
+
+  protected ReadableMap getErrorCodes() {
+    return ArgCheck.nonNull(errorCodes);
+  }
+
+  protected String getErrorCode(String key) {
+    return Errors.getErrorCode(getErrorCodes(), key);
+  }
+
+  protected String getErrorDescription(String key) {
+    return Errors.getDescription(getErrorCodes(), key);
   }
 
   abstract void paymentRequestWithAndroidPay(final ReadableMap payParams, final Promise promise);
