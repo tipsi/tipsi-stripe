@@ -26,6 +26,8 @@
     ".deviceSupportsAndroidPay()": ".deviceSupportsAndroidPay()",
     "deviceSupportsApplePay": ".deviceSupportsApplePay() -> Promise",
     ".deviceSupportsApplePay()": ".deviceSupportsApplePay()",
+    "errorcodes": "Error Codes",
+    "Error Codes": "Error Codes",
     "example": "Example",
     "Example": "Example",
     "google-pay": "Google Pay",

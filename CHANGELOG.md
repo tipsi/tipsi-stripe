@@ -1,5 +1,9 @@
 # Changelog
 
+## [5.6.0] - 2018-08-22
+### Added
+- [Common error codes](https://tipsi.github.io/tipsi-stripe/docs/errorcodes.html). Part of them provided by `tipsi-stripe`, another part by `Stripe` itself.
+
 ## [5.5.1] - 2018-08-10
 ### Added
 - `paymentRequestWithAndroidPay` now supports _boolean_ `phone_number_required` field to ask a user for phone number  

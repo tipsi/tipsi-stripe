@@ -3,32 +3,22 @@ import processTheme from './utils/processTheme'
 import checkArgs from './utils/checkArgs'
 import checkInit from './utils/checkInit'
 import * as types from './utils/types'
+import errorCodes from './errorCodes'
 
 const { StripeModule } = NativeModules
 
 class Stripe {
   stripeInitialized = false
 
-  constructor() {
-    if (StripeModule) {
-
-      // Error domain
-      this.TPSErrorDomain = StripeModule.TPSErrorDomain
-
-      // Error codes
-      this.TPSErrorCodeApplePayNotConfigured = StripeModule.TPSErrorCodeApplePayNotConfigured
-      this.TPSErrorCodePreviousRequestNotCompleted = StripeModule.TPSErrorCodePreviousRequestNotCompleted
-      this.TPSErrorCodeUserCancel = StripeModule.TPSErrorCodeUserCancel
-    }
-  }
-
   setOptions = (options = {}) => {
     checkArgs(
       types.setOptionsOptionsPropTypes,
       options, 'options', 'Stripe.setOptions'
     )
+
     this.stripeInitialized = true
-    return StripeModule.init(options)
+
+    return StripeModule.init(options, errorCodes)
   }
 
   // @deprecated use deviceSupportsNativePay
