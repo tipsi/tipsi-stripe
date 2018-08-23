@@ -1,12 +1,15 @@
 {
   "name": "tipsi-stripe",
-  "version": "5.0.0",
+  "version": "5.6.0",
   "description": "React Native Stripe binding for iOS/Andriod platforms",
   "main": "src/index.js",
   "types": "types",
   "scripts": {
     "ci": "scripts/local-ci.sh",
-    "dtslint": "dtslint types"
+    "dtslint": "dtslint types",
+    "build-docs": "scripts/build-docs.sh",
+    "start-docs": "npm start --prefix website/docs",
+    "test": "tape -r esm src/**/*.test.js"
   },
   "repository": {
     "type": "git",
@@ -41,6 +44,11 @@
     "eslint-config-tipsi": "1.5.0"
   },
   "dependencies": {
-    "prop-types": "^15.5.10"
+    "prop-types": "^15.5.10",
+    "eslint": "4.19.1",
+    "eslint-config-tipsi": "2.0.3",
+    "esm": "3.0.28",
+    "prop-types": "15.6.1",
+    "tape": "4.9.0"
   }
 }

@@ -24,7 +24,7 @@ import org.xmlpull.v1.XmlPullParser;
 
 public class CustomCardInputReactManager extends SimpleViewManager<CreditCardForm> {
 
-  public static final String REACT_CLASS = "CreditCardForm";
+  public static final String REACT_CLASS = "TPSCardField";
   private static final String TAG = CustomCardInputReactManager.class.getSimpleName();
   private static final String NUMBER = "number";
   private static final String EXP_MONTH = "expMonth";

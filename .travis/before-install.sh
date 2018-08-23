@@ -18,6 +18,7 @@ init_new_example_project() {
     src
     scripts
     __tests__
+    rn-cli.config.js
     ios/Podfile
   )
 
@@ -36,7 +37,9 @@ init_new_example_project() {
   done
 }
 
-export NVM_NODEJS_ORG_MIRROR=http://nodejs.org/dist
+# NVM_NODEJS_ORG_MIRROR is deprecated and will be removed in node-gyp v4,
+# please use NODEJS_ORG_MIRROR
+export NODEJS_ORG_MIRROR=http://nodejs.org/dist
 
 $HOME/.nvm/nvm.sh
 nvm install 8.9.0
@@ -50,6 +53,10 @@ case "${TRAVIS_OS_NAME}" in
 esac
 
 npm install -g react-native-cli
+
+# Test propTypes
+npm install
+npm test
 
 # Remove existing tarball
 rm -rf *.tgz

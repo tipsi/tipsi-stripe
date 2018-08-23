@@ -1,0 +1,48 @@
+{
+  "docs": {
+    "Overview": [
+      "index",
+      "compatibility",
+      "installation",
+      "linking",
+      "running-apple-pay-in-a-real-device",
+      "google-pay",
+      "usage",
+      "example",
+      "changelog"
+    ],
+    "Objects": [
+      "token",
+      "source"
+    ],
+    " Pay": [
+      "openapplepaysetup",
+      "deviceSupportsApplePay",
+      "canmakeapplepaypaymentsoptions",
+      "paymentrequestwithapplepayitemsoptions",
+      "completeapplepayrequest",
+      "cancelapplepayrequest"
+    ],
+    "G Pay": [
+      "devicesupportsandroidpay",
+      "canmakeandroidpaypayments",
+      "paymentrequestwithandroidpay"
+    ],
+    "Card Form": ["paymentrequestwithcardform"],
+    "Card Params Object": ["createtokenwithcard"],
+    "Bank Account Params Object": ["createtokenwithbankaccount"],
+    "Create Source Object With Params": ["createsourcewithparamsparams"],
+    "Components": ["paymentcardtextfield"],
+    "Error Codes": ["errorcodes"],
+    "Tests": [
+      "tests-local-ci",
+      "tests-manual"
+    ],
+    "Troubleshooting": [
+      "troubleshooting-android",
+      "troubleshooting-jest",
+      "troubleshooting-tests",
+      "troubleshooting-useframeworks-issue"
+    ]
+  }
+}
