@@ -199,12 +199,9 @@ public class StripeModule extends ReactContextBaseJavaModule {
 
       final AddCardDialogFragment cardDialog = AddCardDialogFragment.newInstance(
         mPublicKey,
-<<<<<<< HEAD
         getErrorCode(mErrorCodes, "cancelled"),
-        getDescription(mErrorCodes, "cancelled")
-=======
+        getDescription(mErrorCodes, "cancelled"),
         params.hasKey("createCardSource") && params.getBoolean("createCardSource")
->>>>>>> Fix 3D secure process
       );
       cardDialog.setPromise(promise);
       cardDialog.show(currentActivity.getFragmentManager(), "AddNewCard");

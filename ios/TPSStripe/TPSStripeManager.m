@@ -371,10 +371,11 @@ RCT_EXPORT_METHOD(paymentRequestWithCardForm:(NSDictionary *)options
     STPTheme *theme = [self formTheme:options[@"theme"]];
 
     STPPaymentConfiguration *configuration = [[STPPaymentConfiguration alloc] init];
-    [configuration setRequiredBillingAddressFields:requiredBillingAddressFields];
-    [configuration setCompanyName:companyName];
-    [configuration setPublishableKey:nextPublishableKey];
-    [configuration setCreateCardSources:options[@"createCardSource"] ? options[@"createCardSource"] : false];
+
+    configuration.requiredBillingAddressFields = requiredBillingAddressFields;
+    configuration.companyName = companyName;
+    configuration.publishableKey = nextPublishableKey;
+    configuration.createCardSources = options[@"createCardSource"] ? options[@"createCardSource"] : false;
 
     STPAddCardViewController *addCardViewController = [[STPAddCardViewController alloc] initWithConfiguration:configuration theme:theme];
     [addCardViewController setDelegate:self];
