@@ -187,6 +187,10 @@ RCT_EXPORT_METHOD(createTokenWithCard:(NSDictionary *)params
         return;
     }
 
+    // Save promise handlers to use in `paymentAuthorizationViewController`
+    promiseResolver = resolve;
+    promiseRejector = reject;
+
     requestIsCompleted = NO;
 
     STPCardParams *cardParams = [[STPCardParams alloc] init];
