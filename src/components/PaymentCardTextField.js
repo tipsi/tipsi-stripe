@@ -5,65 +5,12 @@ import {
   StyleSheet,
   View,
   TouchableWithoutFeedback,
-  ViewPropTypes,
-  Platform,
+  TextInput,
 } from 'react-native'
-import PropTypes from 'prop-types'
-import StyleSheetPropType from 'react-native/Libraries/StyleSheet/StyleSheetPropType'
-import ViewStylePropTypes from 'react-native/Libraries/Components/View/ViewStylePropTypes'
-import TextInputState from 'react-native/Libraries/Components/TextInput/TextInputState'
 
-const FieldStylePropType = {
-  ...ViewStylePropTypes,
-  color: PropTypes.string,
-}
-
-const NativePaymentCardTextField = requireNativeComponent('TPSCardField', PaymentCardTextField, {
-  nativeOnly: {
-    borderColor: true,
-    borderWidth: true,
-    cornerRadius: true,
-    textColor: true,
-    fontFamily: true,
-    fontWeight: true,
-    fontStyle: true,
-    fontSize: true,
-    enabled: true,
-    onChange: true,
-    params: true, // Currently iOS only
-    keyboardAppearance: true, // iOS only
-  },
-})
+const NativePaymentCardTextField = requireNativeComponent('TPSCardField', PaymentCardTextField)
 
 export default class PaymentCardTextField extends Component {
-  static propTypes = {
-    ...ViewPropTypes,
-    style: StyleSheetPropType(FieldStylePropType), // eslint-disable-line new-cap
-
-    // Common
-    expirationPlaceholder: PropTypes.string,
-    numberPlaceholder: PropTypes.string,
-    cvcPlaceholder: PropTypes.string,
-    disabled: PropTypes.bool,
-    onChange: PropTypes.func,
-
-    ...Platform.select({
-      ios: {
-        cursorColor: PropTypes.string,
-        textErrorColor: PropTypes.string,
-        placeholderColor: PropTypes.string,
-        keyboardAppearance: PropTypes.oneOf(['default', 'light', 'dark']),
-      },
-      android: {
-        setEnabled: PropTypes.bool,
-        backgroundColor: PropTypes.string,
-        cardNumber: PropTypes.string,
-        expDate: PropTypes.string,
-        securityCode: PropTypes.string,
-      },
-    }),
-  }
-
   static defaultProps = {
     ...View.defaultProps,
   }
@@ -83,15 +30,15 @@ export default class PaymentCardTextField extends Component {
   }
 
   isFocused = () => (
-    TextInputState.currentlyFocusedField() === findNodeHandle(this.cardTextFieldRef)
+    TextInput.State.currentlyFocusedField() === findNodeHandle(this.cardTextFieldRef)
   )
 
   focus = () => {
-    TextInputState.focusTextInput(findNodeHandle(this.cardTextFieldRef))
+    TextInput.State.focusTextInput(findNodeHandle(this.cardTextFieldRef))
   }
 
   blur = () => {
-    TextInputState.blurTextInput(findNodeHandle(this.cardTextFieldRef))
+    TextInput.State.blurTextInput(findNodeHandle(this.cardTextFieldRef))
   }
 
   handlePress = () => {
