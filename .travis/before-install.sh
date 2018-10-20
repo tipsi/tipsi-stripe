@@ -47,7 +47,7 @@ npm i npm@5 -g
 
 case "${TRAVIS_OS_NAME}" in
   osx)
-    gem install cocoapods -v 1.3.1
+    gem install cocoapods -v 1.4.0
     travis_wait pod repo update --silent
   ;;
 esac
