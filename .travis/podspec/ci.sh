@@ -12,6 +12,7 @@ rm -rf node_modules && npm install
 npm run add-podfile
 
 cd ios
+pod update
 pod install
 cd ..
 
