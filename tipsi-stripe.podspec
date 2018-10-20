@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   s.source         = { :git => 'https://github.com/tipsi/tipsi-stripe', :tag => s.version }
 
   s.requires_arc   = true
-  s.platform       = :ios, '8.0'
+  s.platform       = :ios, '9.0'
 
   s.preserve_paths = 'LICENSE', 'README.md'
   s.source_files   = 'ios/TPSStripe/**/*.{h,m}'
