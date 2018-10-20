@@ -792,7 +792,6 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
             return @"Diners Club";
         case STPCardBrandMasterCard:
             return @"MasterCard";
-        case STPCardBrandUnknown:
         default:
             return @"Unknown";
     }
