@@ -69,7 +69,7 @@ as an attribute into the root node of your manifest.
 
 | Key | Type | Description |
 | :--- | :--- | :--- |
-| type (Required) | String | The type of the source to create. Can be one of: **bancontact ‖ bitcoin ‖ card ‖ griopay ‖ ideal ‖ sepaDebit ‖ sofort ‖ threeDSecure ‖ alipay** |
+| type (Required) | String | The type of the source to create. Can be one of: **bancontact ‖ card ‖ griopay ‖ ideal ‖ sepaDebit ‖ sofort ‖ threeDSecure ‖ alipay** |
 | amount | Number | A positive number in the smallest currency unit representing the amount to charge the customer (e.g., 1099 for a €10.99 payment) |
 | name | String | The full name of the account holder |
 | returnURL | String | The URL the customer should be redirected to after they have successfully verified the payment |
