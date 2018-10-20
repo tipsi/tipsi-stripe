@@ -1,5 +1,5 @@
-# Use iOS 8 and above
-platform :ios, '8.0'
+# Use iOS 9 and above
+platform :ios, '9.0'
 
 # Specify Workspace
 workspace 'example'
