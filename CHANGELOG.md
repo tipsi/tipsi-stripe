@@ -1,5 +1,10 @@
 # Changelog
 
+## [6.0.0] - 2018-10-24
+- Update iOS Stripe SDK to 13.2.0
+- Update iOS deployment target to 9.0
+- Update Android Stripe SDK to 8.0.0
+
 ## [5.6.0] - 2018-08-22
 ### Added
 - [Common error codes](https://tipsi.github.io/tipsi-stripe/docs/errorcodes.html). Part of them provided by `tipsi-stripe`, another part by `Stripe` itself.

@@ -233,11 +233,8 @@ public class StripeModule extends ReactContextBaseJavaModule {
             options.getInt("amount"),
             options.getString("name"),
             options.getString("returnURL"),
-            getStringOrNull(options, "statementDescriptor"));
-        break;
-      case "bitcoin":
-        sourceParams = SourceParams.createBitcoinParams(
-            options.getInt("amount"), options.getString("currency"), options.getString("email"));
+            getStringOrNull(options, "statementDescriptor"),
+            options.getString("preferredLanguage"));
         break;
       case "giropay":
         sourceParams = SourceParams.createGiropayParams(
