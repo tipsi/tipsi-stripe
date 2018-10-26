@@ -188,6 +188,7 @@ RCT_EXPORT_METHOD(createTokenWithCard:(NSDictionary *)params
     }
 
     requestIsCompleted = NO;
+    promiseRejector = reject;
 
     STPCardParams *cardParams = [[STPCardParams alloc] init];
 
@@ -229,6 +230,7 @@ RCT_EXPORT_METHOD(createTokenWithBankAccount:(NSDictionary *)params
     }
 
     requestIsCompleted = NO;
+    promiseRejector = reject;
 
     STPBankAccountParams *bankAccount = [[STPBankAccountParams alloc] init];
 
