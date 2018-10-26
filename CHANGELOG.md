@@ -1,5 +1,8 @@
 # Changelog
 
+## [6.1.0] - 2018-10-28
+- Update CreditCardEntry to 1.4.10
+
 ## [6.0.0] - 2018-10-24
 - Update iOS Stripe SDK to 13.2.0
 - Update iOS deployment target to 9.0
