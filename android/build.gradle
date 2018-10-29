@@ -39,7 +39,7 @@ dependencies {
   compile "com.google.android.gms:play-services-wallet:$googlePlayServicesVersion"
   compile "com.google.firebase:firebase-core:$firebaseVersion"
   compile 'com.stripe:stripe-android:8.0.0'
-  compile 'com.github.tipsi:CreditCardEntry:1.4.11'
+  compile 'com.github.tipsi:CreditCardEntry:1.5.0'
 }
 
 repositories {
