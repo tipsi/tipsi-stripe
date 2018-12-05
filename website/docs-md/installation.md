@@ -16,7 +16,7 @@ yarn add tipsi-stripe
 
 ### CocoaPods (iOS)
 
-Setup your `Podfile` like the included [[example/ios/Podfile](example/ios/Podfile)](https://github.com/tipsi/tipsi-stripe/blob/master/example/ios/Podfile) then run `pod install`.
+Setup your `Podfile` like the included [example/ios/Podfile](https://github.com/tipsi/tipsi-stripe/blob/master/example/ios/Podfile) then run `pod install`.
 
 1. Open your project in Xcode workspace.
 2. Drag the following folder into your project:

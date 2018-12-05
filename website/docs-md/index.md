@@ -1,9 +1,10 @@
 ---
 id: index
-title: Requirements
-sidebar_label: Requirements
+title: Start here
+sidebar_label: Start here
 ---
 
+## Library requirements
 ### iOS
 
 * Xcode 8+
