@@ -58,14 +58,6 @@ public class CustomCardInputReactManager extends SimpleViewManager<CreditCardFor
     final CreditCardForm creditCardForm = new CreditCardForm(reactContext, attr);
     setListeners(creditCardForm);
     this.reactContext = reactContext;
-    creditCardForm.post(new Runnable() {
-      @Override
-      public void run() {
-        InputMethodManager inputMethodManager = (InputMethodManager) reactContext.getSystemService(reactContext.INPUT_METHOD_SERVICE);
-        inputMethodManager.toggleSoftInputFromWindow(creditCardForm.getApplicationWindowToken(), InputMethodManager.SHOW_IMPLICIT, 0);
-        creditCardForm.focusCreditCard();
-      }
-    });
     return creditCardForm;
   }
 
