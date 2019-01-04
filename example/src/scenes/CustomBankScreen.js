@@ -109,24 +109,24 @@ export default class CustomBankScreen extends PureComponent {
           onPress={() => this.handleBankAccountPayPress(false)}
           {...testID('customAccountErrorButton')}
         />
-        <View
-          style={styles.token}
-          {...testID('customAccountToken')}>
-          {token &&
+        {token &&
+          <View
+            style={styles.token}
+            {...testID('customAccountToken')}>
             <Text style={styles.instruction}>
               Token: {token.tokenId}
             </Text>
-          }
-        </View>
-        <View
-          style={styles.token}
-          {...testID('customAccountTokenError')}>
-          {error &&
+          </View>
+        }
+        {error &&
+          <View
+            style={styles.token}
+            {...testID('customAccountTokenError')}>
             <Text style={styles.instruction}>
               Error: {JSON.stringify(error.message)}
             </Text>
-          }
-        </View>
+          </View>
+        }
       </View>
     )
   }
