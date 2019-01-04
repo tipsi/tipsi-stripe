@@ -11,6 +11,7 @@ export default class CustomBankScreen extends PureComponent {
   state = {
     loading: false,
     token: null,
+    error: null,
     params: {
       accountNumber: '000123456789', // required field
       countryCode: 'us', // required field
@@ -19,21 +20,46 @@ export default class CustomBankScreen extends PureComponent {
       accountHolderName: 'Test holder name',
       accountHolderType: 'company',
     },
+    errorParams: {
+      accountNumber: '000123456789', // required field
+      countryCode: 'us', // required field
+      currency: 'abc', // required field
+      routingNumber: '110000000', // 9 digits
+      accountHolderName: 'Test holder name',
+      accountHolderType: 'company',
+    },
   }
 
-  handleBankAccountPayPress = async () => {
+  handleBankAccountPayPress = async (shouldPass = true) => {
     try {
-      this.setState({ loading: true, token: null })
-
-      const token = await stripe.createTokenWithBankAccount(this.state.params)
+      this.setState({ loading: true, error: null, token: null })
+      const params = shouldPass ? this.state.params : this.state.errorParams
+      const token = await stripe.createTokenWithBankAccount(params)
       this.setState({ loading: false, token })
     } catch (error) {
-      this.setState({ loading: false })
+      this.setState({ loading: false, error })
     }
   }
 
+  renderMandatoryFields = params => (
+    <View style={styles.params}>
+      <Text style={styles.param}>
+        Routing Number: {params.routingNumber}
+      </Text>
+      <Text style={styles.param}>
+        Account Number: {params.accountNumber}
+      </Text>
+      <Text style={styles.param}>
+        Country Code: {params.countryCode}
+      </Text>
+      <Text style={styles.param}>
+        Currency: {params.currency}
+      </Text>
+    </View>
+  )
+
   render() {
-    const { loading, token, params } = this.state
+    const { loading, token, params, errorParams, error } = this.state
 
     return (
       <View style={styles.container}>
@@ -41,20 +67,10 @@ export default class CustomBankScreen extends PureComponent {
           Custom Account Params Example
         </Text>
         <Spoiler title="Mandatory Fields">
-          <View style={styles.params}>
-            <Text style={styles.param}>
-              Routing Number: {params.routingNumber}
-            </Text>
-            <Text style={styles.param}>
-              Account Number: {params.accountNumber}
-            </Text>
-            <Text style={styles.param}>
-              Country Code: {params.countryCode}
-            </Text>
-            <Text style={styles.param}>
-              Currency: {params.currency}
-            </Text>
-          </View>
+          {this.renderMandatoryFields(params)}
+        </Spoiler>
+        <Spoiler title="Mandatory Fields - Error case">
+          {this.renderMandatoryFields(errorParams)}
         </Spoiler>
         <Spoiler title="Optional Fields" defaultOpen={false}>
           <View style={styles.params}>
@@ -87,12 +103,27 @@ export default class CustomBankScreen extends PureComponent {
           onPress={this.handleBankAccountPayPress}
           {...testID('customAccountButton')}
         />
+        <Button
+          text="Pay with error custom params"
+          loading={loading}
+          onPress={() => this.handleBankAccountPayPress(false)}
+          {...testID('customAccountErrorButton')}
+        />
         <View
           style={styles.token}
           {...testID('customAccountToken')}>
           {token &&
             <Text style={styles.instruction}>
               Token: {token.tokenId}
+            </Text>
+          }
+        </View>
+        <View
+          style={styles.token}
+          {...testID('customAccountTokenError')}>
+          {error &&
+            <Text style={styles.instruction}>
+              Error: {JSON.stringify(error.message)}
             </Text>
           }
         </View>
