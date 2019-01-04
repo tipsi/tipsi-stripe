@@ -73,7 +73,7 @@ export default class CustomCardScreen extends PureComponent {
         <Spoiler title="Mandatory Fields">
           {this.renderMandatoryFields(params)}
         </Spoiler>
-        <Spoiler title="Mandatory Fields - Error">
+        <Spoiler title="Mandatory Fields - Error" defaultOpen={false}>
           {this.renderMandatoryFields(errorParams)}
         </Spoiler>
         <Spoiler title="Optional Fields" defaultOpen={false}>

@@ -69,7 +69,7 @@ export default class CustomBankScreen extends PureComponent {
         <Spoiler title="Mandatory Fields">
           {this.renderMandatoryFields(params)}
         </Spoiler>
-        <Spoiler title="Mandatory Fields - Error case">
+        <Spoiler title="Mandatory Fields - Error case" defaultOpen={false}>
           {this.renderMandatoryFields(errorParams)}
         </Spoiler>
         <Spoiler title="Optional Fields" defaultOpen={false}>
