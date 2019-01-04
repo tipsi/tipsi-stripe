@@ -384,7 +384,12 @@ RCT_EXPORT_METHOD(paymentRequestWithCardForm:(NSDictionary *)options
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:addCardViewController];
     [navigationController setModalPresentationStyle:formPresentation];
     navigationController.navigationBar.stp_theme = theme;
-    [RCTPresentedViewController() presentViewController:navigationController animated:YES completion:nil];
+    // move to the end of main queue
+    // allow the execution of hiding modal
+    // to be finished first
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [RCTPresentedViewController() presentViewController:navigationController animated:YES completion:nil];
+    });
 }
 
 RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
@@ -441,7 +446,13 @@ RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
     if ([self canSubmitPaymentRequest:paymentRequest rejecter:reject]) {
         PKPaymentAuthorizationViewController *paymentAuthorizationVC = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest:paymentRequest];
         paymentAuthorizationVC.delegate = self;
-        [RCTPresentedViewController() presentViewController:paymentAuthorizationVC animated:YES completion:nil];
+        
+        // move to the end of main queue
+        // allow the execution of hiding modal
+        // to be finished first
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [RCTPresentedViewController() presentViewController:paymentAuthorizationVC animated:YES completion:nil];
+        });
     } else {
         // There is a problem with your Apple Pay configuration.
         [self resetPromiseCallbacks];
