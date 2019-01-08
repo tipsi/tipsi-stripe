@@ -26,21 +26,44 @@ export default class CustomCardScreen extends PureComponent {
       addressCountry: 'Test Country',
       addressZip: '55555',
     },
+    errorParams: {
+      number: '4242424242424241',
+      expMonth: 12,
+      expYear: 24,
+      cvc: '223',
+      name: 'Test User',
+      currency: 'usd',
+      addressLine1: '123 Test Street',
+      addressLine2: 'Apt. 5',
+      addressCity: 'Test City',
+      addressState: 'Test State',
+      addressCountry: 'Test Country',
+      addressZip: '55555',
+    },
   }
 
-  handleCustomPayPress = async () => {
+  handleCustomPayPress = async (shouldPass = true) => {
     try {
       this.setState({ loading: true, token: null, error: null })
 
-      const token = await stripe.createTokenWithCard(this.state.params)
+      const params = shouldPass ? this.state.params : this.state.errorParams
+      const token = await stripe.createTokenWithCard(params)
       this.setState({ loading: false, error: undefined, token })
     } catch (error) {
       this.setState({ loading: false, error })
     }
   }
 
+  renderMandatoryFields = params => (
+    <View style={styles.params}>
+      <Text style={styles.param}>Number: {params.number}</Text>
+      <Text style={styles.param}>Month: {params.expMonth}</Text>
+      <Text style={styles.param}>Year: {params.expYear}</Text>
+    </View>
+  )
+
   render() {
-    const { loading, token, error, params } = this.state
+    const { loading, token, error, params, errorParams } = this.state
 
     return (
       <View style={styles.container}>
@@ -48,11 +71,10 @@ export default class CustomCardScreen extends PureComponent {
           Custom Card Params Example
         </Text>
         <Spoiler title="Mandatory Fields">
-          <View style={styles.params}>
-            <Text style={styles.param}>Number: {params.number}</Text>
-            <Text style={styles.param}>Month: {params.expMonth}</Text>
-            <Text style={styles.param}>Year: {params.expYear}</Text>
-          </View>
+          {this.renderMandatoryFields(params)}
+        </Spoiler>
+        <Spoiler title="Mandatory Fields - Error" defaultOpen={false}>
+          {this.renderMandatoryFields(errorParams)}
         </Spoiler>
         <Spoiler title="Optional Fields" defaultOpen={false}>
           <View style={styles.params}>
@@ -74,6 +96,12 @@ export default class CustomCardScreen extends PureComponent {
           onPress={this.handleCustomPayPress}
           {...testID('customCardButton')}
         />
+        <Button
+          text="Pay with custom params - error"
+          loading={loading}
+          onPress={() => this.handleCustomPayPress(false)}
+          {...testID('customCardErrorButton')}
+        />
         {token &&
           <View style={styles.token} {...testID('customCardToken')}>
             <Text style={styles.instruction}>Token: {token.tokenId}</Text>
@@ -81,7 +109,7 @@ export default class CustomCardScreen extends PureComponent {
         }
         {error &&
           <View style={styles.token} {...testID('customCardTokenError')}>
-            <Text style={styles.instruction}>Error: {error}</Text>
+            <Text style={styles.instruction}>Error: {JSON.stringify(error.message)}</Text>
           </View>
         }
       </View>

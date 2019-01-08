@@ -43,7 +43,7 @@ export NODEJS_ORG_MIRROR=http://nodejs.org/dist
 
 $HOME/.nvm/nvm.sh
 nvm install 8.9.0
-npm i npm@5 -g
+npm i npm@6 -g
 
 case "${TRAVIS_OS_NAME}" in
   osx)
