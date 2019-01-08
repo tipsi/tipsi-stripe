@@ -1,5 +1,10 @@
 # Changelog
 
+## [7.0.0] - 2018-10-28
+- Update iOS Stripe SDK to 14.0.0
+- Update Android Stripe SDK to 8.1.0
+- Fix [unassigned promise rejector bug](https://github.com/tipsi/tipsi-stripe/issues/372)
+
 ## [6.1.0] - 2018-10-28
 - Update CreditCardEntry to 1.4.10
 

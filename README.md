@@ -6,7 +6,10 @@
 React Native Stripe binding for iOS/Android platforms
 
 ## Changelog
-[[6.0.1] - 2018-10-28](/CHANGELOG.md#601---2018-10-28)
+
+[[7.0.0] - 2019-01-08 **Breaking changes**](/CHANGELOG.md#700---2019-01-08)
+
+[[6.1.0] - 2018-10-28](/CHANGELOG.md#610---2018-10-28)
 
 [[6.0.0] - 2018-10-24 **Breaking changes**](/CHANGELOG.md#600---2018-10-24)
 
@@ -25,6 +28,7 @@ React Native Stripe binding for iOS/Android platforms
 [[5.0.0] - 2018-03-21 **Breaking changes**](/CHANGELOG.md#500---2018-03-21)
 
 ## Documentation
+
 https://tipsi.github.io/tipsi-stripe/
 
 ```sh
