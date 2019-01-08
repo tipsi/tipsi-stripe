@@ -14,7 +14,8 @@ export default class AndroidPayScreen extends PureComponent {
   }
 
   async componentWillMount() {
-    const allowed = await stripe.deviceSupportsAndroidPay()
+    const allowed = await stripe.deviceSupportsNativePay()
+
     this.setState({ allowed })
   }
 
@@ -24,10 +25,11 @@ export default class AndroidPayScreen extends PureComponent {
         loading: true,
         token: null,
       })
-      const token = await stripe.paymentRequestWithAndroidPay({
+      const token = await stripe.paymentRequestWithNativePay({
         total_price: '100.00',
         currency_code: 'USD',
         shipping_address_required: true,
+        phone_number_required: true,
         shipping_countries: ['US', 'CA'],
         line_items: [{
           currency_code: 'USD',

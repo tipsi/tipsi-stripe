@@ -6,7 +6,9 @@ const { driver, idFromAccessId } = helper
 
 test('Test if user can use Bank Account', async (t) => {
   const accountFormButtonId = idFromAccessId('customAccountButton')
+  const accountFormErrorButtonId = idFromAccessId('customAccountErrorButton')
   const tokenId = idFromAccessId('customAccountToken')
+  const errorMessageId = idFromAccessId('customAccountTokenError')
 
   await openTestSuite('Custom Bank')
 
@@ -18,4 +20,10 @@ test('Test if user can use Bank Account', async (t) => {
 
   await driver.waitForVisible(tokenId, 500000)
   t.pass('User should see token')
+
+  await driver.click(accountFormErrorButtonId)
+  t.pass('User should be able to tap on `Pay with custom params - Error` button')
+
+  await driver.waitForVisible(errorMessageId, 500000)
+  t.pass('User should see error message')
 })

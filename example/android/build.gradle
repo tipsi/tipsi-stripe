@@ -2,11 +2,11 @@
 
 buildscript {
     repositories {
-        jcenter()
         maven {
             url "https://maven.google.com/"
             name "Google"
         }
+        jcenter()
     }
     dependencies {
         classpath "com.android.tools.build:gradle:3.0.1"
@@ -33,4 +33,10 @@ allprojects {
             url "$rootDir/../node_modules/react-native/android"
         }
     }
+}
+
+ext {
+    buildToolsVersion = "26.0.2"
+    firebaseVersion = "11.8.0"
+    googlePlayServicesVersion = "11.8.0"
 }

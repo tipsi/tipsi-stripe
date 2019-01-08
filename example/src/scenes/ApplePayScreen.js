@@ -21,17 +21,17 @@ export default class ApplePayScreen extends PureComponent {
   }
 
   async componentWillMount() {
-    const allowed = await stripe.deviceSupportsApplePay()
-    const amexAvailable = await stripe.canMakeApplePayPayments({
+    const allowed = await stripe.deviceSupportsNativePay()
+    const amexAvailable = await stripe.canMakeNativePayPayments({
       networks: ['american_express'],
     })
-    const discoverAvailable = await stripe.canMakeApplePayPayments({
+    const discoverAvailable = await stripe.canMakeNativePayPayments({
       networks: ['discover'],
     })
-    const masterCardAvailable = await stripe.canMakeApplePayPayments({
+    const masterCardAvailable = await stripe.canMakeNativePayPayments({
       networks: ['master_card'],
     })
-    const visaAvailable = await stripe.canMakeApplePayPayments({
+    const visaAvailable = await stripe.canMakeNativePayPayments({
       networks: ['visa'],
     })
     this.setState({
@@ -54,16 +54,7 @@ export default class ApplePayScreen extends PureComponent {
         status: null,
         token: null,
       })
-      const token = await stripe.paymentRequestWithApplePay([{
-        label: 'Whisky',
-        amount: '50.00',
-      }, {
-        label: 'Vine',
-        amount: '60.00',
-      }, {
-        label: 'Tipsi',
-        amount: '110.00',
-      }], {
+      const token = await stripe.paymentRequestWithNativePay({
         // requiredBillingAddressFields: ['all'],
         // requiredShippingAddressFields: ['all'],
         shippingMethods: [{
@@ -72,15 +63,25 @@ export default class ApplePayScreen extends PureComponent {
           detail: 'Test @ 10',
           amount: '10.00',
         }],
-      })
+      },
+      [{
+        label: 'Whisky',
+        amount: '50.00',
+      }, {
+        label: 'Vine',
+        amount: '60.00',
+      }, {
+        label: 'Tipsi',
+        amount: '110.00',
+      }])
 
       this.setState({ loading: false, token })
 
       if (this.state.complete) {
-        await stripe.completeApplePayRequest()
+        await stripe.completeNativePayRequest()
         this.setState({ status: 'Apple Pay payment completed' })
       } else {
-        await stripe.cancelApplePayRequest()
+        await stripe.cancelNativePayRequest()
         this.setState({ status: 'Apple Pay payment cenceled' })
       }
     } catch (error) {
@@ -89,7 +90,7 @@ export default class ApplePayScreen extends PureComponent {
   }
 
   handleSetupApplePayPress = () => (
-    stripe.openApplePaySetup()
+    stripe.openNativePaySetup()
   )
 
   render() {
