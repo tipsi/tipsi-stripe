@@ -439,7 +439,7 @@ RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
     if ([self canSubmitPaymentRequest:paymentRequest rejecter:reject]) {
         PKPaymentAuthorizationViewController *paymentAuthorizationVC = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest:paymentRequest];
         paymentAuthorizationVC.delegate = self;
-        
+
         // move to the end of main queue
         // allow the execution of hiding modal
         // to be finished first
@@ -480,7 +480,7 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     [cardParams setAddressState: params[@"addressState"]];
     [cardParams setAddressCountry: params[@"addressCountry"]];
     [cardParams setAddressZip: params[@"addressZip"]];
-    
+
     return cardParams;
 }
 
@@ -555,7 +555,7 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
                didCreateSource:(STPSource *)source
                    completion:(STPErrorBlock)completion {
     [RCTPresentedViewController() dismissViewControllerAnimated:YES completion:nil];
-    
+
     requestIsCompleted = YES;
     completion(nil);
     [self resolvePromise:[self convertSourceObject:source]];
@@ -691,7 +691,6 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     NSMutableDictionary *result = [@{} mutableCopy];
 
     // Source
-    [result setValue:source.stripeID forKey:@"sourceId"];
     [result setValue:source.clientSecret forKey:@"clientSecret"];
     [result setValue:@([source.created timeIntervalSince1970]) forKey:@"created"];
     [result setValue:source.currency forKey:@"currency"];
@@ -718,7 +717,7 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
         [owner setValue:source.owner.email forKey:@"email"];
         [owner setValue:source.owner.name forKey:@"name"];
         [owner setValue:source.owner.phone forKey:@"phone"];
-        
+
         if (source.owner.verifiedAddress) {
             [owner setObject:source.owner.verifiedAddress forKey:@"verifiedAddress"];
         }
