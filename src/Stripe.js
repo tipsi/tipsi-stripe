@@ -70,6 +70,11 @@ class Stripe {
     return StripeModule.paymentRequestWithAndroidPay(options)
   }
 
+  isCardNumberValid = (cardNumber= '') => {
+    checkInit(this)
+    return StripeModule.isCardNumberValid(cardNumber)
+  }
+
   // @deprecated use paymentRequestWithNativePay
   paymentRequestWithApplePay = (items = [], options = {}) => {
     checkInit(this)
