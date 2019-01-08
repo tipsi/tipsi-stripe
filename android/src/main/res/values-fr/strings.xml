@@ -1,0 +1,18 @@
+<resources>
+
+  <string name="gettipsi_card_number">Numéro de carte</string>
+  <string name="gettipsi_save">Enregistrer</string>
+  <string name="gettipsi_card_cvc">CVV</string>
+  <string name="gettipsi_google_pay_unavaliable">Google Pay n\'est pas disponible sur votre appareil.</string>
+  <string name="gettipsi_user_cancel_dialog">L\'utilisateur a annulé l\'opération, pas de carte ajoutée.</string>
+  <string name="gettipsi_card_enter_dialog_title">Ajouter une nouvelle carte</string>
+  <string name="gettipsi_card_enter_dialog_positive_button">Valider</string>
+  <string name="gettipsi_card_enter_dialog_negative_button">Annuler</string>
+  <string name="gettipsi_card_number_label">Carte</string>
+
+  <string-array name="gettipsi_currency_array">
+    <item>Currency (optional)</item>
+    <item>Unspecified</item>
+    <item>EUR</item>
+  </string-array>
+</resources>

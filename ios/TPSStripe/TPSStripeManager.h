@@ -12,6 +12,8 @@
 #import <React/RCTBridgeModule.h>
 #import <React/RCTConvert.h>
 
-@interface TPSStripeManager : NSObject <RCTBridgeModule, PKPaymentAuthorizationViewControllerDelegate, STPAddCardViewControllerDelegate>
+@interface StripeModule : NSObject <RCTBridgeModule, PKPaymentAuthorizationViewControllerDelegate, STPAddCardViewControllerDelegate>
+
+@property (nonatomic) STPRedirectContext *redirectContext;
 
 @end

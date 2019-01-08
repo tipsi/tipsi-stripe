@@ -136,6 +136,30 @@
     _paymentCardTextField.textErrorColor = textErrorColor;
 }
 
+- (NSString *)numberPlaceholder {
+    return _paymentCardTextField.numberPlaceholder;
+}
+
+- (void)setNumberPlaceholder:(NSString *)numberPlaceholder {
+    _paymentCardTextField.numberPlaceholder = numberPlaceholder;
+}
+
+- (NSString *)expirationPlaceholder {
+    return _paymentCardTextField.expirationPlaceholder;
+}
+
+- (void)setExpirationPlaceholder:(NSString *)placeholder {
+    _paymentCardTextField.expirationPlaceholder = placeholder;
+}
+
+- (NSString *)cvcPlaceholder {
+    return _paymentCardTextField.cvcPlaceholder;
+}
+
+- (void)setCvcPlaceholder:(NSString *)cvcPlaceholder {
+    _paymentCardTextField.cvcPlaceholder = cvcPlaceholder;
+}
+
 - (UIColor *)placeholderColor {
     return _paymentCardTextField.placeholderColor;
 }

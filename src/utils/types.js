@@ -1,7 +1,23 @@
 import PropTypes from 'prop-types'
 
-const availableApplePayNetworks = ['american_express', 'discover', 'master_card', 'visa']
-const availableApplePayAddressFields = ['all', 'name', 'email', 'phone', 'postal_address']
+export const availableApplePayNetworks = ['american_express', 'discover', 'master_card', 'visa']
+export const availableApplePayAddressFields = ['all', 'name', 'email', 'phone', 'postal_address']
+export const availableApplePayShippingTypes = [
+  'shipping',
+  'delivery',
+  'store_pickup',
+  'service_pickup',
+]
+export const availableSourceTypes = [
+  'bancontact',
+  'giropay',
+  'ideal',
+  'sepaDebit',
+  'sofort',
+  'threeDSecure',
+  'alipay',
+  'card',
+]
 
 export const setOptionsOptionsPropTypes = {
   publishableKey: PropTypes.string,
@@ -9,29 +25,40 @@ export const setOptionsOptionsPropTypes = {
   androidPayMode: PropTypes.string,
 }
 
+export const availableApplePayNetworkPropTypes = PropTypes.oneOf(availableApplePayNetworks)
+
 export const canMakeApplePayPaymentsOptionsPropTypes = {
-  networks: PropTypes.arrayOf(PropTypes.oneOf(availableApplePayNetworks)),
+  networks: PropTypes.arrayOf(availableApplePayNetworkPropTypes),
+}
+
+export const paymentRequestWithApplePayItemPropTypes = {
+  label: PropTypes.string.isRequired,
+  amount: PropTypes.string.isRequired,
+  type: PropTypes.oneOf(['final', 'pending']),
 }
 
 export const paymentRequestWithApplePayItemsPropTypes = {
-  items: PropTypes.arrayOf(PropTypes.shape({
-    label: PropTypes.string.isRequired,
-    amount: PropTypes.string.isRequired,
-    type: PropTypes.oneOf('final', 'pending'),
-  })),
+  items: PropTypes.arrayOf(
+    PropTypes.shape(paymentRequestWithApplePayItemPropTypes)
+  ).isRequired,
+}
+
+export const applePayAddressFieldsPropTypes = PropTypes.oneOf(availableApplePayAddressFields)
+
+export const applePayOptionShippingMethodPropTypes = {
+  id: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  detail: PropTypes.string.isRequired,
+  amount: PropTypes.string.isRequired,
 }
 
 export const paymentRequestWithApplePayOptionsPropTypes = {
   currencyCode: PropTypes.string,
   countryCode: PropTypes.string,
-  requiredBillingAddressFields: PropTypes.arrayOf(PropTypes.oneOf(availableApplePayAddressFields)),
-  requiredShippingAddressFields: PropTypes.arrayOf(PropTypes.oneOf(availableApplePayAddressFields)),
-  shippingMethods: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
-    detail: PropTypes.string.isRequired,
-    amount: PropTypes.string.isRequired,
-  })),
+  requiredBillingAddressFields: PropTypes.arrayOf(applePayAddressFieldsPropTypes),
+  requiredShippingAddressFields: PropTypes.arrayOf(applePayAddressFieldsPropTypes),
+  shippingMethods: PropTypes.arrayOf(PropTypes.shape(applePayOptionShippingMethodPropTypes)),
+  shippingType: PropTypes.oneOf(availableApplePayShippingTypes),
 }
 
 export const paymentRequestWithCardFormOptionsPropTypes = {
@@ -60,7 +87,7 @@ export const paymentRequestWithCardFormOptionsPropTypes = {
     secondaryForegroundColor: PropTypes.string,
     accentColor: PropTypes.string,
     errorColor: PropTypes.string,
-  })
+  }),
 }
 
 export const createTokenWithCardParamsPropTypes = {
@@ -94,44 +121,63 @@ export const createTokenWithBankAccountParamsPropTypes = {
   accountHolderType: PropTypes.oneOf(['company', 'individual']),
 }
 
+export const androidPayLineItemPropTypes = {
+  currency_code: PropTypes.string.isRequired,
+  total_price: PropTypes.string.isRequired,
+  unit_price: PropTypes.string.isRequired,
+  quantity: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+}
+
 export const paymentRequestWithAndroidPayOptionsPropTypes = {
   total_price: PropTypes.string.isRequired,
   currency_code: PropTypes.string.isRequired,
+  line_items: PropTypes.arrayOf(PropTypes.shape(androidPayLineItemPropTypes)).isRequired,
   shipping_address_required: PropTypes.bool,
-  line_items: PropTypes.array.isRequired,
+  billing_address_required: PropTypes.bool,
 }
 
 export const createSourceWithParamsPropType = {
-  type: PropTypes.oneOf(['bancontact', 'bitcoin', 'giropay', 'ideal', 'sepaDebit', 'sofort', 'threeDSecure', 'alipay', 'card']).isRequired,
-  amount: PropTypes.number,
-  name: PropTypes.string,
-  returnURL: PropTypes.string,
-  statementDescriptor: PropTypes.string,
-  currency: PropTypes.string,
-  email: PropTypes.string,
-  bank: PropTypes.string,
-  iban: PropTypes.string,
+  type: PropTypes.oneOf(availableSourceTypes).isRequired,
+
+  // Card & SEPA params
   addressLine1: PropTypes.string,
-  city: PropTypes.string,
-  postalCode: PropTypes.string,
   country: PropTypes.string,
-  card: PropTypes.string,
+  name: PropTypes.string,
+
+  // Card params
   number: PropTypes.string,
   expMonth: PropTypes.number,
   expYear: PropTypes.number,
   cvc: PropTypes.string,
-  name: PropTypes.string,
-  addressLine1: PropTypes.string,
-  addressLine2: PropTypes.string,
   addressCity: PropTypes.string,
+  addressCountry: PropTypes.string,
+  addressLine2: PropTypes.string,
   addressState: PropTypes.string,
   addressZip: PropTypes.string,
-  addressCountry: PropTypes.string,
   brand: PropTypes.string,
-  last4: PropTypes.string,
+  currency: PropTypes.string,
   fingerprint: PropTypes.string,
   funding: PropTypes.string,
-  country: PropTypes.string,
-  currency: PropTypes.string,
   id: PropTypes.string,
+  last4: PropTypes.string,
+
+  // SEPA params
+  city: PropTypes.string,
+  iban: PropTypes.string,
+  postalCode: PropTypes.string,
+
+  // Alipay params
+  email: PropTypes.string,
+
+  // Ideal params
+  bank: PropTypes.string,
+
+  // 3D Secure params
+  card: PropTypes.string,
+
+  // Other params
+  returnURL: PropTypes.string,
+  amount: PropTypes.number,
+  statementDescriptor: PropTypes.string,
 }

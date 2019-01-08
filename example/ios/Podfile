@@ -1,12 +1,12 @@
-# Use iOS 8 and above
-platform :ios, '8.0'
+# Use iOS 9 and above
+platform :ios, '9.0'
 
 # Specify Workspace
 workspace 'example'
 
 target 'example' do
   # Stripe
-  pod 'Stripe', '~> 11.2.0'
+  pod 'Stripe', '~> 14.0.0'
 
   # Install additional dependencies
   pod 'Firebase/Core'
