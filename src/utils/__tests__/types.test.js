@@ -313,7 +313,6 @@ test('createSourceWithParamsPropType', (t) => {
       name: 'name',
       returnURL: 'returnURL',
       statementDescriptor: 'statementDescriptor',
-      currency: 'currency',
       email: 'email',
       bank: 'bank',
       iban: 'iban',
@@ -322,10 +321,52 @@ test('createSourceWithParamsPropType', (t) => {
       postalCode: 'postalCode',
       country: 'country',
       card: 'card',
+      number: 'number',
+      expMonth: 10,
+      expYear: 19,
+      cvc: '1234',
+      addressCity: 'addressCity',
+      addressCountry: 'addressCountry',
+      addressLine2: 'addressLine2',
+      addressState: 'addressState',
+      addressZip: 'addressZip',
+      brand: 'brand',
+      fingerprint: 'fingerprint',
+      funding: 'funding',
+      id: 'id',
+      last4: 'last4',
     }
 
-    t.doesNotThrow(checkPropTypes(createSourceWithParamsPropType, passedProps))
+    t.doesNotThrow(checkPropTypes(createSourceWithParamsPropType, passedProps), null, `Type \`${type}\` should not throws`)
   })
+
+  const wrongExpMonthProps = {
+    type: 'card',
+    number: 'number',
+    expMonth: '10',
+    expYear: 19,
+    cvc: '1234',
+  }
+
+  t.throws(
+    checkPropTypes(createSourceWithParamsPropType, wrongExpMonthProps),
+    /Invalid .* `expMonth` of type `string` supplied to .*, expected `number`\./,
+    'With `card` type, `expMonth` should be a number'
+  )
+
+  const wrongExpYearProps = {
+    type: 'card',
+    number: 'number',
+    expMonth: 10,
+    expYear: '19',
+    cvc: '1234',
+  }
+
+  t.throws(
+    checkPropTypes(createSourceWithParamsPropType, wrongExpYearProps),
+    /Invalid .* `expYear` of type `string` supplied to .*, expected `number`\./,
+    'With `card` type, `expYear` should be a number'
+  )
 
   t.end()
 })

@@ -139,13 +139,19 @@ export const paymentRequestWithAndroidPayOptionsPropTypes = {
 
 export const createSourceWithParamsPropType = {
   type: PropTypes.oneOf(availableSourceTypes).isRequired,
-
-  // Card & SEPA params
-  addressLine1: PropTypes.string,
-  country: PropTypes.string,
+  amount: PropTypes.number,
   name: PropTypes.string,
-
-  // Card params
+  returnURL: PropTypes.string,
+  statementDescriptor: PropTypes.string,
+  currency: PropTypes.string,
+  email: PropTypes.string,
+  bank: PropTypes.string,
+  iban: PropTypes.string,
+  addressLine1: PropTypes.string,
+  city: PropTypes.string,
+  postalCode: PropTypes.string,
+  country: PropTypes.string,
+  card: PropTypes.string,
   number: PropTypes.string,
   expMonth: PropTypes.number,
   expYear: PropTypes.number,
@@ -156,28 +162,8 @@ export const createSourceWithParamsPropType = {
   addressState: PropTypes.string,
   addressZip: PropTypes.string,
   brand: PropTypes.string,
-  currency: PropTypes.string,
   fingerprint: PropTypes.string,
   funding: PropTypes.string,
   id: PropTypes.string,
   last4: PropTypes.string,
-
-  // SEPA params
-  city: PropTypes.string,
-  iban: PropTypes.string,
-  postalCode: PropTypes.string,
-
-  // Alipay params
-  email: PropTypes.string,
-
-  // Ideal params
-  bank: PropTypes.string,
-
-  // 3D Secure params
-  card: PropTypes.string,
-
-  // Other params
-  returnURL: PropTypes.string,
-  amount: PropTypes.number,
-  statementDescriptor: PropTypes.string,
 }
