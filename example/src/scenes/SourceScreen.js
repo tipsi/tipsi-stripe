@@ -9,8 +9,26 @@ export default class SourceScreen extends PureComponent {
   static title = 'Sources'
 
   state = {
+    error: null,
     loading: false,
     source: null,
+  }
+
+  onCreacteCardSourcePress = async () => {
+    try {
+      this.setState({ loading: true, source: null })
+
+      const source = await stripe.createSourceWithParams({
+        type: 'card',
+        number: '5555555555554444',
+        expMonth: 11,
+        expYear: 29,
+        cvc: '789',
+      })
+      this.setState({ loading: false, source })
+    } catch (error) {
+      this.setState({ error, loading: false })
+    }
   }
 
   handleCreacteSourcePress = async () => {
@@ -30,7 +48,7 @@ export default class SourceScreen extends PureComponent {
   }
 
   render() {
-    const { loading, source } = this.state
+    const { error, loading, source } = this.state
 
     return (
       <View style={styles.container}>
@@ -40,19 +58,31 @@ export default class SourceScreen extends PureComponent {
         <Text style={styles.instruction}>
           Click button to create a source.
         </Text>
+
+        <Button
+          text="Create source for card payment"
+          loading={loading}
+          onPress={this.onCreacteCardSourcePress}
+          {...testID('cardSourceButton')}
+        />
         <Button
           text="Create source for Alipay payment"
           loading={loading}
           onPress={this.handleCreacteSourcePress}
           {...testID('sourceButton')}
         />
-        <View style={styles.source} {...testID('sourceObject')}>
-          {source &&
-            <Text style={styles.instruction}>
+
+        {source && (
+          <Text style={styles.source} {...testID('sourceObject')}>
               Source: {JSON.stringify(source)}
-            </Text>
-          }
-        </View>
+          </Text>
+        )}
+
+        {error && (
+          <Text style={[styles.source, styles.error]} {...testID('sourceErrorObject')}>
+            Error: {JSON.stringify(error)}
+          </Text>
+        )}
       </View>
     )
   }
@@ -69,13 +99,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     margin: 10,
   },
-  instruction: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
   source: {
+    color: '#333333',
+    margin: 8,
+    textAlign: 'center',
     width: '100%',
-    height: 120,
+  },
+  error: {
+    color: 'darkred',
   },
 })

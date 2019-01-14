@@ -322,9 +322,9 @@ test('createSourceWithParamsPropType', (t) => {
       country: 'country',
       card: 'card',
       number: 'number',
-      expMonth: 10,
-      expYear: 19,
-      cvc: '1234',
+      expMonth: 11,
+      expYear: 29,
+      cvc: 'cvc',
       addressCity: 'addressCity',
       addressCountry: 'addressCountry',
       addressLine2: 'addressLine2',
@@ -337,15 +337,33 @@ test('createSourceWithParamsPropType', (t) => {
       last4: 'last4',
     }
 
-    t.doesNotThrow(checkPropTypes(createSourceWithParamsPropType, passedProps), null, `Type \`${type}\` should not throws`)
+    t.doesNotThrow(
+      checkPropTypes(createSourceWithParamsPropType, passedProps),
+      null,
+      `Type \`${type}\` should not throws`
+    )
   })
+
+  const wrongNumberProps = {
+    type: 'card',
+    number: 1234567890,
+    expMonth: 11,
+    expYear: 29,
+    cvc: 'cvc',
+  }
+
+  t.throws(
+    checkPropTypes(createSourceWithParamsPropType, wrongNumberProps),
+    /Invalid .* `number` of type `number` supplied to .*, expected `string`\./,
+    'With `card` type, `number` should be a string'
+  )
 
   const wrongExpMonthProps = {
     type: 'card',
     number: 'number',
     expMonth: '10',
-    expYear: 19,
-    cvc: '1234',
+    expYear: 29,
+    cvc: 'cvc',
   }
 
   t.throws(
@@ -357,15 +375,29 @@ test('createSourceWithParamsPropType', (t) => {
   const wrongExpYearProps = {
     type: 'card',
     number: 'number',
-    expMonth: 10,
+    expMonth: 11,
     expYear: '19',
-    cvc: '1234',
+    cvc: 'cvc',
   }
 
   t.throws(
     checkPropTypes(createSourceWithParamsPropType, wrongExpYearProps),
     /Invalid .* `expYear` of type `string` supplied to .*, expected `number`\./,
     'With `card` type, `expYear` should be a number'
+  )
+
+  const wrongCvcProps = {
+    type: 'card',
+    number: 'number',
+    expMonth: 11,
+    expYear: 29,
+    cvc: 123,
+  }
+
+  t.throws(
+    checkPropTypes(createSourceWithParamsPropType, wrongCvcProps),
+    /Invalid .* `cvc` of type `number` supplied to .*, expected `string`\./,
+    'With `card` type, `cvc` should be a string'
   )
 
   t.end()
