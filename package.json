@@ -7,7 +7,9 @@
     "ci": "scripts/local-ci.sh",
     "build-docs": "scripts/build-docs.sh",
     "start-docs": "npm start --prefix website/docs",
-    "test": "tape -r esm src/**/*.test.js"
+    "test": "tape -r esm src/**/*.test.js",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix"
   },
   "repository": {
     "type": "git",
