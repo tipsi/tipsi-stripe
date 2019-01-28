@@ -9,12 +9,10 @@ import {
   Platform,
 } from 'react-native'
 import PropTypes from 'prop-types'
-import StyleSheetPropType from 'react-native/Libraries/StyleSheet/StyleSheetPropType'
-import ViewStylePropTypes from 'react-native/Libraries/Components/View/ViewStylePropTypes'
 import TextInputState from 'react-native/Libraries/Components/TextInput/TextInputState'
 
 const FieldStylePropType = {
-  ...ViewStylePropTypes,
+  ...ViewPropTypes.style,
   color: PropTypes.string,
 }
 
@@ -38,7 +36,7 @@ const NativePaymentCardTextField = requireNativeComponent('TPSCardField', Paymen
 export default class PaymentCardTextField extends Component {
   static propTypes = {
     ...ViewPropTypes,
-    style: StyleSheetPropType(FieldStylePropType), // eslint-disable-line new-cap
+    style: FieldStylePropType,
 
     // Common
     expirationPlaceholder: PropTypes.string,
