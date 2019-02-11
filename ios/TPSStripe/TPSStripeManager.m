@@ -188,22 +188,10 @@ RCT_EXPORT_METHOD(createTokenWithCard:(NSDictionary *)params
     }
 
     requestIsCompleted = NO;
+    promiseResolver = resolve;
+    promiseRejector = reject;
 
-    STPCardParams *cardParams = [[STPCardParams alloc] init];
-
-    [cardParams setNumber: params[@"number"]];
-    [cardParams setExpMonth: [params[@"expMonth"] integerValue]];
-    [cardParams setExpYear: [params[@"expYear"] integerValue]];
-    [cardParams setCvc: params[@"cvc"]];
-
-    [cardParams setCurrency: params[@"currency"]];
-    [cardParams setName: params[@"name"]];
-    [cardParams setAddressLine1: params[@"addressLine1"]];
-    [cardParams setAddressLine2: params[@"addressLine2"]];
-    [cardParams setAddressCity: params[@"addressCity"]];
-    [cardParams setAddressState: params[@"addressState"]];
-    [cardParams setAddressCountry: params[@"addressCountry"]];
-    [cardParams setAddressZip: params[@"addressZip"]];
+    STPCardParams *cardParams = [self createCard:params];
 
     STPAPIClient *stripeAPIClient = [self newAPIClient];
 
@@ -229,6 +217,8 @@ RCT_EXPORT_METHOD(createTokenWithBankAccount:(NSDictionary *)params
     }
 
     requestIsCompleted = NO;
+    promiseResolver = resolve;
+    promiseRejector = reject;
 
     STPBankAccountParams *bankAccount = [[STPBankAccountParams alloc] init];
 
@@ -288,6 +278,9 @@ RCT_EXPORT_METHOD(createSourceWithParams:(NSDictionary *)params
     }
     if ([sourceType isEqualToString:@"alipay"]) {
             sourceParams = [STPSourceParams alipayParamsWithAmount:[[params objectForKey:@"amount"] unsignedIntegerValue] currency:params[@"currency"] returnURL:params[@"returnURL"]];
+    }
+    if ([sourceType isEqualToString:@"card"]) {
+        sourceParams = [STPSourceParams cardParamsWithCard:[self createCard:params]];
     }
 
     STPAPIClient* stripeAPIClient = [self newAPIClient];
@@ -452,7 +445,7 @@ RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
     if ([self canSubmitPaymentRequest:paymentRequest rejecter:reject]) {
         PKPaymentAuthorizationViewController *paymentAuthorizationVC = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest:paymentRequest];
         paymentAuthorizationVC.delegate = self;
-        
+
         // move to the end of main queue
         // allow the execution of hiding modal
         // to be finished first
@@ -476,6 +469,26 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
 }
 
 #pragma mark - Private
+
+- (STPCardParams *)createCard:(NSDictionary *)params {
+    STPCardParams *cardParams = [[STPCardParams alloc] init];
+
+    [cardParams setNumber: params[@"number"]];
+    [cardParams setExpMonth: [params[@"expMonth"] integerValue]];
+    [cardParams setExpYear: [params[@"expYear"] integerValue]];
+    [cardParams setCvc: params[@"cvc"]];
+
+    [cardParams setCurrency: params[@"currency"]];
+    [cardParams setName: params[@"name"]];
+    [cardParams setAddressLine1: params[@"addressLine1"]];
+    [cardParams setAddressLine2: params[@"addressLine2"]];
+    [cardParams setAddressCity: params[@"addressCity"]];
+    [cardParams setAddressState: params[@"addressState"]];
+    [cardParams setAddressCountry: params[@"addressCountry"]];
+    [cardParams setAddressZip: params[@"addressZip"]];
+
+    return cardParams;
+}
 
 - (void)resolvePromise:(id)result {
     if (promiseResolver) {
@@ -548,7 +561,7 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
                didCreateSource:(STPSource *)source
                    completion:(STPErrorBlock)completion {
     [RCTPresentedViewController() dismissViewControllerAnimated:YES completion:nil];
-    
+
     requestIsCompleted = YES;
     completion(nil);
     [self resolvePromise:[self convertSourceObject:source]];
@@ -710,7 +723,7 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
         [owner setValue:source.owner.email forKey:@"email"];
         [owner setValue:source.owner.name forKey:@"name"];
         [owner setValue:source.owner.phone forKey:@"phone"];
-        
+
         if (source.owner.verifiedAddress) {
             [owner setObject:source.owner.verifiedAddress forKey:@"verifiedAddress"];
         }
