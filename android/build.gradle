@@ -34,8 +34,8 @@ dependencies {
 
   implementation fileTree(include: ['*.jar'], dir: 'libs')
   implementation 'com.facebook.react:react-native:+'
-  implementation 'com.android.support:support-v4:26.1.0'
-  implementation 'com.android.support:appcompat-v7:26.1.0'
+  implementation 'com.android.support:support-v4:27.1.0'
+  implementation 'com.android.support:appcompat-v7:27.1.0'
   implementation "com.google.android.gms:play-services-wallet:$googlePlayServicesVersion"
   implementation "com.google.firebase:firebase-core:$firebaseVersion"
   implementation 'com.stripe:stripe-android:8.1.0'
