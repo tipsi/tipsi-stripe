@@ -1,5 +1,9 @@
 # Changelog
 
+## [7.4.0] - 2019-02-25
+
+- [Switch from compile to implementation in gradle file](https://github.com/tipsi/tipsi-stripe/pull/438)
+
 ## [7.3.0] - 2019-02-15
 - [Call reject directly in createSourceWithParams](https://github.com/tipsi/tipsi-stripe/pull/433)
 
