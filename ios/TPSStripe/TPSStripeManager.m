@@ -290,7 +290,7 @@ RCT_EXPORT_METHOD(createSourceWithParams:(NSDictionary *)params
 
         if (error) {
             NSDictionary *jsError = [errorCodes valueForKey:kErrorKeyApi];
-            [self rejectPromiseWithCode:jsError[kErrorKeyCode] message:error.localizedDescription];
+            reject(jsError[kErrorKeyCode], error.localizedDescription, nil);
         } else {
             if (source.redirect) {
                 self.redirectContext = [[STPRedirectContext alloc] initWithSource:source completion:^(NSString *sourceID, NSString *clientSecret, NSError *error) {
