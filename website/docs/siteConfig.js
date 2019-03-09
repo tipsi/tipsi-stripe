@@ -13,6 +13,12 @@ const users = [
     infoLink: 'https://www.gettipsi.com',
     pinned: true,
   },
+  {
+    caption: 'andcards',
+    image: '/tipsi-stripe/img/andcards-logo.png',
+    infoLink: 'https://andcards.com',
+    pinned: true,
+  },
 ]
 
 const siteConfig = {
