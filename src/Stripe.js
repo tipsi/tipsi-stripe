@@ -132,6 +132,14 @@ class Stripe {
     })()
   )
 
+  collectShippingAddress = (options = {}) => {
+    checkInit(this)
+    return StripeModule.collectShippingAddress({
+      ...options,
+      theme: processTheme(options.theme),
+    })
+  };
+
   paymentRequestWithCardForm = (options = {}) => {
     checkInit(this)
     checkArgs(

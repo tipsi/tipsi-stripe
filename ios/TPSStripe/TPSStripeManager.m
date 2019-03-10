@@ -108,6 +108,7 @@ NSString * const TPSPaymentNetworkVisa = @"visa";
     RCTPromiseRejectBlock promiseRejector;
 
     BOOL requestIsCompleted;
+    NSMutableArray *shippingMethodsItems;
 
     void (^applePayCompletion)(PKPaymentAuthorizationStatus);
     NSError *applePayStripeError;
@@ -116,6 +117,7 @@ NSString * const TPSPaymentNetworkVisa = @"visa";
 - (instancetype)init {
     if ((self = [super init])) {
         requestIsCompleted = YES;
+        shippingMethodsItems = [NSMutableArray array];
     }
     return self;
 }
@@ -341,6 +343,37 @@ RCT_EXPORT_METHOD(createSourceWithParams:(NSDictionary *)params
     }];
 }
 
+RCT_EXPORT_METHOD(collectShippingAddress:(NSDictionary *)options
+                                resolver:(RCTPromiseResolveBlock)resolve
+                                rejecter:(RCTPromiseRejectBlock)reject) {
+    if(!requestIsCompleted) {
+        NSDictionary *error = [errorCodes valueForKey:kErrorKeyBusy];
+        reject(error[kErrorKeyCode], error[kErrorKeyDescription], nil);
+        return;
+    }
+    requestIsCompleted = NO;
+    promiseResolver = resolve;
+    promiseRejector = reject;
+    
+    shippingMethodsItems = options[@"shippingMethods"] ? options[@"shippingMethods"] : [NSMutableArray array];
+    NSString *currencyCode = options[@"currencyCode"] ? options[@"currencyCode"] : @"USD";
+    STPShippingType shippingType = [options[@"shippingType"] isEqualToString:@"delivery"] ? STPShippingTypeDelivery : STPShippingTypeShipping;
+    NSSet<STPContactField> *requiredShippingAddressFields = [self shippingFieldsType:options[@"requiredShippingAddressFields"]];
+    STPUserInformation *prefilledInformation = [self userInformation:options[@"prefilledInformation"]];
+    STPTheme *theme = [self formTheme:options[@"theme"]];
+    
+    STPPaymentConfiguration *configuration = [[STPPaymentConfiguration alloc] init];
+    [configuration setRequiredShippingAddressFields:requiredShippingAddressFields];
+    [configuration setShippingType:shippingType];
+    
+    STPShippingAddressViewController *addShippingAddressViewController = [[STPShippingAddressViewController alloc] initWithConfiguration:configuration theme:theme currency:currencyCode shippingAddress:nil selectedShippingMethod:nil prefilledInformation:prefilledInformation];
+    [addShippingAddressViewController setDelegate:self];
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:addShippingAddressViewController];
+    navigationController.navigationBar.stp_theme = theme;
+    [RCTPresentedViewController() presentViewController:navigationController animated:YES completion:nil];
+}
+
 RCT_EXPORT_METHOD(paymentRequestWithCardForm:(NSDictionary *)options
                                     resolver:(RCTPromiseResolveBlock)resolve
                                     rejecter:(RCTPromiseRejectBlock)reject) {
@@ -538,6 +571,38 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     return YES;
 }
 
+#pragma mark - STPShippingAddressViewControllerDelegate
+
+- (void)shippingAddressViewController:(STPShippingAddressViewController *)addressViewController
+                      didEnterAddress:(nonnull STPAddress *)address
+                           completion:(nonnull STPShippingMethodsCompletionBlock)completion {
+
+    NSMutableArray *shippingMethods = [self shippingMethods:shippingMethodsItems];
+    PKShippingMethod *shippingItem = shippingMethodsItems.count > 0 ? shippingMethodsItems[0] : nil;
+    
+    completion(STPShippingStatusValid, nil, shippingMethods, shippingItem);
+}
+
+- (void)shippingAddressViewController:(STPShippingAddressViewController *)addressViewController
+                 didFinishWithAddress:(nonnull STPAddress *)address
+                       shippingMethod:(nullable PKShippingMethod *)method {
+    [RCTPresentedViewController() dismissViewControllerAnimated:YES completion:nil];
+    
+    requestIsCompleted = YES;
+    [shippingMethodsItems removeAllObjects];
+    [self resolvePromise:[self convertAddressObject:address]];
+}
+
+- (void)shippingAddressViewControllerDidCancel:(STPShippingAddressViewController *)addressViewController {
+    [RCTPresentedViewController() dismissViewControllerAnimated:YES completion:nil];
+    
+    if (!requestIsCompleted) {
+        requestIsCompleted = YES;
+        NSDictionary *error = [errorCodes valueForKey:kErrorKeyCancelled];
+        [self rejectPromiseWithCode:error[kErrorKeyCode] message:error[kErrorKeyDescription]];
+    }
+    
+}
 
 #pragma mark - STPAddCardViewControllerDelegate
 
@@ -629,6 +694,37 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
 
 - (STPAPIClient *)newAPIClient {
     return [[STPAPIClient alloc] initWithPublishableKey:[Stripe defaultPublishableKey]];
+}
+
+- (NSMutableArray *)shippingMethods:(NSMutableArray*)shippingMethodsItems {
+    NSMutableArray *result = [NSMutableArray array];
+
+    for (NSDictionary *item in shippingMethodsItems) {
+        PKShippingMethod *shippingItem = [[PKShippingMethod alloc] init];
+        shippingItem.label = item[@"label"];
+        shippingItem.detail = item[@"detail"];
+        shippingItem.amount = [NSDecimalNumber decimalNumberWithString:item[@"amount"]];
+        shippingItem.identifier = item[@"id"];
+        [result addObject:shippingItem];
+    }
+    
+    return result;
+}
+
+- (NSDictionary *)convertAddressObject:(STPAddress*)address {
+    NSMutableDictionary *result = [@{} mutableCopy];
+    
+    [result setValue:address.name forKey:@"name"];
+    [result setValue:address.line1 forKey:@"line1"];
+    [result setValue:address.line2 forKey:@"line2"];
+    [result setValue:address.city forKey:@"city"];
+    [result setValue:address.state forKey:@"state"];
+    [result setValue:address.postalCode forKey:@"postalCode"];
+    [result setValue:address.country forKey:@"country"];
+    [result setValue:address.phone forKey:@"phone"];
+    [result setValue:address.email forKey:@"email"];
+    
+    return result;
 }
 
 - (NSDictionary *)convertTokenObject:(STPToken*)token {
@@ -1055,6 +1151,25 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
         return STPBillingAddressFieldsFull;
     }
     return STPBillingAddressFieldsNone;
+}
+
+- (NSSet<STPContactField> *)shippingFieldsType:(NSArray<NSString *> *)inputInformation {
+    NSMutableSet *shippingFields = [NSMutableSet set];
+    for(NSString *input in inputInformation){
+        if ([input isEqualToString:@"name"]) {
+            [shippingFields addObject:STPContactFieldName];
+        }
+        if ([input isEqualToString:@"address"]) {
+            [shippingFields addObject:STPContactFieldPostalAddress];
+        }
+        if ([input isEqualToString:@"email"]) {
+            [shippingFields addObject:STPContactFieldEmailAddress];
+        }
+        if ([input isEqualToString:@"phoneNumber"]) {
+            [shippingFields addObject:STPContactFieldPhoneNumber];
+        }
+    }
+    return shippingFields;
 }
 
 - (STPUserInformation *)userInformation:(NSDictionary*)inputInformation {
