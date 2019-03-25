@@ -13,8 +13,8 @@ const errorCodes = {
     errorCode: 'purchaseCancelled',
     description: 'Purchase was cancelled',
   },
-  sourceStatusCanceled: {
-    errorCode: 'sourceStatusCanceled',
+  sourceStatusCancelled: {
+    errorCode: 'sourceStatusCancelled',
     description: 'Cancelled by user',
   },
   sourceStatusPending: {

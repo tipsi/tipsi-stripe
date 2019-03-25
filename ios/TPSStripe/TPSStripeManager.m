@@ -18,7 +18,7 @@ NSString * const kErrorKeyBusy = @"busy";
 NSString * const kErrorKeyApi = @"api";
 NSString * const kErrorKeyRedirectSpecific = @"redirectSpecific";
 NSString * const kErrorKeyCancelled = @"cancelled";
-NSString * const kErrorKeySourceStatusCanceled = @"sourceStatusCanceled";
+NSString * const kErrorKeysourceStatusCancelled = @"sourceStatusCancelled";
 NSString * const kErrorKeySourceStatusPending = @"sourceStatusPending";
 NSString * const kErrorKeySourceStatusFailed = @"sourceStatusFailed";
 NSString * const kErrorKeySourceStatusUnknown = @"sourceStatusUnknown";
@@ -308,8 +308,8 @@ RCT_EXPORT_METHOD(createSourceWithParams:(NSDictionary *)params
                                     case STPSourceStatusConsumed:
                                         resolve([self convertSourceObject:source]);
                                         break;
-                                    case STPSourceStatusCanceled: {
-                                        NSDictionary *error = [errorCodes valueForKey:kErrorKeySourceStatusCanceled];
+                                    case STPsourceStatusCancelled: {
+                                        NSDictionary *error = [errorCodes valueForKey:kErrorKeysourceStatusCancelled];
                                         reject(error[kErrorKeyCode], error[kErrorKeyDescription], nil);
                                     }
                                         break;
@@ -901,7 +901,7 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
             return @"chargable";
         case STPSourceStatusConsumed:
             return @"consumed";
-        case STPSourceStatusCanceled:
+        case STPsourceStatusCancelled:
             return @"canceled";
         case STPSourceStatusFailed:
             return @"failed";

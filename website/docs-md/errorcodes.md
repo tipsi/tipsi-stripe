@@ -11,7 +11,7 @@ sidebar_label: Error Codes
 | **busy** | Previous request is not completed |
 | **cancelled** | Cancelled by user |
 | **purchaseCancelled** | Purchase was cancelled |
-| **sourceStatusCanceled** | Cancelled by user |
+| **sourceStatusCancelled** | Cancelled by user |
 | **sourceStatusPending** | The source has been created and is awaiting customer action |
 | **sourceStatusFailed** | The source status is unknown. You shouldn\'t encounter this value. |
 | **sourceStatusUnknown** | Source polling unknown error |
