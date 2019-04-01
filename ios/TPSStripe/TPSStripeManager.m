@@ -111,6 +111,10 @@ NSString * const TPSPaymentNetworkVisa = @"visa";
 
     void (^applePayCompletion)(PKPaymentAuthorizationStatus);
     NSError *applePayStripeError;
+    
+    NSDictionary *ephemeralKey;
+    STPJSONResponseCompletionBlock ephemeralKeyReceiver;
+    id<STPPaymentMethod> selectedPaymentMethod;
 }
 
 - (instancetype)init {
@@ -462,6 +466,66 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     }
 }
 
+RCT_EXPORT_METHOD(paymentRequestWithPaymentMethods:(NSDictionary *)options
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject) {
+    if(!requestIsCompleted) {
+        NSDictionary *error = [errorCodes valueForKey:kErrorKeyBusy];
+        reject(error[kErrorKeyCode], error[kErrorKeyDescription], nil);
+        return;
+    }
+    
+    requestIsCompleted = NO;
+    
+    promiseResolver = resolve;
+    promiseRejector = reject;
+    
+    ephemeralKey = options[@"ephemeralKey"];
+    STPCustomerContext *customerContext = [[STPCustomerContext alloc] initWithKeyProvider:self];
+    
+    NSUInteger requiredBillingAddressFields = [self billingType:options[@"requiredBillingAddressFields"]];
+    NSString *companyName = options[@"companyName"] ? options[@"companyName"] : @"";
+    NSString *nextPublishableKey = options[@"publishableKey"] ? options[@"publishableKey"] : publishableKey;
+    UIModalPresentationStyle formPresentation = [self formPresentation:options[@"presentation"]];
+    STPTheme *theme = [self formTheme:options[@"theme"]];
+    
+    
+    STPPaymentConfiguration *configuration = [[STPPaymentConfiguration alloc] init];
+    [configuration setRequiredBillingAddressFields:requiredBillingAddressFields];
+    [configuration setCompanyName:companyName];
+    [configuration setPublishableKey:nextPublishableKey];
+    [configuration setCreateCardSources:options[@"createCardSource"] ? options[@"createCardSource"] : false];
+    
+    STPPaymentMethodsViewController *paymentMethodsViewController = [[STPPaymentMethodsViewController alloc] initWithConfiguration:configuration theme:theme customerContext:customerContext delegate:self];
+    
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:paymentMethodsViewController];
+    [navigationController setModalPresentationStyle:formPresentation];
+    navigationController.navigationBar.stp_theme = theme;
+    // move to the end of main queue
+    // allow the execution of hiding modal
+    // to be finished first
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [RCTPresentedViewController() presentViewController:navigationController animated:YES completion:nil];
+    });
+}
+
+RCT_EXPORT_METHOD(completePaymentRequestWithPaymentMethods:(NSDictionary *)ephemeralKey
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject) {
+    if(requestIsCompleted || !ephemeralKeyReceiver) {
+        NSDictionary *error = [errorCodes valueForKey:kErrorKeyCancelled];
+        reject(error[kErrorKeyCode], error[kErrorKeyDescription], nil);
+        return;
+    }
+    
+    promiseResolver = resolve;
+    promiseRejector = reject;
+    
+    ephemeralKeyReceiver(ephemeralKey, nil);
+    ephemeralKeyReceiver = nil;
+}
+
 #pragma mark - Private
 
 - (STPCardParams *)createCard:(NSDictionary *)params {
@@ -494,6 +558,13 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
 - (void)rejectPromiseWithCode:(NSString *)code message:(NSString *)message {
     if (promiseRejector) {
         promiseRejector(code, message, nil);
+    }
+    [self resetPromiseCallbacks];
+}
+
+- (void)rejectPromiseWithCode:(NSString *)code message:(NSString *)message error:(NSError *)error {
+    if (promiseRejector) {
+        promiseRejector(code, message, error);
     }
     [self resetPromiseCallbacks];
 }
@@ -625,6 +696,62 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     };
 
     [RCTPresentedViewController() dismissViewControllerAnimated:YES completion:completion];
+}
+
+#pragma mark - STPEphemeralKeyProvider
+
+- (void)createCustomerKeyWithAPIVersion:(nonnull NSString *)apiVersion completion:(nonnull STPJSONResponseCompletionBlock)completion {
+    if(ephemeralKey) {
+        // usage option 1 - got ephermal key, so continue now
+        completion(ephemeralKey, nil);
+    } else {
+        // usage option 2. no ephermal key. resolve promise here to allow user to continue after getting ephermal key with a call to completePaymentRequestWithPaymentMethods
+        ephemeralKeyReceiver = completion;
+        [self resolvePromise:apiVersion];
+    }
+}
+
+#pragma mark - STPPaymentMethodsViewControllerDelegate
+
+- (void)paymentMethodsViewController:(nonnull STPPaymentMethodsViewController *)paymentMethodsViewController didFailToLoadWithError:(nonnull NSError *)error {
+    [RCTPresentedViewController() dismissViewControllerAnimated:YES completion:nil];
+    
+    if (!requestIsCompleted) {
+        requestIsCompleted = YES;
+        NSDictionary *jsError = [errorCodes valueForKey:kErrorKeyApi];
+        [self rejectPromiseWithCode:jsError[kErrorKeyCode] message:error.localizedDescription];
+    }
+}
+
+- (void)paymentMethodsViewControllerDidCancel:(nonnull STPPaymentMethodsViewController *)paymentMethodsViewController {
+    [RCTPresentedViewController() dismissViewControllerAnimated:YES completion:nil];
+    
+    if (!requestIsCompleted) {
+        requestIsCompleted = YES;
+        NSDictionary *error = [errorCodes valueForKey:kErrorKeyCancelled];
+        [self rejectPromiseWithCode:error[kErrorKeyCode] message:error[kErrorKeyDescription]];
+    }
+}
+
+- (void)paymentMethodsViewControllerDidFinish:(nonnull STPPaymentMethodsViewController *)paymentMethodsViewController {
+    [RCTPresentedViewController() dismissViewControllerAnimated:YES completion:nil];
+    
+    requestIsCompleted = YES;
+    
+    if ([selectedPaymentMethod class] == [STPSource class]) {
+        [self resolvePromise:[self convertSourceObject:(STPSource*)selectedPaymentMethod]];
+    }
+    else if ([selectedPaymentMethod class] == [STPCard class]){
+        [self resolvePromise:[self convertCardObject:(STPCard*)selectedPaymentMethod]];
+    }
+    else {
+        [self resolvePromise:nil];
+    }
+}
+
+- (void)paymentMethodsViewController:(STPPaymentMethodsViewController *)paymentMethodsViewController didSelectPaymentMethod:(id<STPPaymentMethod>)paymentMethod {
+    // Save selected payment method
+    selectedPaymentMethod = paymentMethod;
 }
 
 - (STPAPIClient *)newAPIClient {
