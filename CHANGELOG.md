@@ -1,5 +1,18 @@
 # Changelog
 
+## [7.4.0] - 2019-02-25
+
+- [Switch from compile to implementation in gradle file](https://github.com/tipsi/tipsi-stripe/pull/438)
+
+## [7.3.0] - 2019-02-15
+- [Call reject directly in createSourceWithParams](https://github.com/tipsi/tipsi-stripe/pull/433)
+
+## [7.2.0] - 2019-01-29
+- Remove broken imports
+
+## [7.1.0] - 2019-01-14
+- Fixed issue #232 Added card type for source creation (#261)
+
 ## [7.0.0] - 2018-10-28
 - Update iOS Stripe SDK to 14.0.0
 - Update Android Stripe SDK to 8.1.0

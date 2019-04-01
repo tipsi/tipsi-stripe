@@ -1,13 +1,26 @@
 import helper from 'tipsi-appium-helper'
 import test from './utils/tape'
 import openTestSuite from './common/openTestSuite'
-import swipeUp from './common/swipeUp'
-import nativeSwipe from './common/nativeSwipe'
 import nativeClick from './common/nativeClick'
 import clickUntilVisible from './common/clickUntilVisible'
 import idFromLabel from './common/idFromLabel'
 
 const { driver, idFromAccessId, platform, select } = helper
+
+test('Test if user can create a source object for a card', async (t) => {
+  await openTestSuite('Sources')
+
+  const sourceButtonId = idFromAccessId('cardSourceButton')
+
+  await driver.waitForVisible(sourceButtonId, 60000)
+  t.pass('User should see `Create a source with params` button')
+
+  await driver.click(sourceButtonId)
+  t.pass('User should be able to tap on `Create source for card payment` button')
+
+  const sourceObjectId = idFromAccessId('sourceObject')
+  await driver.waitForVisible(sourceObjectId, 90000)
+})
 
 test('Test if user can create a source object for Alipay', async (t) => {
   const expectedSourcesResults = [false, true]
@@ -16,7 +29,6 @@ test('Test if user can create a source object for Alipay', async (t) => {
 
   for (const sourcesVisibility of expectedSourcesResults) {
     const sourceButtonId = idFromAccessId('sourceButton')
-    const sourceObjectId = idFromAccessId('sourceObject')
 
     await driver.waitForVisible(sourceButtonId, 60000)
     t.pass('User should see `Create a source with params` button')
