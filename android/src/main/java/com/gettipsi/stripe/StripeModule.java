@@ -90,8 +90,8 @@ public class StripeModule extends ReactContextBaseJavaModule {
                 getErrorCode(mErrorCodes, "cancelled"),
                 getDescription(mErrorCodes, "cancelled")
               );
-
             }
+            mCurrentPromise = null;
         } else {
           boolean handled = getPayFlow().onActivityResult(activity, requestCode, resultCode, data);
           if (!handled) {
@@ -166,6 +166,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
                                     final EphemeralKeyUpdateListener keyUpdateListener) {
                                     mEphemeralKeyReceiver = keyUpdateListener;
                                     mCurrentPromise.resolve(apiVersion);
+                                    mCurrentPromise = null;
                                     }
 
   private void launchWithCustomer() {
@@ -353,6 +354,24 @@ public class StripeModule extends ReactContextBaseJavaModule {
     });
   }
 
+  private void retrieveCustomerSession() {
+    CustomerSession.getInstance().retrieveCurrentCustomer(
+            new CustomerSession.CustomerRetrievalListener() {
+              @Override
+              public void onCustomerRetrieved(Customer customer) {
+                // got customer, continue by launching the payment methods dialog
+                launchWithCustomer();
+              }
+
+              @Override
+              public void onError(int httpCode,String errorMessage) {
+                // failed to get customer
+                mCurrentPromise.reject("StripeError",errorMessage);
+                mCurrentPromise = null;
+              }
+            });
+  }
+
   @ReactMethod
   public void paymentRequestWithPaymentMethods(ReadableMap params, final Promise promise) {
     Activity currentActivity = getCurrentActivity();
@@ -366,23 +385,15 @@ public class StripeModule extends ReactContextBaseJavaModule {
       CustomerSession.initCustomerSession(
               new DirectKeyProvider(ephemeralKey));
 
-      CustomerSession.getInstance().retrieveCurrentCustomer(
-              new CustomerSession.CustomerRetrievalListener() {
-                  @Override
-                  public void onCustomerRetrieved(Customer customer) {
-                      // got customer, continue by launching the payment methods dialog
-                      launchWithCustomer();
-                  }
-
-                  @Override
-                  public void onError(int httpCode,String errorMessage) {
-                      // failed to get customer
-                      mCurrentPromise.reject("StripeError",errorMessage);
-                  }
-              });
-
-
-
+      if(mCurrentPromise != null) {
+        retrieveCustomerSession();
+      }
+      else {
+        // this means that there was already an attempt to retrieve the key and promise was resolved.
+        // there's difference in behvior between versions, and nulling the receiver is a good way of
+        // knowing to restart later
+        mEphemeralKeyReceiver = null;
+      }
 
     } catch (Exception e) {
       promise.reject(toErrorCode(e), e.getMessage());
@@ -392,9 +403,18 @@ public class StripeModule extends ReactContextBaseJavaModule {
   @ReactMethod
   public void completePaymentRequestWithPaymentMethods(String ephemeralKey, final Promise promise) {
     mCurrentPromise = promise;
-    mEphemeralKeyReceiver.onKeyUpdate(ephemeralKey);
-    mEphemeralKeyReceiver = null;
-  }    
+    if(mEphemeralKeyReceiver != null) {
+      mEphemeralKeyReceiver.onKeyUpdate(ephemeralKey);
+      mEphemeralKeyReceiver = null;
+    }
+    else {
+      // didnt have receiver so retrieve the session now
+      CustomerSession.endCustomerSession();
+      CustomerSession.initCustomerSession(
+              new DirectKeyProvider(ephemeralKey));
+      retrieveCustomerSession();
+    }
+  }
 
   void processRedirect(@Nullable Uri redirectData) {
     if (mCreatedSource == null || mCurrentPromise == null) {
