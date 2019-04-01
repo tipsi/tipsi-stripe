@@ -1,7 +1,7 @@
 package com.gettipsi.stripe.util;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.facebook.react.bridge.Arguments;
@@ -190,8 +190,7 @@ public static ArrayList<CountrySpecification> getAllowedShippingCountries(final 
       getValue(cardData, "funding"),
       getValue(cardData, "country"),
       getValue(cardData, "currency"),
-      getValue(cardData, "id"),
-      null
+      getValue(cardData, "id")
     );
   }
 
@@ -383,16 +382,14 @@ public static WritableMap convertAddressToWritableMap(final UserAddress address)
 
   public static BankAccount createBankAccount(ReadableMap accountData) {
     BankAccount account = new BankAccount(
-      accountData.getString("accountNumber"),
-      getValue(accountData, "accountHolderName"),
-      getValue(accountData, "accountHolderType"),
-            null,
-      accountData.getString("countryCode"),
-      accountData.getString("currency"),
-            null,
-            null,
-      getValue(accountData, "routingNumber", "")
+            // required fields only
+            accountData.getString("accountNumber"),
+            accountData.getString("countryCode"),
+            accountData.getString("currency"),
+            getValue(accountData, "routingNumber", "")
     );
+    account.setAccountHolderName(getValue(accountData, "accountHolderName"));
+    account.setAccountHolderType(getValue(accountData, "accountHolderType"));
 
     return account;
   }

@@ -2,7 +2,7 @@ package com.gettipsi.stripe;
 
 import android.app.Activity;
 import android.content.Intent;
-import androidx.annotation.NonNull;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.facebook.react.bridge.Promise;

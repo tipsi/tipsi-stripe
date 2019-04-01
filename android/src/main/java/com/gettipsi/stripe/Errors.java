@@ -1,6 +1,6 @@
 package com.gettipsi.stripe;
 
-import androidx.annotation.NonNull;
+import android.support.annotation.NonNull;
 
 import com.facebook.react.bridge.ReadableMap;
 import com.gettipsi.stripe.util.ArgCheck;

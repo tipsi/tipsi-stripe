@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.facebook.react.bridge.ActivityEventListener;
@@ -26,7 +26,6 @@ import com.stripe.android.TokenCallback;
 import com.stripe.android.model.Source;
 import com.stripe.android.model.SourceParams;
 import com.stripe.android.model.Token;
-import com.stripe.android.StripeError;
 import com.stripe.android.CustomerSession;
 import com.stripe.android.model.Customer;
 import com.stripe.android.view.PaymentMethodsActivity;
@@ -376,8 +375,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
                   }
 
                   @Override
-                  public void onError(int httpCode,String errorMessage,
-                                      @Nullable StripeError stripeError) {
+                  public void onError(int httpCode,String errorMessage) {
                       // failed to get customer
                       mCurrentPromise.reject("StripeError",errorMessage);
                   }
