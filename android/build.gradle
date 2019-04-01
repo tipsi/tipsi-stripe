@@ -15,7 +15,7 @@ android {
     targetSdkVersion rootProject.hasProperty('targetSdkVersion') ? rootProject.targetSdkVersion : DEFAULT_TARGET_SDK_VERSION
     versionCode 1
     versionName "1.0"
-    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     manifestPlaceholders = [
       tipsiStripeRedirectScheme: "example"
     ]
@@ -34,11 +34,11 @@ dependencies {
 
   implementation fileTree(include: ['*.jar'], dir: 'libs')
   implementation 'com.facebook.react:react-native:+'
-  implementation 'com.android.support:support-v4:27.1.0'
-  implementation 'com.android.support:appcompat-v7:27.1.0'
+  implementation 'androidx.legacy:legacy-support-v4:1.0.0-beta01'
+  implementation "androidx.appcompat:appcompat:${rootProject.ext.supportLibVersion}"
   implementation "com.google.android.gms:play-services-wallet:$googlePlayServicesVersion"
   implementation "com.google.firebase:firebase-core:$firebaseVersion"
-  implementation 'com.stripe:stripe-android:8.1.0'
+  implementation "com.stripe:stripe-android:8.5.0"
   implementation 'com.github.tipsi:CreditCardEntry:1.5.0'
 }
 

@@ -1,7 +1,7 @@
 package com.gettipsi.stripe.util;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.facebook.react.bridge.Arguments;
@@ -53,7 +53,7 @@ public class Converters {
     return newToken;
   }
 
-  public static WritableMap putExtraToTokenMap(final WritableMap tokenMap, UserAddress billingAddress, UserAddress shippingAddress) {
+public static WritableMap putExtraToTokenMap(final WritableMap tokenMap, UserAddress billingAddress, UserAddress shippingAddress) {
     ArgCheck.nonNull(tokenMap);
 
     WritableMap extra = Arguments.createMap();
@@ -155,7 +155,7 @@ public class Converters {
     return allowedCountryCodesForShipping;
   }
 
-  public static ArrayList<CountrySpecification> getAllowedShippingCountries(final ReadableMap map) {
+public static ArrayList<CountrySpecification> getAllowedShippingCountries(final ReadableMap map) {
     ArrayList<CountrySpecification> allowedCountriesForShipping = new ArrayList<>();
     ReadableArray countries = getValue(map, "shipping_countries", (ReadableArray) null);
 
@@ -190,7 +190,8 @@ public class Converters {
       getValue(cardData, "funding"),
       getValue(cardData, "country"),
       getValue(cardData, "currency"),
-      getValue(cardData, "id")
+      getValue(cardData, "id"),
+      null
     );
   }
 
@@ -358,7 +359,7 @@ public class Converters {
     }
   }
 
-  public static WritableMap convertAddressToWritableMap(final UserAddress address){
+public static WritableMap convertAddressToWritableMap(final UserAddress address){
     WritableMap result = Arguments.createMap();
 
     if (address == null) return result;
@@ -382,14 +383,16 @@ public class Converters {
 
   public static BankAccount createBankAccount(ReadableMap accountData) {
     BankAccount account = new BankAccount(
-      // required fields only
       accountData.getString("accountNumber"),
+      getValue(accountData, "accountHolderName"),
+      getValue(accountData, "accountHolderType"),
+            null,
       accountData.getString("countryCode"),
       accountData.getString("currency"),
+            null,
+            null,
       getValue(accountData, "routingNumber", "")
     );
-    account.setAccountHolderName(getValue(accountData, "accountHolderName"));
-    account.setAccountHolderType(getValue(accountData, "accountHolderType"));
 
     return account;
   }
@@ -404,7 +407,7 @@ public class Converters {
     }
   }
 
-  public static UserAddress getBillingAddress(PaymentData paymentData) {
+    public static UserAddress getBillingAddress(PaymentData paymentData) {
     if (paymentData != null && paymentData.getCardInfo() != null) {
       return paymentData.getCardInfo().getBillingAddress();
     }
