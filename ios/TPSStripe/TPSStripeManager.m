@@ -929,6 +929,31 @@ RCT_EXPORT_METHOD(completePaymentRequestWithPaymentMethods:(NSDictionary *)ephem
     return result;
 }
 
+- (NSDictionary *)convertCardObject:(STPCard*)card {
+  NSMutableDictionary *result = [@{} mutableCopy];
+
+  [result setValue:card.last4 forKey:@"last4"];
+  [result setValue:@(card.expMonth) forKey:@"expMonth"];
+  [result setValue:@(card.expYear) forKey:@"expYear"];
+  [result setValue:[self cardBrand:card.brand] forKey:@"brand"];
+  [result setValue:[self cardFunding:card.funding] forKey:@"funding"];
+  [result setValue:card.country forKey:@"country"];
+  
+  [result setValue:card.name forKey:@"name"];
+  [result setValue:card.dynamicLast4 forKey:@"dynamicLast4"];
+  [result setValue:[NSNumber numberWithBool:card.isApplePayCard]  forKey:@"isApplePayCard"];
+  if (card.address) {
+    [result setObject:card.address forKey:@"address"];
+
+  }
+  [result setValue:card.currency forKey:@"currency"];
+  if (card.metadata) {
+    [result setValue:card.metadata forKey:@"metadata"];
+  }
+  
+  return result;
+}
+
 - (NSString *)cardBrand:(STPCardBrand)inputBrand {
     switch (inputBrand) {
         case STPCardBrandJCB:
