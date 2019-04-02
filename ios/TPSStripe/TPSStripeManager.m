@@ -496,6 +496,11 @@ RCT_EXPORT_METHOD(paymentRequestWithPaymentMethods:(NSDictionary *)options
     [configuration setPublishableKey:nextPublishableKey];
     [configuration setCreateCardSources:options[@"createCardSource"] ? options[@"createCardSource"] : false];
     
+    // apply pay
+    NSString* appleMerchantIdentifier = options[@"appleMerchantIdentifier"];
+    [configuration setAppleMerchantIdentifier:appleMerchantIdentifier];
+    [customerContext setIncludeApplePaySources:options[@"includeApplyPaySources"] ? options[@"includeApplyPaySources"] : false];
+
     STPPaymentMethodsViewController *paymentMethodsViewController = [[STPPaymentMethodsViewController alloc] initWithConfiguration:configuration theme:theme customerContext:customerContext delegate:self];
     
     
