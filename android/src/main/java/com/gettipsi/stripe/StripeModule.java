@@ -15,6 +15,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.WritableMap;
 import com.gettipsi.stripe.dialog.AddCardDialogFragment;
 import com.gettipsi.stripe.util.ArgCheck;
 import com.gettipsi.stripe.util.Converters;
@@ -83,7 +84,9 @@ public class StripeModule extends ReactContextBaseJavaModule {
             if(resultCode == Activity.RESULT_OK) {
               String selectedSource = data.getStringExtra(PaymentMethodsActivity.EXTRA_SELECTED_PAYMENT);
               Source source = Source.fromString(selectedSource);
-              mCurrentPromise.resolve(convertSourceToWritableMap(source));
+              WritableMap result = convertSourceToWritableMap(source);
+              result.putString("resultType", "STPSource");
+              mCurrentPromise.resolve(result);
             }
             else {
               mCurrentPromise.reject(

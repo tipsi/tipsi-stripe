@@ -742,16 +742,22 @@ RCT_EXPORT_METHOD(completePaymentRequestWithPaymentMethods:(NSDictionary *)ephem
     [RCTPresentedViewController() dismissViewControllerAnimated:YES completion:nil];
     
     requestIsCompleted = YES;
-    
+    NSDictionary * result;
+
     if ([selectedPaymentMethod class] == [STPSource class]) {
-        [self resolvePromise:[self convertSourceObject:(STPSource*)selectedPaymentMethod]];
+        result = [self convertSourceObject:(STPSource*)selectedPaymentMethod];
+        [result setValue:@"STPSource" forKey:@"resultType"];
+    } else if ([selectedPaymentMethod class] == [STPCard class]){
+        result = [self convertCardObject:(STPCard*)selectedPaymentMethod];
+        [result setValue:@"STPCard" forKey:@"resultType"];
+    } else if ([selectedPaymentMethod class] == [STPApplePayPaymentMethod class]){
+        result = [@{} mutableCopy];
+        [result setValue:@"STPApplePayPaymentMethod" forKey:@"resultType"];
+    } else {
+        result = nil;
     }
-    else if ([selectedPaymentMethod class] == [STPCard class]){
-        [self resolvePromise:[self convertCardObject:(STPCard*)selectedPaymentMethod]];
-    }
-    else {
-        [self resolvePromise:nil];
-    }
+
+    [self resolvePromise:result];
 }
 
 - (void)paymentMethodsViewController:(STPPaymentMethodsViewController *)paymentMethodsViewController didSelectPaymentMethod:(id<STPPaymentMethod>)paymentMethod {
