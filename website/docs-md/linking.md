@@ -73,6 +73,12 @@ protected List <ReactPackage> getPackages() {
 }
 ```
 
+If enabling minification in your `app/build.gradle` file, you must also add the following line to `proguard-rules.pro`:
+```diff
++ -keep class com.stripe.android.** { *; }
+```
+You can check [Stripe Android SDK](https://github.com/stripe/stripe-android#installation) for detail.
+
 **Ensure that you have Google Play Services installed.**
 
 #### Genymotion
