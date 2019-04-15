@@ -190,7 +190,8 @@ public static ArrayList<CountrySpecification> getAllowedShippingCountries(final 
       getValue(cardData, "funding"),
       getValue(cardData, "country"),
       getValue(cardData, "currency"),
-      getValue(cardData, "id")
+      getValue(cardData, "id"),
+      null
     );
   }
 
@@ -382,14 +383,16 @@ public static WritableMap convertAddressToWritableMap(final UserAddress address)
 
   public static BankAccount createBankAccount(ReadableMap accountData) {
     BankAccount account = new BankAccount(
-            // required fields only
             accountData.getString("accountNumber"),
+            getValue(accountData, "accountHolderName"),
+            getValue(accountData, "accountHolderType"),
+            null,
             accountData.getString("countryCode"),
             accountData.getString("currency"),
+            null,
+            null,
             getValue(accountData, "routingNumber", "")
     );
-    account.setAccountHolderName(getValue(accountData, "accountHolderName"));
-    account.setAccountHolderType(getValue(accountData, "accountHolderType"));
 
     return account;
   }

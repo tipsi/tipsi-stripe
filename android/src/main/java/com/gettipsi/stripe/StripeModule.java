@@ -32,7 +32,8 @@ import com.stripe.android.model.Customer;
 import com.stripe.android.view.PaymentMethodsActivity;
 import com.stripe.android.PaymentConfiguration;
 import com.stripe.android.EphemeralKeyUpdateListener;
-
+import com.stripe.android.StripeError;
+import com.stripe.android.view.PaymentMethodsActivityStarter;
 
 import static com.gettipsi.stripe.Errors.*;
 import static com.gettipsi.stripe.util.Converters.convertSourceToWritableMap;
@@ -174,7 +175,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
 
   private void launchWithCustomer() {
     Activity currentActivity = getCurrentActivity();
-    currentActivity.startActivityForResult(PaymentMethodsActivity.newIntent(getReactApplicationContext()), REQUEST_CODE_SELECT_SOURCE);
+    new PaymentMethodsActivityStarter(currentActivity).startForResult(REQUEST_CODE_SELECT_SOURCE);
   }
 
 
@@ -367,7 +368,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
               }
 
               @Override
-              public void onError(int httpCode,String errorMessage) {
+              public void onError(int httpCode, String errorMessage, StripeError error) {
                 // failed to get customer
                 mCurrentPromise.reject("StripeError",errorMessage);
                 mCurrentPromise = null;
