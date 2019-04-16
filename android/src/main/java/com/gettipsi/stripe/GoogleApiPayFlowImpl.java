@@ -113,6 +113,7 @@ public final class GoogleApiPayFlowImpl extends PayFlow {
       billingAddressRequired,
       shippingAddressRequired,
       phoneNumberRequired,
+      emailRequired,
       allowedCountryCodes
     );
   }
