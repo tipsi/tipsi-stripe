@@ -39,6 +39,7 @@ import static com.gettipsi.stripe.util.PayParams.CURRENCY_CODE;
 import static com.gettipsi.stripe.util.PayParams.BILLING_ADDRESS_REQUIRED;
 import static com.gettipsi.stripe.util.PayParams.SHIPPING_ADDRESS_REQUIRED;
 import static com.gettipsi.stripe.util.PayParams.PHONE_NUMBER_REQUIRED;
+import static com.gettipsi.stripe.util.PayParams.EMAIL_REQUIRED;
 import static com.gettipsi.stripe.util.PayParams.TOTAL_PRICE;
 
 /**
@@ -103,6 +104,7 @@ public final class GoogleApiPayFlowImpl extends PayFlow {
     final boolean billingAddressRequired = Converters.getValue(payParams, BILLING_ADDRESS_REQUIRED, false);
     final boolean shippingAddressRequired = Converters.getValue(payParams, SHIPPING_ADDRESS_REQUIRED, false);
     final boolean phoneNumberRequired = Converters.getValue(payParams, PHONE_NUMBER_REQUIRED, false);
+    final boolean emailRequired = Converters.getValue(payParams, EMAIL_REQUIRED, false);
     final Collection<String> allowedCountryCodes = getAllowedShippingCountryCodes(payParams);
 
     return createPaymentDataRequest(
@@ -111,6 +113,7 @@ public final class GoogleApiPayFlowImpl extends PayFlow {
       billingAddressRequired,
       shippingAddressRequired,
       phoneNumberRequired,
+      emailRequired,
       allowedCountryCodes
     );
   }
@@ -120,6 +123,7 @@ public final class GoogleApiPayFlowImpl extends PayFlow {
                                                       final boolean billingAddressRequired,
                                                       final boolean shippingAddressRequired,
                                                       final boolean phoneNumberRequired,
+                                                      final boolean emailRequired,
                                                       @NonNull final Collection<String> countryCodes
   ) {
 
@@ -147,6 +151,7 @@ public final class GoogleApiPayFlowImpl extends PayFlow {
           .build())
       .addAllowedPaymentMethod(WalletConstants.PAYMENT_METHOD_CARD)
       .addAllowedPaymentMethod(WalletConstants.PAYMENT_METHOD_TOKENIZED_CARD)
+      .setEmailRequired(emailRequired)
       .setShippingAddressRequired(shippingAddressRequired)
       .setPhoneNumberRequired(phoneNumberRequired);
 
@@ -235,7 +240,8 @@ public final class GoogleApiPayFlowImpl extends PayFlow {
               payPromise.resolve(putExtraToTokenMap(
                 convertTokenToWritableMap(token),
                 getBillingAddress(paymentData),
-                paymentData.getShippingAddress()));
+                paymentData.getShippingAddress(),
+                paymentData.getEmail()));
             }
             break;
           case Activity.RESULT_CANCELED:
