@@ -1,5 +1,11 @@
 # Changelog
 
+## [7.5.0] - 2019-04-22
+
+- [Google pay: capture email](https://github.com/tipsi/tipsi-stripe/pull/469)
+- [Add translations for German, Dutch, Italian and Spanish.](https://github.com/tipsi/tipsi-stripe/pull/464)
+- android: update CreditCardEntry:1.5.1
+
 ## [7.4.0] - 2019-02-25
 
 - [Switch from compile to implementation in gradle file](https://github.com/tipsi/tipsi-stripe/pull/438)
