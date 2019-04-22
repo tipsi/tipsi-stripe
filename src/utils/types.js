@@ -135,6 +135,7 @@ export const paymentRequestWithAndroidPayOptionsPropTypes = {
   line_items: PropTypes.arrayOf(PropTypes.shape(androidPayLineItemPropTypes)).isRequired,
   shipping_address_required: PropTypes.bool,
   billing_address_required: PropTypes.bool,
+  email_address_required: PropTypes.bool,
 }
 
 export const createSourceWithParamsPropType = {

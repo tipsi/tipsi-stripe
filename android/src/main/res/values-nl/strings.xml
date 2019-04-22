@@ -1,0 +1,18 @@
+<resources>
+
+  <string name="gettipsi_card_number">Kaartnummer</string>
+  <string name="gettipsi_save">Bespaar</string>
+  <string name="gettipsi_card_cvc">CVC</string>
+  <string name="gettipsi_google_pay_unavaliable">Google Pay is niet beschikbaar op uw apparaat.</string>
+  <string name="gettipsi_user_cancel_dialog">De gebruiker heeft de aanvraag gestopt. Geen kaart toegevoegd!</string>
+  <string name="gettipsi_card_enter_dialog_title">Voer uw gegevens in</string>
+  <string name="gettipsi_card_enter_dialog_positive_button">Klaar</string>
+  <string name="gettipsi_card_enter_dialog_negative_button">Annuleren</string>
+  <string name="gettipsi_card_number_label">Kaart</string>
+
+  <string-array name="gettipsi_currency_array">
+    <item>Currency (optional)</item>
+    <item>Unspecified</item>
+    <item>EUR</item>
+  </string-array>
+</resources>
