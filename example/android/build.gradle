@@ -36,7 +36,7 @@ allprojects {
 }
 
 ext {
-    buildToolsVersion = "26.0.2"
+    buildToolsVersion = "28.0.3"
     firebaseVersion = "11.8.0"
     googlePlayServicesVersion = "11.8.0"
 }

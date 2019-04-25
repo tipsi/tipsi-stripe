@@ -387,6 +387,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
       mCurrentPromise = promise;
 
       CustomerSession.initCustomerSession(
+              getReactApplicationContext(),
               new DirectKeyProvider(ephemeralKey));
 
       if(mCurrentPromise != null) {
@@ -415,6 +416,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
       // didnt have receiver so retrieve the session now
       CustomerSession.endCustomerSession();
       CustomerSession.initCustomerSession(
+              getReactApplicationContext(),
               new DirectKeyProvider(ephemeralKey));
       retrieveCustomerSession();
     }
