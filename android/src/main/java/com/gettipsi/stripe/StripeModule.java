@@ -279,6 +279,9 @@ public class StripeModule extends ReactContextBaseJavaModule {
 		  	break;
     }
 
+    HashMap<String, String> newMap = new HashMap(options.getMap("metadata").toHashMap());
+    sourceParams.setMetaData(newMap);
+
     ArgCheck.nonNull(sourceParams);
 
     mStripe.createSource(sourceParams, new SourceCallback() {
