@@ -4,7 +4,7 @@ title: .openApplePaySetup()
 sidebar_label: .openApplePaySetup()
 ---
 
-__Method is deprecated, use openNativePaySetup() instead__
+__Method is deprecated, use openNativePaySetup() instead.__
 
 Opens the user interface to set up credit cards for  Pay.
 

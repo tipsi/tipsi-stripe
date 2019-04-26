@@ -11,11 +11,11 @@ Creates token based on external \(bank\) params.
 | Key | Type | Description |
 | :--- | :--- | :--- |
 | accountNumber \(Required\) | String | The account number for this BankAccount |
-| countryCode \(Required\) | String | The two-letter country code that this account was created in |
+| countryCode \(Required\) | String | The two-letter country code of the country this account was created in |
 | currency \(Required\) | String | The currency of this account |
 | routingNumber | String | The routing number of this account |
 | accountHolderName | String | The account holder's name |
-| accountHolderType | String | the bank account type. Can be one of: **company ‖ individual** |
+| accountHolderType | String | The bank account type. Can be one of: **company ‖ individual** |
 
 ### Example
 

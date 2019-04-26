@@ -12,8 +12,8 @@ It’s designed to fit on a single line.
 
 | Key | Type | Description |
 | :--- | :--- | :--- |
-| styles | Object | Accepts all View styles, also support color param |
-| cursorColor&nbsp;(iOS) | String | The cursor color for the field |
+| styles | Object | Accepts all View styles, also supports the color param |
+| cursorColor&nbsp;(iOS) | String | The cursor color for the text field |
 | textErrorColor&nbsp;(iOS) | String | The text color to be used when the user has entered invalid information, such as an invalid card number |
 | placeholderColor&nbsp;(iOS) | String | The text placeholder color used in each child field |
 | keyboardAppearance&nbsp;(iOS) | String | Determines the color of the keyboard. One of **default**, **light**, **dark** |
@@ -34,10 +34,10 @@ It’s designed to fit on a single line.
 
 #### Initial Params
 
-To set initial params you can use `<instance>.setParams(params)` method which is available via `ref`.
+To set initial params you can use the `<instance>.setParams(params)` method which is available via `ref`.
 For example, if you’re using another library to scan your user’s credit card with a camera, you can assemble that data into an object and set this property to that object to prefill the fields you’ve collected.
 
-You can also access to `valid` and `params` info via `<instance>.valid` and `<instance>.params` respectively.
+You can also access the `valid` and `params` info via `<instance>.valid` and `<instance>.params` respectively.
 
 ![](https://cloud.githubusercontent.com/assets/1177226/20276457/60680ee8-aaad-11e6-834f-007909ce6814.gif)  ![](https://cloud.githubusercontent.com/assets/1177226/20572188/82ae5bf0-b1bb-11e6-97fe-fce360208130.gif)
 
