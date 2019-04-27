@@ -1,11 +1,10 @@
 import React, { PureComponent } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import axios from 'axios';
 import stripe from 'tipsi-stripe';
 import Button from '../components/Button';
 import testID from '../utils/testID';
 
-const BACKEND_URL = 'https://galk-example-ios-backend.herokuapp.com';
+const BACKEND_URL = '<BACKEND_URL>';
 const PAYMENT_CONFIG = {
   createCardSource: true
 };

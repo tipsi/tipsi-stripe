@@ -7,7 +7,7 @@ const { driver, select, platform, idFromAccessId, idFromResourceId, idFromText }
 test('Test if user can use Payment Methods Form', async (t) => {
   const paymentMethodsFormButton = idFromAccessId('paymentMethodsFormButton')
   const addNewCard = select({
-    ios: idFromAccessId('PaymentOptionsTableViewAddNewCardButtonIdentifier'),
+    ios: idFromAccessId('Add New Card…'),
     android: idFromText('Add new card…'),
   })
   
