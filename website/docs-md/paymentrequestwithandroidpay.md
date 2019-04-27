@@ -4,7 +4,7 @@ title: .paymentRequestWithAndroidPay(options) -> Promise
 sidebar_label: .paymentRequestWithAndroidPay()
 ---
 
-__Method is deprecated, use paymentRequestWithNativePay() instead__
+__Method is deprecated, use paymentRequestWithNativePay() instead.__
 
 **options** — An object with the following keys:
 
@@ -22,7 +22,7 @@ __Method is deprecated, use paymentRequestWithNativePay() instead__
 | Key | Type | Description |
 | :--- | :--- | :--- |
 | currency_code | String | Currency code string |
-| description | String | Short description that will shown to user |
+| description | String | Short description that will be shown to the user |
 | total_price | String | Total order price |
 | unit_price | String | Price per unit |
 | quantity | String | Number of items |

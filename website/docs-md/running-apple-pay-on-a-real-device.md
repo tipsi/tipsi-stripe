@@ -1,7 +1,7 @@
 ---
-id: running-apple-pay-in-a-real-device
-title: Running  Pay in a Real Device
-sidebar_label: Running  Pay in a Real Device
+id: running-apple-pay-on-a-real-device
+title: Running  Pay on a real Device
+sidebar_label: Running  Pay on a real Device
 ---
 
 In order to run Apple Pay on an Apple device \(as opposed to a simulator\), there's an extra step you need to complete in Xcode. Without completing this step, Apple Pay will say that it is not supported - even if Apple Pay is set up correctly on the device.

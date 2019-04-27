@@ -4,7 +4,7 @@ title: .createTokenWithCard(params) -> Promise
 sidebar_label: .createTokenWithCard()
 ---
 
-Creates token based on passed card params.
+Creates a token based on the passed card params.
 
 **params** — An object with the following keys:
 
@@ -22,8 +22,8 @@ Creates token based on passed card params.
 | addressZip | String | Zip code of the billing address |
 | addressCountry | String | Country for the billing address |
 | brand (Android) | String | Brand of this card. Can be one of: **JCB ‖ American Express ‖ Visa ‖ Discover ‖ Diners Club ‖ MasterCard ‖ Unknown** |
-| last4 (Android) | String | last 4 digits of the card |
-| fingerprint (Android) | String | The card fingerprint |
+| last4 (Android) | String | The last 4 digits of the card |
+| fingerprint (Android) | String | The card's fingerprint |
 | funding (Android) | String | The funding type of the card. Can be one of: **debit ‖ credit ‖ prepaid ‖ unknown** |
 | country (Android) | String | ISO country code of the card itself |
 | currency | String | Three-letter ISO currency code representing the currency paid out to the bank account. This is only applicable when tokenizing debit cards to issue payouts to managed accounts. You should not set it otherwise. The card can then be used as a transfer destination for funds in this currency |

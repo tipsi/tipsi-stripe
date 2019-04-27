@@ -4,7 +4,7 @@ title: .paymentRequestWithApplePay(items, [options]) -> Promise
 sidebar_label: .paymentRequestWithApplePay()
 ---
 
-__Method is deprecated, use paymentRequestWithNativePay() instead__
+__Method is deprecated, use paymentRequestWithNativePay() instead.__
 
 Launch the  Pay view to accept payment.
 
@@ -22,8 +22,8 @@ Launch the  Pay view to accept payment.
 
 | Key | Type | Description |
 | :--- | :--- | :--- |
-| requiredBillingAddressFields | Array[String] | A bit field of billing address fields that you need in order to process the transaction. Array should contain one of: **all ‖ name ‖ email ‖ phone ‖ postal_address** or not specify to disable |
-| requiredShippingAddressFields | Array[String] | A bit field of shipping address fields that you need in order to process the transaction. Array should contain one of: **all ‖ name ‖ email ‖ phone ‖ postal_address** or not specify to disable |
+| requiredBillingAddressFields | Array[String] | A bit field of billing address fields that you need in order to process the transaction. It can contain values of: **all ‖ name ‖ email ‖ phone ‖ postal_address** or be left unspecified to disable |
+| requiredShippingAddressFields | Array[String] | A bit field of shipping address fields that you need in order to process the transaction. It can contain values of: **all ‖ name ‖ email ‖ phone ‖ postal_address** or be left unspecified to disable |
 | shippingMethods | Array | An array of `shippingMethod` objects that describe the supported shipping methods. |
 | currencyCode | String | The three-letter ISO 4217 currency code. Default is **USD** |
 | countryCode | String | The two-letter code for the country where the payment will be processed. Default is **US** |
@@ -68,7 +68,7 @@ const token = await stripe.paymentRequestWithApplePay(items, options)
 
 #### Token structure – `paymentRequestWithApplePay` response
 
-`extra` — An object with the following keys
+`extra` — An object with the following keys:
 
 | Key | Type | Description |
 | :--- | :--- | :--- |
@@ -76,7 +76,7 @@ const token = await stripe.paymentRequestWithApplePay(items, options)
 | billingContact | Object | The user's billing contact object |
 | shippingContact | Object | The user's shipping contact object |
 
-`contact` — An object with the following keys
+`contact` — An object with the following keys:
 
 | Key | Type | Description |
 | :--- | :--- | :--- |
