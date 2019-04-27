@@ -19,10 +19,9 @@ export default class CardFormScreen extends PureComponent {
   };
 
   requestEphemeralKey = async (apiVersion = '2015-10-12') => {
-    const result = await axios.post(
-      `${BACKEND_URL}/ephemeral_keys?api_version=${apiVersion}`
-    );
-    return result.data;
+    const response = await fetch(`${BACKEND_URL}/ephemeral_keys?api_version=${apiVersion}`, { method: 'POST' })
+    const result = await response.json();
+    return result;
   };
 
   handlePress = async () => {
