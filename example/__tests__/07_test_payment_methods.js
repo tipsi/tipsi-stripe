@@ -26,6 +26,10 @@ test('Test if user can use Payment Methods Form', async (t) => {
   await driver.waitForVisible(paymentMethodsFormButton, 15000)
   t.pass('User should see `Select a payment method and pay` button')
 
+  // no point in continuing if backend url was not configured
+  if ('<BACKEND_URL>' == '')
+    return;
+
   await driver.click(paymentMethodsFormButton)
   t.pass('User should be able to tap on `Select a payment method and pay` button')
 
