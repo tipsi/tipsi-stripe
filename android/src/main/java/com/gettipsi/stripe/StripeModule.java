@@ -1,5 +1,6 @@
 package com.gettipsi.stripe;
 
+import java.util.HashMap;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
