@@ -25,6 +25,15 @@ It’s designed to fit on a single line.
 | onChange | Func | This function will be called each input change |
 | onParamsChange(valid&nbsp;Bool,&nbsp;params:&nbsp;Object) | Func | This function will be called each input change, it takes two arguments |
 
+#### Instance Methods (Available via ref)
+
+| Method Name | Arguments | Description |
+| :--- | :--- | :--- |
+| isFocused |  | Check if the PaymentCardTextField is focus or not |
+| focus | | Focus the PaymentCardTextField (open Keyboard) |
+| blur | | Blur the PaymentCardTextField (close Keyboard) |
+| setParams (iOS) | params: `{ number, expMonth, expYear, cvc }` | Set the PaymentCardTextField value |
+
 **onParamsChange params**
 
 | Key | Type | Description |
@@ -69,9 +78,20 @@ class FieldExample extends Component {
     `)
   }
 
+  isPaymentCardTextFieldFocused = () => this.paymentCardInput.isFocused()
+
+  focusPaymentCardTextField = () => this.paymentCardInput.focus()
+
+  blurPaymentCardTextField = () => this.paymentCardInput.blur()
+
+  resetPaymentCardTextField = () => this.paymentCardInput.setParams({})
+
   render() {
     return (
       <PaymentCardTextField
+        ref={ (ref) => {
+            this.paymentCardInput = ref;
+        }}
         style={styles.field}
         cursorColor={...}
         textErrorColor={...}
