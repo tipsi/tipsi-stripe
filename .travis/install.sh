@@ -19,7 +19,7 @@ react-native link
 case "${TRAVIS_OS_NAME}" in
   osx)
     cd ios
-    pod install
+    pod install --repo-update
     cd ..
   ;;
 esac
