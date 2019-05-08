@@ -38,7 +38,7 @@ dependencies {
   implementation 'com.android.support:appcompat-v7:27.1.0'
   implementation "com.google.android.gms:play-services-wallet:$googlePlayServicesVersion"
   implementation "com.google.firebase:firebase-core:$firebaseVersion"
-  implementation 'com.stripe:stripe-android:8.1.0'
+  implementation 'com.stripe:stripe-android:9.0.0'
   implementation 'com.github.tipsi:CreditCardEntry:1.5.1'
 }
 
