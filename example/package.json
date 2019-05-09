@@ -24,7 +24,7 @@
     "tipsi-stripe": "file:../tipsi-stripe-latest.tgz"
   },
   "devDependencies": {
-    "appium": "1.10.0",
+    "appium": "1.12.1",
     "babel-preset-react-native": "4.0.0",
     "tape-async": "2.3.0",
     "tipsi-appium-helper": "2.1.3",
