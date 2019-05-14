@@ -3,7 +3,7 @@
   "localized-strings": {
     "next": "Next",
     "previous": "Previous",
-    "tagline": "A complete solution for payments on React-Native",
+    "tagline": "Stripe support for React-Native",
     "cancelapplepayrequest": ".cancelApplePayRequest() -> Promise",
     ".cancelApplePayRequest()": ".cancelApplePayRequest()",
     "canmakeandroidpaypayments": ".canMakeAndroidPayPayments() -> Promise",

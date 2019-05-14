@@ -17,7 +17,7 @@ const users = [
 
 const siteConfig = {
   title: 'tipsi-stripe',
-  tagline: 'A complete solution for payments on React-Native',
+  tagline: 'Stripe support for React-Native',
   url: 'https://tipsi.github.io',
   baseUrl: '/tipsi-stripe/',
   projectName: 'tipsi-stripe',

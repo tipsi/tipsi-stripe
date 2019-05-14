@@ -4,6 +4,8 @@ title: Linking
 sidebar_label: Linking
 ---
 
+> **Note** Linking on Windows system currently isn't working. Feel free to fix it and remove this warning from docs
+
 ## Automatically
 
 Run `react-native link tipsi-stripe` so your project is linked against your Xcode project and all CocoaPods dependencies are installed.
