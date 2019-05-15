@@ -11,10 +11,10 @@ import {
 import PropTypes from 'prop-types'
 import TextInputState from 'react-native/Libraries/Components/TextInput/TextInputState'
 
-const FieldStylePropType = {
+const FieldStylePropType = PropTypes.shape({
   ...ViewPropTypes.style,
   color: PropTypes.string,
-}
+})
 
 const NativePaymentCardTextField = requireNativeComponent('TPSCardField', PaymentCardTextField, {
   nativeOnly: {
