@@ -189,11 +189,11 @@ public class AddCardDialogFragment extends DialogFragment {
     doneButton.setEnabled(false);
     progressBar.setVisibility(View.VISIBLE);
     final CreditCard fromCard = from.getCreditCard();
-    final Card card = new Card(
+    final Card card = new Card.Builder(
       fromCard.getCardNumber(),
       fromCard.getExpMonth(),
       fromCard.getExpYear(),
-      fromCard.getSecurityCode());
+      fromCard.getSecurityCode()).build();
 
     String errorMessage = Utils.validateCard(card);
     if (errorMessage == null) {

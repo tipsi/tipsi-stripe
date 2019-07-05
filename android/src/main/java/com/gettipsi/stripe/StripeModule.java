@@ -20,6 +20,7 @@ import com.gettipsi.stripe.util.ArgCheck;
 import com.gettipsi.stripe.util.Converters;
 import com.gettipsi.stripe.util.Fun0;
 import com.google.android.gms.wallet.WalletConstants;
+import com.stripe.android.AppInfo;
 import com.stripe.android.SourceCallback;
 import com.stripe.android.Stripe;
 import com.stripe.android.TokenCallback;
@@ -41,6 +42,9 @@ import static com.gettipsi.stripe.util.InitializationOptions.PUBLISHABLE_KEY;
 public class StripeModule extends ReactContextBaseJavaModule {
 
   private static final String MODULE_NAME = StripeModule.class.getSimpleName();
+  private static final String APP_INFO_NAME    = "tipsi-stripe";
+  private static final String APP_INFO_URL     = "https://github.com/tipsi/tipsi-stripe";
+  private static final String APP_INFO_VERSION = "7.x";
 
   private static StripeModule sInstance = null;
 
@@ -100,6 +104,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
       ArgCheck.notEmptyString(newPubKey);
 
       mPublicKey = newPubKey;
+      Stripe.setAppInfo(AppInfo.create(APP_INFO_NAME, APP_INFO_VERSION, APP_INFO_URL));
       mStripe = new Stripe(getReactApplicationContext(), mPublicKey);
       getPayFlow().setPublishableKey(mPublicKey);
     }

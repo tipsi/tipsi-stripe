@@ -1,17 +1,15 @@
 apply plugin: 'com.android.library'
 
-def DEFAULT_COMPILE_SDK_VERSION             = 26
-def DEFAULT_TARGET_SDK_VERSION              = 26
-def DEFAULT_BUILD_TOOLS_VERSION             = '26.0.2'
+def DEFAULT_COMPILE_SDK_VERSION             = 28
+def DEFAULT_TARGET_SDK_VERSION              = 28
 def DEFAULT_GOOGLE_PLAY_SERVICES_VERSION    = '11.8.0'
 def DEFAULT_FIREBASE_MESSAGING_VERSION      = '11.8.0'
 
 android {
   compileSdkVersion rootProject.hasProperty('compileSdkVersion') ? rootProject.compileSdkVersion : DEFAULT_COMPILE_SDK_VERSION
-  buildToolsVersion rootProject.hasProperty('buildToolsVersion') ? rootProject.buildToolsVersion : DEFAULT_BUILD_TOOLS_VERSION
 
   defaultConfig {
-    minSdkVersion 16
+    minSdkVersion 19
     targetSdkVersion rootProject.hasProperty('targetSdkVersion') ? rootProject.targetSdkVersion : DEFAULT_TARGET_SDK_VERSION
     versionCode 1
     versionName "1.0"
@@ -34,17 +32,14 @@ dependencies {
 
   implementation fileTree(include: ['*.jar'], dir: 'libs')
   implementation 'com.facebook.react:react-native:+'
-  implementation 'com.android.support:support-v4:27.1.0'
-  implementation 'com.android.support:appcompat-v7:27.1.0'
+  implementation 'com.android.support:support-v4:28.0.0'
+  implementation 'com.android.support:appcompat-v7:28.0.0'
   implementation "com.google.android.gms:play-services-wallet:$googlePlayServicesVersion"
   implementation "com.google.firebase:firebase-core:$firebaseVersion"
-  implementation 'com.stripe:stripe-android:8.1.0'
+  implementation 'com.stripe:stripe-android:9.3.5'
   implementation 'com.github.tipsi:CreditCardEntry:1.5.1'
 }
 
 repositories {
-  maven {
-    url 'https://maven.google.com/'
-    name 'Google'
-  }
+  google()
 }
