@@ -5,7 +5,7 @@ import nativeClick from './common/nativeClick'
 import clickUntilVisible from './common/clickUntilVisible'
 import idFromLabel from './common/idFromLabel'
 
-const { driver, idFromAccessId, platform, select } = helper
+const { driver, idFromAccessId, idFromText, platform, select } = helper
 
 test('Test if user can create a source object for a card', async (t) => {
   await openTestSuite('Sources')
@@ -38,7 +38,7 @@ test('Test if user can create a source object for Alipay', async (t) => {
 
     const testPaymentButtonId = select({
       ios: idFromLabel,
-      android: idFromAccessId,
+      android: idFromText,
     })(sourcesVisibility ? 'AUTHORIZE TEST PAYMENT' : 'FAIL TEST PAYMENT')
 
     await driver.waitForVisible(testPaymentButtonId, 90000)
@@ -58,8 +58,8 @@ test('Test if user can create a source object for Alipay', async (t) => {
 
     const returnToTheAppButtonId = select({
       ios: idFromLabel,
-      android: idFromAccessId,
-    })(select({ ios: 'Return to example', android: ' Return to Merchant' }))
+      android: idFromText,
+    })(select({ ios: 'Return to example', android: 'arrow--left--white Return to Merchant' }))
 
     await driver.waitForVisible(returnToTheAppButtonId, 60000)
     await driver.click(returnToTheAppButtonId)

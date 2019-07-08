@@ -10,6 +10,17 @@ test('Test if user can use Card Form', async (t) => {
     ios: idFromAccessId('card number'),
     android: idFromResourceId('com.example:id/cc_card'),
   })
+
+  const inputExpData = select({
+    ios: idFromAccessId('expiration date'),
+    android: idFromResourceId('com.example:id/cc_exp'),
+  })
+
+  const inputCVC = select({
+    ios: idFromAccessId('CVC'),
+    android: idFromResourceId('com.example:id/cc_ccv'),
+  })
+
   const doneButtonId = select({
     ios: idFromAccessId('Done'),
     android: idFromResourceId('android:id/button1'),
@@ -27,7 +38,13 @@ test('Test if user can use Card Form', async (t) => {
 
   await driver.waitForVisible(numberInputId, 10000)
   await driver.click(numberInputId)
-  await driver.setValue(numberInputId, '42424242424242421234123')
+  await driver.setValue(numberInputId, '4242424242424242')
+  await driver.waitForVisible(inputExpData, 50000).waitForText(inputExpData)
+  await driver.click(inputExpData)
+  await driver.keys('12/34')
+  await driver.click(inputCVC)
+  await driver.keys('123')
+
   t.pass('User should be able write card data')
 
   // Iterate over billing address fields (iOS only)
