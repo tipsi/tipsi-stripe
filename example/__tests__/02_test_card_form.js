@@ -38,12 +38,7 @@ test('Test if user can use Card Form', async (t) => {
 
   await driver.waitForVisible(numberInputId, 10000)
   await driver.click(numberInputId)
-  await driver.setValue(numberInputId, '4242424242424242')
-  await driver.waitForVisible(inputExpData, 50000).waitForText(inputExpData)
-  await driver.click(inputExpData)
-  await driver.keys('12/34')
-  await driver.click(inputCVC)
-  await driver.keys('123')
+  await driver.keys('424242424242424212/34123')
 
   t.pass('User should be able write card data')
 
