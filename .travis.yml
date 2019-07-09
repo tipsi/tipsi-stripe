@@ -40,6 +40,12 @@ cache:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
 
+addons:
+  artifacts:
+    paths:
+      - /home/travis/build/tipsi/tipsi-stripe/example_tmp/appium_source.xml
+      - /Users/travis/build/tipsi/tipsi-stripe/example_tmp/appium_source.xml
+
 before_install: . .travis/before-install.sh
 install: .travis/install.sh
 before_script: .travis/before-ci.sh
