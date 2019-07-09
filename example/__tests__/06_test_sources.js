@@ -39,7 +39,7 @@ test('Test if user can create a source object for Alipay', async (t) => {
     const testPaymentButtonId = select({
       ios: idFromLabel,
       android: idFromText,
-    })(sourcesVisibility ? 'Authorize Test Payment' : 'Fail Test Payment')
+    })(sourcesVisibility ? 'AUTHORIZE TEST PAYMENT' : 'FAIL TEST PAYMENT')
 
     await driver.waitForVisible(testPaymentButtonId, 90000)
 
