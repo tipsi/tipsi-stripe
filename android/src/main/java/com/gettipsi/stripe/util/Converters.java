@@ -64,11 +64,11 @@ public class Converters {
 
     billingContactMap.putString("emailAddress", emailAddress);
     shippingContactMap.putString("emailAddress", emailAddress);
-    
+
 
     extra.putMap("billingContact", billingContactMap);
     extra.putMap("shippingContact", shippingContactMap);
-    
+
     tokenMap.putMap("extra", extra);
 
     return tokenMap;
@@ -179,31 +179,27 @@ public class Converters {
   }
 
   public static Card createCard(final ReadableMap cardData) {
-    return new Card(
-      // required fields
-      cardData.getString("number"),
-      cardData.getInt("expMonth"),
-      cardData.getInt("expYear"),
-      // additional fields
-      getValue(cardData, "cvc"),
-      getValue(cardData, "name"),
-      getValue(cardData, "addressLine1"),
-      getValue(cardData, "addressLine2"),
-      getValue(cardData, "addressCity"),
-      getValue(cardData, "addressState"),
-      getValue(cardData, "addressZip"),
-      getValue(cardData, "addressCountry"),
-      getValue(cardData, "brand"),
-      getValue(cardData, "last4"),
-      getValue(cardData, "fingerprint"),
-      getValue(cardData, "funding"),
-      getValue(cardData, "country"),
-      getValue(cardData, "currency"),
-      getValue(cardData, "id")
-    );
+    return new Card.Builder(
+        cardData.getString("number"),
+        cardData.getInt("expMonth"),
+        cardData.getInt("expYear"),
+        getValue(cardData, "cvc"))
+      .name(getValue(cardData, "name"))
+      .addressLine1(getValue(cardData, "addressLine1"))
+      .addressLine2(getValue(cardData, "addressLine2"))
+      .addressCity(getValue(cardData, "addressCity"))
+      .addressState(getValue(cardData, "addressState"))
+      .addressZip(getValue(cardData, "addressZip"))
+      .addressCountry(getValue(cardData, "addressCountry"))
+      .brand(getValue(cardData, "brand"))
+      .last4(getValue(cardData, "last4"))
+      .fingerprint(getValue(cardData, "fingerprint"))
+      .funding(getValue(cardData, "funding"))
+      .country(getValue(cardData, "country"))
+      .currency(getValue(cardData, "currency"))
+      .id(getValue(cardData, "id"))
+      .build();
   }
-
-
 
   @NonNull
   public static WritableMap convertSourceToWritableMap(@Nullable Source source) {
@@ -393,13 +389,15 @@ public class Converters {
     BankAccount account = new BankAccount(
       // required fields only
       accountData.getString("accountNumber"),
+      getValue(accountData, "accountHolderName"),
+      getValue(accountData, "accountHolderType"),
+      null,
       accountData.getString("countryCode"),
       accountData.getString("currency"),
+      null,
+      null,
       getValue(accountData, "routingNumber", "")
     );
-    account.setAccountHolderName(getValue(accountData, "accountHolderName"));
-    account.setAccountHolderType(getValue(accountData, "accountHolderType"));
-
     return account;
   }
 
