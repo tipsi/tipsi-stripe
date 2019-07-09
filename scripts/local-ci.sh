@@ -95,7 +95,9 @@ else
   cd $proj_dir_old
 fi
 
-npm run set-stripe-url-type
+if isMacOS; then
+  npm run set-stripe-url-type
+fi
 
 ###################
 # INSTALL         #
