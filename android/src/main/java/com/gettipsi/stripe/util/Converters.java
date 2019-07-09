@@ -391,11 +391,11 @@ public class Converters {
       accountData.getString("accountNumber"),
       getValue(accountData, "accountHolderName"),
       getValue(accountData, "accountHolderType"),
-      null,
+      null, // bankName
       accountData.getString("countryCode"),
       accountData.getString("currency"),
-      null,
-      null,
+      null, // fingerprint
+      null, // last4
       getValue(accountData, "routingNumber", "")
     );
     return account;
