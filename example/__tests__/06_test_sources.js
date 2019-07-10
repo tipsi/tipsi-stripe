@@ -33,7 +33,7 @@ test('Test if user can create a source object for Alipay', async (t) => {
     await driver.waitForVisible(sourceButtonId, 60000)
     t.pass('User should see `Create a source with params` button')
 
-    await driver.click(sourceButtonId)
+    await clickUntilVisible({selector: sourceButtonId})
     t.pass('User should be able to tap on `Create source for Alipay payment` button')
 
     const testPaymentButtonId = select({
@@ -43,17 +43,7 @@ test('Test if user can create a source object for Alipay', async (t) => {
 
     await driver.waitForVisible(testPaymentButtonId, 90000)
 
-    if (platform('android')) {
-      const testPaymentButton = await driver.element(testPaymentButtonId)
-      const { value: buttonCoords } = await driver.elementIdLocation(
-        testPaymentButton.value.ELEMENT
-      )
-
-      await nativeClick(buttonCoords.x + 10, buttonCoords.y + 10)
-    } else {
-      await clickUntilVisible({ selector: testPaymentButtonId })
-    }
-
+    await clickUntilVisible({ selector: testPaymentButtonId })
     t.pass('User should click on "Authorize Test Payment" button')
 
     const returnToTheAppButtonId = select({
