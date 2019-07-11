@@ -35,7 +35,7 @@ test('Test if user can create a source object for Alipay', async (t) => {
     await driver.waitForVisible(sourceButtonId, 60000)
     t.pass('User should see `Create a source with params` button')
 
-    await clickUntilVisible({selector: sourceButtonId})
+    await clickUntilVisible({selector: sourceButtonId, attempts: 16})
     t.pass('User should be able to tap on `Create source for Alipay payment` button')
 
     const testPaymentButtonId = select({
