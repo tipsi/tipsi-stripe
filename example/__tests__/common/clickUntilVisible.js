@@ -34,7 +34,8 @@ export default async function clickUntilVisible(props) {
     await driver.waitForVisible(waitFor, timeout, true)
   } catch (error) {
     if (attempts) {
-      await clickUntilVisible({ selector, attempts: attempts - 1, timeout, waitFor })
+      await clickUntilVisible({ selector, attempts: attempts - 1, timeout,
+                                allowToFailBeforeClick: true, waitFor })
     } else {
       throw error
     }
