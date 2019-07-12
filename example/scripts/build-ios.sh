@@ -8,6 +8,7 @@ cd ios
 # Run release build
 xcodebuild build \
   -workspace example.xcworkspace \
+  -UseModernBuildSystem=NO \
   -scheme example \
   -configuration Release \
   -sdk iphonesimulator \
