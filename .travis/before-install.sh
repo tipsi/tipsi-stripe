@@ -12,6 +12,7 @@ init_new_example_project() {
     index.{ios,android}.js
     android/build.gradle
     android/app/build.gradle
+    android/app/src/main/AndroidManifest.xml
     android/gradle/wrapper/gradle-wrapper.properties
     android/gradle.properties
     ios/example/AppDelegate.m
