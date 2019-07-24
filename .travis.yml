@@ -40,6 +40,24 @@ cache:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
 
+deploy:
+  provider: npm
+  email: $NPM_EMAIL
+  api_key: $NPM_KEY
+  skip_cleanup: true
+  on:
+    branch: master
+    tags: true
+    repo: lifeomic/tipsi-stripe
+    os: linux
+
+notifications:
+  email:
+    recipients:
+      - $NPM_EMAIL
+    on_success: change
+    on_failure: always
+
 before_install: . .travis/before-install.sh
 install: .travis/install.sh
 before_script: .travis/before-ci.sh
