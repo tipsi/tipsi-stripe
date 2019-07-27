@@ -4,6 +4,8 @@ import openTestSuite from './common/openTestSuite'
 
 const { driver, select, platform, idFromAccessId, idFromResourceId } = helper
 
+const timeout = 60000
+
 test('Test if user can use Card Form', async (t) => {
   const cardFormButton = idFromAccessId('cardFormButton')
   const numberInputId = select({
@@ -30,28 +32,49 @@ test('Test if user can use Card Form', async (t) => {
 
   await openTestSuite('Card Form')
 
-  await driver.waitForVisible(cardFormButton, 15000)
+  await driver.waitForVisible(cardFormButton, timeout)
   t.pass('User should see `Enter you card and pay` button')
 
   await driver.click(cardFormButton)
   t.pass('User should be able to tap on `Enter you card and pay` button')
 
-  await driver.waitForVisible(numberInputId, 10000)
-  await driver.click(numberInputId)
-  await driver.keys('424242424242424212/34123')
+  // Enter credit card number
+  await driver.waitForVisible(numberInputId, timeout)
+  t.pass(`Element ${numberInputId} is visible`)
 
-  t.pass('User should be able write card data')
+  await driver.click(numberInputId)
+  t.pass(`Element ${numberInputId} is clicked`)
+
+  await driver.waitForVisible(numberInputId, timeout)   // Fixes an issue that appears in Android 23 tests
+  t.pass(`Element ${numberInputId} is still visible`)
+
+  await driver.keys('4242424242424242')
+  t.pass("User has keyed in their credit card number")
+
+
+  // Enter credit card expiry
+  await driver.waitForVisible(inputExpData, timeout)
+  t.pass(`Element ${inputExpData} is visible`)
+  await driver.keys('12/34')
+  t.pass("User has keyed in the card's expiry date")
+
+
+  // Enter credit card CVC
+  await driver.waitForVisible(inputCVC, timeout)
+  t.pass(`Element ${inputCVC} is visible`)
+  await driver.keys('123')
+  t.pass("User has keyed in the CVC")
 
   // Iterate over billing address fields (iOS only)
   // Verifies that all fields are filled
   if (platform('ios')) {
     for (const index of new Array(7)) { // eslint-disable-line no-unused-vars
-      await driver.waitForVisible(nextButtonId, 10000)
+      await driver.waitForVisible(nextButtonId, timeout)
       await driver.click(nextButtonId)
     }
   }
 
-  await driver.waitForEnabled(doneButtonId, 20000)
+  await driver.waitForEnabled(doneButtonId, timeout)
   await driver.click(doneButtonId)
   t.pass('User should be able to tap on `Done` button')
 

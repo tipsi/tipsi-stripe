@@ -12,7 +12,7 @@ test('Test if user can use Custom Card params', async (t) => {
 
   await openTestSuite('Custom Card')
 
-  await driver.waitForVisible(cardFormButtonId, 15000)
+  await driver.waitForVisible(cardFormButtonId, 30000)
   t.pass('User should see `Pay with custom params` button')
 
   await driver.click(cardFormButtonId)

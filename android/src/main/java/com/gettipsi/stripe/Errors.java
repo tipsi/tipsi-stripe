@@ -31,7 +31,11 @@ public final class Errors {
     ArgCheck.nonNull(exception);
     String simpleName = exception.getClass().getSimpleName();
     String errorCode = exceptionNameToErrorCode.get(simpleName);
-    ArgCheck.nonNull(errorCode, simpleName);
+
+    if (errorCode == null) {
+      errorCode = simpleName;
+    }
+//    ArgCheck.nonNull(errorCode, simpleName);
 
     return errorCode;
   }

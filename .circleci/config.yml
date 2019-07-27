@@ -1,0 +1,38 @@
+version: 2
+jobs:
+  build:
+
+    docker:
+      - image: circleci/node:12.6.0
+
+    resource_class: xlarge
+    working_directory: ~
+    environment:
+      COMPILE_API_LEVEL: 28
+      EMULATOR_API_LEVEL: 24
+      EMULATOR_TAG: default
+      EMULATOR_ABI: armeabi-v7a
+      EMULATOR_NAME: test
+      ANDROID_BUILD_TOOLS_VERSION: 28.0.3
+      EMULATOR: system-images;android-24;default;armeabi-v7a
+      TRAVIS_OS_NAME: linux
+
+    steps:
+
+      - checkout
+      #      - restore_cache:
+      #          keys:
+      #            - v1-dependencies-{{ checksum "package.json" }}
+      #            # fallback to using the latest cache if no exact match is found
+      #            - v1-dependencies-
+      - run: env
+      - run: .travis/before-install.sh
+      - run: .travis/install.sh
+      - run:
+          command: .travis/ci.sh
+          no_output_timeout: 30m
+
+      #      - save_cache:
+      #          paths:
+      #            - node_modules
+      #          key: v1-dependencies-{{ checksum "package.json" }}

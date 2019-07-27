@@ -1,0 +1,21 @@
+#!/bin/bash
+export COMPILE_API_LEVEL=28
+
+export EMULATOR_API_LEVEL=24
+export EMULATOR_TAG=default
+export EMULATOR_ABI=armeabi-v7a
+export EMULATOR_NAME=test
+export ANDROID_BUILD_TOOLS_VERSION=28.0.3
+export EMULATOR="system-images;android-${EMULATOR_API_LEVEL};${EMULATOR_TAG};${EMULATOR_ABI}"
+
+export PUBLISHABLE_KEY=pk_test_dgkA2PvtDDR2Z5156pf4pFOE
+export IMGUR_CLIENT_ID=ca750874eabc7c4
+export PASTEBIN_DEV_KEY=00a4bfc1644406be10fc249e6d0bca3e
+export MERCHANT_ID=merchant.com.tipsi.applepaytest
+
+export ANDROID_SDK_ROOT=/Users/davemacdonald/Library/Android/sdk
+export ANDROID_HOME=${ANDROID_SDK_ROOT}
+export TRAVIS_OS_NAME=linux
+
+export PATH="${ANDROID_HOME}/emulator:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/build-tools/28.0.3:${PATH}"
+

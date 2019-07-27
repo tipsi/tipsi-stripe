@@ -11,7 +11,7 @@
     "configure": "scripts/configure.sh",
     "build:android": "scripts/build-android.sh",
     "build:ios": "scripts/build-ios.sh",
-    "test:android": "TEST_SUITE=android appium-helper --platform android",
+    "test:android": "TEST_SUITE=android appium-helper --platform android --driver-config ./android/appium-config.json",
     "test:ios": "TEST_SUITE=ios appium-helper --platform ios",
     "add-podfile": "scripts/add-podfile.sh",
     "set-stripe-url-type": "scripts/setUrlTypeForStripe.js"
@@ -20,14 +20,13 @@
     "prop-types": "15.6.1",
     "react": "16.8.6",
     "react-native": "0.59.10",
-    "react-native-drawer-layout-polyfill": "1.3.1",
-    "tipsi-stripe": "file:../tipsi-stripe-latest.tgz"
+    "react-native-drawer-layout-polyfill": "1.3.1"
   },
   "devDependencies": {
-    "appium": "1.10.0",
+    "appium": "1.14.0",
     "metro-react-native-babel-preset": "0.55.0",
     "tape-async": "2.3.0",
-    "tipsi-appium-helper": "2.1.3",
+    "tipsi-appium-helper": "3.3.0",
     "webdriverio": "4.7.1"
   }
 }

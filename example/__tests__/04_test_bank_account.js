@@ -12,7 +12,7 @@ test('Test if user can use Bank Account', async (t) => {
 
   await openTestSuite('Custom Bank')
 
-  await driver.waitForVisible(accountFormButtonId, 15000)
+  await driver.waitForVisible(accountFormButtonId, 30000)
   t.pass('User should see `Get bank account`s token with custom params` button')
 
   await driver.click(accountFormButtonId)
