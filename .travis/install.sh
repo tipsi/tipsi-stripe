@@ -32,5 +32,5 @@ esac
 echo "Removing node modules"
 rm -rf node_modules
 
-echo "Calling npm ci"
-npm ci > /dev/null
+echo "Calling npm i"
+npm i > /dev/null
