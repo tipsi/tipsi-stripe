@@ -1,5 +1,5 @@
 {
-  "desiredCapabilities" : {
+  "capabilities" : {
     "newCommandTimeout" : "600000",
     "androidInstallTimeout" : "600000",
     "automationName" : "uiautomator2",

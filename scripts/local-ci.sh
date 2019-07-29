@@ -27,6 +27,7 @@ files_to_copy=(
   package.json
   package-lock.json
   index.{ios,android}.js
+  android/appium-config.json
   android/build.gradle
   android/app/build.gradle
   android/gradle/wrapper/gradle-wrapper.properties

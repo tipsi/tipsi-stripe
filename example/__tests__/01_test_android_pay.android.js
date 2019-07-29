@@ -11,10 +11,10 @@ test('Test if user can use Android Pay', async (t) => {
 
   await openTestSuite('Android Pay')
 
-  await driver.waitForVisible(header, timeout)
+  let e = await (await driver.$(header)).waitForDisplayed(timeout)
   t.pass('User should see `Android Pay Example` text')
 
-  await driver.waitForVisible(androidPayButton, timeout)
+  e = await (await driver.$(androidPayButton)).waitForDisplayed(timeout)
   t.pass('User should see `Pay with Android Pay` button')
 
   // to be continued ...
