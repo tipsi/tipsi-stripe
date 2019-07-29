@@ -112,6 +112,14 @@ export const createTokenWithCardParamsPropTypes = {
   funding: PropTypes.string,
 }
 
+export const createPaymentMethodWithCardParamsPropTypes = {
+  number: PropTypes.string.isRequired,
+  expMonth: PropTypes.number.isRequired,
+  expYear: PropTypes.number.isRequired,
+  cvc: PropTypes.string
+}
+
+
 export const createTokenWithBankAccountParamsPropTypes = {
   accountNumber: PropTypes.string.isRequired,
   countryCode: PropTypes.string.isRequired,

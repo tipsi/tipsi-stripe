@@ -207,6 +207,38 @@ RCT_EXPORT_METHOD(createTokenWithCard:(NSDictionary *)params
     }];
 }
 
+RCT_EXPORT_METHOD(createPaymentMethodWithCard:(NSDictionary *)params
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject) {
+    if(!requestIsCompleted) {
+        NSDictionary *error = [errorCodes valueForKey:kErrorKeyBusy];
+        reject(error[kErrorKeyCode], error[kErrorKeyDescription], nil);
+        return;
+    }
+
+    requestIsCompleted = NO;
+    promiseResolver = resolve;
+    promiseRejector = reject;
+
+    STPPaymentMethodCardParams *cardParams = [self createCardWithPaymentMethod:params];
+
+    STPAPIClient *stripeAPIClient = [self newAPIClient];
+
+    // Fill in card, billing details
+    STPPaymentMethodParams *paymentMethodParams = [STPPaymentMethodParams paramsWithCard:cardParams billingDetails:nil metadata:nil];
+
+    [stripeAPIClient createPaymentMethodWithParams:paymentMethodParams completion:^(STPPaymentMethod *paymentMethod, NSError *error) {
+        requestIsCompleted = YES;
+
+        if (error) {
+            NSDictionary *jsError = [errorCodes valueForKey:kErrorKeyApi];
+            [self rejectPromiseWithCode:jsError[kErrorKeyCode] message:error.localizedDescription];
+        } else {
+            resolve([self convertPaymentMethodObject:paymentMethod]);
+        }
+    }];
+}
+
 RCT_EXPORT_METHOD(createTokenWithBankAccount:(NSDictionary *)params
                     resolver:(RCTPromiseResolveBlock)resolve
                     rejecter:(RCTPromiseRejectBlock)reject) {
@@ -484,6 +516,17 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     return cardParams;
 }
 
+- (STPPaymentMethodCardParams *)createCardWithPaymentMethod:(NSDictionary *)params {
+    STPPaymentMethodCardParams *cardParams = [STPPaymentMethodCardParams new];
+
+    [cardParams setNumber: params[@"number"]];
+    [cardParams setExpMonth: params[@"expMonth"]];
+    [cardParams setExpYear: params[@"expYear"]];
+    [cardParams setCvc: params[@"cvc"]];
+
+    return cardParams;
+}
+
 - (void)resolvePromise:(id)result {
     if (promiseResolver) {
         promiseResolver(result);
@@ -682,6 +725,32 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
         NSString *bankAccountHolderTypeString =
         [RCTConvert STPBankAccountHolderTypeString:token.bankAccount.accountHolderType];
         [bankAccount setValue:bankAccountHolderTypeString forKey:@"accountHolderType"];
+    }
+
+    return result;
+}
+
+- (NSDictionary *)convertPaymentMethodObject:(STPPaymentMethod*)paymentMethod {
+    NSMutableDictionary *result = [@{} mutableCopy];
+
+    // Token
+    [result setValue:paymentMethod.stripeId forKey:@"tokenId"]; // TODO: change to paymentMethodId??
+    [result setValue:@([paymentMethod.created timeIntervalSince1970]) forKey:@"created"];
+
+    [result setValue:@(paymentMethod.liveMode) forKey:@"livemode"];
+
+    // Card
+    if (paymentMethod.card) {
+        NSMutableDictionary *card = [@{} mutableCopy];
+        [result setValue:card forKey:@"card"];
+        [card setValue:[self cardBrand:paymentMethod.card.brand] forKey:@"brand"];
+        if (paymentMethod.card.funding) {
+            [card setValue:paymentMethod.card.funding forKey:@"funding"];
+        }
+        [card setValue:paymentMethod.card.last4 forKey:@"last4"];
+        [card setValue:@(paymentMethod.card.expMonth) forKey:@"expMonth"];
+        [card setValue:@(paymentMethod.card.expYear) forKey:@"expYear"];
+        [card setValue:paymentMethod.card.country forKey:@"country"];
     }
 
     return result;
