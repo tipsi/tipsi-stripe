@@ -15,7 +15,6 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
-import com.gettipsi.stripe.dialog.AddCardDialogFragment;
 import com.gettipsi.stripe.util.ArgCheck;
 import com.gettipsi.stripe.util.Converters;
 import com.gettipsi.stripe.util.Fun0;
@@ -24,16 +23,19 @@ import com.stripe.android.AppInfo;
 import com.stripe.android.SourceCallback;
 import com.stripe.android.Stripe;
 import com.stripe.android.TokenCallback;
+import com.stripe.android.model.PaymentMethod;
+import com.stripe.android.model.PaymentMethodCreateParams;
 import com.stripe.android.model.Source;
-import com.stripe.android.model.SourceParams;
 import com.stripe.android.model.Token;
 
 import static com.gettipsi.stripe.Errors.*;
+import static com.gettipsi.stripe.util.Converters.convertPaymentMethodToWritableMap;
 import static com.gettipsi.stripe.util.Converters.convertSourceToWritableMap;
 import static com.gettipsi.stripe.util.Converters.convertTokenToWritableMap;
 import static com.gettipsi.stripe.util.Converters.createBankAccount;
 import static com.gettipsi.stripe.util.Converters.createCard;
 import static com.gettipsi.stripe.util.Converters.getStringOrNull;
+import static com.gettipsi.stripe.util.Converters.createPaymentMethodCard;
 import static com.gettipsi.stripe.util.InitializationOptions.ANDROID_PAY_MODE_KEY;
 import static com.gettipsi.stripe.util.InitializationOptions.ANDROID_PAY_MODE_PRODUCTION;
 import static com.gettipsi.stripe.util.InitializationOptions.ANDROID_PAY_MODE_TEST;
@@ -315,6 +317,28 @@ public class StripeModule extends ReactContextBaseJavaModule {
         }
       }
     });
+  }
+
+  @ReactMethod
+  public void createPaymentMethodWithCard(final ReadableMap cardData, final Promise promise) {
+    new AsyncTask<Void, Void, Void>() {
+      @Override
+      protected Void doInBackground(Void... voids) {
+        ArgCheck.nonNull(mStripe);
+        ArgCheck.notEmptyString(mPublicKey);
+
+        try {
+          PaymentMethod paymentMethod = mStripe.createPaymentMethodSynchronous(
+            PaymentMethodCreateParams.create(createPaymentMethodCard(cardData), null),
+            mPublicKey);
+          promise.resolve(convertPaymentMethodToWritableMap(paymentMethod));
+        } catch (Exception e) {
+          promise.reject(toErrorCode(e), e.getMessage());
+        }
+
+        return null;
+      }
+    }.execute();
   }
 
   void processRedirect(@Nullable Uri redirectData) {
