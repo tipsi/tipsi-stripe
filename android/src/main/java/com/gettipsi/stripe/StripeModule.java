@@ -42,6 +42,12 @@ import static com.gettipsi.stripe.util.InitializationOptions.PUBLISHABLE_KEY;
 public class StripeModule extends ReactContextBaseJavaModule {
 
   private static final String MODULE_NAME = StripeModule.class.getSimpleName();
+
+  // If you change these, make sure to also change:
+  //  ios/TPSStripe/TPSStripeManager
+  // Relevant Docs:
+  // - https://stripe.dev/stripe-ios/docs/Classes/STPAppInfo.html https://stripe.dev/stripe-android/com/stripe/android/AppInfo.html
+  // - https://stripe.com/docs/building-plugins#setappinfo
   private static final String APP_INFO_NAME    = "tipsi-stripe";
   private static final String APP_INFO_URL     = "https://github.com/tipsi/tipsi-stripe";
   private static final String APP_INFO_VERSION = "7.x";

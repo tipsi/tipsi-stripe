@@ -9,8 +9,19 @@
 #import "TPSStripeManager.h"
 #import <React/RCTUtils.h>
 #import <React/RCTConvert.h>
+#import <Stripe/Stripe.h>
 
 #import "TPSError.h"
+
+// If you change these, make sure to also change:
+//  android/src/main/java/com/gettipsi/stripe/StripeModule.java
+// Relevant Docs:
+// - https://stripe.dev/stripe-ios/docs/Classes/STPAppInfo.html https://stripe.dev/stripe-android/com/stripe/android/AppInfo.html
+// - https://stripe.com/docs/building-plugins#setappinfo
+NSString * const TPSAppInfoName = @"tipsi-stripe";
+NSString * const TPSAppInfoPartnerId = @"tipsi-stripe";
+NSString * const TPSAppInfoURL = @"https://github.com/tipsi/tipsi-stripe";
+NSString * const TPSAppInfoVersion = @"7.x";
 
 NSString * const kErrorKeyCode = @"errorCode";
 NSString * const kErrorKeyDescription = @"description";
@@ -467,19 +478,21 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
 - (STPCardParams *)createCard:(NSDictionary *)params {
     STPCardParams *cardParams = [[STPCardParams alloc] init];
 
-    [cardParams setNumber: params[@"number"]];
-    [cardParams setExpMonth: [params[@"expMonth"] integerValue]];
-    [cardParams setExpYear: [params[@"expYear"] integerValue]];
-    [cardParams setCvc: params[@"cvc"]];
+    cardParams.number = params[@"number"];
+    cardParams.expMonth = [params[@"expMonth"] integerValue];
+    cardParams.expYear = [params[@"expYear"] integerValue];
+    cardParams.cvc = params[@"cvc"];
 
-    [cardParams setCurrency: params[@"currency"]];
-    [cardParams setName: params[@"name"]];
-    [cardParams setAddressLine1: params[@"addressLine1"]];
-    [cardParams setAddressLine2: params[@"addressLine2"]];
-    [cardParams setAddressCity: params[@"addressCity"]];
-    [cardParams setAddressState: params[@"addressState"]];
-    [cardParams setAddressCountry: params[@"addressCountry"]];
-    [cardParams setAddressZip: params[@"addressZip"]];
+    cardParams.currency = params[@"currency"];
+    cardParams.name = params[@"name"];
+
+    cardParams.address.line1 = params[@"addressLine1"];
+    cardParams.address.line2 = params[@"addressLine2"];
+    cardParams.address.city = params[@"addressCity"];
+    cardParams.address.state = params[@"addressState"];
+    cardParams.address.country = params[@"addressCountry"];
+
+    cardParams.address.postalCode = params[@"addressZip"];
 
     return cardParams;
 }
@@ -628,7 +641,18 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
 }
 
 - (STPAPIClient *)newAPIClient {
-    return [[STPAPIClient alloc] initWithPublishableKey:[Stripe defaultPublishableKey]];
+    static STPAppInfo * info = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        info = [[STPAppInfo alloc] initWithName:TPSAppInfoName
+                                      partnerId:TPSAppInfoPartnerId
+                                        version:TPSAppInfoVersion
+                                            url:TPSAppInfoURL];
+    });
+
+    STPAPIClient * client = [[STPAPIClient alloc] initWithPublishableKey:[Stripe defaultPublishableKey]];
+    client.appInfo = info;
+    return client;
 }
 
 - (NSDictionary *)convertTokenObject:(STPToken*)token {
