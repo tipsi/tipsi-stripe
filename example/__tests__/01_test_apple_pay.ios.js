@@ -15,50 +15,60 @@ test('Test if user can use Apple Pay', async (t) => {
 
   await openTestSuite('Pay')
 
-  await driver.waitForVisible(applePayButtonId, 30000)
+  let elem = await driver.$(applePayButtonId)
+  await elem.waitForDisplayed(30000)
   t.pass('User should see `Pay with Pay` button')
 
-  await driver.click(applePayButtonId)
+  await elem.click()
   t.pass('User should be able to tap on `Pay with Pay` button')
 
-  await driver.waitForVisible(payWithPasscodeButtonId, 30000)
+  let elem = await driver.$(payWithPasscodeButtonId)
+  await elem.waitForDisplayed(30000)
   t.pass('User should see Pay form')
 
-  await driver.click(payWithPasscodeButtonId)
+  await elem.click()
   t.pass('User should accept Pay payment')
 
-  await driver.waitForVisible(tokenId, 60000)
+  elem = await driver.$(tokenId)
+  await elem.waitForDisplayed(60000)
   t.pass('User should see token')
 
+  elem = await driver.$(statusId)
   t.equal(
-    await driver.getText(statusId),
+    elem.getText(),
     'Apple Pay payment completed',
     'Apple Pay payment should be completed'
   )
 
-  await driver.click(applePaySwitchId)
+  elem = await driver.$(applePaySwitchId)
+  await elem.click()
   t.pass('User should be able to tap on `Complete/Cancel` switch')
 
-  await driver.click(applePayButtonId)
+  elem = await driver.$(applePayButtonId)
+  await elem.click()
   t.pass('User should be able to tap on `Pay with Pay` button')
 
-  await driver.waitForVisible(payWithPasscodeButtonId, 30000)
+  elem = await driver.$(payWithPasscodeButtonId)
+  await elem.waitForDisplayed(30000)
   t.pass('User should see Pay form')
 
-  await driver.click(payWithPasscodeButtonId)
+  await elem.click()
   t.pass('User should accept Pay payment')
 
-  await driver.waitForVisible(tokenId, 60000)
+  elem = await driver.$(tokenId)
+  await elem.waitForDisplayed(60000)
   t.pass('User should see token')
 
+  elem = await driver.$(statusId)
   t.equal(
-    await driver.getText(statusId),
+    elem.getText(),
     'Apple Pay payment cenceled',
     'Apple Pay payment should be cenceled'
   )
 
+  elem = await driver.$(deviceSupportsApplePayStatusId)
   t.equal(
-    await driver.getText(deviceSupportsApplePayStatusId),
+    elem.getText(),
     'Device supports Pay',
     'Device should support Pay'
   )
@@ -71,16 +81,19 @@ test('Test if user can use Apple Pay', async (t) => {
   }
 
   for (const [id, title] of Object.entries(cards)) {
-    const text = await driver.getText(idFromAccessId(id))
+    elem = await driver.$(idFromAccessId(id))
+    const text = elem.getText()
     t.equal(text, `${title} is available`, `${title} should be available`)
   }
 
-  await driver.waitForVisible(setupApplePayButtonId, 30000)
+  elem = await driver.$(setupApplePayButtonId)
+  await elem.waitForDisplayed(30000)
   t.pass('User should see `Setup Pay` button')
 
-  await driver.click(setupApplePayButtonId)
+  await elem.click()
   t.pass('User should be able to tap on `Setup Pay` button')
 
-  await driver.waitForVisible(setupApplePayButtonId, 30000)
+  elem = await driver.$(setupApplePayButtonId)
+  await elem.waitForDisplayed(30000)
   t.pass('User should still see `Setup Pay` button')
 })
