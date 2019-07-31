@@ -44,6 +44,11 @@ npm run start-docs
 npm run build-docs
 ```
 
+## Community
+
+[Discord](https://discord.gg/vmBxnBw)
+
+
 ## License
 
 tipsi-stripe is available under the MIT license. See the [LICENSE](https://github.com/tipsi/tipsi-stripe/tree/master/LICENSE) file for more info.
