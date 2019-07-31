@@ -1073,6 +1073,9 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     if ([inputType isEqualToString:@"zip"]) {
         return STPBillingAddressFieldsZip;
     }
+    if ([inputType isEqualToString:@"name"]) {
+        return STPBillingAddressFieldsName;
+    }
     if ([inputType isEqualToString:@"full"]) {
         return STPBillingAddressFieldsFull;
     }

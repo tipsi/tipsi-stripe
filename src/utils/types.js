@@ -62,7 +62,7 @@ export const paymentRequestWithApplePayOptionsPropTypes = {
 }
 
 export const paymentRequestWithCardFormOptionsPropTypes = {
-  requiredBillingAddressFields: PropTypes.oneOf(['full', 'zip']),
+  requiredBillingAddressFields: PropTypes.oneOf(['full', 'name', 'zip']),
   smsAutofillDisabled: PropTypes.bool,
   prefilledInformation: PropTypes.shape({
     email: PropTypes.string,
