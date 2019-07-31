@@ -78,11 +78,11 @@ test('Test if user can use Apple Pay', async (t) => {
   for (const network of networks) {
     elem = await driver.$(idFromAccessId(network))
     const text = elem.getText()
-    t.equal(text, `${title} is available`, `${title} should be available`)
+    t.equal(text, `${network} is available`, `${network} should be available`)
   }
 
   elem = await driver.$(idFromAccessId("FAKE_BANK"))
-  t.equal(elem.getText(), `${title} is not available`, `${title} should not be available`)
+  t.equal(elem.getText(), `FAKE_BANK is not available`, `FAKE_BANK should not be available`)
 
   elem = await driver.$(setupApplePayButtonId)
   await elem.waitForDisplayed(30000)
