@@ -60,6 +60,17 @@ class Stripe {
     })()
   )
 
+  potentiallyAvailableNativePayNetworks = () => (
+    Platform.select({
+      ios: () => StripeModule.potentiallyAvailableNativePayNetworks(),
+      // Android doesn't expose this information, so resolve empty array
+      android: async () => {
+        const canNativePay = await this.canMakeAndroidPayPayments();
+        return canNativePay ? [] : null;
+      }
+    })()
+  )
+
   // @deprecated use paymentRequestWithNativePay
   paymentRequestWithAndroidPay = (options = {}) => {
     checkInit(this)
