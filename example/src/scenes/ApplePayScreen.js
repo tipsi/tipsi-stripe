@@ -82,7 +82,7 @@ export default class ApplePayScreen extends PureComponent {
         this.setState({ status: 'Apple Pay payment completed' })
       } else {
         await stripe.cancelNativePayRequest()
-        this.setState({ status: 'Apple Pay payment cenceled' })
+        this.setState({ status: 'Apple Pay payment canceled' })
       }
     } catch (error) {
       this.setState({ loading: false, status: `Error: ${error.message}` })

@@ -62,8 +62,8 @@ test('Test if user can use Apple Pay', async (t) => {
   elem = await driver.$(statusId)
   t.equal(
     elem.getText(),
-    'Apple Pay payment cenceled',
-    'Apple Pay payment should be cenceled'
+    'Apple Pay payment canceled',
+    'Apple Pay payment should be canceled'
   )
 
   elem = await driver.$(deviceSupportsApplePayStatusId)
