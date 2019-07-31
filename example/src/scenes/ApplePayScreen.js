@@ -33,7 +33,7 @@ export default class ApplePayScreen extends PureComponent {
         networks: [network],
       })
       if (available) {
-        this.setState(({verifiedNetworks: updatedVerified})=>({ verifiedNetworks: [...updatedVerified, network] }));
+        this.setState(({ verifiedNetworks: updatedVerified }) => ({ verifiedNetworks: [...updatedVerified, network] }))
       }
     }
   }
@@ -95,6 +95,7 @@ export default class ApplePayScreen extends PureComponent {
       complete,
       status,
       token,
+      potentialNetworks,
       verifiedNetworks,
     } = this.state
 
@@ -145,18 +146,21 @@ export default class ApplePayScreen extends PureComponent {
               {...testID('setupApplePayButton')}
             />
             <Text style={styles.hint}>
-              Setup Pay works only on real device
+              Setup Pay works only on real devices
             </Text>
           </View>
           <View style={styles.statusContainer}>
             <Text style={styles.status} {...testID('deviceSupportsApplePayStatus')}>
               Device {allowed ? 'supports' : 'doesn\'t support' } Pay
             </Text>
-            {verifiedNetworks.map((id) => (
-              <Text style={styles.status} key={id} {...testID(id)}>
-                {name} is {isAvailable ? 'available' : 'not available'}
+            {potentialNetworks.map((network) => {
+              const isAvailable = verifiedNetworks.includes(network);
+              return (
+                <Text style={styles.status} key={network} {...testID(network)}>
+                  {network} is {isAvailable ? 'available' : 'not available'}
               </Text>
-            ))}
+              );
+            })}
           </View>
         </View>
       </ScrollView>
