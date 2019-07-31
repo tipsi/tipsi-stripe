@@ -11,6 +11,7 @@ import CustomCardScreen from './scenes/CustomCardScreen'
 import CustomBankScreen from './scenes/CustomBankScreen'
 import CardTextFieldScreen from './scenes/CardTextFieldScreen'
 import SourceScreen from './scenes/SourceScreen'
+import PaymentMethodsScreen from './scenes/PaymentMethodsScreen'
 import testID from './utils/testID'
 
 stripe.setOptions({
@@ -33,6 +34,7 @@ export default class Root extends PureComponent {
       CustomBankScreen,
       CardTextFieldScreen,
       SourceScreen,
+      PaymentMethodsScreen,
     ].filter(item => item),
   }
 

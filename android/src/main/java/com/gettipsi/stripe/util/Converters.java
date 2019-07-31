@@ -64,11 +64,11 @@ public class Converters {
 
     billingContactMap.putString("emailAddress", emailAddress);
     shippingContactMap.putString("emailAddress", emailAddress);
-    
+
 
     extra.putMap("billingContact", billingContactMap);
     extra.putMap("shippingContact", shippingContactMap);
-    
+
     tokenMap.putMap("extra", extra);
 
     return tokenMap;

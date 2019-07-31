@@ -5,4 +5,5 @@ export default [
   '04_test_bank_account',
   '05_test_card_text_field',
   '06_test_sources',
+  '07_test_payment_methods',
 ]

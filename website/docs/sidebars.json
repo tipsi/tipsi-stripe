@@ -11,10 +11,7 @@
       "example",
       "changelog"
     ],
-    "Objects": [
-      "token",
-      "source"
-    ],
+    "Objects": ["token", "source"],
     " Pay": [
       "openapplepaysetup",
       "deviceSupportsApplePay",
@@ -29,15 +26,16 @@
       "paymentrequestwithandroidpay"
     ],
     "Card Form": ["paymentrequestwithcardform"],
+    "Payment Methods Form": [
+      "paymentrequestwithpaymentmethods",
+      "completepaymentrequestWithpaymentmethods"
+    ],
     "Card Params Object": ["createtokenwithcard"],
     "Bank Account Params Object": ["createtokenwithbankaccount"],
     "Create Source Object With Params": ["createsourcewithparamsparams"],
     "Components": ["paymentcardtextfield"],
     "Error Codes": ["errorcodes"],
-    "Tests": [
-      "tests-local-ci",
-      "tests-manual"
-    ],
+    "Tests": ["tests-local-ci", "tests-manual"],
     "Troubleshooting": [
       "troubleshooting-android",
       "troubleshooting-jest",
