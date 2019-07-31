@@ -1,5 +1,5 @@
 ---
-id: potentiallyavailablenativepaynetworks
+id: potentiallyAvailableNativePayNetworks
 title: .potentiallyAvailableNativePayNetworks([options]) -> Promise
 sidebar_label: .potentiallyAvailableNativePayNetworks()
 ---
@@ -10,24 +10,24 @@ Provides a list of payment networks potentially available on this device for thi
 
 When referring to `networks` below, we mean values from this list:
 
-* american_express
-* cartes_bancaires
-* china_union_pay
-* discover
-* eftpos
-* electron
-* elo
-* id_credit
-* interac
-* jcb
-* mada
-* maestro
-* master_card
-* private_label
-* quic_pay
-* suica
-* visa
-* vpay
+* `american_express`
+* `cartes_bancaires`
+* `china_union_pay`
+* `discover`
+* `eftpos`
+* `electron`
+* `elo`
+* `id_credit`
+* `interac`
+* `jcb`
+* `mada`
+* `maestro`
+* `master_card`
+* `private_label`
+* `quic_pay`
+* `suica`
+* `visa`
+* `vpay`
 
 ### Example
 

@@ -1,12 +1,10 @@
 ---
-id: cancelapplepayrequest
-title: .cancelApplePayRequest() -> Promise
-sidebar_label: .cancelApplePayRequest()
+id: cancelNativePayRequest
+title: .cancelNativePayRequest() -> Promise
+sidebar_label: .cancelNativePayRequest()
 ---
 
-__Method is deprecated, use [`cancelNativePayRequest()`](cancelNativePayRequest.md) instead.__
-
-After `paymentRequestWithApplePay` you should complete the operation by calling `cancelApplePayRequest` if an error occurred.
+After [`paymentRequestWithNativePay()`](paymentRequestWithNativePay.md) you should complete the operation by calling `cancelNativePayRequest` if an error occurred.
 
 ```js
 const items = [{
@@ -31,12 +29,12 @@ const options = {
 }
 
 try {
-  await stripe.paymentRequestWithApplePay(items, options)
+  await stripe.paymentRequestWithNativePay(items, options)
 
   // You should complete the operation by calling
-  // stripe.completeApplePayRequest()
+  // stripe.completeNativePayRequest()
 } catch (error) {
   // Or cancel if an error occurred
-  stripe.cancelApplePayRequest()
+  stripe.cancelNativePayRequest()
 }
 ```

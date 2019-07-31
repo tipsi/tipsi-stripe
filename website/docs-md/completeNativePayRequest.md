@@ -1,12 +1,10 @@
 ---
-id: completeapplepayrequest
-title: .completeApplePayRequest() -> Promise
-sidebar_label: .completeApplePayRequest()
+id: completeNativePayRequest
+title: .completeNativePayRequest() -> Promise
+sidebar_label: .completeNativePayRequest()
 ---
 
-__Method is deprecated, use [`completeNativePayRequest()`](completeNativePayRequest.md) instead.__
-
-After `paymentRequestWithApplePay` you should complete the operation by calling `completeApplePayRequest` .
+After [`paymentRequestWithNativePay()`](paymentRequestWithNativePay.md) you should complete the operation by calling `completeNativePayRequest` .
 
 ```js
 const items = [{
@@ -31,15 +29,15 @@ const options = {
 }
 
 try {
-  const token = await stripe.paymentRequestWithApplePay(items, options)
+  const token = await stripe.paymentRequestWithNativePay(items, options)
 
   // Client specific code
   // api.sendTokenToBackend(token)
 
   // You should complete the operation by calling
-  stripe.completeApplePayRequest()
+  stripe.completeNativePayRequest()
 } catch (error) {
   // Or cancel if an error occurred
-  // stripe.cancelApplePayRequest()
+  // stripe.cancelNativePayRequest()
 }
 ```
