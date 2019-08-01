@@ -177,8 +177,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
             promise.resolve(convertTokenToWritableMap(token));
           }
           public void onError(Exception error) {
-            error.printStackTrace();
-            promise.reject(toErrorCode(error), error.getMessage());
+            promise.reject(error);
           }
         });
     } catch (Exception e) {
