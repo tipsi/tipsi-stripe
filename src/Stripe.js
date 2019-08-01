@@ -4,11 +4,17 @@ import checkArgs from './utils/checkArgs'
 import checkInit from './utils/checkInit'
 import * as types from './utils/types'
 import errorCodes from './errorCodes'
+import deprecatedMethodsForInstance from './Stripe.deprecated'
 
 const { StripeModule } = NativeModules
 
 class Stripe {
   stripeInitialized = false
+
+  constructor() {
+    // Mix in the deprecated methods
+    Object.assign(this, deprecatedMethodsForInstance(this))
+  }
 
   setOptions = (options = {}) => {
     checkArgs(types.setOptionsOptionsPropTypes, options, 'options', 'Stripe.setOptions')
@@ -18,35 +24,11 @@ class Stripe {
     return StripeModule.init(options, errorCodes)
   }
 
-  // @deprecated use deviceSupportsNativePay
-  deviceSupportsAndroidPay = () => (
-    StripeModule.deviceSupportsAndroidPay()
-  )
-
-  // @deprecated use deviceSupportsNativePay
-  deviceSupportsApplePay = () => (
-    StripeModule.deviceSupportsApplePay()
-  )
-
   deviceSupportsNativePay = () =>
     Platform.select({
       ios: () => this.deviceSupportsApplePay(),
       android: () => this.deviceSupportsAndroidPay(),
     })()
-
-  // @deprecated use canMakeNativePayPayments
-  canMakeApplePayPayments = (options = {}) => {
-    checkArgs(
-      types.canMakeApplePayPaymentsOptionsPropTypes,
-      options,
-      'options',
-      'Stripe.canMakeApplePayPayments'
-    )
-    return StripeModule.canMakeApplePayPayments(options)
-  }
-
-  // @deprecated use canMakeNativePayPayments
-  canMakeAndroidPayPayments = () => StripeModule.canMakeAndroidPayPayments()
 
   // iOS requires networks array while Android requires nothing
   canMakeNativePayPayments = (options = {}) =>
@@ -65,47 +47,11 @@ class Stripe {
       },
     })()
 
-  // @deprecated use paymentRequestWithNativePay
-  paymentRequestWithAndroidPay = (options = {}) => {
-    checkInit(this)
-    checkArgs(
-      types.paymentRequestWithAndroidPayOptionsPropTypes,
-      options,
-      'options',
-      'Stripe.paymentRequestWithAndroidPay'
-    )
-    return StripeModule.paymentRequestWithAndroidPay(options)
-  }
-
-  // @deprecated use paymentRequestWithNativePay
-  paymentRequestWithApplePay = (items = [], options = {}) => {
-    checkInit(this)
-    checkArgs(
-      types.paymentRequestWithApplePayItemsPropTypes,
-      { items },
-      'items',
-      'Stripe.paymentRequestWithApplePay'
-    )
-    checkArgs(
-      types.paymentRequestWithApplePayOptionsPropTypes,
-      options,
-      'options',
-      'Stripe.paymentRequestWithApplePay'
-    )
-    return StripeModule.paymentRequestWithApplePay(items, options)
-  }
-
   paymentRequestWithNativePay(options = {}, items = []) {
     return Platform.select({
       ios: () => this.paymentRequestWithApplePay(items, options),
       android: () => this.paymentRequestWithAndroidPay(options),
     })()
-  }
-
-  // @deprecated use completeNativePayRequest
-  completeApplePayRequest = () => {
-    checkInit(this)
-    return StripeModule.completeApplePayRequest()
   }
 
   // no corresponding android impl exists
@@ -115,21 +61,12 @@ class Stripe {
       android: () => Promise.resolve(),
     })()
 
-  // @deprecated use cancelNativePayRequest
-  cancelApplePayRequest = () => {
-    checkInit(this)
-    return StripeModule.cancelApplePayRequest()
-  }
-
   // no corresponding android impl exists
   cancelNativePayRequest = () =>
     Platform.select({
       ios: () => this.cancelApplePayRequest(),
       android: () => Promise.resolve(),
     })()
-
-  // @deprecated use openNativePaySetup
-  openApplePaySetup = () => StripeModule.openApplePaySetup()
 
   // no corresponding android impl exists
   openNativePaySetup = () =>
