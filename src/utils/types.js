@@ -64,9 +64,7 @@ export const paymentRequestWithApplePayItemPropTypes = {
 }
 
 export const paymentRequestWithApplePayItemsPropTypes = {
-  items: PropTypes.arrayOf(
-    PropTypes.shape(paymentRequestWithApplePayItemPropTypes)
-  ).isRequired,
+  items: PropTypes.arrayOf(PropTypes.shape(paymentRequestWithApplePayItemPropTypes)).isRequired,
 }
 
 export const applePayAddressFieldsPropTypes = PropTypes.oneOf(availableApplePayAddressFields)

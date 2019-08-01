@@ -44,26 +44,16 @@ export default class CardFormScreen extends PureComponent {
 
     return (
       <View style={styles.container}>
-        <Text style={styles.header}>
-          Card Form Example
-        </Text>
-        <Text style={styles.instruction}>
-          Click button to show Card Form dialog.
-        </Text>
+        <Text style={styles.header}>Card Form Example</Text>
+        <Text style={styles.instruction}>Click button to show Card Form dialog.</Text>
         <Button
           text="Enter you card and pay"
           loading={loading}
           onPress={this.handleCardPayPress}
           {...testID('cardFormButton')}
         />
-        <View
-          style={styles.token}
-          {...testID('cardFormToken')}>
-          {token &&
-            <Text style={styles.instruction}>
-              Token: {token.tokenId}
-            </Text>
-          }
+        <View style={styles.token} {...testID('cardFormToken')}>
+          {token && <Text style={styles.instruction}>Token: {token.tokenId}</Text>}
         </View>
       </View>
     )

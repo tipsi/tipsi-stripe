@@ -33,7 +33,7 @@ export default class Root extends PureComponent {
       CustomBankScreen,
       CardTextFieldScreen,
       SourceScreen,
-    ].filter(item => item),
+    ].filter((item) => item),
   }
 
   getCurrentScene = () => this.state.routes[this.state.index]
@@ -91,7 +91,8 @@ export default class Root extends PureComponent {
           renderNavigationView={this.renderNavigation}
           onDrawerOpen={this.handleDrawerOpen}
           onDrawerClose={this.handleDrawerClose}
-          ref={this.handleDrawerRef}>
+          ref={this.handleDrawerRef}
+        >
           <Scene />
         </DrawerLayout>
       </View>

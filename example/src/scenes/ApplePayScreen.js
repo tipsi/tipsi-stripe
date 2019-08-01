@@ -23,7 +23,10 @@ export default class ApplePayScreen extends PureComponent {
     this.setState({ allowed })
 
     // Collect list of any potential network, and add a fake bank, to make sure at least one is unavailable
-    const potentialNetworks = [...await stripe.potentiallyAvailableNativePayNetworks(), 'FAKE_BANK']
+    const potentialNetworks = [
+      ...(await stripe.potentiallyAvailableNativePayNetworks()),
+      'FAKE_BANK',
+    ]
     this.setState({ potentialNetworks })
 
     for (const network of potentialNetworks) {
@@ -33,14 +36,14 @@ export default class ApplePayScreen extends PureComponent {
         networks: [network],
       })
       if (available) {
-        this.setState(({ verifiedNetworks: updatedVerified }) => ({ verifiedNetworks: [...updatedVerified, network] }))
+        this.setState(({ verifiedNetworks: updatedVerified }) => ({
+          verifiedNetworks: [...updatedVerified, network],
+        }))
       }
     }
   }
 
-  handleCompleteChange = complete => (
-    this.setState({ complete })
-  )
+  handleCompleteChange = (complete) => this.setState({ complete })
 
   handleApplePayPress = async () => {
     try {
@@ -49,26 +52,34 @@ export default class ApplePayScreen extends PureComponent {
         status: null,
         token: null,
       })
-      const token = await stripe.paymentRequestWithNativePay({
-        // requiredBillingAddressFields: ['all'],
-        // requiredShippingAddressFields: ['all'],
-        shippingMethods: [{
-          id: 'fedex',
-          label: 'FedEX',
-          detail: 'Test @ 10',
-          amount: '10.00',
-        }],
-      },
-      [{
-        label: 'Whisky',
-        amount: '50.00',
-      }, {
-        label: 'Vine',
-        amount: '60.00',
-      }, {
-        label: 'Tipsi',
-        amount: '110.00',
-      }])
+      const token = await stripe.paymentRequestWithNativePay(
+        {
+          // requiredBillingAddressFields: ['all'],
+          // requiredShippingAddressFields: ['all'],
+          shippingMethods: [
+            {
+              id: 'fedex',
+              label: 'FedEX',
+              detail: 'Test @ 10',
+              amount: '10.00',
+            },
+          ],
+        },
+        [
+          {
+            label: 'Whisky',
+            amount: '50.00',
+          },
+          {
+            label: 'Vine',
+            amount: '60.00',
+          },
+          {
+            label: 'Tipsi',
+            amount: '110.00',
+          },
+        ]
+      )
 
       this.setState({ loading: false, token })
 
@@ -84,9 +95,7 @@ export default class ApplePayScreen extends PureComponent {
     }
   }
 
-  handleSetupApplePayPress = () => (
-    stripe.openNativePaySetup()
-  )
+  handleSetupApplePayPress = () => stripe.openNativePaySetup()
 
   render() {
     const {
@@ -102,12 +111,8 @@ export default class ApplePayScreen extends PureComponent {
     return (
       <ScrollView style={styles.scroll}>
         <View style={styles.container}>
-          <Text style={styles.header}>
-            Apple Pay Example
-          </Text>
-          <Text style={styles.instruction}>
-            Click button to show Apple Pay dialog.
-          </Text>
+          <Text style={styles.header}>Apple Pay Example</Text>
+          <Text style={styles.instruction}>Click button to show Apple Pay dialog.</Text>
           <Button
             text="Pay with Pay"
             disabledText="Not supported"
@@ -116,9 +121,7 @@ export default class ApplePayScreen extends PureComponent {
             onPress={this.handleApplePayPress}
             {...testID('applePayButton')}
           />
-          <Text style={styles.instruction}>
-            Complete the operation on token
-          </Text>
+          <Text style={styles.instruction}>Complete the operation on token</Text>
           <Switch
             style={styles.switch}
             value={complete}
@@ -126,16 +129,16 @@ export default class ApplePayScreen extends PureComponent {
             {...testID('applePaySwitch')}
           />
           <View>
-            {token &&
+            {token && (
               <Text style={styles.instruction} {...testID('applePayToken')}>
                 Token: {token.tokenId}
               </Text>
-            }
-            {status &&
+            )}
+            {status && (
               <Text style={styles.instruction} {...testID('applePayStatus')}>
                 {status}
               </Text>
-            }
+            )}
           </View>
           <View style={styles.hintContainer}>
             <Button
@@ -145,21 +148,19 @@ export default class ApplePayScreen extends PureComponent {
               onPress={this.handleSetupApplePayPress}
               {...testID('setupApplePayButton')}
             />
-            <Text style={styles.hint}>
-              Setup Pay works only on real devices
-            </Text>
+            <Text style={styles.hint}>Setup Pay works only on real devices</Text>
           </View>
           <View style={styles.statusContainer}>
             <Text style={styles.status} {...testID('deviceSupportsApplePayStatus')}>
-              Device {allowed ? 'supports' : 'doesn\'t support' } Pay
+              Device {allowed ? 'supports' : "doesn't support"} Pay
             </Text>
             {potentialNetworks.map((network) => {
-              const isAvailable = verifiedNetworks.includes(network);
+              const isAvailable = verifiedNetworks.includes(network)
               return (
                 <Text style={styles.status} key={network} {...testID(network)}>
                   {network} is {isAvailable ? 'available' : 'not available'}
                 </Text>
-              );
+              )
             })}
           </View>
         </View>
