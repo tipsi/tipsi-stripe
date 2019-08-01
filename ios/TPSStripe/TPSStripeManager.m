@@ -219,8 +219,7 @@ RCT_EXPORT_METHOD(canMakeApplePayPayments:(NSDictionary *)options
     resolve(@([PKPaymentAuthorizationViewController canMakePaymentsUsingNetworks:networks]));
 }
 
-RCT_EXPORT_METHOD(potentiallyAvailableNativePayNetworks:(NSDictionary *)options
-                  resolver:(RCTPromiseResolveBlock)resolve
+RCT_EXPORT_METHOD(potentiallyAvailableNativePayNetworks:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
     NSArray <NSString *> *paymentNetworksStrings = [StripeModule applePaySupportedPaymentNetworksStrings];
 

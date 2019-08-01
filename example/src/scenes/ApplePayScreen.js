@@ -158,7 +158,7 @@ export default class ApplePayScreen extends PureComponent {
               return (
                 <Text style={styles.status} key={network} {...testID(network)}>
                   {network} is {isAvailable ? 'available' : 'not available'}
-              </Text>
+                </Text>
               );
             })}
           </View>
