@@ -15,6 +15,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.module.annotations.ReactModule;
 import com.gettipsi.stripe.dialog.AddCardDialogFragment;
 import com.gettipsi.stripe.util.ArgCheck;
 import com.gettipsi.stripe.util.Converters;
@@ -38,9 +39,10 @@ import static com.gettipsi.stripe.util.InitializationOptions.ANDROID_PAY_MODE_PR
 import static com.gettipsi.stripe.util.InitializationOptions.ANDROID_PAY_MODE_TEST;
 import static com.gettipsi.stripe.util.InitializationOptions.PUBLISHABLE_KEY;
 
+@ReactModule(name = StripeModule.NAME)
 public class StripeModule extends ReactContextBaseJavaModule {
 
-  private static final String MODULE_NAME = StripeModule.class.getSimpleName();
+  public static final String NAME = "StripeModule";
 
   private static StripeModule sInstance = null;
 
@@ -86,7 +88,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
 
   @Override
   public String getName() {
-    return MODULE_NAME;
+    return NAME;
   }
 
   @ReactMethod
