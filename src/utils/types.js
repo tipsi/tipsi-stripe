@@ -168,3 +168,63 @@ export const createSourceWithParamsPropType = {
   id: PropTypes.string,
   last4: PropTypes.string,
 }
+
+
+// Corresponds to https://stripe.com/docs/api/payment_methods/create
+export const createPaymentMethodPropType = {
+
+  id: PropTypes.string,
+
+  // BillingDetails properties:
+  billingDetails: PropTypes.shape({
+    address: PropTypes.shape({
+      city: PropTypes.string,
+      country: PropTypes.string,
+      line1: PropTypes.string,
+      line2: PropTypes.string,
+      postalCode: PropTypes.string,
+      state: PropTypes.string,
+    }),
+    email: PropTypes.string,
+    name: PropTypes.string,
+    phone: PropTypes.string,
+  }),
+
+  // Card properties:
+  // - As an alternative to providing card PAN info, you can also provide a Stripe token:
+  //   https://stripe.com/docs/api/payment_methods/create#create_payment_method-card
+  card: PropTypes.oneOfType([
+    PropTypes.shape({
+      cvc: PropTypes.string,
+      expMonth: PropTypes.number,
+      expYear: PropTypes.number,
+      number: PropTypes.string,
+    }),
+    PropTypes.shape({ token: PropTypes.string })
+  ])
+
+  // TODO: metadata support
+  // TODO: customerId support
+}
+
+/*
+Choose either:
+- paymentMethod
+- paymentMethodId
+- sourceId
+
+(if multiple are given, the one present that is highest in the list above is used)
+*/
+export const confirmPaymentPropType = {
+  clientSecret: PropTypes.string,
+  paymentMethod: PropTypes.shape(createPaymentMethodPropType),
+  paymentMethodId: PropTypes.string,
+  sourceId: PropTypes.string,
+  returnURL: PropTypes.string,
+  savePaymentMethod: PropTypes.bool,
+}
+
+export const authenticatePaymentPropType = {
+  clientSecret: PropTypes.string
+}
+
