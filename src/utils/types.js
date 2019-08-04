@@ -225,6 +225,23 @@ export const confirmPaymentPropType = {
 }
 
 export const authenticatePaymentPropType = {
-  clientSecret: PropTypes.string
+  clientSecret: PropTypes.string,
 }
 
+/*
+Choose either:
+- paymentMethod
+- paymentMethodId
+
+(if multiple are given, the one present that is highest in the list above is used)
+*/
+export const confirmSetupIntentPropType = {
+  clientSecret: PropTypes.string,
+  paymentMethod: PropTypes.shape(createPaymentMethodPropType),
+  paymentMethodId: PropTypes.string,
+  returnURL: PropTypes.string,
+}
+
+export const authenticateSetupPropType = {
+  clientSecret: PropTypes.string,
+}

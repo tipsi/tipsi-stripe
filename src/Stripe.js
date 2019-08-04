@@ -197,6 +197,25 @@ class Stripe {
     )
     return StripeModule.authenticatePayment(params)
   }
+
+  confirmSetupIntent = (params = {}) => {
+    checkInit(this)
+    checkArgs(
+      types.confirmSetupIntentPropType,
+      params, 'params', 'Stripe.confirmSetupIntent'
+    )
+    return StripeModule.confirmSetupIntent(params)
+  }
+
+  authenticateSetup = (params = {}) => {
+    checkInit(this)
+    checkArgs(
+      types.authenticateSetupPropType,
+      params, 'params', 'Stripe.authenticateSetup'
+    )
+    return StripeModule.authenticateSetup(params)
+  }
+
 }
 
 export default new Stripe()

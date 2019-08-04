@@ -27,17 +27,19 @@ import com.stripe.android.Stripe;
 import com.stripe.android.TokenCallback;
 import com.stripe.android.model.Address;
 import com.stripe.android.model.ConfirmPaymentIntentParams;
+import com.stripe.android.model.ConfirmSetupIntentParams;
+import com.stripe.android.model.PaymentMethod;
 import com.stripe.android.model.PaymentMethodCreateParams;
 import com.stripe.android.model.Source;
-import com.stripe.android.model.Source.SourceFlow;
 import com.stripe.android.model.Source.SourceStatus;
 import com.stripe.android.model.SourceParams;
 import com.stripe.android.model.Token;
-import com.stripe.android.model.PaymentMethod;
 
 import java.util.Map;
 
-import static com.gettipsi.stripe.Errors.*;
+import static com.gettipsi.stripe.Errors.getDescription;
+import static com.gettipsi.stripe.Errors.getErrorCode;
+import static com.gettipsi.stripe.Errors.toErrorCode;
 import static com.gettipsi.stripe.util.Converters.convertPaymentMethodToWritableMap;
 import static com.gettipsi.stripe.util.Converters.convertSourceToWritableMap;
 import static com.gettipsi.stripe.util.Converters.convertTokenToWritableMap;
@@ -247,6 +249,41 @@ public class StripeModule extends ReactContextBaseJavaModule {
     }
   }
 
+  @ReactMethod
+  public void confirmSetupIntent(final ReadableMap options) {
+    ReadableMap paymentMethod = options.getMap("paymentMethod");
+    String paymentMethodId = options.getString("paymentMethodId");
+    String returnURL = options.getString("returnURL");
+    String clientSecret = options.getString("clientSecret");
+    ConfirmSetupIntentParams csip = null;
+
+    if (paymentMethod != null) {
+      csip = ConfirmSetupIntentParams.create(extractPaymentMethodCreateParams(paymentMethod),
+        clientSecret, returnURL);
+    } else if (paymentMethodId != null) {
+      csip = ConfirmSetupIntentParams.create(paymentMethodId, clientSecret, returnURL);
+    }
+
+    ArgCheck.nonNull(csip);
+    csip.withShouldUseStripeSdk(returnURL == null);
+
+    Activity activity = getCurrentActivity();
+    if (activity != null) {
+      mStripe.confirmSetupIntent(activity, csip);
+    }
+    // TODO log a warning if the activity is null
+  }
+
+  @ReactMethod
+  public void authenticateSetup(final ReadableMap options) {
+    String clientSecret = options.getString("clientSecret");
+    Activity activity = getCurrentActivity();
+    if (activity != null) {
+      mStripe.authenticateSetup(activity, clientSecret);
+    }
+    // TODO log a warning if the activity is null
+  }
+
 
   @ReactMethod
   public void createPaymentMethod(final ReadableMap options, final Promise promise) {
@@ -352,6 +389,9 @@ public class StripeModule extends ReactContextBaseJavaModule {
     } else if (sourceId != null) {
       cpip = ConfirmPaymentIntentParams.createWithSourceId(sourceId, clientSecret, returnURL, savePaymentMethod, extraParams);
     }
+
+    ArgCheck.nonNull(cpip);
+    cpip.withShouldUseStripeSdk(returnURL == null);
 
     return cpip;
   }
