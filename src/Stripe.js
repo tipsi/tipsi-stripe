@@ -124,49 +124,33 @@ class Stripe {
 
   createPaymentMethod = (params = {}) => {
     checkInit(this)
-    checkArgs(
-      types.createPaymentMethodPropType,
-      params, 'params', 'Stripe.createPaymentMethod'
-    )
+    checkArgs(types.createPaymentMethodPropType, params, 'params', 'Stripe.createPaymentMethod')
     return StripeModule.createPaymentMethod(params)
   }
 
   confirmPayment = (params = {}) => {
     checkInit(this)
-    checkArgs(
-      types.confirmPaymentPropType,
-      params, 'params', 'Stripe.confirmPayment'
-    )
+    checkArgs(types.confirmPaymentPropType, params, 'params', 'Stripe.confirmPayment')
     return StripeModule.confirmPayment(params)
   }
 
   authenticatePayment = (params = {}) => {
     checkInit(this)
-    checkArgs(
-      types.authenticatePaymentPropType,
-      params, 'params', 'Stripe.authenticatePayment'
-    )
+    checkArgs(types.authenticatePaymentPropType, params, 'params', 'Stripe.authenticatePayment')
     return StripeModule.authenticatePayment(params)
   }
 
   confirmSetupIntent = (params = {}) => {
     checkInit(this)
-    checkArgs(
-      types.confirmSetupIntentPropType,
-      params, 'params', 'Stripe.confirmSetupIntent'
-    )
+    checkArgs(types.confirmSetupIntentPropType, params, 'params', 'Stripe.confirmSetupIntent')
     return StripeModule.confirmSetupIntent(params)
   }
 
   authenticateSetup = (params = {}) => {
     checkInit(this)
-    checkArgs(
-      types.authenticateSetupPropType,
-      params, 'params', 'Stripe.authenticateSetup'
-    )
+    checkArgs(types.authenticateSetupPropType, params, 'params', 'Stripe.authenticateSetup')
     return StripeModule.authenticateSetup(params)
   }
-
 }
 
 export default new Stripe()
