@@ -173,8 +173,6 @@ export const createSourceWithParamsPropType = {
 // Corresponds to https://stripe.com/docs/api/payment_methods/create
 export const createPaymentMethodPropType = {
 
-  id: PropTypes.string,
-
   // BillingDetails properties:
   billingDetails: PropTypes.shape({
     address: PropTypes.shape({

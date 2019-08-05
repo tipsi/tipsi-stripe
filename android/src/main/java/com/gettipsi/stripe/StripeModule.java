@@ -22,6 +22,8 @@ import com.gettipsi.stripe.util.Fun0;
 import com.google.android.gms.wallet.WalletConstants;
 import com.stripe.android.ApiResultCallback;
 import com.stripe.android.AppInfo;
+import com.stripe.android.PaymentIntentResult;
+import com.stripe.android.SetupIntentResult;
 import com.stripe.android.SourceCallback;
 import com.stripe.android.Stripe;
 import com.stripe.android.TokenCallback;
@@ -40,12 +42,17 @@ import java.util.Map;
 import static com.gettipsi.stripe.Errors.getDescription;
 import static com.gettipsi.stripe.Errors.getErrorCode;
 import static com.gettipsi.stripe.Errors.toErrorCode;
+import static com.gettipsi.stripe.util.Converters.convertPaymentIntentResultToWritableMap;
 import static com.gettipsi.stripe.util.Converters.convertPaymentMethodToWritableMap;
+import static com.gettipsi.stripe.util.Converters.convertSetupIntentResultToWritableMap;
 import static com.gettipsi.stripe.util.Converters.convertSourceToWritableMap;
 import static com.gettipsi.stripe.util.Converters.convertTokenToWritableMap;
 import static com.gettipsi.stripe.util.Converters.createBankAccount;
 import static com.gettipsi.stripe.util.Converters.createCard;
+import static com.gettipsi.stripe.util.Converters.getBooleanOrNull;
+import static com.gettipsi.stripe.util.Converters.getMapOrNull;
 import static com.gettipsi.stripe.util.Converters.getStringOrNull;
+
 import static com.gettipsi.stripe.util.InitializationOptions.ANDROID_PAY_MODE_KEY;
 import static com.gettipsi.stripe.util.InitializationOptions.ANDROID_PAY_MODE_PRODUCTION;
 import static com.gettipsi.stripe.util.InitializationOptions.ANDROID_PAY_MODE_TEST;
@@ -232,8 +239,71 @@ public class StripeModule extends ReactContextBaseJavaModule {
     getPayFlow().paymentRequestWithAndroidPay(payParams, promise);
   }
 
+  public void attachPaymentResultActivityListener(final Promise promise) {
+    ActivityEventListener ael = new BaseActivityEventListener() {
+
+      @Override
+      public void onActivityResult(Activity a, int requestCode, int resultCode, Intent data) {
+        final ActivityEventListener ael = this;
+
+        mStripe.onPaymentResult(requestCode, data, new ApiResultCallback<PaymentIntentResult>() {
+          @Override
+          public void onSuccess(@NonNull PaymentIntentResult result) {
+            getReactApplicationContext().removeActivityEventListener(ael);
+            promise.resolve(convertPaymentIntentResultToWritableMap(result));
+          }
+
+          @Override
+          public void onError(@NonNull Exception e) {
+            getReactApplicationContext().removeActivityEventListener(ael);
+            e.printStackTrace();
+            promise.reject(toErrorCode(e), e.getMessage());
+          }
+        });
+      }
+
+      @Override
+      public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        onActivityResult(null, requestCode, resultCode, data);
+      }
+    };
+    getReactApplicationContext().addActivityEventListener(ael);
+  }
+
+  public void attachSetupResultActivityListener(final Promise promise) {
+    ActivityEventListener ael = new BaseActivityEventListener() {
+      @Override
+      public void onActivityResult(Activity a, int requestCode, int resultCode, Intent data) {
+        final ActivityEventListener ael = this;
+
+        mStripe.onSetupResult(requestCode, data, new ApiResultCallback<SetupIntentResult>() {
+          @Override
+          public void onSuccess(@NonNull SetupIntentResult result) {
+            getReactApplicationContext().removeActivityEventListener(ael);
+            promise.resolve(convertSetupIntentResultToWritableMap(result));
+          }
+
+          @Override
+          public void onError(@NonNull Exception e) {
+            getReactApplicationContext().removeActivityEventListener(ael);
+            e.printStackTrace();
+            promise.reject(toErrorCode(e), e.getMessage());
+          }
+        });
+      }
+
+      @Override
+      public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        onActivityResult(null, requestCode, resultCode, data);
+      }
+    };
+    getReactApplicationContext().addActivityEventListener(ael);
+  }
+
   @ReactMethod
-  public void confirmPayment(final ReadableMap options) {
+  public void confirmPayment(final ReadableMap options, final Promise promise) {
+    attachPaymentResultActivityListener(promise);
+
     Activity activity = getCurrentActivity();
     if (activity != null) {
       mStripe.confirmPayment(activity, extractConfirmPaymentIntentParams(options));
@@ -250,26 +320,12 @@ public class StripeModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void confirmSetupIntent(final ReadableMap options) {
-    ReadableMap paymentMethod = options.getMap("paymentMethod");
-    String paymentMethodId = options.getString("paymentMethodId");
-    String returnURL = options.getString("returnURL");
-    String clientSecret = options.getString("clientSecret");
-    ConfirmSetupIntentParams csip = null;
-
-    if (paymentMethod != null) {
-      csip = ConfirmSetupIntentParams.create(extractPaymentMethodCreateParams(paymentMethod),
-        clientSecret, returnURL);
-    } else if (paymentMethodId != null) {
-      csip = ConfirmSetupIntentParams.create(paymentMethodId, clientSecret, returnURL);
-    }
-
-    ArgCheck.nonNull(csip);
-    csip.withShouldUseStripeSdk(returnURL == null);
+  public void confirmSetupIntent(final ReadableMap options, final Promise promise) {
+    attachSetupResultActivityListener(promise);
 
     Activity activity = getCurrentActivity();
     if (activity != null) {
-      mStripe.confirmSetupIntent(activity, csip);
+      mStripe.confirmSetupIntent(activity, extractConfirmSetupIntentParams(options));
     }
     // TODO log a warning if the activity is null
   }
@@ -343,20 +399,37 @@ public class StripeModule extends ReactContextBaseJavaModule {
     });
   }
 
+  private ConfirmSetupIntentParams extractConfirmSetupIntentParams(final ReadableMap options) {
+    ReadableMap paymentMethod = getMapOrNull(options, "paymentMethod");
+    String paymentMethodId = getStringOrNull(options, "paymentMethodId");
+    String returnURL = getStringOrNull(options, "returnURL");
+    String clientSecret = options.getString("clientSecret");
+    ConfirmSetupIntentParams csip = null;
+
+    if (paymentMethod != null) {
+      csip = ConfirmSetupIntentParams.create(extractPaymentMethodCreateParams(paymentMethod),
+        clientSecret, returnURL);
+    } else if (paymentMethodId != null) {
+      csip = ConfirmSetupIntentParams.create(paymentMethodId, clientSecret, returnURL);
+    }
+
+    ArgCheck.nonNull(csip);
+    csip.withShouldUseStripeSdk(returnURL == null);
+    return csip;
+  }
 
   private ConfirmPaymentIntentParams extractConfirmPaymentIntentParams(final ReadableMap options) {
     ConfirmPaymentIntentParams cpip = null;
     String clientSecret = options.getString("clientSecret");
 
-    ReadableMap paymentMethod = options.getMap("paymentMethod");
-    String paymentMethodId = options.getString("paymentMethodId");
+    ReadableMap paymentMethod = getMapOrNull(options, "paymentMethod");
+    String paymentMethodId = getStringOrNull(options,"paymentMethodId");
 
     // ReadableMap source = options.getMap("source");
-    String sourceId = options.getString("sourceId");
+    String sourceId = getStringOrNull(options,"sourceId");
 
-    String returnURL = options.getString("returnURL");
-    boolean savePaymentMethod = options.getBoolean("savePaymentMethod");
-
+    String returnURL = getStringOrNull(options, "returnURL");
+    boolean savePaymentMethod = getBooleanOrNull(options, "savePaymentMethod", false);
 
     // TODO support extra params in each of the create methods below
     Map<String, Object> extraParams = null;
@@ -398,8 +471,8 @@ public class StripeModule extends ReactContextBaseJavaModule {
 
   private PaymentMethodCreateParams extractPaymentMethodCreateParams(final ReadableMap options) {
 
-    ReadableMap cardParams = options.getMap("cardParams");
-    ReadableMap billingDetailsParams = options.getMap("billingDetails");
+    ReadableMap cardParams = getMapOrNull(options, "card");
+    ReadableMap billingDetailsParams = getMapOrNull(options, "billingDetails");
 
     PaymentMethodCreateParams.Card card = null;
     PaymentMethod.BillingDetails billingDetails = null;
@@ -407,29 +480,29 @@ public class StripeModule extends ReactContextBaseJavaModule {
 
     if (billingDetailsParams != null) {
 
-      ReadableMap addressParams = billingDetailsParams.getMap("address");
+      ReadableMap addressParams = getMapOrNull(options, "address");
 
       if (addressParams != null) {
         address = new Address.Builder().
-          setCity(addressParams.getString("city")).
+          setCity(getStringOrNull(addressParams, "city")).
           setCountry(addressParams.getString("country")).
-          setLine1(addressParams.getString("line1")).
-          setLine2(addressParams.getString("line2")).
-          setPostalCode(addressParams.getString("postalCode")).
-          setState(addressParams.getString("state")).
+          setLine1(getStringOrNull(addressParams, "line1")).
+          setLine2(getStringOrNull(addressParams, "line2")).
+          setPostalCode(getStringOrNull(addressParams, "postalCode")).
+          setState(getStringOrNull(addressParams, "state")).
           build();
       }
 
       billingDetails = new PaymentMethod.BillingDetails.Builder().
         setAddress(address).
-        setEmail(billingDetailsParams.getString("email")).
-        setName(billingDetailsParams.getString("name")).
-        setPhone(billingDetailsParams.getString("phone")).
+        setEmail(getStringOrNull(billingDetailsParams, "email")).
+        setName(getStringOrNull(billingDetailsParams,"name")).
+        setPhone(getStringOrNull(billingDetailsParams,"phone")).
         build();
     }
 
     if (cardParams != null) {
-      String token = cardParams.getString("token");
+      String token = getStringOrNull(cardParams, "token");
       if (token != null) {
         card = PaymentMethodCreateParams.Card.create(token);
       } else {
