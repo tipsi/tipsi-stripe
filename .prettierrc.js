@@ -1,7 +1,8 @@
 module.exports = {
   printWidth: 100,
-  singleQuote: true,
-  trailingComma: "es5",
-  semi: false,
-  arrowParens: "always"
-}
+  singleQuote: true
+
+  // Don't set these at the global level,
+  // semi: false, -- breaks TypeScript
+  // arrowParens: "always"
+};
