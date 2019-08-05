@@ -106,7 +106,7 @@ isMacOS && npm run set-stripe-url-type
 
 # Install dependencies
 rm -rf node_modules && npm ci
-npm i tipsi-stripe@../tipsi-stripe-latest.tgz --save
+npm i tipsi-stripe@../tipsi-stripe-$library_version.tgz --save
 
 echo "Unlinking $library_name"
 react-native unlink $library_name --verbose

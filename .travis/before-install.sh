@@ -131,6 +131,4 @@ rm -rf *.tgz
 echo "Creating a new tarball"
 npm pack
 
-cp -f tipsi-stripe-$(node -p "require('./package.json').version").tgz tipsi-stripe-latest.tgz
-
 init_new_example_project

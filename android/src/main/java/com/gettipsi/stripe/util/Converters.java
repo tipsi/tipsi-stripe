@@ -16,6 +16,7 @@ import com.google.android.gms.wallet.PaymentData;
 import com.stripe.android.model.Address;
 import com.stripe.android.model.BankAccount;
 import com.stripe.android.model.Card;
+import com.stripe.android.model.PaymentMethod;
 import com.stripe.android.model.Source;
 import com.stripe.android.model.SourceCodeVerification;
 import com.stripe.android.model.SourceOwner;
@@ -230,6 +231,61 @@ public class Converters {
 
     return newSource;
   }
+
+  @NonNull
+  public static WritableMap convertPaymentMethodToWritableMap(@Nullable PaymentMethod paymentMethod) {
+    WritableMap wm = Arguments.createMap();
+
+    if (paymentMethod == null) {
+      return wm;
+    }
+
+    wm.putString("id", paymentMethod.id);
+    wm.putInt("created", paymentMethod.created.intValue());
+    wm.putBoolean("livemode", paymentMethod.liveMode);
+    wm.putString("type", paymentMethod.type);
+    wm.putMap("billingDetails", convertBillingDetailsToWritableMap(paymentMethod.billingDetails));
+    wm.putMap("card", convertPaymentMethodCardToWritableMap(paymentMethod.card));
+    wm.putString("customerId", paymentMethod.customerId);
+
+    // TODO support metadata
+    return wm;
+  }
+
+  @NonNull
+  public static WritableMap convertPaymentMethodCardToWritableMap(@Nullable final PaymentMethod.Card card) {
+    WritableMap wm = Arguments.createMap();
+
+    if (card == null) {
+      return wm;
+    }
+
+    // Omitted (can be introduced later): card.checks, card.threeDSecureUsage, card.wallet
+
+    wm.putString("brand", card.brand);
+    wm.putString("country", card.country);
+    wm.putInt("expMonth", card.expiryMonth);
+    wm.putInt("expYear", card.expiryYear);
+    wm.putString("funding", card.funding);
+    wm.putString("last4", card.last4);
+    return wm;
+  }
+
+  @NonNull
+  public static WritableMap convertBillingDetailsToWritableMap(@Nullable final PaymentMethod.BillingDetails billingDetails) {
+    WritableMap wm = Arguments.createMap();
+
+    if (billingDetails == null) {
+      return wm;
+    }
+
+    wm.putMap("address", convertAddressToWritableMap(billingDetails.address));
+    wm.putString("email", billingDetails.email);
+    wm.putString("name", billingDetails.name);
+    wm.putString("phone", billingDetails.phone);
+    return wm;
+  }
+
 
   @NonNull
   public static WritableMap stringMapToWritableMap(@Nullable Map<String, String> map) {
