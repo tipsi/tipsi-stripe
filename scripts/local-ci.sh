@@ -50,6 +50,7 @@ isMacOS() {
 
 # Check Stripe environment variables
 [ -z "$PUBLISHABLE_KEY" ] && echo "Need to set Stripe PUBLISHABLE_KEY" && exit 1;
+[ -z "$BACKEND_URL" ] && echo "Warning!  You need BACKEND_URL defined to run payment intent use cases"
 # Skip iOS step if current os is not macOS
 ! isMacOS && echo "Current os is not macOS, setup for iOS will be skipped"
 # Install react-native-cli if not exist

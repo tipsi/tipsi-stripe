@@ -4,7 +4,7 @@ import stripe from 'tipsi-stripe'
 import Button from '../components/Button'
 import testID from '../utils/testID'
 
-export default class PaymentIntentScreen extends PureComponent {
+export default class SetupIntentScreen extends PureComponent {
 
   static BACKEND_URL = "<BACKEND_URL>"
                 // See https://github.com/mindlapse/example-tipsi-stripe-backend for
@@ -13,21 +13,19 @@ export default class PaymentIntentScreen extends PureComponent {
                 // Once deployed, provide the URL of the backend.
                 // This value is replaced during the build by example/scripts/configure.sh
 
-
-  static title = 'Payment Intents'
+  static title = 'Setup Intents'
 
   state = {
     error: null,
     loading: false,
-    paymentMethod: null,
-    paymentIntent: null,
-    confirmPaymentResult: null
+    setupIntent: null,
+    confirmSetupResult: null
   }
 
-  onCreatePaymentIntent = async () => {
-    this.setState({ loading: true, paymentIntent: null })
+  onCreateSetupIntent = async () => {
+    this.setState({ loading: true, setupIntent: null })
     try {
-      const response = await fetch(PaymentIntentScreen.BACKEND_URL + '/create_intent', {
+      const response = await fetch(SetupIntentScreen.BACKEND_URL + '/create_setup_intent', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -40,18 +38,20 @@ export default class PaymentIntentScreen extends PureComponent {
       })
       const result = await response.json()
 
-      this.setState({ loading: false, paymentIntent: result })
+      this.setState({ loading: false, setupIntent: result })
     } catch (e) {
       console.log(e)
-      this.setState({ loading: false, paymentIntent: null })
+      this.setState({ loading: false, setupIntent: null })
     }
   }
 
   onAttachPaymentMethod = async (cardNumber) => {
     this.setState( {...this.state, loading: true} )
     try {
-      let confirmPaymentResult = await stripe.confirmPayment({
-        clientSecret: this.state.paymentIntent.secret,
+      console.log(stripe)
+      console.log(stripe.confirmSetupIntent)
+      let confirmSetupResult = await stripe.confirmSetupIntent({
+        clientSecret: this.state.setupIntent.secret,
         paymentMethod: {
           // BillingDetails properties:
           billingDetails: {
@@ -75,8 +75,8 @@ export default class PaymentIntentScreen extends PureComponent {
           }
         }
       })
-      console.log(confirmPaymentResult);
-      this.setState( {...this.state, loading: false, confirmPaymentResult} )
+      console.log(confirmSetupResult);
+      this.setState( {...this.state, loading: false, confirmSetupResult} )
     } catch (e) {
       console.log(e)
       this.setState( {...this.state, loading: false} )
@@ -85,27 +85,26 @@ export default class PaymentIntentScreen extends PureComponent {
 
 
   render() {
-    const { error, loading, paymentIntent, paymentMethod, confirmPaymentResult } = this.state
-    const NO_AUTHENTICATION_CHALLENGE_CARD = "4242424242424242"
+    const { error, loading, setupIntent, confirmSetupResult } = this.state
     const AUTHENTICATION_CHALLENGE_CARD = "4000002760003184"
 
     return (
       <View>
         <Text style={styles.header}>
-          Create Payment Intent
+          Create Setup Intent
         </Text>
 
         <Button
-          text="Create Payment Intent"
+          text="Create SetupIntent Intent"
           loading={loading}
-          onPress={() => this.onCreatePaymentIntent()}
-          {...testID('noAuthButton')}
+          onPress={() => this.onCreateSetupIntent()}
+          {...testID('createSetupIntentButton')}
         />
 
-        {paymentIntent && (
+        {setupIntent && (
           <>
-            <Text style={styles.content} {...testID('paymentIntentObject')}>
-                Source: {JSON.stringify(paymentIntent)}
+            <Text style={styles.content} {...testID('setupIntentObject')}>
+                Source: {JSON.stringify(setupIntent)}
             </Text>
 
             <Button
@@ -114,9 +113,9 @@ export default class PaymentIntentScreen extends PureComponent {
               onPress={() => this.onAttachPaymentMethod(AUTHENTICATION_CHALLENGE_CARD)}
               {...testID('attachTestCard')}
             />
-            {confirmPaymentResult && (
-              <Text style={styles.content} {...testID('confirmPaymentResult')}>
-                confirmPaymentResult: {JSON.stringify(confirmPaymentResult)}
+            {confirmSetupResult && (
+              <Text style={styles.content} {...testID('confirmSetupResult')}>
+                confirmSetupResult: {JSON.stringify(confirmSetupResult)}
               </Text>
             )}
           </>
@@ -134,11 +133,6 @@ export default class PaymentIntentScreen extends PureComponent {
 
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   header: {
     fontSize: 20,
     textAlign: 'center',
