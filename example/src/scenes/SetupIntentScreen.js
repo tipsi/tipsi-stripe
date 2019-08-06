@@ -3,6 +3,9 @@ import { View, Text, StyleSheet } from 'react-native'
 import stripe from 'tipsi-stripe'
 import Button from '../components/Button'
 import testID from '../utils/testID'
+import {
+  demoPaymentMethodDetailsWithCard,
+  demoPaymentMethodDetailsWithToken } from './demodata/demodata'
 
 export default class SetupIntentScreen extends PureComponent {
 
@@ -48,34 +51,12 @@ export default class SetupIntentScreen extends PureComponent {
   onAttachPaymentMethod = async (cardNumber) => {
     this.setState( {...this.state, loading: true} )
     try {
-      console.log(stripe)
-      console.log(stripe.confirmSetupIntent)
+
       let confirmSetupResult = await stripe.confirmSetupIntent({
         clientSecret: this.state.setupIntent.secret,
-        paymentMethod: {
-          // BillingDetails properties:
-          billingDetails: {
-            address: {
-              city: 'New York',
-              country: 'US',
-              line1: '11 Wall St.',
-              postalCode: '10005',
-              state: 'New York',
-            },
-            email: 'abc@xyz.com',
-            name: 'Jason Bourne',
-            phone: '123-456-7890',
-          },
-
-          card: {
-            cvc: '242',
-            expMonth: 11,
-            expYear: 2040,
-            number: cardNumber,
-          }
-        }
+        paymentMethod: demoPaymentMethodDetailsWithCard(cardNumber)
       })
-      console.log(confirmSetupResult);
+
       this.setState( {...this.state, loading: false, confirmSetupResult} )
     } catch (e) {
       console.log(e)
