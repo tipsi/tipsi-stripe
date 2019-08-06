@@ -13,6 +13,9 @@ import com.facebook.react.bridge.WritableNativeMap;
 import com.google.android.gms.identity.intents.model.CountrySpecification;
 import com.google.android.gms.identity.intents.model.UserAddress;
 import com.google.android.gms.wallet.PaymentData;
+import com.stripe.android.PaymentIntentResult;
+import com.stripe.android.SetupIntentResult;
+import com.stripe.android.StripeIntentResult;
 import com.stripe.android.model.Address;
 import com.stripe.android.model.BankAccount;
 import com.stripe.android.model.Card;
@@ -22,6 +25,7 @@ import com.stripe.android.model.SourceCodeVerification;
 import com.stripe.android.model.SourceOwner;
 import com.stripe.android.model.SourceReceiver;
 import com.stripe.android.model.SourceRedirect;
+import com.stripe.android.model.StripeIntent;
 import com.stripe.android.model.Token;
 
 import java.util.ArrayList;
@@ -230,6 +234,56 @@ public class Converters {
     newSource.putString("usage", source.getUsage());
 
     return newSource;
+  }
+
+  private static String convertStripeIntentResultStatusToString(StripeIntentResult<? extends StripeIntent> stripeIntentResult) {
+    String status;
+    switch (stripeIntentResult.getStatus()) {
+      case StripeIntentResult.Status.CANCELED:
+        status = "CANCELED";
+        break;
+      case StripeIntentResult.Status.FAILED:
+        status = "FAILED";
+        break;
+      case StripeIntentResult.Status.SUCCEEDED:
+        status = "SUCCEEDED";
+        break;
+      case StripeIntentResult.Status.TIMEDOUT:
+        status = "TIMEDOUT";
+        break;
+      case StripeIntentResult.Status.UNKNOWN:
+      default:
+        status = "UNKNOWN";
+        break;
+    }
+    return status;
+  }
+
+  @NonNull
+  public static WritableMap convertPaymentIntentResultToWritableMap(@Nullable PaymentIntentResult paymentIntentResult) {
+    WritableMap wm = Arguments.createMap();
+
+    if (paymentIntentResult == null) {
+      return wm;
+    }
+
+    wm.putString("status", convertStripeIntentResultStatusToString(paymentIntentResult));
+    wm.putString("paymentIntentId", paymentIntentResult.getIntent().getId());
+    return wm;
+  }
+
+
+  @NonNull
+  public static WritableMap convertSetupIntentResultToWritableMap(@Nullable SetupIntentResult setupIntentResult) {
+    WritableMap wm = Arguments.createMap();
+
+    if (setupIntentResult == null) {
+      return wm;
+    }
+
+    wm.putString("status", convertStripeIntentResultStatusToString(setupIntentResult));
+    wm.putString("setupIntentId", setupIntentResult.getIntent().getId());
+    return wm;
   }
 
   @NonNull
@@ -462,6 +516,14 @@ public class Converters {
 
   public static String getStringOrNull(@NonNull ReadableMap map, @NonNull String key) {
     return map.hasKey(key) ? map.getString(key) : null;
+  }
+
+  public static ReadableMap getMapOrNull(@NonNull ReadableMap map, @NonNull String key) {
+    return map.hasKey(key) ? map.getMap(key) : null;
+  }
+
+  public static boolean getBooleanOrNull(@NonNull ReadableMap map, @NonNull String key, boolean defaultVal) {
+    return map.hasKey(key) ? map.getBoolean(key) : defaultVal;
   }
 
   public static void putIfNotEmpty(final WritableMap map, final String key, final String value) {
