@@ -64,6 +64,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
   private static final String APP_INFO_NAME    = "tipsi-stripe";
   private static final String APP_INFO_URL     = "https://github.com/tipsi/tipsi-stripe";
   private static final String APP_INFO_VERSION = "7.x";
+  public static final String CLIENT_SECRET = "clientSecret";
 
   private static StripeModule sInstance = null;
 
@@ -311,8 +312,10 @@ public class StripeModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void authenticatePayment(final ReadableMap options) {
-    String clientSecret = options.getString("clientSecret");
+  public void authenticatePayment(final ReadableMap options, final Promise promise) {
+    attachPaymentResultActivityListener(promise);
+
+    String clientSecret = options.getString(CLIENT_SECRET);
     Activity activity = getCurrentActivity();
     if (activity != null) {
       mStripe.authenticatePayment(activity, clientSecret);
@@ -327,17 +330,17 @@ public class StripeModule extends ReactContextBaseJavaModule {
     if (activity != null) {
       mStripe.confirmSetupIntent(activity, extractConfirmSetupIntentParams(options));
     }
-    // TODO log a warning if the activity is null
   }
 
   @ReactMethod
-  public void authenticateSetup(final ReadableMap options) {
-    String clientSecret = options.getString("clientSecret");
+  public void authenticateSetup(final ReadableMap options, final Promise promise) {
+    attachSetupResultActivityListener(promise);
+
+    String clientSecret = options.getString(CLIENT_SECRET);
     Activity activity = getCurrentActivity();
     if (activity != null) {
       mStripe.authenticateSetup(activity, clientSecret);
     }
-    // TODO log a warning if the activity is null
   }
 
 
@@ -461,9 +464,10 @@ public class StripeModule extends ReactContextBaseJavaModule {
     // Create with Source ID
     } else if (sourceId != null) {
       cpip = ConfirmPaymentIntentParams.createWithSourceId(sourceId, clientSecret, returnURL, savePaymentMethod, extraParams);
+    } else {
+      cpip = ConfirmPaymentIntentParams.create(clientSecret, returnURL);
     }
 
-    ArgCheck.nonNull(cpip);
     cpip.withShouldUseStripeSdk(returnURL == null);
 
     return cpip;

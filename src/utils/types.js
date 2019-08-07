@@ -218,7 +218,6 @@ export const confirmPaymentPropType = {
   paymentMethod: PropTypes.shape(createPaymentMethodPropType),
   paymentMethodId: PropTypes.string,
   sourceId: PropTypes.string,
-  returnURL: PropTypes.string,
   savePaymentMethod: PropTypes.bool,
 }
 
@@ -237,7 +236,6 @@ export const confirmSetupIntentPropType = {
   clientSecret: PropTypes.string,
   paymentMethod: PropTypes.shape(createPaymentMethodPropType),
   paymentMethodId: PropTypes.string,
-  returnURL: PropTypes.string,
 }
 
 export const authenticateSetupPropType = {
