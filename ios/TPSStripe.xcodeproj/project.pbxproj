@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2E7AD85F22F8DB8800DE1494 /* TPSStripeManager+Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E7AD85E22F8DB8800DE1494 /* TPSStripeManager+Constants.m */; };
 		3A1FF6F81DC3857F00A43A04 /* TPSStripeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A1FF6F71DC3857F00A43A04 /* TPSStripeManager.m */; };
 		3A228EB21DC52E54007BB9D0 /* PassKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A228EB11DC52E54007BB9D0 /* PassKit.framework */; };
 		3A4EF3251DC8F90100A7C0BD /* TPSCardFieldManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4EF3241DC8F90100A7C0BD /* TPSCardFieldManager.m */; };
@@ -28,6 +29,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2E7AD85D22F8DB8800DE1494 /* TPSStripeManager+Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TPSStripeManager+Constants.h"; sourceTree = "<group>"; };
+		2E7AD85E22F8DB8800DE1494 /* TPSStripeManager+Constants.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "TPSStripeManager+Constants.m"; sourceTree = "<group>"; };
 		3A1FF6F61DC3857F00A43A04 /* TPSStripeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPSStripeManager.h; sourceTree = "<group>"; };
 		3A1FF6F71DC3857F00A43A04 /* TPSStripeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPSStripeManager.m; sourceTree = "<group>"; };
 		3A228EB11DC52E54007BB9D0 /* PassKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PassKit.framework; path = System/Library/Frameworks/PassKit.framework; sourceTree = SDKROOT; };
@@ -84,6 +87,8 @@
 		3A3A7F1C1DC27B520030F9DC /* TPSStripe */ = {
 			isa = PBXGroup;
 			children = (
+				2E7AD85D22F8DB8800DE1494 /* TPSStripeManager+Constants.h */,
+				2E7AD85E22F8DB8800DE1494 /* TPSStripeManager+Constants.m */,
 				3A1FF6F61DC3857F00A43A04 /* TPSStripeManager.h */,
 				3A1FF6F71DC3857F00A43A04 /* TPSStripeManager.m */,
 				3A4EF3231DC8F90100A7C0BD /* TPSCardFieldManager.h */,
@@ -136,6 +141,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 3A3A7F111DC27B520030F9DC;
@@ -154,6 +160,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A4EF3251DC8F90100A7C0BD /* TPSCardFieldManager.m in Sources */,
+				2E7AD85F22F8DB8800DE1494 /* TPSStripeManager+Constants.m in Sources */,
 				3A1FF6F81DC3857F00A43A04 /* TPSStripeManager.m in Sources */,
 				B81C8CDE1F978E320021EB09 /* TPSError.m in Sources */,
 				3A4EF3281DC8FD4600A7C0BD /* TPSCardField.m in Sources */,

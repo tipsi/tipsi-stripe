@@ -12,6 +12,7 @@
 #import <Stripe/Stripe.h>
 
 #import "TPSError.h"
+#import "TPSStripeManager+Constants.h"
 
 // If you change these, make sure to also change:
 //  android/src/main/java/com/gettipsi/stripe/StripeModule.java
@@ -104,6 +105,28 @@ RCT_ENUM_CONVERTER(STPBankAccountStatus,
 
 @end
 
+@implementation RCTConvert (STPPaymentMethodType)
+
+RCT_ENUM_CONVERTER(STPPaymentMethodType,
+                   (@{
+                      @"card": @(STPPaymentMethodTypeCard),
+                      @"iDEAL": @(STPPaymentMethodTypeiDEAL),
+                      @"card_present": @(STPPaymentMethodTypeCardPresent),
+                      @"unknown": @(STPPaymentMethodTypeUnknown),
+                      }),
+                   STPPaymentMethodTypeUnknown,
+                   integerValue)
+
++ (NSString *)STPPaymentMethodTypeString:(STPPaymentMethodType)type {
+    switch (type) {
+        case STPPaymentMethodTypeCard: return @"card";
+        case STPPaymentMethodTypeiDEAL: return @"iDEAL";
+        case STPPaymentMethodTypeCardPresent: return @"card_present";
+        case STPPaymentMethodTypeUnknown: return @"unknown";
+    }
+}
+
+@end
 
 typedef NSString * TPSPaymentNetwork NS_EXTENSIBLE_STRING_ENUM;
 
@@ -134,7 +157,7 @@ __attribute__((constructor)) // This means this method will be called in file sc
 void initializeTPSPaymentNetworksWithConditionalMappings() {
     NSMutableDictionary<TPSPaymentNetwork, PKPaymentNetwork> * tmp = NSMutableDictionary.dictionary;
 
-// Inserts a key-value mapping into this dictionary guarding it by which iOS version the constant was added in
+    // Inserts a key-value mapping into this dictionary guarding it by which iOS version the constant was added in
 #define TPSPaymentNetworkConditionalMapping(Key, iOSVersion) { if (@available(iOS iOSVersion, *)) { tmp[TPSPaymentNetwork##Key] = PKPaymentNetwork ## Key; }}
     TPSPaymentNetworkConditionalMapping(Amex, 8.0);
     TPSPaymentNetworkConditionalMapping(CartesBancaires, 11.2);
@@ -159,7 +182,7 @@ void initializeTPSPaymentNetworksWithConditionalMappings() {
     mapTPSPaymentNetworkToPKPaymentNetwork = tmp;
 }
 
-@implementation StripeModule
+@interface StripeModule () <STPAuthenticationContext>
 {
     NSString *publishableKey;
     NSString *merchantId;
@@ -173,6 +196,8 @@ void initializeTPSPaymentNetworksWithConditionalMappings() {
     void (^applePayCompletion)(PKPaymentAuthorizationStatus);
     NSError *applePayStripeError;
 }
+@end
+@implementation StripeModule
 
 - (instancetype)init {
     if ((self = [super init])) {
@@ -181,7 +206,10 @@ void initializeTPSPaymentNetworksWithConditionalMappings() {
     return self;
 }
 
+
 - (dispatch_queue_t)methodQueue {
+    // This makes sure our code is thread safe by never simultaneously executing
+    // Possibly useful, possibly undesirable for performance.
     return dispatch_get_main_queue();
 }
 
@@ -228,6 +256,32 @@ RCT_EXPORT_METHOD(potentiallyAvailableNativePayNetworks:(RCTPromiseResolveBlock)
 }
 
 
+RCT_EXPORT_METHOD(createPaymentMethod:(NSDictionary<TPSStripeType(createPaymentMethod), id>*)params
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject) {
+}
+
+RCT_EXPORT_METHOD(confirmPayment:(NSDictionary<NSString*, id>*)params
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject) {
+}
+
+RCT_EXPORT_METHOD(authenticatePayment:(NSDictionary<TPSStripeType(authenticatePayment), id>*)params
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject) {
+}
+
+RCT_EXPORT_METHOD(confirmSetupIntent:(NSDictionary<NSString*, id>*)params
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject) {
+}
+
+RCT_EXPORT_METHOD(authenticateSetup:(NSDictionary<NSString*, id>*)params
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject) {
+}
+
+
 RCT_EXPORT_METHOD(completeApplePayRequest:(RCTPromiseResolveBlock)resolve
                                     rejecter:(RCTPromiseRejectBlock)reject) {
     if (applePayCompletion) {
@@ -261,7 +315,7 @@ RCT_EXPORT_METHOD(createTokenWithCard:(NSDictionary *)params
     promiseResolver = resolve;
     promiseRejector = reject;
 
-    STPCardParams *cardParams = [self createCard:params];
+    STPCardParams *cardParams = [self extractCardParamsFromDictionary:params];
 
     STPAPIClient *stripeAPIClient = [self newAPIClient];
 
@@ -285,7 +339,6 @@ RCT_EXPORT_METHOD(createTokenWithBankAccount:(NSDictionary *)params
         reject(error[kErrorKeyCode], error[kErrorKeyDescription], nil);
         return;
     }
-
     requestIsCompleted = NO;
     promiseResolver = resolve;
     promiseRejector = reject;
@@ -323,7 +376,6 @@ RCT_EXPORT_METHOD(createSourceWithParams:(NSDictionary *)params
         reject(error[kErrorKeyCode], error[kErrorKeyDescription], nil);
         return;
     }
-
     requestIsCompleted = NO;
 
     NSString *sourceType = params[@"type"];
@@ -350,7 +402,7 @@ RCT_EXPORT_METHOD(createSourceWithParams:(NSDictionary *)params
             sourceParams = [STPSourceParams alipayParamsWithAmount:[[params objectForKey:@"amount"] unsignedIntegerValue] currency:params[@"currency"] returnURL:params[@"returnURL"]];
     }
     if ([sourceType isEqualToString:@"card"]) {
-        sourceParams = [STPSourceParams cardParamsWithCard:[self createCard:params]];
+        sourceParams = [STPSourceParams cardParamsWithCard:[self extractCardParamsFromDictionary:params]];
     }
 
     STPAPIClient* stripeAPIClient = [self newAPIClient];
@@ -529,29 +581,40 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     }
 }
 
-#pragma mark - Private
+#pragma mark - Private - Converters
 
-- (STPCardParams *)createCard:(NSDictionary *)params {
-    STPCardParams *cardParams = [[STPCardParams alloc] init];
+- (STPCardParams *)extractCardParamsFromDictionary:(NSDictionary<TPSStripeType(CardParams), id> *)params {
+    STPCardParams *result = [[STPCardParams alloc] init];
+#define simpleUnpack(key) result.key = [RCTConvert NSString:params[TPSStripeParam(CardParams, key)]]
 
-    cardParams.number = params[@"number"];
-    cardParams.expMonth = [params[@"expMonth"] integerValue];
-    cardParams.expYear = [params[@"expYear"] integerValue];
-    cardParams.cvc = params[@"cvc"];
+    simpleUnpack(number);
+    result.expMonth = [params[TPSStripeParam(CardParams, expMonth)] integerValue];
+    result.expYear = [params[TPSStripeParam(CardParams, expYear)] integerValue];
+    simpleUnpack(cvc);
 
-    cardParams.currency = params[@"currency"];
-    cardParams.name = params[@"name"];
+    simpleUnpack(currency);
+    simpleUnpack(name);
 
-    cardParams.address.line1 = params[@"addressLine1"];
-    cardParams.address.line2 = params[@"addressLine2"];
-    cardParams.address.city = params[@"addressCity"];
-    cardParams.address.state = params[@"addressState"];
-    cardParams.address.country = params[@"addressCountry"];
+#undef simpleUnpack
 
-    cardParams.address.postalCode = params[@"addressZip"];
+    // Make a new address object, and fill it in with data before assigning it
+    // Editing the fields on the assigned address won't do anything according to Stripe's docs
+    STPAddress * address = [[STPAddress alloc] init];
+    address.line1 = params[TPSStripeParam(CardParams, addressLine1)];
+    address.line2 = params[TPSStripeParam(CardParams, addressLine2)];
+    address.city = params[TPSStripeParam(CardParams, addressCity)];
+    address.state = params[TPSStripeParam(CardParams, addressState)];
+    address.country = params[TPSStripeParam(CardParams, addressCountry)];
+    address.postalCode = params[TPSStripeParam(CardParams, addressZip)];
+    result.address = address; // Commit all the changes as a batch
 
-    return cardParams;
+    return result;
 }
+
+}
+- (NSDictionary*)convertMetadata:(NSDictionary*)meta { return meta; }
+
+#pragma mark - Lifecycles
 
 - (void)resolvePromise:(id)result {
     if (promiseResolver) {
@@ -1252,6 +1315,11 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
 + (BOOL)requiresMainQueueSetup
 {
     return YES;
+}
+
+- (nonnull UIViewController *)authenticationPresentingViewController {
+    // React-Native should only have 1 active view controller
+    return [UIApplication sharedApplication].delegate.window.rootViewController;
 }
 
 @end
