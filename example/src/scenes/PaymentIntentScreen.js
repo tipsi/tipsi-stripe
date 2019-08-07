@@ -3,6 +3,9 @@ import { View, Text, StyleSheet } from 'react-native'
 import stripe from 'tipsi-stripe'
 import Button from '../components/Button'
 import testID from '../utils/testID'
+import { demoCardFormParameters,
+  demoPaymentMethodDetailsWithCard,
+  demoPaymentMethodDetailsWithToken } from './demodata/demodata'
 
 export default class PaymentIntentScreen extends PureComponent {
 
@@ -13,7 +16,6 @@ export default class PaymentIntentScreen extends PureComponent {
                 // Once deployed, provide the URL of the backend.
                 // This value is replaced during the build by example/scripts/configure.sh
 
-
   static title = 'Payment Intents'
 
   state = {
@@ -23,6 +25,7 @@ export default class PaymentIntentScreen extends PureComponent {
     paymentIntent: null,
     confirmPaymentResult: null
   }
+
 
   onCreatePaymentIntent = async () => {
     this.setState({ loading: true, paymentIntent: null })
@@ -52,29 +55,9 @@ export default class PaymentIntentScreen extends PureComponent {
     try {
       let confirmPaymentResult = await stripe.confirmPayment({
         clientSecret: this.state.paymentIntent.secret,
-        paymentMethod: {
-          // BillingDetails properties:
-          billingDetails: {
-            address: {
-              city: 'New York',
-              country: 'US',
-              line1: '11 Wall St.',
-              postalCode: '10005',
-              state: 'New York',
-            },
-            email: 'abc@xyz.com',
-            name: 'Jason Bourne',
-            phone: '123-456-7890',
-          },
-
-          card: {
-            cvc: '242',
-            expMonth: 11,
-            expYear: 2040,
-            number: cardNumber,
-          }
-        }
+        paymentMethod: demoPaymentMethodDetailsWithCard(cardNumber)
       })
+
       console.log(confirmPaymentResult);
       this.setState( {...this.state, loading: false, confirmPaymentResult} )
     } catch (e) {
@@ -83,9 +66,35 @@ export default class PaymentIntentScreen extends PureComponent {
     }
   }
 
+  onLaunchCardForm = async () => {
+    try {
+      this.setState({...this.state, loading: true, token: null })
+      const token = await stripe.paymentRequestWithCardForm(
+        demoCardFormParameters
+      )
+
+      this.setState({...this.state, token: token.tokenId })
+
+      // We now have the token, use it to confirm
+      let confirmPaymentResult = await stripe.confirmPayment({
+        clientSecret: this.state.paymentIntent.secret,
+        paymentMethod: demoPaymentMethodDetailsWithToken(token.tokenId)
+      })
+
+      this.setState({...this.state, confirmPaymentResult})
+    } catch (error) {
+      this.setState({ loading: false })
+    }
+  }
+
 
   render() {
-    const { error, loading, paymentIntent, paymentMethod, confirmPaymentResult } = this.state
+
+    const {
+      error, loading, paymentIntent, paymentMethod,
+      confirmPaymentResult, token
+    } = this.state
+
     const NO_AUTHENTICATION_CHALLENGE_CARD = "4242424242424242"
     const AUTHENTICATION_CHALLENGE_CARD = "4000002760003184"
 
@@ -108,12 +117,27 @@ export default class PaymentIntentScreen extends PureComponent {
                 Source: {JSON.stringify(paymentIntent)}
             </Text>
 
-            <Button
-              text="Attach Test Card"
-              loading={loading}
-              onPress={() => this.onAttachPaymentMethod(AUTHENTICATION_CHALLENGE_CARD)}
-              {...testID('attachTestCard')}
-            />
+            <View style={styles.row}>
+              <Button
+                style={styles.rowButton}
+                text="Attach Test Card"
+                loading={loading}
+                onPress={() => this.onAttachPaymentMethod(AUTHENTICATION_CHALLENGE_CARD)}
+                {...testID('attachTestCard')}
+              />
+              <Button
+                style={styles.rowButton}
+                text="Enter Card"
+                loading={loading}
+                onPress={() => this.onLaunchCardForm()}
+                {...testID('launchCardForm')}
+              />
+            </View>
+            {token && (
+              <Text style={styles.content} {...testID('token')}>
+                token: {JSON.stringify(token)}
+              </Text>
+            )}
             {confirmPaymentResult && (
               <Text style={styles.content} {...testID('confirmPaymentResult')}>
                 confirmPaymentResult: {JSON.stringify(confirmPaymentResult)}
@@ -143,6 +167,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
+  },
+  row: {
+    flexDirection: 'row',
+  },
+  rowButton: {
+    flex: 1
   },
   content: {
     color: '#333333',
