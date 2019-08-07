@@ -15,10 +15,10 @@ rm -rf node_modules && npm ci
 npm i tipsi-stripe@../tipsi-stripe-$(node -p "require('../package.json').version").tgz --save
 
 echo "Unlinking $library_name"
-react-native unlink $library_name
+yarn run react-native unlink $library_name
 
 echo "Linking"
-react-native link
+yarn run react-native link
 
 case "${TRAVIS_OS_NAME}" in
   osx)
