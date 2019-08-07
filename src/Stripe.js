@@ -82,6 +82,14 @@ import deprecatedMethodsForInstance from './Stripe.deprecated'
  */
 
 /**
+ * @typedef {Object} ConfirmSetupIntentParams
+ * @property {string} clientSecret
+ * @property {CreatePaymentMethodParams} paymentMethod
+ * @property {string} paymentMethodId
+ * @property {string} returnURL
+ */
+
+/**
  * @typedef {Object} SetupIntentConfirmationResult
  * @property {StripeSetupIntentStatus} status
  * @property {string} setupIntentId
