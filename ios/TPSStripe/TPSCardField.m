@@ -168,14 +168,14 @@
     _paymentCardTextField.placeholderColor = placeholderColor;
 }
 
-- (void)setCardParams:(STPCardParams *)cardParams {
+- (void)setCardParams:(STPPaymentMethodCardParams *)cardParams {
     // Remove delegate before update paymentCardTextField with prefilled card
     // for preventing call paymentCardTextFieldDidChange for every fields
     _paymentCardTextField.delegate = nil;
     [_paymentCardTextField setCardParams:cardParams];
     _paymentCardTextField.delegate = self;
     // call paymentCardTextFieldDidChange for update RN
-    [self paymentCardTextFieldDidChange:nil];
+    [self paymentCardTextFieldDidChange:_paymentCardTextField];
 }
 
 - (UIKeyboardAppearance)keyboardAppearance {
@@ -196,8 +196,8 @@
                 @"valid": @(_paymentCardTextField.isValid),
                 @"params": @{
                         @"number": _paymentCardTextField.cardParams.number?:@"",
-                        @"expMonth": @(_paymentCardTextField.cardParams.expMonth),
-                        @"expYear": @(_paymentCardTextField.cardParams.expYear),
+                        @"expMonth": _paymentCardTextField.cardParams.expMonth,
+                        @"expYear": _paymentCardTextField.cardParams.expYear,
                         @"cvc": _paymentCardTextField.cardParams.cvc?:@""
                         }
                 });
