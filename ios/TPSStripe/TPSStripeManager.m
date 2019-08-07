@@ -149,14 +149,14 @@ RCT_ENUM_CONVERTER(STPPaymentIntentStatus,
 + (NSString *)STPPaymentIntentStatusString:(STPPaymentIntentStatus)status {
 #define TPSEntry(key, Enum) case STPPaymentIntentStatus##Enum: return TPSStripeParam(PaymentIntentStatus, key);
     switch (status) {
-        TPSEntry(unknown, Unknown)
-        TPSEntry(canceled, Canceled)
-        TPSEntry(processing, Processing)
-        TPSEntry(requires_action, RequiresAction)
-        TPSEntry(requires_capture, RequiresCapture)
-        TPSEntry(requires_paymentMethod, RequiresPaymentMethod)
-        TPSEntry(requires_confirmation, RequiresConfirmation)
-        TPSEntry(succeeded, Succeeded)
+            TPSEntry(unknown, Unknown)
+            TPSEntry(canceled, Canceled)
+            TPSEntry(processing, Processing)
+            TPSEntry(requires_action, RequiresAction)
+            TPSEntry(requires_capture, RequiresCapture)
+            TPSEntry(requires_paymentMethod, RequiresPaymentMethod)
+            TPSEntry(requires_confirmation, RequiresConfirmation)
+            TPSEntry(succeeded, Succeeded)
     }
 #undef TPSEntry
 }
@@ -179,13 +179,13 @@ RCT_ENUM_CONVERTER(STPSetupIntentStatus,
 + (NSString *)STPSetupIntentStatusString:(STPSetupIntentStatus)status {
 #define TPSEntry(key, Enum) case STPSetupIntentStatus##Enum: return TPSStripeParam(SetupIntentStatus, key);
     switch (status) {
-        TPSEntry(unknown, Unknown)
-        TPSEntry(canceled, Canceled)
-        TPSEntry(processing, Processing)
-        TPSEntry(requires_action, RequiresAction)
-        TPSEntry(requires_paymentMethod, RequiresPaymentMethod)
-        TPSEntry(requires_confirmation, RequiresConfirmation)
-        TPSEntry(succeeded, Succeeded)
+            TPSEntry(unknown, Unknown)
+            TPSEntry(canceled, Canceled)
+            TPSEntry(processing, Processing)
+            TPSEntry(requires_action, RequiresAction)
+            TPSEntry(requires_paymentMethod, RequiresPaymentMethod)
+            TPSEntry(requires_confirmation, RequiresConfirmation)
+            TPSEntry(succeeded, Succeeded)
     }
 #undef TPSEntry
 }
@@ -338,16 +338,16 @@ RCT_EXPORT_METHOD(createPaymentMethod:(NSDictionary<TPSStripeType(createPaymentM
 
     STPAPIClient *api = self.newAPIClient;
     [api createPaymentMethodWithParams:parsed
-                             completion:^(STPPaymentMethod * __nullable paymentMethod, NSError * __nullable error){
-                                 requestIsCompleted = YES;
+                            completion:^(STPPaymentMethod * __nullable paymentMethod, NSError * __nullable error){
+                                requestIsCompleted = YES;
 
-                                 if (error) {
-                                     NSDictionary *jsError = [errorCodes valueForKey:kErrorKeyApi];
-                                     [self rejectPromiseWithCode:jsError[kErrorKeyCode] message:error.localizedDescription];
-                                     return;
-                                 }
-                                 resolve(paymentMethod);
-                             }];
+                                if (error) {
+                                    NSDictionary *jsError = [errorCodes valueForKey:kErrorKeyApi];
+                                    [self rejectPromiseWithCode:jsError[kErrorKeyCode] message:error.localizedDescription];
+                                    return;
+                                }
+                                resolve(paymentMethod);
+                            }];
 }
 
 RCT_EXPORT_METHOD(confirmPayment:(NSDictionary<NSString*, id>*)params
@@ -380,6 +380,43 @@ RCT_EXPORT_METHOD(confirmPayment:(NSDictionary<NSString*, id>*)params
 RCT_EXPORT_METHOD(authenticatePayment:(NSDictionary<TPSStripeType(authenticatePayment), id>*)params
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
+
+    NSString * clientSecret = TPSStripeParam(authenticatePayment, clientSecret);
+
+    if(!requestIsCompleted) {
+        NSDictionary *error = [errorCodes valueForKey:kErrorKeyBusy];
+        reject(error[kErrorKeyCode], error[kErrorKeyDescription], nil);
+        return;
+    }
+    requestIsCompleted = NO;
+    promiseResolver = resolve;
+    promiseRejector = reject;
+
+    // From example in step 3 of https://stripe.com/docs/payments/payment-intents/ios#manual-confirmation-ios
+    [[STPPaymentHandler sharedHandler] handleNextActionForPayment:clientSecret
+                                        withAuthenticationContext:self
+                                                        returnURL:nil
+                                                       completion:^(STPPaymentHandlerActionStatus status, STPPaymentIntent * intent, NSError * error) {
+                                                           requestIsCompleted = YES;
+
+                                                           if (error) {
+                                                               NSDictionary *jsError = [errorCodes valueForKey:kErrorKeyApi];
+                                                               [self rejectPromiseWithCode:jsError[kErrorKeyCode] message:error.localizedDescription];
+                                                               return;
+                                                           }
+
+                                                           switch (status) {
+                                                               case STPPaymentHandlerActionStatusSucceeded:
+                                                               case STPPaymentHandlerActionStatusCanceled:
+                                                                   // Succeeded/canceled should all be attached to the intent
+                                                                   [self resolvePromise: [self convertAuthenticatePaymentIntentResult: intent]];
+                                                                   break;
+                                                               case STPPaymentHandlerActionStatusFailed:
+                                                                   // This should not happen, as we should respond with an error -- what should we do?
+                                                                   [self rejectPromiseWithCode:[errorCodes valueForKey:kErrorKeyApi][kErrorKeyCode] message:@"FAILED"];
+                                                                   break;
+                                                           }
+                                                       }];
 }
 
 RCT_EXPORT_METHOD(confirmSetupIntent:(NSDictionary<NSString*, id>*)params
@@ -412,6 +449,44 @@ RCT_EXPORT_METHOD(confirmSetupIntent:(NSDictionary<NSString*, id>*)params
 RCT_EXPORT_METHOD(authenticateSetup:(NSDictionary<NSString*, id>*)params
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
+
+    NSString * clientSecret = TPSStripeParam(authenticateSetup, clientSecret);
+
+    if(!requestIsCompleted) {
+        NSDictionary *error = [errorCodes valueForKey:kErrorKeyBusy];
+        reject(error[kErrorKeyCode], error[kErrorKeyDescription], nil);
+        return;
+    }
+    requestIsCompleted = NO;
+    promiseResolver = resolve;
+    promiseRejector = reject;
+
+    // From example in step 3 of https://stripe.com/docs/payments/payment-intents/ios#manual-confirmation-ios
+    // Note: the above are the PaymentIntent docs, the handleNextActionForSetupIntent isn't documented on the website at time of writing this
+    [[STPPaymentHandler sharedHandler] handleNextActionForSetupIntent:clientSecret
+                                            withAuthenticationContext:self
+                                                            returnURL:nil
+                                                           completion:^(STPPaymentHandlerActionStatus status, STPSetupIntent * _Nullable intent, NSError * _Nullable error) {
+                                                               requestIsCompleted = YES;
+
+                                                               if (error) {
+                                                                   NSDictionary *jsError = [errorCodes valueForKey:kErrorKeyApi];
+                                                                   [self rejectPromiseWithCode:jsError[kErrorKeyCode] message:error.localizedDescription];
+                                                                   return;
+                                                               }
+
+                                                               switch (status) {
+                                                                   case STPPaymentHandlerActionStatusSucceeded:
+                                                                   case STPPaymentHandlerActionStatusCanceled:
+                                                                       // Succeeded/canceled should all be attached to the intent
+                                                                       [self resolvePromise: [self convertAuthenticateSetupIntentResult: intent]];
+                                                                       break;
+                                                                   case STPPaymentHandlerActionStatusFailed:
+                                                                       // This should not happen, as we should respond with an error -- what should we do?
+                                                                       [self rejectPromiseWithCode:[errorCodes valueForKey:kErrorKeyApi][kErrorKeyCode] message:@"FAILED"];
+                                                                       break;
+                                                               }
+                                                           }];
 }
 
 
