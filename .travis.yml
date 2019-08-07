@@ -24,6 +24,7 @@ matrix:
       env:
         - JOB_NAME=PODSPEC_IOS
     - os: linux
+      dist: trusty
       jdk: oraclejdk8
       sudo: required
       env:
