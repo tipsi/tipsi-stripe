@@ -192,10 +192,8 @@ export const createSourceWithParamsPropType = {
   last4: PropTypes.string,
 }
 
-
 // Corresponds to https://stripe.com/docs/api/payment_methods/create
 export const createPaymentMethodPropType = {
-
   // BillingDetails properties:
   billingDetails: PropTypes.shape({
     address: PropTypes.shape({
@@ -221,8 +219,8 @@ export const createPaymentMethodPropType = {
       expYear: PropTypes.number,
       number: PropTypes.string,
     }),
-    PropTypes.shape({ token: PropTypes.string })
-  ])
+    PropTypes.shape({ token: PropTypes.string }),
+  ]),
 
   // TODO: metadata support
   // TODO: customerId support

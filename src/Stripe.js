@@ -5,6 +5,58 @@ import checkInit from './utils/checkInit'
 import * as types from './utils/types'
 import errorCodes from './errorCodes'
 import deprecatedMethodsForInstance from './Stripe.deprecated'
+/**
+ * @typedef {Object} PaymentMethodAddress
+ * @property {string} city
+ * @property {string} country
+ * @property {string} line1
+ * @property {string} line2
+ * @property {string} postalCode
+ * @property {string} state
+ */
+
+/**
+ * @typedef {Object} BillingDetails
+ * @property {PaymentMethodAddress} address
+ * @property {string} email
+ * @property {string} name
+ * @property {string} phone
+ */
+
+/**
+ * @typedef {Object} PaymentMethod
+ * @property {string} id
+ * @property {number} created
+ * @property {boolean} livemode
+ * @property {string} type
+ * @property {BillingDetails} billingDetails
+ * @property {string} customerId
+ */
+
+/**
+ * @typedef {Object} confirmPaymentMethodParams
+ * @property {string} clientSecret
+ * @property {createPaymentMethodParams} paymentMethod
+ * @property {string} paymentMethodId
+ * @property {string} sourceId
+ * @property {string} returnURL
+ * @property {boolean} savePaymentMethod
+ */
+
+/**
+ * @typedef {Object} PaymentIntentConfirmationResult
+ * @property {string} status
+ * @property {string} paymentIntentId
+ */
+
+/**
+ * @typedef {Object} createPaymentMethodParams
+ * @property {string} id
+ * @property {BillingDetails} billingDetails
+ * @property {(PaymentMethodCardParams|string)} card - Token String or the Parameters to build a card
+ * @property {Object} metadata
+ * @property {string} customerId
+ */
 
 const { StripeModule } = NativeModules
 
@@ -15,7 +67,10 @@ class Stripe {
     // Mix in the deprecated methods
     Object.assign(this, deprecatedMethodsForInstance(this))
   }
-
+  /**
+   * @param options: {StripeOptions}
+   * @returns {void}
+   */
   setOptions = (options = {}) => {
     checkArgs(types.setOptionsOptionsPropTypes, options, 'options', 'Stripe.setOptions')
 
@@ -24,6 +79,9 @@ class Stripe {
     return StripeModule.init(options, errorCodes)
   }
 
+  /**
+   * @returns {Promise<boolean>}
+   */
   deviceSupportsNativePay = () =>
     Platform.select({
       ios: () => this.deviceSupportsApplePay(),
@@ -122,30 +180,53 @@ class Stripe {
     return StripeModule.createSourceWithParams(params)
   }
 
+  /**
+   * After calling this, you need to hit your backend with this method to get a clientSecret
+   * @param {createPaymentMethodParams} params
+   * @returns {Promise<PaymentMethod>}
+   */
   createPaymentMethod = (params = {}) => {
     checkInit(this)
     checkArgs(types.createPaymentMethodPropType, params, 'params', 'Stripe.createPaymentMethod')
     return StripeModule.createPaymentMethod(params)
   }
 
+  /**
+   * Takes a previously created paymentMethodId or a new paymentMethod, and then generates a paymentIntent
+   * @param {confirmPaymentMethodParams} params
+   * @returns {Promise<PaymentIntentConfirmationResult>}
+   */
   confirmPayment = (params = {}) => {
     checkInit(this)
     checkArgs(types.confirmPaymentPropType, params, 'params', 'Stripe.confirmPayment')
     return StripeModule.confirmPayment(params)
   }
 
+  /**
+   * @param {authenticatePaymentParams} params
+   * @returns {Promise<todo>}
+   */
   authenticatePayment = (params = {}) => {
     checkInit(this)
     checkArgs(types.authenticatePaymentPropType, params, 'params', 'Stripe.authenticatePayment')
     return StripeModule.authenticatePayment(params)
   }
 
+  /**
+   * @param {confirmSetupIntent} params
+   * @returns {Promise<todo>}
+   */
   confirmSetupIntent = (params = {}) => {
     checkInit(this)
     checkArgs(types.confirmSetupIntentPropType, params, 'params', 'Stripe.confirmSetupIntent')
     return StripeModule.confirmSetupIntent(params)
   }
 
+  /**
+   * Displays 3DSecure2 or other flows to authenticate a SetupIntent
+   * @param {authenticateSetupParams} params
+   * @returns {Promise<todo>}
+   */
   authenticateSetup = (params = {}) => {
     checkInit(this)
     checkArgs(types.authenticateSetupPropType, params, 'params', 'Stripe.authenticateSetup')
