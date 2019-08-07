@@ -33,10 +33,31 @@ import deprecatedMethodsForInstance from './Stripe.deprecated'
  * @property {string} customerId
  */
 
+/* eslint-disable max-len */
 /**
- * @typedef {Object} confirmPaymentMethodParams
+ * https://stripe.com/docs/api/payment_intents/object#payment_intent_object-status
+ * @typedef {('unknown'|'canceled'|'processing'|'requires_action'|'requires_capture'|'requires_paymentMethod'|'requires_confirmation'|'succeeded')} StripePaymentIntentStatus
+ */
+
+/**
+ * https://stripe.com/docs/api/setup_intents/object#setup_intent_object-status
+ * @typedef {('unknown'|'canceled'|'processing'|'requires_action'|'requires_paymentMethod'|'requires_confirmation'|'succeeded')} StripeSetupIntentStatus
+ */
+/* eslint-enable max-len */
+
+/**
+ * @typedef {Object} CreatePaymentMethodParams
+ * @property {string} id
+ * @property {BillingDetails} billingDetails
+ * @property {(PaymentMethodCardParams|string)} card - Token String or the Parameters to build a card
+ * @property {Object} metadata
+ * @property {string} customerId
+ */
+
+/**
+ * @typedef {Object} ConfirmPaymentIntentParams
  * @property {string} clientSecret
- * @property {createPaymentMethodParams} paymentMethod
+ * @property {CreatePaymentMethodParams} paymentMethod
  * @property {string} paymentMethodId
  * @property {string} sourceId
  * @property {string} returnURL
@@ -45,17 +66,36 @@ import deprecatedMethodsForInstance from './Stripe.deprecated'
 
 /**
  * @typedef {Object} PaymentIntentConfirmationResult
- * @property {string} status
+ * @property {StripePaymentIntentStatus} status
  * @property {string} paymentIntentId
  */
 
 /**
- * @typedef {Object} createPaymentMethodParams
- * @property {string} id
- * @property {BillingDetails} billingDetails
- * @property {(PaymentMethodCardParams|string)} card - Token String or the Parameters to build a card
- * @property {Object} metadata
- * @property {string} customerId
+ * @typedef {Object} AuthenticatePaymentIntentParams
+ * @property {string} clientSecret
+ */
+
+/**
+ * @typedef {Object} PaymentIntentAuthenticationResult
+ * @property {StripePaymentIntentStatus} status
+ * @property {string} paymentIntentId
+ */
+
+/**
+ * @typedef {Object} SetupIntentConfirmationResult
+ * @property {StripeSetupIntentStatus} status
+ * @property {string} setupIntentId
+ */
+
+/**
+ * @typedef {Object} AuthenticateSetupIntentParams
+ * @property {string} clientSecret
+ */
+
+/**
+ * @typedef {Object} SetupIntentAuthenticationResult
+ * @property {StripeSetupIntentStatus} status
+ * @property {string} setupIntentId
  */
 
 const { StripeModule } = NativeModules
@@ -182,7 +222,7 @@ class Stripe {
 
   /**
    * After calling this, you need to hit your backend with this method to get a clientSecret
-   * @param {createPaymentMethodParams} params
+   * @param {CreatePaymentMethodParams} params
    * @returns {Promise<PaymentMethod>}
    */
   createPaymentMethod = (params = {}) => {
@@ -193,7 +233,7 @@ class Stripe {
 
   /**
    * Takes a previously created paymentMethodId or a new paymentMethod, and then generates a paymentIntent
-   * @param {confirmPaymentMethodParams} params
+   * @param {ConfirmPaymentIntentParams} params
    * @returns {Promise<PaymentIntentConfirmationResult>}
    */
   confirmPayment = (params = {}) => {
@@ -203,8 +243,8 @@ class Stripe {
   }
 
   /**
-   * @param {authenticatePaymentParams} params
-   * @returns {Promise<todo>}
+   * @param {AuthenticatePaymentIntentParams} params
+   * @returns {Promise<PaymentIntentAuthenticationResult>}
    */
   authenticatePayment = (params = {}) => {
     checkInit(this)
@@ -213,8 +253,8 @@ class Stripe {
   }
 
   /**
-   * @param {confirmSetupIntent} params
-   * @returns {Promise<todo>}
+   * @param {ConfirmSetupIntentParams} params
+   * @returns {Promise<SetupIntentConfirmationResult>}
    */
   confirmSetupIntent = (params = {}) => {
     checkInit(this)
@@ -224,8 +264,8 @@ class Stripe {
 
   /**
    * Displays 3DSecure2 or other flows to authenticate a SetupIntent
-   * @param {authenticateSetupParams} params
-   * @returns {Promise<todo>}
+   * @param {AuthenticateSetupIntentParams} params
+   * @returns {Promise<SetupIntentAuthenticationResult>}
    */
   authenticateSetup = (params = {}) => {
     checkInit(this)

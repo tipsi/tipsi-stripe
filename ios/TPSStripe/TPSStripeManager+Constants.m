@@ -1,60 +1,118 @@
 #import "TPSStripeManager+Constants.h"
 
-#define TPSStripeMethodParamKeyDeclare(method, key) TPSStripeType(method) const TPSStripe_##method##Key_##key = @"" #key
+#define TPSStripeBridgeTypeDefine(identifier)
+#define TPSStripeBridgeKeyDeclare(identifier, key) TPSStripeType(identifier) const TPSStripe_##identifier##Key_##key = @"" #key
 
-TPSStripeMethodParamKeyDeclare(createPaymentMethod, id);
-TPSStripeMethodParamKeyDeclare(createPaymentMethod, billingDetails);
-TPSStripeMethodParamKeyDeclare(createPaymentMethod, card);
-TPSStripeMethodParamKeyDeclare(createPaymentMethod, iDEAL);
-TPSStripeMethodParamKeyDeclare(createPaymentMethod, metadata);
-TPSStripeMethodParamKeyDeclare(createPaymentMethod, customerId);
+TPSStripeBridgeTypeDefine(createPaymentMethod);
+TPSStripeBridgeKeyDeclare(createPaymentMethod, id);
+TPSStripeBridgeKeyDeclare(createPaymentMethod, billingDetails);
+TPSStripeBridgeKeyDeclare(createPaymentMethod, card);
+//TPSStripeBridgeKeyDeclare(createPaymentMethod, iDEAL);
+TPSStripeBridgeKeyDeclare(createPaymentMethod, metadata);
+TPSStripeBridgeKeyDeclare(createPaymentMethod, customerId);
 
-TPSStripeMethodParamKeyDeclare(PaymentMethod, id);
-TPSStripeMethodParamKeyDeclare(PaymentMethod, created);
-TPSStripeMethodParamKeyDeclare(PaymentMethod, livemode);
-TPSStripeMethodParamKeyDeclare(PaymentMethod, type);
-TPSStripeMethodParamKeyDeclare(PaymentMethod, billingDetails);
-TPSStripeMethodParamKeyDeclare(PaymentMethod, card);
-TPSStripeMethodParamKeyDeclare(PaymentMethod, customerId);
-TPSStripeMethodParamKeyDeclare(PaymentMethod, metadata);
+TPSStripeBridgeTypeDefine(PaymentMethod);
+TPSStripeBridgeKeyDeclare(PaymentMethod, id);
+TPSStripeBridgeKeyDeclare(PaymentMethod, created);
+TPSStripeBridgeKeyDeclare(PaymentMethod, livemode);
+TPSStripeBridgeKeyDeclare(PaymentMethod, type);
+TPSStripeBridgeKeyDeclare(PaymentMethod, billingDetails);
+TPSStripeBridgeKeyDeclare(PaymentMethod, card);
+TPSStripeBridgeKeyDeclare(PaymentMethod, customerId);
+TPSStripeBridgeKeyDeclare(PaymentMethod, metadata);
 
-TPSStripeMethodParamKeyDeclare(PaymentMethodCard, brand);
-TPSStripeMethodParamKeyDeclare(PaymentMethodCard, country);
-TPSStripeMethodParamKeyDeclare(PaymentMethodCard, expMonth);
-TPSStripeMethodParamKeyDeclare(PaymentMethodCard, expYear); 
-TPSStripeMethodParamKeyDeclare(PaymentMethodCard, funding);
-TPSStripeMethodParamKeyDeclare(PaymentMethodCard, last4);
+TPSStripeBridgeTypeDefine(PaymentMethodCard);
+TPSStripeBridgeKeyDeclare(PaymentMethodCard, brand);
+TPSStripeBridgeKeyDeclare(PaymentMethodCard, country);
+TPSStripeBridgeKeyDeclare(PaymentMethodCard, expMonth);
+TPSStripeBridgeKeyDeclare(PaymentMethodCard, expYear);
+TPSStripeBridgeKeyDeclare(PaymentMethodCard, funding);
+TPSStripeBridgeKeyDeclare(PaymentMethodCard, last4);
 
-TPSStripeMethodParamKeyDeclare(PaymentMethodBillingDetails, address);
-TPSStripeMethodParamKeyDeclare(PaymentMethodBillingDetails, email);
-TPSStripeMethodParamKeyDeclare(PaymentMethodBillingDetails, name);
-TPSStripeMethodParamKeyDeclare(PaymentMethodBillingDetails, phone);
+TPSStripeBridgeTypeDefine(PaymentMethodBillingDetails);
+TPSStripeBridgeKeyDeclare(PaymentMethodBillingDetails, address);
+TPSStripeBridgeKeyDeclare(PaymentMethodBillingDetails, email);
+TPSStripeBridgeKeyDeclare(PaymentMethodBillingDetails, name);
+TPSStripeBridgeKeyDeclare(PaymentMethodBillingDetails, phone);
 
-TPSStripeMethodParamKeyDeclare(PaymentMethodAddress, city);
-TPSStripeMethodParamKeyDeclare(PaymentMethodAddress, country);
-TPSStripeMethodParamKeyDeclare(PaymentMethodAddress, line1);
-TPSStripeMethodParamKeyDeclare(PaymentMethodAddress, line2);
-TPSStripeMethodParamKeyDeclare(PaymentMethodAddress, postalCode);
-TPSStripeMethodParamKeyDeclare(PaymentMethodAddress, state);
+TPSStripeBridgeTypeDefine(PaymentMethodAddress);
+TPSStripeBridgeKeyDeclare(PaymentMethodAddress, city);
+TPSStripeBridgeKeyDeclare(PaymentMethodAddress, country);
+TPSStripeBridgeKeyDeclare(PaymentMethodAddress, line1);
+TPSStripeBridgeKeyDeclare(PaymentMethodAddress, line2);
+TPSStripeBridgeKeyDeclare(PaymentMethodAddress, postalCode);
+TPSStripeBridgeKeyDeclare(PaymentMethodAddress, state);
 
-TPSStripeMethodParamKeyDeclare(CardParams, number);
-TPSStripeMethodParamKeyDeclare(CardParams, expMonth);
-TPSStripeMethodParamKeyDeclare(CardParams, expYear);
-TPSStripeMethodParamKeyDeclare(CardParams, cvc);
-TPSStripeMethodParamKeyDeclare(CardParams, currency);
-TPSStripeMethodParamKeyDeclare(CardParams, name);
-TPSStripeMethodParamKeyDeclare(CardParams, addressLine1);
-TPSStripeMethodParamKeyDeclare(CardParams, addressLine2);
-TPSStripeMethodParamKeyDeclare(CardParams, addressCity);
-TPSStripeMethodParamKeyDeclare(CardParams, addressState);
-TPSStripeMethodParamKeyDeclare(CardParams, addressCountry);
-TPSStripeMethodParamKeyDeclare(CardParams, addressZip);
+TPSStripeBridgeTypeDefine(CardParams);
+TPSStripeBridgeKeyDeclare(CardParams, number);
+TPSStripeBridgeKeyDeclare(CardParams, expMonth);
+TPSStripeBridgeKeyDeclare(CardParams, expYear);
+TPSStripeBridgeKeyDeclare(CardParams, cvc);
+TPSStripeBridgeKeyDeclare(CardParams, currency);
+TPSStripeBridgeKeyDeclare(CardParams, name);
+TPSStripeBridgeKeyDeclare(CardParams, addressLine1);
+TPSStripeBridgeKeyDeclare(CardParams, addressLine2);
+TPSStripeBridgeKeyDeclare(CardParams, addressCity);
+TPSStripeBridgeKeyDeclare(CardParams, addressState);
+TPSStripeBridgeKeyDeclare(CardParams, addressCountry);
+TPSStripeBridgeKeyDeclare(CardParams, addressZip);
 
-TPSStripeMethodParamKeyDeclare(confirmPayment, clientSecret);
-TPSStripeMethodParamKeyDeclare(confirmPayment, paymentMethod);
-TPSStripeMethodParamKeyDeclare(confirmPayment, paymentMethodId);
-TPSStripeMethodParamKeyDeclare(confirmPayment, sourceId);
-TPSStripeMethodParamKeyDeclare(confirmPayment, returnURL);
-TPSStripeMethodParamKeyDeclare(confirmPayment, savePaymentMethod);
+TPSStripeBridgeTypeDefine(confirmPayment);
+TPSStripeBridgeKeyDeclare(confirmPayment, clientSecret);
+TPSStripeBridgeKeyDeclare(confirmPayment, paymentMethod);
+TPSStripeBridgeKeyDeclare(confirmPayment, paymentMethodId);
+TPSStripeBridgeKeyDeclare(confirmPayment, sourceId);
+TPSStripeBridgeKeyDeclare(confirmPayment, returnURL);
+TPSStripeBridgeKeyDeclare(confirmPayment, savePaymentMethod);
 
-TPSStripeMethodParamKeyDeclare(authenticatePayment, clientSecret);
+TPSStripeBridgeTypeDefine(ConfirmPaymentIntentResult);
+TPSStripeBridgeKeyDeclare(ConfirmPaymentIntentResult, paymentIntentId);
+TPSStripeBridgeKeyDeclare(ConfirmPaymentIntentResult, status);
+
+TPSStripeBridgeTypeDefine(authenticatePayment);
+TPSStripeBridgeKeyDeclare(authenticatePayment, clientSecret);
+
+TPSStripeBridgeTypeDefine(AuthenticatePaymentIntentResult);
+TPSStripeBridgeKeyDeclare(AuthenticatePaymentIntentResult, paymentIntentId);
+TPSStripeBridgeKeyDeclare(AuthenticatePaymentIntentResult, status);
+
+TPSStripeBridgeTypeDefine(confirmSetupIntent);
+TPSStripeBridgeKeyDeclare(confirmSetupIntent, clientSecret);
+TPSStripeBridgeKeyDeclare(confirmSetupIntent, paymentMethod);
+TPSStripeBridgeKeyDeclare(confirmSetupIntent, paymentMethodId);
+TPSStripeBridgeKeyDeclare(confirmSetupIntent, sourceId);
+TPSStripeBridgeKeyDeclare(confirmSetupIntent, returnURL);
+TPSStripeBridgeKeyDeclare(confirmSetupIntent, savePaymentMethod);
+
+TPSStripeBridgeTypeDefine(ConfirmSetupIntentResult);
+TPSStripeBridgeKeyDeclare(ConfirmSetupIntentResult, setupIntentId);
+TPSStripeBridgeKeyDeclare(ConfirmSetupIntentResult, status);
+ 
+TPSStripeBridgeTypeDefine(authenticateSetup);
+TPSStripeBridgeKeyDeclare(authenticateSetup, clientSecret);
+
+TPSStripeBridgeTypeDefine(AuthenticateSetupIntentResult);
+TPSStripeBridgeKeyDeclare(AuthenticateSetupIntentResult, setupIntentId);
+TPSStripeBridgeKeyDeclare(AuthenticateSetupIntentResult, status);
+
+TPSStripeBridgeTypeDefine(PaymentIntentStatus);
+TPSStripeBridgeKeyDeclare(PaymentIntentStatus, unknown);
+TPSStripeBridgeKeyDeclare(PaymentIntentStatus, canceled);
+TPSStripeBridgeKeyDeclare(PaymentIntentStatus, processing);
+TPSStripeBridgeKeyDeclare(PaymentIntentStatus, requires_action);
+TPSStripeBridgeKeyDeclare(PaymentIntentStatus, requires_capture);
+TPSStripeBridgeKeyDeclare(PaymentIntentStatus, requires_paymentMethod);
+TPSStripeBridgeKeyDeclare(PaymentIntentStatus, requires_confirmation);
+TPSStripeBridgeKeyDeclare(PaymentIntentStatus, succeeded);
+
+TPSStripeBridgeTypeDefine(SetupIntentStatus);
+TPSStripeBridgeKeyDeclare(SetupIntentStatus, unknown);
+TPSStripeBridgeKeyDeclare(SetupIntentStatus, canceled);
+TPSStripeBridgeKeyDeclare(SetupIntentStatus, processing);
+TPSStripeBridgeKeyDeclare(SetupIntentStatus, requires_action);
+TPSStripeBridgeKeyDeclare(SetupIntentStatus, requires_paymentMethod);
+TPSStripeBridgeKeyDeclare(SetupIntentStatus, requires_confirmation);
+TPSStripeBridgeKeyDeclare(SetupIntentStatus, succeeded);
+
+#undef TPSStripeBridgeKeyDeclare
+#undef TPSStripeBridgeTypeDefine
