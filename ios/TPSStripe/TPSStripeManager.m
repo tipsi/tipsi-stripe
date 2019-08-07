@@ -405,7 +405,7 @@ RCT_EXPORT_METHOD(confirmSetupIntent:(NSDictionary<NSString*, id>*)params
                                    [self rejectPromiseWithCode:jsError[kErrorKeyCode] message:error.localizedDescription];
                                    return;
                                }
-                               resolve([self convertConfirmSetupIntentResult: intent]);
+                               [self resolvePromise:[self convertConfirmSetupIntentResult: intent]];
                            }];
 }
 
@@ -848,7 +848,9 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
 }
 
 - (NSDictionary<TPSStripeType(ConfirmPaymentIntentResult), id>*)convertConfirmPaymentIntentResult:(STPPaymentIntent*)intent {
-    if (!intent) {return nil;}
+    if (!intent) {
+        return @{ TPSStripeParam(ConfirmPaymentIntentResult, status): [RCTConvert STPPaymentIntentStatusString: STPPaymentIntentStatusUnknown] };
+    }
 
     return @{
              TPSStripeParam(ConfirmPaymentIntentResult, paymentIntentId): intent.stripeId,
@@ -856,7 +858,9 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
              };
 }
 - (NSDictionary<TPSStripeType(AuthenticatePaymentIntentResult), id>*)convertAuthenticatePaymentIntentResult:(STPPaymentIntent*)intent {
-    if (!intent) {return nil;}
+    if (!intent) {
+        return @{ TPSStripeParam(AuthenticatePaymentIntentResult, status): [RCTConvert STPPaymentIntentStatusString: STPPaymentIntentStatusUnknown] };
+    }
 
     return @{
              TPSStripeParam(AuthenticatePaymentIntentResult, paymentIntentId): intent.stripeId,
@@ -865,15 +869,19 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
 }
 
 - (NSDictionary<TPSStripeType(ConfirmSetupIntentResult), id>*)convertConfirmSetupIntentResult:(STPSetupIntent*)intent {
-    if (!intent) {return nil;}
+    if (!intent) {
+        return @{ TPSStripeParam(ConfirmSetupIntentResult, status): [RCTConvert STPSetupIntentStatusString: STPSetupIntentStatusUnknown] };
+    }
 
     return @{
              TPSStripeParam(ConfirmSetupIntentResult, setupIntentId): intent.stripeID,
              TPSStripeParam(ConfirmSetupIntentResult, status): [RCTConvert STPSetupIntentStatusString: intent.status],
              };
 }
-- (NSDictionary<TPSStripeType(AuthenticatePaymentIntentResult), id>*)convertAuthenticateSetupIntentResult:(STPSetupIntent*)intent {
-    if (!intent) {return nil;}
+- (NSDictionary<TPSStripeType(AuthenticateSetupIntentResult), id>*)convertAuthenticateSetupIntentResult:(STPSetupIntent*)intent {
+    if (!intent) {
+        return @{ TPSStripeParam(AuthenticateSetupIntentResult, status): [RCTConvert STPSetupIntentStatusString: STPSetupIntentStatusUnknown] };
+    }
 
     return @{
              TPSStripeParam(AuthenticateSetupIntentResult, setupIntentId): intent.stripeID,
