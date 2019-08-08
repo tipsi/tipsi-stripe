@@ -5,6 +5,28 @@
 
 React Native Stripe binding for iOS/Android platforms
 
+## Strong Customer Authentication (SCA) support
+### PaymentIntents & SetupIntents
+
+Have no fear, it's on its way!
+  
+We are actively preparing for a September 1 stable release in time for the European SCA regulation deadline of September 14.
+
+In the meantime, if your company would like early access to the beta and help with the new changes,
+please sign up here and let us know what company it is for:  
+https://github.com/tipsi/tipsi-stripe/issues/448
+
+Then, join our Discord channel to access the beta, to get support from the contributors, and to help us 
+be aware of any issues you find.  Here is the invite link: https://discord.gg/8g6ppq2
+
+We'll make notifications on that channel as new beta releases are published, along with sharing
+documentation and handling questions.
+
+p.s. if you are skilled at writing Appium tests, please raise your hand on the channel!
+
+Cheers!
+
+
 ## Documentation
 
 https://tipsi.github.io/tipsi-stripe/docs/index.html
