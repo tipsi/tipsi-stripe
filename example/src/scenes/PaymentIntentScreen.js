@@ -3,12 +3,13 @@ import { View, Text, StyleSheet } from 'react-native'
 import stripe from 'tipsi-stripe'
 import Button from '../components/Button'
 import testID from '../utils/testID'
-import { demoCardFormParameters,
+import {
+  demoCardFormParameters,
   demoPaymentMethodDetailsWithCard,
-  demoPaymentMethodDetailsWithToken } from './demodata/demodata'
+  demoPaymentMethodDetailsWithToken,
+} from './demodata/demodata'
 
 export default class PaymentIntentScreen extends PureComponent {
-
   static BACKEND_URL = "<BACKEND_URL>"
                 // See https://github.com/mindlapse/example-tipsi-stripe-backend for
                 // an example backend that can be deployed to Heroku in a few clicks
@@ -23,9 +24,8 @@ export default class PaymentIntentScreen extends PureComponent {
     loading: false,
     paymentMethod: null,
     paymentIntent: null,
-    confirmPaymentResult: null
+    confirmPaymentResult: null,
   }
-
 
   onCreatePaymentIntent = async () => {
     this.setState({ loading: true, paymentIntent: null })
@@ -33,7 +33,7 @@ export default class PaymentIntentScreen extends PureComponent {
       const response = await fetch(PaymentIntentScreen.BACKEND_URL + '/create_intent', {
         method: 'POST',
         headers: {
-          'Accept': 'application/json',
+          Accept: 'application/json',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -51,58 +51,49 @@ export default class PaymentIntentScreen extends PureComponent {
   }
 
   onAttachPaymentMethod = async (cardNumber) => {
-    this.setState( {...this.state, loading: true} )
+    this.setState({ ...this.state, loading: true })
     try {
       let confirmPaymentResult = await stripe.confirmPayment({
         clientSecret: this.state.paymentIntent.secret,
-        paymentMethod: demoPaymentMethodDetailsWithCard(cardNumber)
+        paymentMethod: demoPaymentMethodDetailsWithCard(cardNumber),
       })
 
-      console.log(confirmPaymentResult);
-      this.setState( {...this.state, loading: false, confirmPaymentResult} )
+      console.log(confirmPaymentResult)
+      this.setState({ ...this.state, loading: false, confirmPaymentResult })
     } catch (e) {
       console.log(e)
-      this.setState( {...this.state, loading: false} )
+      this.setState({ ...this.state, loading: false })
     }
   }
 
   onLaunchCardForm = async () => {
     try {
-      this.setState({...this.state, loading: true, token: null })
-      const token = await stripe.paymentRequestWithCardForm(
-        demoCardFormParameters
-      )
+      this.setState({ ...this.state, loading: true, token: null })
+      const token = await stripe.paymentRequestWithCardForm(demoCardFormParameters)
 
-      this.setState({...this.state, token: token.tokenId })
+      this.setState({ ...this.state, token: token.tokenId })
 
       // We now have the token, use it to confirm
       let confirmPaymentResult = await stripe.confirmPayment({
         clientSecret: this.state.paymentIntent.secret,
-        paymentMethod: demoPaymentMethodDetailsWithToken(token.tokenId)
+        paymentMethod: demoPaymentMethodDetailsWithToken(token.tokenId),
       })
 
-      this.setState({...this.state, confirmPaymentResult})
+      this.setState({ ...this.state, confirmPaymentResult })
     } catch (error) {
       this.setState({ loading: false })
     }
   }
 
-
   render() {
+    const { error, loading, paymentIntent, paymentMethod, confirmPaymentResult, token } = this.state
 
-    const {
-      error, loading, paymentIntent, paymentMethod,
-      confirmPaymentResult, token
-    } = this.state
-
-    const NO_AUTHENTICATION_CHALLENGE_CARD = "4242424242424242"
-    const AUTHENTICATION_CHALLENGE_CARD = "4000002760003184"
+    const NO_AUTHENTICATION_CHALLENGE_CARD = '4242424242424242'
+    const AUTHENTICATION_CHALLENGE_CARD = '4000002760003184'
 
     return (
       <View>
-        <Text style={styles.header}>
-          Create Payment Intent
-        </Text>
+        <Text style={styles.header}>Create Payment Intent</Text>
 
         <Button
           text="Create Payment Intent"
@@ -156,7 +147,6 @@ export default class PaymentIntentScreen extends PureComponent {
   }
 }
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -172,7 +162,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   rowButton: {
-    flex: 1
+    flex: 1,
   },
   content: {
     color: '#333333',

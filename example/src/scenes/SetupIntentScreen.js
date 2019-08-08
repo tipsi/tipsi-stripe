@@ -5,10 +5,10 @@ import Button from '../components/Button'
 import testID from '../utils/testID'
 import {
   demoPaymentMethodDetailsWithCard,
-  demoPaymentMethodDetailsWithToken } from './demodata/demodata'
+  demoPaymentMethodDetailsWithToken,
+} from './demodata/demodata'
 
 export default class SetupIntentScreen extends PureComponent {
-
   static BACKEND_URL = "<BACKEND_URL>"
                 // See https://github.com/mindlapse/example-tipsi-stripe-backend for
                 // an example backend that can be deployed to Heroku in a few clicks
@@ -22,16 +22,16 @@ export default class SetupIntentScreen extends PureComponent {
     error: null,
     loading: false,
     setupIntent: null,
-    confirmSetupResult: null
+    confirmSetupResult: null,
   }
 
   onCreateSetupIntent = async () => {
     this.setState({ loading: true, setupIntent: null })
     try {
-      const response = await fetch(SetupIntentScreen.BACKEND_URL + '/create_setup_intent', {
+      const response = await fetch(`${SetupIntentScreen.BACKEND_URL  }/create_setup_intent`, {
         method: 'POST',
         headers: {
-          'Accept': 'application/json',
+          Accept: 'application/json',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -49,31 +49,27 @@ export default class SetupIntentScreen extends PureComponent {
   }
 
   onAttachPaymentMethod = async (cardNumber) => {
-    this.setState( {...this.state, loading: true} )
+    this.setState({ ...this.state, loading: true })
     try {
-
-      let confirmSetupResult = await stripe.confirmSetupIntent({
+      const confirmSetupResult = await stripe.confirmSetupIntent({
         clientSecret: this.state.setupIntent.secret,
-        paymentMethod: demoPaymentMethodDetailsWithCard(cardNumber)
+        paymentMethod: demoPaymentMethodDetailsWithCard(cardNumber),
       })
 
-      this.setState( {...this.state, loading: false, confirmSetupResult} )
+      this.setState({ ...this.state, loading: false, confirmSetupResult })
     } catch (e) {
       console.log(e)
-      this.setState( {...this.state, loading: false} )
+      this.setState({ ...this.state, loading: false })
     }
   }
 
-
   render() {
     const { error, loading, setupIntent, confirmSetupResult } = this.state
-    const AUTHENTICATION_CHALLENGE_CARD = "4000002760003184"
+    const AUTHENTICATION_CHALLENGE_CARD = '4000002760003184'
 
     return (
       <View>
-        <Text style={styles.header}>
-          Create Setup Intent
-        </Text>
+        <Text style={styles.header}>Create Setup Intent</Text>
 
         <Button
           text="Create SetupIntent Intent"
@@ -111,7 +107,6 @@ export default class SetupIntentScreen extends PureComponent {
     )
   }
 }
-
 
 const styles = StyleSheet.create({
   header: {
