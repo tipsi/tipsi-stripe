@@ -4,6 +4,7 @@ import stripe from 'tipsi-stripe'
 import Button from '../components/Button'
 import testID from '../utils/testID'
 
+/* eslint-disable react/no-did-mount-set-state */
 export default class AndroidPayScreen extends PureComponent {
   static title = 'Android Pay'
 
@@ -13,7 +14,7 @@ export default class AndroidPayScreen extends PureComponent {
     token: null,
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     const allowed = await stripe.deviceSupportsNativePay()
 
     this.setState({ allowed })

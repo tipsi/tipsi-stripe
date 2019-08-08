@@ -4,7 +4,7 @@ import stripe from 'tipsi-stripe'
 import Button from '../components/Button'
 import testID from '../utils/testID'
 
-/* eslint-disable no-console */
+/* eslint-disable no-console, react/no-did-mount-set-state */
 export default class ApplePayScreen extends PureComponent {
   static title = 'Pay'
 
@@ -18,7 +18,7 @@ export default class ApplePayScreen extends PureComponent {
     verifiedNetworks: [],
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     const allowed = await stripe.deviceSupportsNativePay()
     this.setState({ allowed })
 
