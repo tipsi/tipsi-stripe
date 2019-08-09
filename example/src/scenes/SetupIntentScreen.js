@@ -28,7 +28,7 @@ export default class SetupIntentScreen extends PureComponent {
   onCreateSetupIntent = async () => {
     this.setState({ loading: true, setupIntent: null })
     try {
-      const response = await fetch(`${SetupIntentScreen.BACKEND_URL  }/create_setup_intent`, {
+      const response = await fetch(`${SetupIntentScreen.BACKEND_URL}/create_setup_intent`, {
         method: 'POST',
         headers: {
           Accept: 'application/json',

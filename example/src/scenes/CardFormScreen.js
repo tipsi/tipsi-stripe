@@ -5,7 +5,6 @@ import Button from '../components/Button'
 import testID from '../utils/testID'
 import { demoCardFormParameters } from './demodata/demodata'
 
-
 export default class CardFormScreen extends PureComponent {
   static title = 'Card Form'
 
@@ -17,9 +16,7 @@ export default class CardFormScreen extends PureComponent {
   handleCardPayPress = async () => {
     try {
       this.setState({ loading: true, token: null })
-      const token = await stripe.paymentRequestWithCardForm(
-        demoCardFormParameters
-      )
+      const token = await stripe.paymentRequestWithCardForm(demoCardFormParameters)
 
       this.setState({ loading: false, token })
     } catch (error) {
