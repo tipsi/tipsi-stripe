@@ -45,8 +45,8 @@ export NODEJS_ORG_MIRROR=http://nodejs.org/dist
 
 sudo apt-get install openjdk-8-jdk
 
-echo "Installing npm@6.10.2"
-sudo npm i npm@6.10.2 -g
+echo "Installing npm@6.10.3"
+sudo npm i npm@6.10.3 -g
 
 
 case "${TRAVIS_OS_NAME}" in
