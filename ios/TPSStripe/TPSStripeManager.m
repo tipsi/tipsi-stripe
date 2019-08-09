@@ -346,7 +346,7 @@ RCT_EXPORT_METHOD(createPaymentMethod:(NSDictionary<TPSStripeType(createPaymentM
                                     [self rejectPromiseWithCode:jsError[kErrorKeyCode] message:error.localizedDescription];
                                     return;
                                 }
-                                resolve(paymentMethod);
+                                resolve([self convertPaymentMethod: paymentMethod]);
                             }];
 }
 
@@ -410,7 +410,7 @@ RCT_EXPORT_METHOD(authenticatePayment:(NSDictionary<TPSStripeType(authenticatePa
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
 
-    NSString * clientSecret = TPSStripeParam(authenticatePayment, clientSecret);
+    NSString * clientSecret = params[TPSStripeParam(authenticatePayment, clientSecret)];
 
     if(!requestIsCompleted) {
         NSDictionary *error = [errorCodes valueForKey:kErrorKeyBusy];
