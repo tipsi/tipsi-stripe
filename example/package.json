@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "preinstall": "scripts/pre-install.js",
+    "postinstall": "scripts/post-install.js",
     "rn-cli": "node node_modules/react-native/local-cli/cli.js start",
     "start": "npm run rn-cli -- --config $(pwd)/rn-cli.config.js",
     "cold-start": "npm start -- --reset-cache",
@@ -33,6 +34,7 @@
     "react-test-renderer": "16.8.3",
     "tape-async": "2.3.0",
     "tipsi-appium-helper": "3.3.0",
-    "webdriverio": "4.14.1"
+    "webdriverio": "5.11.x",
+    "xcode": "2.0.x"
   }
 }
