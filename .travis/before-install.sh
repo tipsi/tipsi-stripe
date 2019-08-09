@@ -41,8 +41,6 @@ init_new_example_project() {
   done
 }
 
-# NVM_NODEJS_ORG_MIRROR is deprecated and will be removed in node-gyp v4,
-# please use NODEJS_ORG_MIRROR
 export NODEJS_ORG_MIRROR=http://nodejs.org/dist
 
 sudo apt-get install openjdk-8-jdk
