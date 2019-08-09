@@ -24,7 +24,8 @@ matrix:
       env:
         - JOB_NAME=PODSPEC_IOS
     - os: linux
-      jdk: oraclejdk8
+      language: node_js
+      jdk: oraclejdk9
       sudo: required
       env:
         - JOB_NAME=ANDROID_5
