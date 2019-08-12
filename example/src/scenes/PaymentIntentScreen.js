@@ -5,7 +5,8 @@ import Button from '../components/Button'
 import testID from '../utils/testID'
 import { demoCardFormParameters,
   demoPaymentMethodDetailsWithCard,
-  demoPaymentMethodDetailsWithToken } from './demodata/demodata'
+  demoPaymentMethodDetailsWithToken,
+  demoTestCards } from './demodata/demodata'
 
 export default class PaymentIntentScreen extends PureComponent {
 
@@ -23,12 +24,22 @@ export default class PaymentIntentScreen extends PureComponent {
     loading: false,
     paymentMethod: null,
     paymentIntent: null,
-    confirmPaymentResult: null
+    confirmPaymentResult: null,
+    showCardSelection: false
+  }
+
+  defaultState = {...this.state}
+
+  reset = ({ loading = false }) => {
+    this.setState({
+      loading,
+      ...this.defaultState
+    })
   }
 
 
   onCreatePaymentIntent = async () => {
-    this.setState({ loading: true, paymentIntent: null })
+    this.reset({loading: true})
     try {
       const response = await fetch(PaymentIntentScreen.BACKEND_URL + '/create_intent', {
         method: 'POST',
@@ -82,21 +93,22 @@ export default class PaymentIntentScreen extends PureComponent {
       })
 
       this.setState({...this.state, confirmPaymentResult})
-    } catch (error) {
+    } catch (e) {
+      console.log(e)
       this.setState({ loading: false })
     }
   }
-
 
   render() {
 
     const {
       error, loading, paymentIntent, paymentMethod,
-      confirmPaymentResult, token
+      confirmPaymentResult, token, showCardSelection
     } = this.state
 
-    const NO_AUTHENTICATION_CHALLENGE_CARD = "4242424242424242"
-    const AUTHENTICATION_CHALLENGE_CARD = "4000002760003184"
+    const onShowCardSelection = () => {
+      this.setState({...this.state, showCardSelection: !showCardSelection})
+    }
 
     return (
       <View>
@@ -122,17 +134,31 @@ export default class PaymentIntentScreen extends PureComponent {
                 style={styles.rowButton}
                 text="Attach Test Card"
                 loading={loading}
-                onPress={() => this.onAttachPaymentMethod(AUTHENTICATION_CHALLENGE_CARD)}
+                onPress={onShowCardSelection}
                 {...testID('attachTestCard')}
               />
               <Button
                 style={styles.rowButton}
                 text="Enter Card"
                 loading={loading}
-                onPress={() => this.onLaunchCardForm()}
+                onPress={this.onLaunchCardForm}
                 {...testID('launchCardForm')}
               />
             </View>
+            {showCardSelection && (
+              demoTestCards.map((card, idx) => (
+                <View style={styles.row} key={card.name}>
+                  <Button
+                    {...testID(card.name)}
+                    style={styles.rowButton}
+                    text={card.name + " - " + card.last4}
+                    loading={loading}
+                    onPress={() => this.onAttachPaymentMethod(card.number) }
+                  />
+                </View>
+              ))
+            )}
+
             {token && (
               <Text style={styles.content} {...testID('token')}>
                 token: {JSON.stringify(token)}
@@ -151,6 +177,7 @@ export default class PaymentIntentScreen extends PureComponent {
             Error: {JSON.stringify(error)}
           </Text>
         )}
+
       </View>
     )
   }

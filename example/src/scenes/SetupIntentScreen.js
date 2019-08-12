@@ -5,7 +5,8 @@ import Button from '../components/Button'
 import testID from '../utils/testID'
 import {
   demoPaymentMethodDetailsWithCard,
-  demoPaymentMethodDetailsWithToken } from './demodata/demodata'
+  demoPaymentMethodDetailsWithToken,
+  demoTestCards } from './demodata/demodata'
 
 export default class SetupIntentScreen extends PureComponent {
 
@@ -25,8 +26,17 @@ export default class SetupIntentScreen extends PureComponent {
     confirmSetupResult: null
   }
 
+  defaultState = {...this.state}
+
+  reset = ({ loading = false }) => {
+    this.setState({
+      loading,
+      ...this.defaultState
+    })
+  }
+
   onCreateSetupIntent = async () => {
-    this.setState({ loading: true, setupIntent: null })
+    this.reset({loading: true})
     try {
       const response = await fetch(SetupIntentScreen.BACKEND_URL + '/create_setup_intent', {
         method: 'POST',
@@ -51,7 +61,6 @@ export default class SetupIntentScreen extends PureComponent {
   onAttachPaymentMethod = async (cardNumber) => {
     this.setState( {...this.state, loading: true} )
     try {
-
       let confirmSetupResult = await stripe.confirmSetupIntent({
         clientSecret: this.state.setupIntent.secret,
         paymentMethod: demoPaymentMethodDetailsWithCard(cardNumber)
@@ -66,11 +75,15 @@ export default class SetupIntentScreen extends PureComponent {
 
 
   render() {
-    const { error, loading, setupIntent, confirmSetupResult } = this.state
-    const AUTHENTICATION_CHALLENGE_CARD = "4000002760003184"
+    const {
+      error, loading, setupIntent,
+      confirmSetupResult, showCardSelection } = this.state
+
+    const onShowCardSelection = () =>
+      this.setState({...this.state, showCardSelection: !showCardSelection})
 
     return (
-      <View>
+      <View style={styles.column}>
         <Text style={styles.header}>
           Create Setup Intent
         </Text>
@@ -88,12 +101,30 @@ export default class SetupIntentScreen extends PureComponent {
                 Source: {JSON.stringify(setupIntent)}
             </Text>
 
-            <Button
-              text="Attach Test Card"
-              loading={loading}
-              onPress={() => this.onAttachPaymentMethod(AUTHENTICATION_CHALLENGE_CARD)}
-              {...testID('attachTestCard')}
-            />
+            <View style={styles.row}>
+              <Button
+                style={styles.rowButton}
+                text="Attach Test Card"
+                loading={loading}
+                onPress={onShowCardSelection}
+                {...testID('attachTestCard')}
+              />
+            </View>
+
+            {showCardSelection && (
+              demoTestCards.map((card, idx) => (
+                <View style={styles.row} key={card.number}>
+                  <Button
+                    {...testID(card.name)}
+                    style={styles.rowButton}
+                    text={card.name + " - " + card.last4}
+                    loading={loading}
+                    onPress={() => this.onAttachPaymentMethod(card.number) }
+                  />
+                </View>
+              ))
+            )}
+
             {confirmSetupResult && (
               <Text style={styles.content} {...testID('confirmSetupResult')}>
                 confirmSetupResult: {JSON.stringify(confirmSetupResult)}
@@ -118,6 +149,22 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
+  },
+  content: {
+    color: '#333333',
+    margin: 8,
+    textAlign: 'center',
+    width: '100%',
+  },
+  column: {
+    flexDirection: 'column'
+  },
+  row: {
+    flexDirection: 'row',
+  },
+  rowButton: {
+    flex: 1,
+    alignSelf: 'center'
   },
   content: {
     color: '#333333',
