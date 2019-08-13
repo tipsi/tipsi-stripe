@@ -130,6 +130,7 @@ export default class PaymentIntentScreen extends PureComponent {
         console.log("Reattempting confirmation on the backend example server")
         response = await this.attachPaymentMethodAndConfirmPayment(this.state.paymentIntent.intent, null)
         console.log("Result", response)
+        this.setState({...this.state, loading: false, confirmPaymentResult:response })
       }
 
     } else {

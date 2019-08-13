@@ -21,8 +21,7 @@
     "prop-types": "15.7.2",
     "react": "16.8.6",
     "react-native": "0.59.10",
-    "react-native-drawer-layout-polyfill": "1.3.1",
-    "tipsi-stripe": "file:../tipsi-stripe-latest.tgz"
+    "react-native-drawer-layout-polyfill": "1.3.1"
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",
