@@ -46,24 +46,12 @@ export default class Button extends PureComponent {
         {...rest}
         style={[styles.button, style]}
         underlayColor="rgba(0,0,0,0.5)"
-        onPress={this.handlePress}>
+        onPress={this.handlePress}
+      >
         <View>
-          {loading &&
-            <ActivityIndicator
-              animating
-              size="small"
-            />
-          }
-          {!loading && !disabled &&
-            <Text>
-              {text}
-            </Text>
-          }
-          {!loading && disabled &&
-            <Text>
-              {disabledText || text}
-            </Text>
-           }
+          {loading && <ActivityIndicator animating size="small" />}
+          {!loading && !disabled && <Text>{text}</Text>}
+          {!loading && disabled && <Text>{disabledText || text}</Text>}
         </View>
       </TouchableHighlight>
     )

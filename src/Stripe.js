@@ -4,85 +4,154 @@ import checkArgs from './utils/checkArgs'
 import checkInit from './utils/checkInit'
 import * as types from './utils/types'
 import errorCodes from './errorCodes'
+import deprecatedMethodsForInstance from './Stripe.deprecated'
+/**
+ * @typedef {Object} PaymentMethodAddress
+ * @property {string} city
+ * @property {string} country
+ * @property {string} line1
+ * @property {string} line2
+ * @property {string} postalCode
+ * @property {string} state
+ */
+
+/**
+ * @typedef {Object} BillingDetails
+ * @property {PaymentMethodAddress} address
+ * @property {string} email
+ * @property {string} name
+ * @property {string} phone
+ */
+
+/**
+ * @typedef {Object} PaymentMethod
+ * @property {string} id
+ * @property {number} created
+ * @property {boolean} livemode
+ * @property {string} type
+ * @property {BillingDetails} billingDetails
+ * @property {string} customerId
+ */
+
+/* eslint-disable max-len */
+/**
+ * https://stripe.com/docs/api/payment_intents/object#payment_intent_object-status
+ * @typedef {('unknown'|'canceled'|'processing'|'requires_action'|'requires_capture'|'requires_paymentMethod'|'requires_confirmation'|'succeeded')} StripePaymentIntentStatus
+ */
+
+/**
+ * https://stripe.com/docs/api/setup_intents/object#setup_intent_object-status
+ * @typedef {('unknown'|'canceled'|'processing'|'requires_action'|'requires_paymentMethod'|'requires_confirmation'|'succeeded')} StripeSetupIntentStatus
+ */
+/* eslint-enable max-len */
+
+/**
+ * @typedef {Object} CreatePaymentMethodParams
+ * @property {string} id
+ * @property {BillingDetails} billingDetails
+ * @property {(PaymentMethodCardParams|string)} card - Token String or the Parameters to build a card
+ * @property {Object} metadata
+ * @property {string} customerId
+ */
+
+/**
+ * @typedef {Object} ConfirmPaymentIntentParams
+ * @property {string} clientSecret
+ * @property {CreatePaymentMethodParams} paymentMethod
+ * @property {string} paymentMethodId
+ * @property {string} sourceId
+ * @property {string} returnURL
+ * @property {boolean} savePaymentMethod
+ */
+
+/**
+ * @typedef {Object} PaymentIntentConfirmationResult
+ * @property {StripePaymentIntentStatus} status
+ * @property {string} paymentIntentId
+ */
+
+/**
+ * @typedef {Object} AuthenticatePaymentIntentParams
+ * @property {string} clientSecret
+ */
+
+/**
+ * @typedef {Object} PaymentIntentAuthenticationResult
+ * @property {StripePaymentIntentStatus} status
+ * @property {string} paymentIntentId
+ */
+
+/**
+ * @typedef {Object} ConfirmSetupIntentParams
+ * @property {string} clientSecret
+ * @property {CreatePaymentMethodParams} paymentMethod
+ * @property {string} paymentMethodId
+ * @property {string} returnURL
+ */
+
+/**
+ * @typedef {Object} SetupIntentConfirmationResult
+ * @property {StripeSetupIntentStatus} status
+ * @property {string} setupIntentId
+ */
+
+/**
+ * @typedef {Object} AuthenticateSetupIntentParams
+ * @property {string} clientSecret
+ */
+
+/**
+ * @typedef {Object} SetupIntentAuthenticationResult
+ * @property {StripeSetupIntentStatus} status
+ * @property {string} setupIntentId
+ */
 
 const { StripeModule } = NativeModules
 
 class Stripe {
   stripeInitialized = false
 
+  constructor() {
+    // Mix in the deprecated methods
+    Object.assign(this, deprecatedMethodsForInstance(this))
+  }
+  /**
+   * @param options: {StripeOptions}
+   * @returns {void}
+   */
   setOptions = (options = {}) => {
-    checkArgs(
-      types.setOptionsOptionsPropTypes,
-      options, 'options', 'Stripe.setOptions'
-    )
+    checkArgs(types.setOptionsOptionsPropTypes, options, 'options', 'Stripe.setOptions')
 
     this.stripeInitialized = true
 
     return StripeModule.init(options, errorCodes)
   }
 
-  // @deprecated use deviceSupportsNativePay
-  deviceSupportsAndroidPay = () => (
-    StripeModule.deviceSupportsAndroidPay()
-  )
-
-  // @deprecated use deviceSupportsNativePay
-  deviceSupportsApplePay = () => (
-    StripeModule.deviceSupportsApplePay()
-  )
-
-  deviceSupportsNativePay = () => (
+  /**
+   * @returns {Promise<boolean>}
+   */
+  deviceSupportsNativePay = () =>
     Platform.select({
       ios: () => this.deviceSupportsApplePay(),
       android: () => this.deviceSupportsAndroidPay(),
     })()
-  )
-
-  // @deprecated use canMakeNativePayPayments
-  canMakeApplePayPayments = (options = {}) => {
-    checkArgs(
-      types.canMakeApplePayPaymentsOptionsPropTypes,
-      options, 'options', 'Stripe.canMakeApplePayPayments'
-    )
-    return StripeModule.canMakeApplePayPayments(options)
-  }
-
-  // @deprecated use canMakeNativePayPayments
-  canMakeAndroidPayPayments = () => (
-    StripeModule.canMakeAndroidPayPayments()
-  )
 
   // iOS requires networks array while Android requires nothing
-  canMakeNativePayPayments = (options = {}) => (
+  canMakeNativePayPayments = (options = {}) =>
     Platform.select({
       ios: () => this.canMakeApplePayPayments(options),
       android: () => this.canMakeAndroidPayPayments(),
     })()
-  )
 
-  // @deprecated use paymentRequestWithNativePay
-  paymentRequestWithAndroidPay = (options = {}) => {
-    checkInit(this)
-    checkArgs(
-      types.paymentRequestWithAndroidPayOptionsPropTypes,
-      options, 'options', 'Stripe.paymentRequestWithAndroidPay'
-    )
-    return StripeModule.paymentRequestWithAndroidPay(options)
-  }
-
-  // @deprecated use paymentRequestWithNativePay
-  paymentRequestWithApplePay = (items = [], options = {}) => {
-    checkInit(this)
-    checkArgs(
-      types.paymentRequestWithApplePayItemsPropTypes,
-      { items }, 'items', 'Stripe.paymentRequestWithApplePay'
-    )
-    checkArgs(
-      types.paymentRequestWithApplePayOptionsPropTypes,
-      options, 'options', 'Stripe.paymentRequestWithApplePay'
-    )
-    return StripeModule.paymentRequestWithApplePay(items, options)
-  }
+  potentiallyAvailableNativePayNetworks = () =>
+    Platform.select({
+      ios: () => StripeModule.potentiallyAvailableNativePayNetworks(),
+      // Android doesn't expose this information, so resolve empty array
+      android: async () => {
+        const canNativePay = await this.canMakeAndroidPayPayments()
+        return canNativePay ? [] : null
+      },
+    })()
 
   paymentRequestWithNativePay(options = {}, items = []) {
     return Platform.select({
@@ -91,52 +160,34 @@ class Stripe {
     })()
   }
 
-  // @deprecated use completeNativePayRequest
-  completeApplePayRequest = () => {
-    checkInit(this)
-    return StripeModule.completeApplePayRequest()
-  }
-
   // no corresponding android impl exists
-  completeNativePayRequest = () => (
+  completeNativePayRequest = () =>
     Platform.select({
       ios: () => this.completeApplePayRequest(),
       android: () => Promise.resolve(),
     })()
-  )
-
-  // @deprecated use cancelNativePayRequest
-  cancelApplePayRequest = () => {
-    checkInit(this)
-    return StripeModule.cancelApplePayRequest()
-  }
 
   // no corresponding android impl exists
-  cancelNativePayRequest = () => (
+  cancelNativePayRequest = () =>
     Platform.select({
       ios: () => this.cancelApplePayRequest(),
       android: () => Promise.resolve(),
     })()
-  )
-
-  // @deprecated use openNativePaySetup
-  openApplePaySetup = () => (
-    StripeModule.openApplePaySetup()
-  )
 
   // no corresponding android impl exists
-  openNativePaySetup = () => (
+  openNativePaySetup = () =>
     Platform.select({
       ios: () => this.openApplePaySetup(),
       android: () => Promise.resolve(),
     })()
-  )
 
   paymentRequestWithCardForm = (options = {}) => {
     checkInit(this)
     checkArgs(
       types.paymentRequestWithCardFormOptionsPropTypes,
-      options, 'options', 'Stripe.paymentRequestWithCardForm'
+      options,
+      'options',
+      'Stripe.paymentRequestWithCardForm'
     )
     return StripeModule.paymentRequestWithCardForm({
       ...options,
@@ -148,7 +199,9 @@ class Stripe {
     checkInit(this)
     checkArgs(
       types.createTokenWithCardParamsPropTypes,
-      params, 'params', 'Stripe.createTokenWithCard'
+      params,
+      'params',
+      'Stripe.createTokenWithCard'
     )
     return StripeModule.createTokenWithCard(params)
   }
@@ -157,7 +210,9 @@ class Stripe {
     checkInit(this)
     checkArgs(
       types.createTokenWithBankAccountParamsPropTypes,
-      params, 'params', 'Stripe.createTokenWithBankAccount'
+      params,
+      'params',
+      'Stripe.createTokenWithBankAccount'
     )
     return StripeModule.createTokenWithBankAccount(params)
   }
@@ -166,56 +221,65 @@ class Stripe {
     checkInit(this)
     checkArgs(
       types.createSourceWithParamsPropType,
-      params, 'params', 'Stripe.createSourceWithParams'
+      params,
+      'params',
+      'Stripe.createSourceWithParams'
     )
     return StripeModule.createSourceWithParams(params)
   }
 
+  /**
+   * After calling this, you need to hit your backend with this method to get a clientSecret
+   * @param {CreatePaymentMethodParams} params
+   * @returns {Promise<PaymentMethod>}
+   */
   createPaymentMethod = (params = {}) => {
     checkInit(this)
-    checkArgs(
-      types.createPaymentMethodPropType,
-      params, 'params', 'Stripe.createPaymentMethod'
-    )
+    checkArgs(types.createPaymentMethodPropType, params, 'params', 'Stripe.createPaymentMethod')
     return StripeModule.createPaymentMethod(params)
   }
 
+  /**
+   * Takes a previously created paymentMethodId or a new paymentMethod, and then generates a paymentIntent
+   * @param {ConfirmPaymentIntentParams} params
+   * @returns {Promise<PaymentIntentConfirmationResult>}
+   */
   confirmPayment = (params = {}) => {
     checkInit(this)
-    checkArgs(
-      types.confirmPaymentPropType,
-      params, 'params', 'Stripe.confirmPayment'
-    )
+    checkArgs(types.confirmPaymentPropType, params, 'params', 'Stripe.confirmPayment')
     return StripeModule.confirmPayment(params)
   }
 
+  /**
+   * @param {AuthenticatePaymentIntentParams} params
+   * @returns {Promise<PaymentIntentAuthenticationResult>}
+   */
   authenticatePayment = (params = {}) => {
     checkInit(this)
-    checkArgs(
-      types.authenticatePaymentPropType,
-      params, 'params', 'Stripe.authenticatePayment'
-    )
+    checkArgs(types.authenticatePaymentPropType, params, 'params', 'Stripe.authenticatePayment')
     return StripeModule.authenticatePayment(params)
   }
 
+  /**
+   * @param {ConfirmSetupIntentParams} params
+   * @returns {Promise<SetupIntentConfirmationResult>}
+   */
   confirmSetupIntent = (params = {}) => {
     checkInit(this)
-    checkArgs(
-      types.confirmSetupIntentPropType,
-      params, 'params', 'Stripe.confirmSetupIntent'
-    )
+    checkArgs(types.confirmSetupIntentPropType, params, 'params', 'Stripe.confirmSetupIntent')
     return StripeModule.confirmSetupIntent(params)
   }
 
+  /**
+   * Displays 3DSecure2 or other flows to authenticate a SetupIntent
+   * @param {AuthenticateSetupIntentParams} params
+   * @returns {Promise<SetupIntentAuthenticationResult>}
+   */
   authenticateSetup = (params = {}) => {
     checkInit(this)
-    checkArgs(
-      types.authenticateSetupPropType,
-      params, 'params', 'Stripe.authenticateSetup'
-    )
+    checkArgs(types.authenticateSetupPropType, params, 'params', 'Stripe.authenticateSetup')
     return StripeModule.authenticateSetup(params)
   }
-
 }
 
 export default new Stripe()

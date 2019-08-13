@@ -10,9 +10,8 @@ Opens the `Add Card` view to to accept a payment.
 
 | Key | Type | Description |
 | :--- | :--- | :--- |
-| requiredBillingAddressFields | String | The billing address fields the user must fill out when prompted for their payment details. Can be one of: **full** or **zip** or left unspecified to disable |
+| requiredBillingAddressFields | String | The billing address fields the user must fill out when prompted for their payment details. Can be one of: **full || name || zip** or left unspecified to disable |
 | prefilledInformation | Object | You can set this property to pre-fill any information you’ve already collected from your user |
-| managedAccountCurrency | String | Required to be able to add the card to an account (in all other cases, this parameter is not used). More info |
 | theme | Object | Can be used to visually style Stripe-provided UI |
 
 **options.prefilledInformation** — An object with the following keys:

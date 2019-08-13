@@ -80,9 +80,7 @@ export default class PaymentCardTextField extends Component {
     }
   }
 
-  isFocused = () => (
-    TextInputState.currentlyFocusedField() === findNodeHandle(this.cardTextFieldRef)
-  )
+  isFocused = () => TextInputState.currentlyFocusedField() === findNodeHandle(this.cardTextFieldRef)
 
   focus = () => {
     TextInputState.focusTextInput(findNodeHandle(this.cardTextFieldRef))
@@ -172,7 +170,8 @@ export default class PaymentCardTextField extends Component {
           onPress={this.handlePress}
           accessible={rest.accessible}
           accessibilityLabel={rest.accessibilityLabel}
-          accessibilityTraits={rest.accessibilityTraits}>
+          accessibilityTraits={rest.accessibilityTraits}
+        >
           <NativePaymentCardTextField
             ref={this.setCardTextFieldRef}
             style={[styles.field, fieldStyles]}
@@ -189,13 +188,11 @@ export default class PaymentCardTextField extends Component {
             expirationPlaceholder={expirationPlaceholder}
             cvcPlaceholder={cvcPlaceholder}
             onChange={this.handleChange}
-
             // iOS only
             cursorColor={cursorColor}
             textErrorColor={textErrorColor}
             placeholderColor={placeholderColor}
             keyboardAppearance={keyboardAppearance}
-
             // Android only
             cardNumber={cardNumber}
             expDate={expDate}
@@ -215,4 +212,3 @@ const styles = StyleSheet.create({
     height: 44,
   },
 })
-

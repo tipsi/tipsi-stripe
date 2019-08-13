@@ -12,10 +12,11 @@
 @end
 
 @implementation TPSCardField {
+    // Relates to a Deprecated API -- clean this up after RN 0.45 or lower support is dropped
     BOOL _jsRequestingFirstResponder;
     BOOL _isFirstResponder;
-    STPPaymentCardTextField *_paymentCardTextField;
 
+    STPPaymentCardTextField *_paymentCardTextField;
 }
 
 - (void)dealloc {
@@ -30,10 +31,10 @@
         [self addSubview:_paymentCardTextField];
         self.backgroundColor = [UIColor clearColor];
         [[NSNotificationCenter defaultCenter]
-            addObserver:self
-               selector:@selector(keyboardWillShow:)
-                   name:UIKeyboardWillShowNotification
-                 object:self.window];
+         addObserver:self
+         selector:@selector(keyboardWillShow:)
+         name:UIKeyboardWillShowNotification
+         object:self.window];
     }
     return self;
 }
@@ -43,6 +44,23 @@
     _paymentCardTextField.frame = self.bounds;
 }
 
+- (void)reactFocus {
+    _jsRequestingFirstResponder = YES;
+    [self becomeFirstResponder];
+}
+
+- (void)reactFocusIfNeeded {
+    if (!_isFirstResponder) {
+        [self reactFocus];
+    }
+}
+
+- (void)reactBlur {
+    _jsRequestingFirstResponder = NO;
+    [self resignFirstResponder];
+}
+
+// Deprecated API -- removed in 2017, clean this up after RN 0.45 or lower support is dropped
 - (void)reactWillMakeFirstResponder {
     _jsRequestingFirstResponder = YES;
 }
@@ -51,6 +69,7 @@
     return _jsRequestingFirstResponder;
 }
 
+// Deprecated API -- removed in 2017, clean this up after RN 0.45 or lower support is dropped
 - (void)reactDidMakeFirstResponder {
     _jsRequestingFirstResponder = NO;
 }
@@ -74,6 +93,7 @@
 }
 
 - (BOOL)resignFirstResponder {
+    _jsRequestingFirstResponder = NO;
     _isFirstResponder = NO;
     return [_paymentCardTextField resignFirstResponder];
 }
@@ -168,22 +188,22 @@
     _paymentCardTextField.placeholderColor = placeholderColor;
 }
 
-- (void)setCardParams:(STPCardParams *)cardParams {
+- (void)setCardParams:(STPPaymentMethodCardParams *)cardParams {
     // Remove delegate before update paymentCardTextField with prefilled card
     // for preventing call paymentCardTextFieldDidChange for every fields
     _paymentCardTextField.delegate = nil;
     [_paymentCardTextField setCardParams:cardParams];
     _paymentCardTextField.delegate = self;
     // call paymentCardTextFieldDidChange for update RN
-    [self paymentCardTextFieldDidChange:nil];
+    [self paymentCardTextFieldDidChange:_paymentCardTextField];
 }
 
 - (UIKeyboardAppearance)keyboardAppearance {
-  return _paymentCardTextField.keyboardAppearance;
+    return _paymentCardTextField.keyboardAppearance;
 }
 
 - (void)setKeyboardAppearance:(UIKeyboardAppearance)keyboardAppearance {
-  _paymentCardTextField.keyboardAppearance = keyboardAppearance;
+    _paymentCardTextField.keyboardAppearance = keyboardAppearance;
 }
 
 #pragma mark - STPPaymentCardTextFieldDelegate
@@ -196,8 +216,8 @@
                 @"valid": @(_paymentCardTextField.isValid),
                 @"params": @{
                         @"number": _paymentCardTextField.cardParams.number?:@"",
-                        @"expMonth": @(_paymentCardTextField.cardParams.expMonth),
-                        @"expYear": @(_paymentCardTextField.cardParams.expYear),
+                        @"expMonth": _paymentCardTextField.cardParams.expMonth,
+                        @"expYear": _paymentCardTextField.cardParams.expYear,
                         @"cvc": _paymentCardTextField.cardParams.cvc?:@""
                         }
                 });

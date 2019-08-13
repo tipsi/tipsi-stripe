@@ -1,6 +1,26 @@
 import PropTypes from 'prop-types'
+import { Platform } from 'react-native'
 
-export const availableApplePayNetworks = ['american_express', 'discover', 'master_card', 'visa']
+export const availableApplePayNetworks = [
+  'american_express',
+  'cartes_bancaires',
+  'china_union_pay',
+  'discover',
+  'eftpos',
+  'electron',
+  'elo',
+  'id_credit',
+  'interac',
+  'jcb',
+  'mada',
+  'maestro',
+  'master_card',
+  'private_label',
+  'quic_pay',
+  'suica',
+  'visa',
+  'vpay',
+]
 export const availableApplePayAddressFields = ['all', 'name', 'email', 'phone', 'postal_address']
 export const availableApplePayShippingTypes = [
   'shipping',
@@ -30,6 +50,12 @@ export const availableApplePayNetworkPropTypes = PropTypes.oneOf(availableAppleP
 export const canMakeApplePayPaymentsOptionsPropTypes = {
   networks: PropTypes.arrayOf(availableApplePayNetworkPropTypes),
 }
+export const potentiallyAvailableNativePayPaymentsOptionsPropTypes = Platform.select({
+  ios: {
+    networks: PropTypes.arrayOf(availableApplePayNetworkPropTypes),
+  },
+  android: {},
+})
 
 export const paymentRequestWithApplePayItemPropTypes = {
   label: PropTypes.string.isRequired,
@@ -38,9 +64,7 @@ export const paymentRequestWithApplePayItemPropTypes = {
 }
 
 export const paymentRequestWithApplePayItemsPropTypes = {
-  items: PropTypes.arrayOf(
-    PropTypes.shape(paymentRequestWithApplePayItemPropTypes)
-  ).isRequired,
+  items: PropTypes.arrayOf(PropTypes.shape(paymentRequestWithApplePayItemPropTypes)).isRequired,
 }
 
 export const applePayAddressFieldsPropTypes = PropTypes.oneOf(availableApplePayAddressFields)
@@ -62,8 +86,7 @@ export const paymentRequestWithApplePayOptionsPropTypes = {
 }
 
 export const paymentRequestWithCardFormOptionsPropTypes = {
-  requiredBillingAddressFields: PropTypes.oneOf(['full', 'zip']),
-  managedAccountCurrency: PropTypes.string,
+  requiredBillingAddressFields: PropTypes.oneOf(['full', 'name', 'zip']),
   smsAutofillDisabled: PropTypes.bool,
   prefilledInformation: PropTypes.shape({
     email: PropTypes.string,
@@ -169,10 +192,8 @@ export const createSourceWithParamsPropType = {
   last4: PropTypes.string,
 }
 
-
 // Corresponds to https://stripe.com/docs/api/payment_methods/create
 export const createPaymentMethodPropType = {
-
   // BillingDetails properties:
   billingDetails: PropTypes.shape({
     address: PropTypes.shape({
@@ -198,8 +219,8 @@ export const createPaymentMethodPropType = {
       expYear: PropTypes.number,
       number: PropTypes.string,
     }),
-    PropTypes.shape({ token: PropTypes.string })
-  ])
+    PropTypes.shape({ token: PropTypes.string }),
+  ]),
 
   // TODO: metadata support
   // TODO: customerId support
