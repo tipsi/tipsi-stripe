@@ -7,6 +7,7 @@ import {
   demoCardFormParameters,
   demoPaymentMethodDetailsWithCard,
   demoPaymentMethodDetailsWithToken,
+  demoBillingDetails,
   demoTestCards,
 } from './demodata/demodata'
 
@@ -31,15 +32,16 @@ export default class PaymentIntentScreen extends PureComponent {
 
   defaultState = {...this.state}
 
-  reset = ({ loading = false }) => {
+  reset = ({ withState = {} }) => {
     this.setState({
-      loading,
       ...this.defaultState,
+      ...withState,
     })
   }
 
-  onCreatePaymentIntent = async () => {
-    this.reset({loading: true})
+
+  onCreatePaymentIntent = async ({confirmationMethod = 'automatic'}) => {
+    this.reset({withState : {loading: true, confirmationMethod}})
     try {
       const response = await fetch(PaymentIntentScreen.BACKEND_URL + '/create_intent', {
         method: 'POST',
@@ -50,6 +52,8 @@ export default class PaymentIntentScreen extends PureComponent {
         body: JSON.stringify({
           amount: 2000,
           currency: 'usd',
+          confirmationMethod,
+          confirm: false,
         }),
       })
       const result = await response.json()
@@ -61,19 +65,81 @@ export default class PaymentIntentScreen extends PureComponent {
     }
   }
 
+  attachPaymentMethodAndConfirmPayment = async (paymentIntentId, paymentMethodId) => {
+
+    let body = {
+      payment_intent_id: paymentIntentId,
+    }
+
+    if (paymentMethodId) {
+      body = { ...body, payment_method: paymentMethodId }
+    }
+
+
+    const response = await fetch(PaymentIntentScreen.BACKEND_URL + '/confirm_payment', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    })
+
+    if (response.status == 200) {
+      const body = await response.json()
+      console.log("Received response", body)
+      return body
+    } else {
+      console.error("Example backend response", await response.text())
+      throw Error(response.text())
+    }
+  }
+
   onAttachPaymentMethod = async (cardNumber) => {
+
     this.setState({ ...this.state, loading: true })
-    try {
+
+    if (this.state.confirmationMethod == 'manual') {
+
+      // Create a payment method
+      const paymentMethod = await stripe.createPaymentMethod(
+        demoPaymentMethodDetailsWithCard(cardNumber)
+      )
+
+      console.log("Payment Method", paymentMethod)
+      console.log("Payment Intent", this.state.paymentIntent)
+
+      // Send the payment method to the server and ask it to confirm.
+      console.log("Calling /confirm_payment on backend example server")
+
+      const body = await this.attachPaymentMethodAndConfirmPayment(this.state.paymentIntent.intent, paymentMethod.id)
+
+      // Have the response return the clientSecret (already have it)
+      // Return the status
+      // Use the client secret to authenticatePayment if the status is 'requires_action'
+
+
+      if (body.status == 'requires_action') {
+        console.log("Payment method requires_action")
+
+        let response = await stripe.authenticatePayment({
+          clientSecret : body.secret,
+        })
+        console.log("stripe.authenticatePayment() result", response)
+
+        console.log("Reattempting confirmation on the backend example server")
+        response = await this.attachPaymentMethodAndConfirmPayment(this.state.paymentIntent.intent, null)
+        console.log("Result", response)
+      }
+
+    } else {
+
+      // Call confirmPayment
       let confirmPaymentResult = await stripe.confirmPayment({
         clientSecret: this.state.paymentIntent.secret,
-        paymentMethod: demoPaymentMethodDetailsWithCard(cardNumber),
+        paymentMethod: demoPaymentMethodDetailsWithCard(cardNumber)
       })
-
-      console.log(confirmPaymentResult)
-      this.setState({ ...this.state, loading: false, confirmPaymentResult })
-    } catch (e) {
-      console.log(e)
-      this.setState({ ...this.state, loading: false })
+      this.setState({...this.state, loading: false, confirmPaymentResult })
     }
   }
 
@@ -92,6 +158,7 @@ export default class PaymentIntentScreen extends PureComponent {
 
       this.setState({ ...this.state, confirmPaymentResult })
     } catch (e) {
+      console.log(e)
       this.setState({ loading: false })
     }
   }
@@ -109,14 +176,26 @@ export default class PaymentIntentScreen extends PureComponent {
 
     return (
       <View>
-        <Text style={styles.header}>Create Payment Intent</Text>
+        <Text style={styles.header}>
+          Create Payment Intent
+        </Text>
 
-        <Button
-          text="Create Payment Intent"
-          loading={loading}
-          onPress={() => this.onCreatePaymentIntent()}
-          {...testID('noAuthButton')}
-        />
+        <View style={styles.row}>
+          <Button
+            text="Create (Manual)"
+            loading={loading}
+            onPress={() => this.onCreatePaymentIntent({confirmationMethod:'manual'})}
+            {...testID('noAuthButton')}
+          />
+
+          <Button
+            text="Create (Automatic)"
+            loading={loading}
+            onPress={() => this.onCreatePaymentIntent({confirmationMethod:'automatic'})}
+            {...testID('noAuthButton')}
+          />
+        </View>
+
 
         {paymentIntent && (
           <>
