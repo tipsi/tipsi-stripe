@@ -56,9 +56,10 @@ export const demoPaymentMethodDetailsWithToken = token => ({
 
 
 export const demoTestCards = [
-  { name: "Always Authenticate",  number: "4000002500003155", last4: "3155"},
-  { name: "Auth and Decline",     number: "4000008260003178", last4: "3178"},
-  { name: "3DS2",                 number: "4000000000003220", last4: "3220"},
-  { name: "3DS1",                 number: "4000000000003063", last4: "3063"},
-  { name: "3DS Not Supported",    number: "378282246310005",  last4: "0005"}
+  { name: "Always Authenticate",  number: "4000002500003155", last4: "3155" },
+  { name: "Auth and Decline",     number: "4000008260003178", last4: "3178" },
+  { name: "3DS2",                 number: "4000000000003220", last4: "3220" },
+  { name: "3DS1",                 number: "4000000000003063", last4: "3063" },
+  { name: "No 3DS - succeed",     number: "378282246310005",  last4: "0005" },
+  { name: "No 3DS - decline",     number: "4000000000000002", last4: "0002" },
 ]
