@@ -236,29 +236,6 @@ public class Converters {
     return newSource;
   }
 
-  private static String convertStripeIntentResultStatusToString(StripeIntentResult<? extends StripeIntent> stripeIntentResult) {
-    String status;
-    switch (stripeIntentResult.getStatus()) {
-      case StripeIntentResult.Status.CANCELED:
-        status = "CANCELED";
-        break;
-      case StripeIntentResult.Status.FAILED:
-        status = "FAILED";
-        break;
-      case StripeIntentResult.Status.SUCCEEDED:
-        status = "SUCCEEDED";
-        break;
-      case StripeIntentResult.Status.TIMEDOUT:
-        status = "TIMEDOUT";
-        break;
-      case StripeIntentResult.Status.UNKNOWN:
-      default:
-        status = "UNKNOWN";
-        break;
-    }
-    return status;
-  }
-
   @NonNull
   public static WritableMap convertPaymentIntentResultToWritableMap(@Nullable PaymentIntentResult paymentIntentResult) {
     WritableMap wm = Arguments.createMap();
@@ -267,7 +244,7 @@ public class Converters {
       return wm;
     }
 
-    wm.putString("status", convertStripeIntentResultStatusToString(paymentIntentResult));
+    wm.putString("status", paymentIntentResult.getIntent().getStatus().toString());
     wm.putString("paymentIntentId", paymentIntentResult.getIntent().getId());
     return wm;
   }
@@ -281,7 +258,7 @@ public class Converters {
       return wm;
     }
 
-    wm.putString("status", convertStripeIntentResultStatusToString(setupIntentResult));
+    wm.putString("status", setupIntentResult.getIntent().getStatus().toString());
     wm.putString("setupIntentId", setupIntentResult.getIntent().getId());
     return wm;
   }
