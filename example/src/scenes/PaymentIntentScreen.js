@@ -193,13 +193,30 @@ export default class PaymentIntentScreen extends PureComponent {
       }
 
 
-    } else {
+    } else if (this.state.confirmationMethod == 'automatic') {
 
-      // Call confirmPayment
-      let confirmPaymentResult = await stripe.confirmPayment({
-        clientSecret: this.state.paymentIntent.secret,
-        paymentMethod: demoPaymentMethodDetailsWithCard(cardNumber)
-      })
+      // Here we're in automatic confirmation mode.
+      // In this mode, we can confirm the payment from the client side and
+      // fulfill the order on the client side by listening to webhooks.
+
+      // For cards, we also get immediate confirmation of the outcome of the payment.
+
+      let confirmPaymentResult
+      try {
+        console.log("Confirming")
+        confirmPaymentResult = await stripe.confirmPayment({
+          clientSecret: this.state.paymentIntent.secret,
+          paymentMethod: demoPaymentMethodDetailsWithCard(cardNumber),
+        })
+      } catch (e) {
+        // One way we can arrive here is if the payment intent had previously succeeded.
+
+        console.dir(e)
+        confirmPaymentResult = {
+          message: e.message,
+          code: e.code,
+        }
+      }
       this.setState({...this.state, loading: false, confirmPaymentResult })
     }
   }
