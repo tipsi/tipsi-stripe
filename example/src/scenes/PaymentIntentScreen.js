@@ -26,7 +26,7 @@ export default class PaymentIntentScreen extends PureComponent {
     loading: false,
     paymentMethod: null,
     paymentIntent: null,
-    confirmPaymentResult: null,
+    display: null,
     showCardSelection: false,
   }
 
@@ -98,13 +98,8 @@ export default class PaymentIntentScreen extends PureComponent {
         json: body.json,
       }
 
-      if (response.code == 'card_declined') {
-        console.log("Card declined", display)
-      } else if (response.status == 'requires_payment_method') {
-        console.log("Authentication failed", display)
-      } else {
-        console.log("Unexpected error", display)
-      }
+      console.log("Non-200 response", display)
+
       return display
     }
   }
@@ -113,6 +108,7 @@ export default class PaymentIntentScreen extends PureComponent {
   handleAuthenticationChallenge = async ({ clientSecret }) => {
     let response;
     try {
+      console.log("Calling stripe.authenticatePayment()")
       authResponse = await stripe.authenticatePayment({
         clientSecret,
       })
@@ -147,9 +143,17 @@ export default class PaymentIntentScreen extends PureComponent {
     if (this.state.confirmationMethod == 'manual') {
 
       // Create a payment method
-      const paymentMethod = await stripe.createPaymentMethod(
-        demoPaymentMethodDetailsWithCard(cardNumber)
-      )
+      console.log("Calling stripe.createPaymentMethod()")
+
+      let paymentMethod;
+      try {
+        paymentMethod = await stripe.createPaymentMethod(demoPaymentMethodDetailsWithCard(cardNumber))
+      } catch (e) {
+        console.dir(e)
+        // One way a payment method can fail to be created is if the card number is invalid
+        this.setState({...this.state, loading: false, display: e })
+        return
+      }
 
       console.log("Payment Method", paymentMethod)
       console.log("Payment Intent", this.state.paymentIntent)
@@ -189,7 +193,7 @@ export default class PaymentIntentScreen extends PureComponent {
           // The initial confirm did not require_action - a new payment method is required instead.
           response = confirmResult
         }
-        this.setState({...this.state, loading: false, confirmPaymentResult: response })
+        this.setState({...this.state, loading: false, display: response })
       }
 
 
@@ -201,23 +205,24 @@ export default class PaymentIntentScreen extends PureComponent {
 
       // For cards, we also get immediate confirmation of the outcome of the payment.
 
-      let confirmPaymentResult
+      let display
       try {
         console.log("Confirming")
         confirmPaymentResult = await stripe.confirmPayment({
           clientSecret: this.state.paymentIntent.secret,
           paymentMethod: demoPaymentMethodDetailsWithCard(cardNumber),
         })
+        display = confirmPaymentResult
       } catch (e) {
         // One way we can arrive here is if the payment intent had previously succeeded.
 
         console.dir(e)
-        confirmPaymentResult = {
+        display = {
           message: e.message,
           code: e.code,
         }
       }
-      this.setState({...this.state, loading: false, confirmPaymentResult })
+      this.setState({...this.state, loading: false, display })
     }
   }
 
@@ -233,8 +238,9 @@ export default class PaymentIntentScreen extends PureComponent {
         clientSecret: this.state.paymentIntent.secret,
         paymentMethod: demoPaymentMethodDetailsWithToken(token.tokenId),
       })
+      display = confirmPaymentResult
 
-      this.setState({ ...this.state, confirmPaymentResult })
+      this.setState({ ...this.state, display })
     } catch (e) {
       console.log(e)
       this.setState({ loading: false })
@@ -245,7 +251,7 @@ export default class PaymentIntentScreen extends PureComponent {
 
     const {
       error, loading, paymentIntent, paymentMethod,
-      confirmPaymentResult, token, showCardSelection
+      display, token, showCardSelection
     } = this.state
 
     const onShowCardSelection = () => {
@@ -316,9 +322,9 @@ export default class PaymentIntentScreen extends PureComponent {
                 token: {JSON.stringify(token)}
               </Text>
             )}
-            {confirmPaymentResult && (
-              <Text style={styles.content} {...testID('confirmPaymentResult')}>
-                {JSON.stringify(confirmPaymentResult)}
+            {display && (
+              <Text style={styles.content} {...testID('display')}>
+                {JSON.stringify(display)}
               </Text>
             )}
           </>

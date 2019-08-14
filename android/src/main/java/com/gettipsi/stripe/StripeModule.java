@@ -359,7 +359,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
 
       @Override
       public void onError(Exception error) {
-        promise.reject(toErrorCode(error));
+        promise.reject(toErrorCode(error), error.getMessage());
       }
 
       @Override
