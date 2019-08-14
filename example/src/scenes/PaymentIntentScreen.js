@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, ScrollView } from 'react-native'
 import stripe from 'tipsi-stripe'
 import Button from '../components/Button'
 import testID from '../utils/testID'
@@ -75,7 +75,6 @@ export default class PaymentIntentScreen extends PureComponent {
       body = { ...body, payment_method: paymentMethodId }
     }
 
-
     const response = await fetch(PaymentIntentScreen.BACKEND_URL + '/confirm_payment', {
       method: 'POST',
       headers: {
@@ -90,9 +89,55 @@ export default class PaymentIntentScreen extends PureComponent {
       console.log("Received response", body)
       return body
     } else {
-      console.error("Example backend response", await response.text())
-      throw Error(response.text())
+      const body = await response.json()
+      console.log(body)
+      const display = {
+        status: body.status,
+        message: body.message,
+        code: body.code,
+        json: body.json,
+      }
+
+      if (response.code == 'card_declined') {
+        console.log("Card declined", display)
+      } else if (response.status == 'requires_payment_method') {
+        console.log("Authentication failed", display)
+      } else {
+        console.log("Unexpected error", display)
+      }
+      return display
     }
+  }
+
+
+  handleAuthenticationChallenge = async ({ clientSecret }) => {
+    let response;
+    try {
+      authResponse = await stripe.authenticatePayment({
+        clientSecret,
+      })
+      console.log("stripe.authenticatePayment()", authResponse)
+
+      if (authResponse.status == 'requires_payment_method') {
+        response = {
+          message : "Authentication failed, a new PaymentMethod needs to be attached.",
+          status : authResponse.status,
+        }
+      } else if (authResponse.status == 'requires_confirmation') {
+        response = {
+          message : "Authentication passed, requires confirmation (server-side)",
+          status : authResponse.status,
+        }
+      } else {
+        response = {
+          message : "Unexpected.",
+          raw : authResponse,
+        }
+      }
+    } catch (e) {
+      console.error(e)
+    }
+    return response
   }
 
   onAttachPaymentMethod = async (cardNumber) => {
@@ -112,26 +157,41 @@ export default class PaymentIntentScreen extends PureComponent {
       // Send the payment method to the server and ask it to confirm.
       console.log("Calling /confirm_payment on backend example server")
 
-      const body = await this.attachPaymentMethodAndConfirmPayment(this.state.paymentIntent.intent, paymentMethod.id)
-
-      // Have the response return the clientSecret (already have it)
-      // Return the status
-      // Use the client secret to authenticatePayment if the status is 'requires_action'
-
-
-      if (body.status == 'requires_action') {
-        console.log("Payment method requires_action")
-
-        let response = await stripe.authenticatePayment({
-          clientSecret : body.secret,
-        })
-        console.log("stripe.authenticatePayment() result", response)
-
-        console.log("Reattempting confirmation on the backend example server")
-        response = await this.attachPaymentMethodAndConfirmPayment(this.state.paymentIntent.intent, null)
-        console.log("Result", response)
-        this.setState({...this.state, loading: false, confirmPaymentResult:response })
+      let confirmResult = null
+      try {
+        confirmResult = await this.attachPaymentMethodAndConfirmPayment(this.state.paymentIntent.intent, paymentMethod.id)
+      } catch (e) {
+        console.error(e)
       }
+
+      // The body can be null here if the payment was declined in the previous step
+      if (confirmResult) {
+
+        let response = null
+
+        if (confirmResult.status == 'requires_action') {
+          console.log("Payment method requires_action")
+
+          response = await this.handleAuthenticationChallenge({ clientSecret: confirmResult.secret })
+
+          if (response.status == "requires_confirmation") {
+            response = await this.attachPaymentMethodAndConfirmPayment(this.state.paymentIntent.intent, null)
+            console.log("response from confirming after successfully authenticating", response)
+          }
+
+        } else if (confirmResult.status == 'succeeded') {
+          response = {
+            message : "payment succeeded without requiring authentication"
+          }
+          console.log("Succeeded")
+
+        } else if (confirmResult.status == 'requires_payment_method') {
+          // The initial confirm did not require_action - a new payment method is required instead.
+          response = confirmResult
+        }
+        this.setState({...this.state, loading: false, confirmPaymentResult: response })
+      }
+
 
     } else {
 
@@ -176,7 +236,7 @@ export default class PaymentIntentScreen extends PureComponent {
     }
 
     return (
-      <View>
+      <ScrollView>
         <Text style={styles.header}>
           Create Payment Intent
         </Text>
@@ -241,7 +301,7 @@ export default class PaymentIntentScreen extends PureComponent {
             )}
             {confirmPaymentResult && (
               <Text style={styles.content} {...testID('confirmPaymentResult')}>
-                confirmPaymentResult: {JSON.stringify(confirmPaymentResult)}
+                {JSON.stringify(confirmPaymentResult)}
               </Text>
             )}
           </>
@@ -253,7 +313,7 @@ export default class PaymentIntentScreen extends PureComponent {
           </Text>
         )}
 
-      </View>
+      </ScrollView>
     )
   }
 }
