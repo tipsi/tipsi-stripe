@@ -101,6 +101,10 @@
         "title": "<PaymentCardTextField />",
         "sidebar_label": "<PaymentCardTextField />"
       },
+      "paymentMethod": {
+        "title": "Payment Method",
+        "sidebar_label": "Payment Method"
+      },
       "paymentrequestwithandroidpay": {
         "title": ".paymentRequestWithAndroidPay(options) -> Promise",
         "sidebar_label": ".paymentRequestWithAndroidPay()"

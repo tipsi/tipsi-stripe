@@ -3,26 +3,22 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Manual · tipsi-stripe</title>
+    <title>.cancelNativePayRequest() -&gt; Promise · tipsi-stripe</title>
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content="Docusaurus" />
     <meta
       name="description"
-      content="&lt;ol&gt;
-&lt;li&gt;Go to example folder &lt;code&gt;cd example&lt;/code&gt;&lt;/li&gt;
-&lt;/ol&gt;
-"
+      content='&lt;p&gt;After &lt;a href="/tipsi-stripe/docs/paymentRequestWithNativePay.html"&gt;&lt;code&gt;paymentRequestWithNativePay()&lt;/code&gt;&lt;/a&gt; you should complete the operation by calling &lt;code&gt;cancelNativePayRequest&lt;/code&gt; if an error occurred.&lt;/p&gt;
+'
     />
     <meta name="docsearch:language" content="en" />
-    <meta property="og:title" content="Manual · tipsi-stripe" />
+    <meta property="og:title" content=".cancelNativePayRequest() -&gt; Promise · tipsi-stripe" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://tipsi.github.io/tipsi-stripe/index.html" />
     <meta
       property="og:description"
-      content="&lt;ol&gt;
-&lt;li&gt;Go to example folder &lt;code&gt;cd example&lt;/code&gt;&lt;/li&gt;
-&lt;/ol&gt;
-"
+      content='&lt;p&gt;After &lt;a href="/tipsi-stripe/docs/paymentRequestWithNativePay.html"&gt;&lt;code&gt;paymentRequestWithNativePay()&lt;/code&gt;&lt;/a&gt; you should complete the operation by calling &lt;code&gt;cancelNativePayRequest&lt;/code&gt; if an error occurred.&lt;/p&gt;
+'
     />
     <meta name="twitter:card" content="summary" />
     <link rel="shortcut icon" href="/tipsi-stripe/img/favicon.png" />
@@ -82,7 +78,7 @@
                       <div class="line3"></div>
                     </div>
                   </div>
-                  <h2><i>›</i><span>Tests</span></h2>
+                  <h2><i>›</i><span>Native Pay -  &amp; G</span></h2>
                 </div>
                 <div class="navGroups">
                   <div class="navGroup">
@@ -166,7 +162,7 @@
                           >.completeNativePayRequest()</a
                         >
                       </li>
-                      <li class="navListItem">
+                      <li class="navListItem navListItemActive">
                         <a class="navItem" href="/tipsi-stripe/docs/cancelNativePayRequest.html"
                           >.cancelNativePayRequest()</a
                         >
@@ -241,7 +237,7 @@
                           >Local CI</a
                         >
                       </li>
-                      <li class="navListItem navListItemActive">
+                      <li class="navListItem">
                         <a class="navItem" href="/tipsi-stripe/docs/tests-manual.html">Manual</a>
                       </li>
                     </ul>
@@ -399,50 +395,62 @@
         <div class="container mainContainer">
           <div class="wrapper">
             <div class="post">
-              <header class="postHeader"><h1 class="postHeaderTitle">Manual</h1></header>
+              <header class="postHeader">
+                <h1 class="postHeaderTitle">.cancelNativePayRequest() -&gt; Promise</h1>
+              </header>
               <article>
                 <div>
                   <span
-                    ><ol>
-                      <li>Go to example folder <code>cd example</code></li>
-                      <li>
-                        Install CocoaPods dependencies (iOS only)
-                        <code>pod install --project-directory=ios</code>
-                      </li>
-                      <li>Install npm dependencies <code>npm install</code></li>
-                      <li>
-                        Configure project before build
-                        <code
-                          >PUBLISHABLE_KEY=&lt;...&gt; MERCHANT_ID=&lt;...&gt; npm run
-                          configure</code
-                        >
-                      </li>
-                      <li>
-                        Build project:
-                        <ul>
-                          <li><code>npm run build:ios</code> - for iOS</li>
-                          <li><code>npm run build:android</code> - for Android</li>
-                        </ul>
-                      </li>
-                      <li>Open Appium in other tab <code>npm run appium</code></li>
-                      <li>
-                        Run tests:
-                        <ul>
-                          <li><code>npm run test:ios</code> - for iOS</li>
-                          <li><code>npm run test:android</code> - for Android</li>
-                          <li><code>npm run test</code> - for both iOS and Android</li>
-                        </ul>
-                      </li>
-                    </ol>
+                    ><p>
+                      After
+                      <a href="/tipsi-stripe/docs/paymentRequestWithNativePay.html"
+                        ><code>paymentRequestWithNativePay()</code></a
+                      >
+                      you should complete the operation by calling
+                      <code>cancelNativePayRequest</code> if an error occurred.
+                    </p>
+                    <pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> items = [{
+  <span class="hljs-attr">label</span>: <span class="hljs-string">'Whisky'</span>,
+  <span class="hljs-attr">amount</span>: <span class="hljs-string">'50.00'</span>,
+}, {
+  <span class="hljs-attr">label</span>: <span class="hljs-string">'Tipsi, Inc'</span>,
+  <span class="hljs-attr">amount</span>: <span class="hljs-string">'50.00'</span>,
+}]
+
+<span class="hljs-keyword">const</span> shippingMethods = [{
+  <span class="hljs-attr">id</span>: <span class="hljs-string">'fedex'</span>,
+  <span class="hljs-attr">label</span>: <span class="hljs-string">'FedEX'</span>,
+  <span class="hljs-attr">detail</span>: <span class="hljs-string">'Test @ 10'</span>,
+  <span class="hljs-attr">amount</span>: <span class="hljs-string">'10.00'</span>,
+}]
+
+<span class="hljs-keyword">const</span> options = {
+  <span class="hljs-attr">requiredBillingAddressFields</span>: <span class="hljs-string">'all'</span>,
+  <span class="hljs-attr">requiredShippingAddressFields</span>: <span class="hljs-string">'all'</span>,
+  shippingMethods,
+}
+
+<span class="hljs-keyword">try</span> {
+  <span class="hljs-keyword">await</span> stripe.paymentRequestWithNativePay(items, options)
+
+  <span class="hljs-comment">// You should complete the operation by calling</span>
+  <span class="hljs-comment">// stripe.completeNativePayRequest()</span>
+} <span class="hljs-keyword">catch</span> (error) {
+  <span class="hljs-comment">// Or cancel if an error occurred</span>
+  stripe.cancelNativePayRequest()
+}
+</code></pre>
                   </span>
                 </div>
               </article>
             </div>
             <div class="docs-prevnext">
-              <a class="docs-prev button" href="/tipsi-stripe/docs/tests-local-ci.html"
-                ><span class="arrow-prev">← </span><span>Local CI</span></a
-              ><a class="docs-next button" href="/tipsi-stripe/docs/troubleshooting-android.html"
-                ><span>Android</span><span class="arrow-next"> →</span></a
+              <a class="docs-prev button" href="/tipsi-stripe/docs/completeNativePayRequest.html"
+                ><span class="arrow-prev">← </span
+                ><span class="function-name-prevnext">.completeNativePayRequest()</span></a
+              ><a class="docs-next button" href="/tipsi-stripe/docs/paymentrequestwithcardform.html"
+                ><span class="function-name-prevnext">.paymentRequestWithCardForm()</span
+                ><span class="arrow-next"> →</span></a
               >
             </div>
           </div>

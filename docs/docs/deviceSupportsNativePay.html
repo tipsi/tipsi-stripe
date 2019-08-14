@@ -3,25 +3,21 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Manual · tipsi-stripe</title>
+    <title>.deviceSupportsNativePay() -&gt; Promise · tipsi-stripe</title>
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content="Docusaurus" />
     <meta
       name="description"
-      content="&lt;ol&gt;
-&lt;li&gt;Go to example folder &lt;code&gt;cd example&lt;/code&gt;&lt;/li&gt;
-&lt;/ol&gt;
+      content="&lt;p&gt;Returns whether the user can make Native Pay payments (Apple Pay or Android Pay respectively).&lt;/p&gt;
 "
     />
     <meta name="docsearch:language" content="en" />
-    <meta property="og:title" content="Manual · tipsi-stripe" />
+    <meta property="og:title" content=".deviceSupportsNativePay() -&gt; Promise · tipsi-stripe" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://tipsi.github.io/tipsi-stripe/index.html" />
     <meta
       property="og:description"
-      content="&lt;ol&gt;
-&lt;li&gt;Go to example folder &lt;code&gt;cd example&lt;/code&gt;&lt;/li&gt;
-&lt;/ol&gt;
+      content="&lt;p&gt;Returns whether the user can make Native Pay payments (Apple Pay or Android Pay respectively).&lt;/p&gt;
 "
     />
     <meta name="twitter:card" content="summary" />
@@ -82,7 +78,7 @@
                       <div class="line3"></div>
                     </div>
                   </div>
-                  <h2><i>›</i><span>Tests</span></h2>
+                  <h2><i>›</i><span>Native Pay -  &amp; G</span></h2>
                 </div>
                 <div class="navGroups">
                   <div class="navGroup">
@@ -149,7 +145,7 @@
                           >.canMakeNativePayPayments()</a
                         >
                       </li>
-                      <li class="navListItem">
+                      <li class="navListItem navListItemActive">
                         <a class="navItem" href="/tipsi-stripe/docs/deviceSupportsNativePay.html"
                           >.deviceSupportsNativePay()</a
                         >
@@ -241,7 +237,7 @@
                           >Local CI</a
                         >
                       </li>
-                      <li class="navListItem navListItemActive">
+                      <li class="navListItem">
                         <a class="navItem" href="/tipsi-stripe/docs/tests-manual.html">Manual</a>
                       </li>
                     </ul>
@@ -399,50 +395,45 @@
         <div class="container mainContainer">
           <div class="wrapper">
             <div class="post">
-              <header class="postHeader"><h1 class="postHeaderTitle">Manual</h1></header>
+              <header class="postHeader">
+                <h1 class="postHeaderTitle">.deviceSupportsNativePay() -&gt; Promise</h1>
+              </header>
               <article>
                 <div>
                   <span
-                    ><ol>
-                      <li>Go to example folder <code>cd example</code></li>
-                      <li>
-                        Install CocoaPods dependencies (iOS only)
-                        <code>pod install --project-directory=ios</code>
-                      </li>
-                      <li>Install npm dependencies <code>npm install</code></li>
-                      <li>
-                        Configure project before build
-                        <code
-                          >PUBLISHABLE_KEY=&lt;...&gt; MERCHANT_ID=&lt;...&gt; npm run
-                          configure</code
-                        >
-                      </li>
-                      <li>
-                        Build project:
-                        <ul>
-                          <li><code>npm run build:ios</code> - for iOS</li>
-                          <li><code>npm run build:android</code> - for Android</li>
-                        </ul>
-                      </li>
-                      <li>Open Appium in other tab <code>npm run appium</code></li>
-                      <li>
-                        Run tests:
-                        <ul>
-                          <li><code>npm run test:ios</code> - for iOS</li>
-                          <li><code>npm run test:android</code> - for Android</li>
-                          <li><code>npm run test</code> - for both iOS and Android</li>
-                        </ul>
-                      </li>
-                    </ol>
+                    ><p>
+                      Returns whether the user can make Native Pay payments (Apple Pay or Android
+                      Pay respectively).
+                    </p>
+                    <p>
+                      The user may not be able to make payments for a variety of reasons. For
+                      example, this functionality may not be supported by their hardware, or it may
+                      be restricted by parental controls.
+                    </p>
+                    <p>
+                      Returns <code>true</code> if the device supports making payments; otherwise,
+                      <code>false</code>.
+                    </p>
+                    <p>
+                      <strong>NOTE</strong>: The iOS Simulator always returns <code>true</code>.
+                    </p>
+                    <pre><code class="hljs css language-js"><span class="hljs-keyword">import</span> stripe <span class="hljs-keyword">from</span> <span class="hljs-string">'tipsi-stripe'</span>
+
+<span class="hljs-keyword">await</span> stripe.deviceSupportsNativePay()
+</code></pre>
                   </span>
                 </div>
               </article>
             </div>
             <div class="docs-prevnext">
-              <a class="docs-prev button" href="/tipsi-stripe/docs/tests-local-ci.html"
-                ><span class="arrow-prev">← </span><span>Local CI</span></a
-              ><a class="docs-next button" href="/tipsi-stripe/docs/troubleshooting-android.html"
-                ><span>Android</span><span class="arrow-next"> →</span></a
+              <a class="docs-prev button" href="/tipsi-stripe/docs/canMakeNativePayPayments.html"
+                ><span class="arrow-prev">← </span
+                ><span class="function-name-prevnext">.canMakeNativePayPayments()</span></a
+              ><a
+                class="docs-next button"
+                href="/tipsi-stripe/docs/potentiallyAvailableNativePayNetworks.html"
+                ><span class="function-name-prevnext">.potentiallyAvailableNativePayNetworks()</span
+                ><span class="arrow-next"> →</span></a
               >
             </div>
           </div>

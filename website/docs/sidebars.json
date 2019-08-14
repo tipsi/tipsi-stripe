@@ -13,7 +13,8 @@
     ],
     "Objects": [
       "token",
-      "source"
+      "source",
+      "paymentMethod"
     ],
     "Native Pay -  & G": [
       "canMakeNativePayPayments",
