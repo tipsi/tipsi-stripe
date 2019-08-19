@@ -87,7 +87,7 @@ TPSStripeBridgeKeyDeclare(confirmSetupIntent, savePaymentMethod);
 TPSStripeBridgeTypeDefine(ConfirmSetupIntentResult);
 TPSStripeBridgeKeyDeclare(ConfirmSetupIntentResult, setupIntentId);
 TPSStripeBridgeKeyDeclare(ConfirmSetupIntentResult, status);
- 
+
 TPSStripeBridgeTypeDefine(authenticateSetup);
 TPSStripeBridgeKeyDeclare(authenticateSetup, clientSecret);
 
