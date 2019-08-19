@@ -222,41 +222,49 @@ export const createPaymentMethodPropType = {
     PropTypes.shape({ token: PropTypes.string }),
   ]),
 
-  // TODO: metadata support
+  // Undocumented Extra Metadata
+  // TODO metadata support on Android
+  metadata: PropTypes.object,
   // TODO: customerId support
 }
 
-/*
-Choose either:
-- paymentMethod
-- paymentMethodId (any supported ID, including IDs for saved card sources)
-
-(if multiple are given, the one present that is highest in the list above is used)
-*/
-export const confirmPaymentPropType = {
-  clientSecret: PropTypes.string,
-  paymentMethod: PropTypes.shape(createPaymentMethodPropType),
-  paymentMethodId: PropTypes.string,
+const confirmPaymentPropTypeBase = {
+  clientSecret: PropTypes.string.isRequired,
   savePaymentMethod: PropTypes.bool,
 }
+/**
+ * One of the following must be provided:
+ * - paymentMethod
+ * - paymentMethodId (any supported ID, including IDs for saved card sources)
+ */
+export const confirmPaymentPropType = PropTypes.oneOfType([
+  PropTypes.shape({
+    ...confirmPaymentPropTypeBase,
+    paymentMethod: PropTypes.shape(createPaymentMethodPropType).isRequired,
+  }),
+  PropTypes.shape({ ...confirmPaymentPropTypeBase, paymentMethodId: PropTypes.string.isRequired }),
+]).isRequired
 
 export const authenticatePaymentPropType = {
-  clientSecret: PropTypes.string,
+  clientSecret: PropTypes.string.isRequired,
 }
 
-/*
-Choose either:
-- paymentMethod
-- paymentMethodId (any supported ID, including IDs for saved card sources)
-
-(if multiple are given, the one present that is highest in the list above is used)
-*/
-export const confirmSetupIntentPropType = {
-  clientSecret: PropTypes.string,
-  paymentMethod: PropTypes.shape(createPaymentMethodPropType),
-  paymentMethodId: PropTypes.string,
+const confirmSetupIntentPropTypeBase = {
+  clientSecret: PropTypes.string.isRequired,
 }
+/**
+ * One of the following must be provided:
+ * - paymentMethod
+ * - paymentMethodId (any supported ID, including IDs for saved card sources)
+ */
+export const confirmSetupIntentPropType = PropTypes.oneOfType([
+  PropTypes.shape({
+    ...confirmSetupIntentPropTypeBase,
+    paymentMethod: PropTypes.shape(createPaymentMethodPropType),
+  }),
+  PropTypes.shape({ ...confirmSetupIntentPropTypeBase, paymentMethodId: PropTypes.string }),
+]).isRequired
 
 export const authenticateSetupPropType = {
-  clientSecret: PropTypes.string,
+  clientSecret: PropTypes.string.isRequired,
 }
