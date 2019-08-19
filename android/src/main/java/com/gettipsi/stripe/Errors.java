@@ -27,7 +27,7 @@ public final class Errors {
     exceptionNameToErrorCode.put("APIException", "api");
   }
 
-  static String toErrorCode(@NonNull Exception exception) {
+  public static String toErrorCode(@NonNull Exception exception) {
     ArgCheck.nonNull(exception);
     String simpleName = exception.getClass().getSimpleName();
     String errorCode = exceptionNameToErrorCode.get(simpleName);

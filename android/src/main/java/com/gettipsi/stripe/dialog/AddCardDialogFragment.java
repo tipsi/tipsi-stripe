@@ -22,18 +22,26 @@ import com.devmarvel.creditcardentry.library.CreditCardForm;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.WritableMap;
+import com.gettipsi.stripe.Errors;
 import com.gettipsi.stripe.R;
 import com.gettipsi.stripe.StripeModule;
 import com.gettipsi.stripe.util.CardFlipAnimator;
 import com.gettipsi.stripe.util.Converters;
 import com.gettipsi.stripe.util.Utils;
+import com.google.android.gms.wallet.WalletConstants;
+import com.stripe.android.ApiResultCallback;
 import com.stripe.android.SourceCallback;
 import com.stripe.android.Stripe;
 import com.stripe.android.TokenCallback;
 import com.stripe.android.model.Card;
+import com.stripe.android.model.PaymentMethod;
+import com.stripe.android.model.PaymentMethodCreateParams;
 import com.stripe.android.model.Source;
 import com.stripe.android.model.SourceParams;
 import com.stripe.android.model.Token;
+
+import static com.gettipsi.stripe.Errors.toErrorCode;
+import static com.gettipsi.stripe.util.Converters.convertPaymentMethodToWritableMap;
 
 /**
  * Created by dmitriy on 11/13/16
@@ -198,24 +206,19 @@ public class AddCardDialogFragment extends DialogFragment {
     String errorMessage = Utils.validateCard(card);
     if (errorMessage == null) {
       if (CREATE_CARD_SOURCE) {
-        SourceParams cardSourceParams = SourceParams.createCardParams(card);
-        StripeModule.getInstance().getStripe().createSource(
-          cardSourceParams,
-          new SourceCallback() {
-            @Override
-            public void onSuccess(Source source) {
-              // Normalize data with iOS SDK
-              final WritableMap sourceMap = Converters.convertSourceToWritableMap(source);
-              sourceMap.putMap("card", Converters.mapToWritableMap(source.getSourceTypeData()));
-              sourceMap.putNull("sourceTypeData");
 
-              if (promise != null) {
-                promise.resolve(sourceMap);
-                promise = null;
-              }
-              successful = true;
-              dismiss();
-            }
+        PaymentMethodCreateParams pmcp = PaymentMethodCreateParams.create(
+          new PaymentMethodCreateParams.Card.Builder().
+            setCvc(fromCard.getSecurityCode()).
+            setExpiryMonth(fromCard.getExpMonth()).
+            setExpiryYear(fromCard.getExpYear()).
+            setNumber(fromCard.getCardNumber()).
+            build(),
+          null);
+
+        StripeModule.getInstance().getStripe().createPaymentMethod(
+          pmcp,
+          new ApiResultCallback<PaymentMethod>() {
 
             @Override
             public void onError(Exception error) {
@@ -223,9 +226,20 @@ public class AddCardDialogFragment extends DialogFragment {
               progressBar.setVisibility(View.GONE);
               showToast(error.getLocalizedMessage());
             }
-          }
-        );
+
+            @Override
+            public void onSuccess(PaymentMethod paymentMethod) {
+              if (promise != null) {
+                promise.resolve(Converters.convertPaymentMethodToWritableMap(paymentMethod));
+                promise = null;
+                successful = true;
+                dismiss();
+              }
+            }
+        });
+
       } else {
+
         StripeModule.getInstance().getStripe().createToken(
           card,
           PUBLISHABLE_KEY,
