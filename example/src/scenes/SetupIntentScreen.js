@@ -26,22 +26,22 @@ export default class SetupIntentScreen extends PureComponent {
     confirmSetupResult: null,
   }
 
-  defaultState = {...this.state}
+  defaultState = { ...this.state }
 
   reset = ({ loading = false }) => {
     this.setState({
       loading,
-      ...this.defaultState
+      ...this.defaultState,
     })
   }
 
   onCreateSetupIntent = async () => {
-    this.reset({loading: true})
+    this.reset({ loading: true })
     try {
       const response = await fetch(`${SetupIntentScreen.BACKEND_URL}/create_setup_intent`, {
         method: 'POST',
         headers: {
-          'Accept': 'application/json',
+          Accept: 'application/json',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -77,7 +77,7 @@ export default class SetupIntentScreen extends PureComponent {
     const { error, loading, setupIntent, confirmSetupResult, showCardSelection } = this.state
 
     const onShowCardSelection = () =>
-      this.setState({...this.state, showCardSelection: !showCardSelection})
+      this.setState({ ...this.state, showCardSelection: !showCardSelection })
 
     return (
       <View style={styles.column}>
@@ -106,19 +106,18 @@ export default class SetupIntentScreen extends PureComponent {
               />
             </View>
 
-            {showCardSelection && (
+            {showCardSelection &&
               demoTestCards.map((card, idx) => (
                 <View style={styles.row} key={card.number}>
                   <Button
                     {...testID(card.name)}
                     style={styles.rowButton}
-                    text={card.name + " - " + card.last4}
+                    text={card.name + ' - ' + card.last4}
                     loading={loading}
-                    onPress={() => this.onAttachPaymentMethod(card.number) }
+                    onPress={() => this.onAttachPaymentMethod(card.number)}
                   />
                 </View>
-              ))
-            )}
+              ))}
 
             {confirmSetupResult && (
               <Text style={styles.content} {...testID('confirmSetupResult')}>
@@ -151,14 +150,14 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   column: {
-    flexDirection: 'column'
+    flexDirection: 'column',
   },
   row: {
     flexDirection: 'row',
   },
   rowButton: {
     flex: 1,
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   content: {
     color: '#333333',

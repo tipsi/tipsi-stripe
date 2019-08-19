@@ -30,7 +30,7 @@ export default class PaymentIntentScreen extends PureComponent {
     showCardSelection: false,
   }
 
-  defaultState = {...this.state}
+  defaultState = { ...this.state }
 
   reset = ({ withState = {} }) => {
     this.setState({
@@ -39,14 +39,13 @@ export default class PaymentIntentScreen extends PureComponent {
     })
   }
 
-
-  onCreatePaymentIntent = async ({confirmationMethod = 'automatic'}) => {
-    this.reset({withState : {loading: true, confirmationMethod}})
+  onCreatePaymentIntent = async ({ confirmationMethod = 'automatic' }) => {
+    this.reset({ withState: { loading: true, confirmationMethod } })
     try {
       const response = await fetch(PaymentIntentScreen.BACKEND_URL + '/create_intent', {
         method: 'POST',
         headers: {
-          'Accept': 'application/json',
+          Accept: 'application/json',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -66,7 +65,6 @@ export default class PaymentIntentScreen extends PureComponent {
   }
 
   attachPaymentMethodAndConfirmPayment = async (paymentIntentId, paymentMethodId) => {
-
     let body = {
       payment_intent_id: paymentIntentId,
     }
@@ -78,7 +76,7 @@ export default class PaymentIntentScreen extends PureComponent {
     const response = await fetch(PaymentIntentScreen.BACKEND_URL + '/confirm_payment', {
       method: 'POST',
       headers: {
-        'Accept': 'application/json',
+        Accept: 'application/json',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(body),
@@ -86,7 +84,7 @@ export default class PaymentIntentScreen extends PureComponent {
 
     if (response.status == 200) {
       const body = await response.json()
-      console.log("Received response", body)
+      console.log('Received response', body)
       return body
     } else {
       const body = await response.json()
@@ -98,36 +96,35 @@ export default class PaymentIntentScreen extends PureComponent {
         json: body.json,
       }
 
-      console.log("Non-200 response", display)
+      console.log('Non-200 response', display)
 
       return display
     }
   }
 
-
   handleAuthenticationChallenge = async ({ clientSecret }) => {
-    let response;
+    let response
     try {
-      console.log("Calling stripe.authenticatePayment()")
+      console.log('Calling stripe.authenticatePayment()')
       authResponse = await stripe.authenticatePayment({
         clientSecret,
       })
-      console.log("stripe.authenticatePayment()", authResponse)
+      console.log('stripe.authenticatePayment()', authResponse)
 
       if (authResponse.status == 'requires_payment_method') {
         response = {
-          message : "Authentication failed, a new PaymentMethod needs to be attached.",
-          status : authResponse.status,
+          message: 'Authentication failed, a new PaymentMethod needs to be attached.',
+          status: authResponse.status,
         }
       } else if (authResponse.status == 'requires_confirmation') {
         response = {
-          message : "Authentication passed, requires confirmation (server-side)",
-          status : authResponse.status,
+          message: 'Authentication passed, requires confirmation (server-side)',
+          status: authResponse.status,
         }
       } else {
         response = {
-          message : "Unexpected.",
-          raw : authResponse,
+          message: 'Unexpected.',
+          raw: authResponse,
         }
       }
     } catch (e) {
@@ -137,68 +134,70 @@ export default class PaymentIntentScreen extends PureComponent {
   }
 
   onAttachPaymentMethod = async (cardNumber) => {
-
     this.setState({ ...this.state, loading: true })
 
     if (this.state.confirmationMethod == 'manual') {
-
       // Create a payment method
-      console.log("Calling stripe.createPaymentMethod()")
+      console.log('Calling stripe.createPaymentMethod()')
 
-      let paymentMethod;
+      let paymentMethod
       try {
-        paymentMethod = await stripe.createPaymentMethod(demoPaymentMethodDetailsWithCard(cardNumber))
+        paymentMethod = await stripe.createPaymentMethod(
+          demoPaymentMethodDetailsWithCard(cardNumber)
+        )
       } catch (e) {
         console.dir(e)
         // One way a payment method can fail to be created is if the card number is invalid
-        this.setState({...this.state, loading: false, display: e })
+        this.setState({ ...this.state, loading: false, display: e })
         return
       }
 
-      console.log("Payment Method", paymentMethod)
-      console.log("Payment Intent", this.state.paymentIntent)
+      console.log('Payment Method', paymentMethod)
+      console.log('Payment Intent', this.state.paymentIntent)
 
       // Send the payment method to the server and ask it to confirm.
-      console.log("Calling /confirm_payment on backend example server")
+      console.log('Calling /confirm_payment on backend example server')
 
       let confirmResult = null
       try {
-        confirmResult = await this.attachPaymentMethodAndConfirmPayment(this.state.paymentIntent.intent, paymentMethod.id)
+        confirmResult = await this.attachPaymentMethodAndConfirmPayment(
+          this.state.paymentIntent.intent,
+          paymentMethod.id
+        )
       } catch (e) {
         console.error(e)
       }
 
       // The body can be null here if the payment was declined in the previous step
       if (confirmResult) {
-
         let response = null
 
         if (confirmResult.status == 'requires_action') {
-          console.log("Payment method requires_action")
+          console.log('Payment method requires_action')
 
-          response = await this.handleAuthenticationChallenge({ clientSecret: confirmResult.secret })
+          response = await this.handleAuthenticationChallenge({
+            clientSecret: confirmResult.secret,
+          })
 
-          if (response.status == "requires_confirmation") {
-            response = await this.attachPaymentMethodAndConfirmPayment(this.state.paymentIntent.intent, null)
-            console.log("response from confirming after successfully authenticating", response)
+          if (response.status == 'requires_confirmation') {
+            response = await this.attachPaymentMethodAndConfirmPayment(
+              this.state.paymentIntent.intent,
+              null
+            )
+            console.log('response from confirming after successfully authenticating', response)
           }
-
         } else if (confirmResult.status == 'succeeded') {
           response = {
-            message : "payment succeeded without requiring authentication"
+            message: 'payment succeeded without requiring authentication',
           }
-          console.log("Succeeded")
-
+          console.log('Succeeded')
         } else if (confirmResult.status == 'requires_payment_method') {
           // The initial confirm did not require_action - a new payment method is required instead.
           response = confirmResult
         }
-        this.setState({...this.state, loading: false, display: response })
+        this.setState({ ...this.state, loading: false, display: response })
       }
-
-
     } else if (this.state.confirmationMethod == 'automatic') {
-
       // Here we're in automatic confirmation mode.
       // In this mode, we can confirm the payment from the client side and
       // fulfill the order on the client side by listening to webhooks.
@@ -207,7 +206,7 @@ export default class PaymentIntentScreen extends PureComponent {
 
       let display
       try {
-        console.log("Confirming")
+        console.log('Confirming')
         confirmPaymentResult = await stripe.confirmPayment({
           clientSecret: this.state.paymentIntent.secret,
           paymentMethod: demoPaymentMethodDetailsWithCard(cardNumber),
@@ -222,7 +221,7 @@ export default class PaymentIntentScreen extends PureComponent {
           code: e.code,
         }
       }
-      this.setState({...this.state, loading: false, display })
+      this.setState({ ...this.state, loading: false, display })
     }
   }
 
@@ -248,38 +247,39 @@ export default class PaymentIntentScreen extends PureComponent {
   }
 
   render() {
-
     const {
-      error, loading, paymentIntent, paymentMethod,
-      display, token, showCardSelection
+      error,
+      loading,
+      paymentIntent,
+      paymentMethod,
+      display,
+      token,
+      showCardSelection,
     } = this.state
 
     const onShowCardSelection = () => {
-      this.setState({...this.state, showCardSelection: !showCardSelection})
+      this.setState({ ...this.state, showCardSelection: !showCardSelection })
     }
 
     return (
       <ScrollView>
-        <Text style={styles.header}>
-          Create Payment Intent
-        </Text>
+        <Text style={styles.header}>Create Payment Intent</Text>
 
         <View style={styles.row}>
           <Button
             text="Create (Manual)"
             loading={loading}
-            onPress={() => this.onCreatePaymentIntent({confirmationMethod:'manual'})}
+            onPress={() => this.onCreatePaymentIntent({ confirmationMethod: 'manual' })}
             {...testID('noAuthButton')}
           />
 
           <Button
             text="Create (Automatic)"
             loading={loading}
-            onPress={() => this.onCreatePaymentIntent({confirmationMethod:'automatic'})}
+            onPress={() => this.onCreatePaymentIntent({ confirmationMethod: 'automatic' })}
             {...testID('noAuthButton')}
           />
         </View>
-
 
         {paymentIntent && (
           <>
@@ -303,19 +303,18 @@ export default class PaymentIntentScreen extends PureComponent {
                 {...testID('launchCardForm')}
               />
             </View>
-            {showCardSelection && (
+            {showCardSelection &&
               demoTestCards.map((card, idx) => (
                 <View style={styles.row} key={card.name}>
                   <Button
                     {...testID(card.name)}
                     style={styles.rowButton}
-                    text={card.name + " - " + card.last4}
+                    text={card.name + ' - ' + card.last4}
                     loading={loading}
-                    onPress={() => this.onAttachPaymentMethod(card.number) }
+                    onPress={() => this.onAttachPaymentMethod(card.number)}
                   />
                 </View>
-              ))
-            )}
+              ))}
 
             {token && (
               <Text style={styles.content} {...testID('token')}>
@@ -335,7 +334,6 @@ export default class PaymentIntentScreen extends PureComponent {
             Error: {JSON.stringify(error)}
           </Text>
         )}
-
       </ScrollView>
     )
   }
