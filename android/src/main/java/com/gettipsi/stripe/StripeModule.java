@@ -435,7 +435,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
     String paymentMethodId = getStringOrNull(options,"paymentMethodId");
 
     // ReadableMap source = options.getMap("source");
-    String sourceId = getStringOrNull(options,"sourceId");
+    // String sourceId = getStringOrNull(options,"sourceId");
 
     String returnURL = getStringOrNull(options, "returnURL");
     boolean savePaymentMethod = getBooleanOrNull(options, "savePaymentMethod", false);
@@ -468,8 +468,20 @@ public class StripeModule extends ReactContextBaseJavaModule {
     */
 
     // Create with Source ID
+    /**
+    If you have a sourceId, pass it into the paymentMethodId parameter instead!
+    The payment_method parameter of a payment intent is fully compatible with Sources.
+    Reference: https://stripe.com/docs/api/payment_intents/confirm#confirm_payment_intent-payment_method
+    */
+    /*
     } else if (sourceId != null) {
       cpip = ConfirmPaymentIntentParams.createWithSourceId(sourceId, clientSecret, returnURL, savePaymentMethod, extraParams);
+    */
+
+    /**
+    This branch can be used if the client secret refers to a payment intent that already
+    has payment method information and just needs to be confirmed.
+    */
     } else {
       cpip = ConfirmPaymentIntentParams.create(clientSecret, returnURL);
     }

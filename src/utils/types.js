@@ -229,8 +229,7 @@ export const createPaymentMethodPropType = {
 /*
 Choose either:
 - paymentMethod
-- paymentMethodId
-- sourceId
+- paymentMethodId (any supported ID, including IDs for saved card sources)
 
 (if multiple are given, the one present that is highest in the list above is used)
 */
@@ -238,7 +237,6 @@ export const confirmPaymentPropType = {
   clientSecret: PropTypes.string,
   paymentMethod: PropTypes.shape(createPaymentMethodPropType),
   paymentMethodId: PropTypes.string,
-  sourceId: PropTypes.string,
   savePaymentMethod: PropTypes.bool,
 }
 
@@ -249,7 +247,7 @@ export const authenticatePaymentPropType = {
 /*
 Choose either:
 - paymentMethod
-- paymentMethodId
+- paymentMethodId (any supported ID, including IDs for saved card sources)
 
 (if multiple are given, the one present that is highest in the list above is used)
 */
