@@ -320,9 +320,10 @@ RCT_EXPORT_METHOD(potentiallyAvailableNativePayNetworks:(RCTPromiseResolveBlock)
 }
 
 
-RCT_EXPORT_METHOD(createPaymentMethod:(NSDictionary<TPSStripeType(createPaymentMethod), id>*)params
+RCT_EXPORT_METHOD(createPaymentMethod:(NSDictionary<NSString *, id> *)untypedParams
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
+    NSDictionary<TPSStripeType(createPaymentMethod), id> *params = untypedParams;
 
     STPPaymentMethodParams * parsed = [self extractCreatePaymentMethodParamsFromDictionary:params];
     NSParameterAssert(parsed);
@@ -350,9 +351,11 @@ RCT_EXPORT_METHOD(createPaymentMethod:(NSDictionary<TPSStripeType(createPaymentM
                             }];
 }
 
-RCT_EXPORT_METHOD(confirmPayment:(NSDictionary<NSString*, id>*)params
+RCT_EXPORT_METHOD(confirmPayment:(NSDictionary<NSString*, id>*)untypedParams
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
+    NSDictionary<TPSStripeType(confirmPayment), id> *params = untypedParams;
+
     STPPaymentIntentParams * parsed = [self extractConfirmPaymentIntentParamsFromDictionary:params];
     if(!requestIsCompleted) {
         NSDictionary *error = [errorCodes valueForKey:kErrorKeyBusy];
@@ -406,9 +409,10 @@ RCT_EXPORT_METHOD(confirmPayment:(NSDictionary<NSString*, id>*)params
                              }];
 }
 
-RCT_EXPORT_METHOD(authenticatePayment:(NSDictionary<TPSStripeType(authenticatePayment), id>*)params
+RCT_EXPORT_METHOD(authenticatePayment:(NSDictionary<NSString*, id> *)untypedParams
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
+    NSDictionary<TPSStripeType(authenticatePayment), id> *params = untypedParams;
 
     NSString * clientSecret = params[TPSStripeParam(authenticatePayment, clientSecret)];
 
@@ -448,9 +452,11 @@ RCT_EXPORT_METHOD(authenticatePayment:(NSDictionary<TPSStripeType(authenticatePa
                                                        }];
 }
 
-RCT_EXPORT_METHOD(confirmSetupIntent:(NSDictionary<NSString*, id>*)params
+RCT_EXPORT_METHOD(confirmSetupIntent:(NSDictionary<NSString*, id> *)untypedParams
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
+    NSDictionary<TPSStripeType(confirmSetupIntent), id> *params = untypedParams;
+
     STPSetupIntentConfirmParams * parsed = [self extractConfirmSetupIntentParamsFromDictionary:params];
     if(!requestIsCompleted) {
         NSDictionary *error = [errorCodes valueForKey:kErrorKeyBusy];
