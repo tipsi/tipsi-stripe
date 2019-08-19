@@ -423,7 +423,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
     }
 
     ArgCheck.nonNull(csip);
-    csip.withShouldUseStripeSdk(returnURL == null);
+    csip.withShouldUseStripeSdk(true);
     return csip;
   }
 
@@ -486,7 +486,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
       cpip = ConfirmPaymentIntentParams.create(clientSecret, returnURL);
     }
 
-    cpip.withShouldUseStripeSdk(returnURL == null);
+    cpip.withShouldUseStripeSdk(true);
 
     return cpip;
   }
