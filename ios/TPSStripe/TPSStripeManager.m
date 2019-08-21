@@ -884,15 +884,21 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     return result;
 }
 
-- (STPPaymentMethodCardParams*)extractPaymentMethodCardParamsFromDictionaryOrString:(id)params {
-    if (!params || [NSNull null] == params) {
+- (STPPaymentMethodCardParams*)extractPaymentMethodCardParamsFromDictionary:(NSDictionary<TPSStripeType(CardParams), id>*)params {
+    if (!params || [NSNull null] == (id)params) {
         return nil;
     }
 
     STPPaymentMethodCardParams * card = nil;
     if ([params isKindOfClass:NSDictionary.class]) {
-        card = [[STPPaymentMethodCardParams alloc] initWithCardSourceParams:[self extractCardParamsFromDictionary:params]];
-        card.token = [RCTConvert NSString:params[TPSStripeParam(CardParams, token)]]
+        NSString * token = [RCTConvert NSString:params[TPSStripeParam(CardParams, token)]];
+        if (token) {
+            // If we have a token, then that means there cannot be other details (and we don't look at them if they exist)
+            card = [[STPPaymentMethodCardParams alloc] init];
+            card.token = token;
+        } else {
+            card = [[STPPaymentMethodCardParams alloc] initWithCardSourceParams: [self extractCardParamsFromDictionary:params]];
+        }
     } else {
         NSParameterAssert([params isKindOfClass:NSDictionary.class]);
         return nil;
@@ -929,11 +935,11 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
 }
 
 - (STPPaymentMethodParams*)extractCreatePaymentMethodParamsFromDictionary:(NSDictionary<TPSStripeType(createPaymentMethod), id>*)params {
-    id cardParamsInput = params[TPSStripeParam(createPaymentMethod, card)];
+    NSDictionary<TPSStripeType(CardParams), id> * cardParamsInput = params[TPSStripeParam(createPaymentMethod, card)];
     NSParameterAssert(cardParamsInput);
     if (!cardParamsInput) {return nil;}
 
-    STPPaymentMethodCardParams * card = [self extractPaymentMethodCardParamsFromDictionaryOrString:cardParamsInput];
+    STPPaymentMethodCardParams * card = [self extractPaymentMethodCardParamsFromDictionary:cardParamsInput];
     STPPaymentMethodBillingDetails * details = [self extractPaymentMethodBillingDetailsFromDictionary: params[TPSStripeParam(createPaymentMethod, card)]];
     NSDictionary* metadata = params[TPSStripeParam(createPaymentMethod, metadata)];
 
