@@ -104,11 +104,11 @@ export default class PaymentIntentScreen extends PureComponent {
   handleAuthenticationChallenge = async ({ clientSecret }) => {
     let response = null
     try {
-      console.log('Calling stripe.authenticatePayment()')
-      authResponse = await stripe.authenticatePayment({
+      console.log('Calling stripe.authenticatePaymentIntent()')
+      const authResponse = await stripe.authenticatePaymentIntent({
         clientSecret,
       })
-      console.log('stripe.authenticatePayment()', authResponse)
+      console.log('stripe.authenticatePaymentIntent()', authResponse)
 
       if (authResponse.status == 'requires_payment_method') {
         response = {
@@ -206,7 +206,7 @@ export default class PaymentIntentScreen extends PureComponent {
       let display = null
       try {
         console.log('Confirming')
-        confirmPaymentResult = await stripe.confirmPayment({
+        const confirmPaymentResult = await stripe.confirmPaymentIntent({
           clientSecret: this.state.paymentIntent.secret,
           paymentMethod: demoPaymentMethodDetailsWithCard(cardNumber),
         })
@@ -232,7 +232,7 @@ export default class PaymentIntentScreen extends PureComponent {
       this.setState({ ...this.state, token: token.tokenId })
 
       // We now have the token, use it to confirm
-      let confirmPaymentResult = await stripe.confirmPayment({
+      const confirmPaymentResult = await stripe.confirmPaymentIntent({
         clientSecret: this.state.paymentIntent.secret,
         paymentMethod: demoPaymentMethodDetailsWithToken(token.tokenId),
       })
