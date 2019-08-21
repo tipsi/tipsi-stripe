@@ -46,10 +46,15 @@ import deprecatedMethodsForInstance from './Stripe.deprecated'
 /* eslint-enable max-len */
 
 /**
+ * @typedef {Object} PaymentMethodParamsCardByToken
+ * @property {string} token - Token String
+ */
+
+/**
  * @typedef {Object} CreatePaymentMethodParams
  * @property {string} id
  * @property {BillingDetails} billingDetails
- * @property {(PaymentMethodCardParams|string)} card - Token String or the Parameters to build a card
+ * @property {(PaymentMethodCardParams|PaymentMethodParamsCardByToken)} card - the Parameters to build a card
  * @property {Object} metadata
  * @property {string} customerId
  */
