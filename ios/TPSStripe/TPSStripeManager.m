@@ -340,10 +340,10 @@ RCT_EXPORT_METHOD(createPaymentMethod:(NSDictionary<NSString *, id> *)untypedPar
     STPAPIClient *api = self.newAPIClient;
     [api createPaymentMethodWithParams:parsed
                             completion:^(STPPaymentMethod * __nullable paymentMethod, NSError * __nullable error){
-                                requestIsCompleted = YES;
+                                self->requestIsCompleted = YES;
 
                                 if (error) {
-                                    NSDictionary *jsError = [errorCodes valueForKey:kErrorKeyApi];
+                                    NSDictionary *jsError = [self->errorCodes valueForKey:kErrorKeyApi];
                                     [self rejectPromiseWithCode:jsError[kErrorKeyCode] message:error.localizedDescription];
                                     return;
                                 }
@@ -370,8 +370,8 @@ RCT_EXPORT_METHOD(confirmPaymentIntent:(NSDictionary<NSString*, id>*)untypedPara
     [api confirmPaymentIntentWithParams:parsed
                              completion:^(STPPaymentIntent * __nullable intent, NSError * __nullable error){
                                  if (error) {
-                                     requestIsCompleted = YES;
-                                     NSDictionary *jsError = [errorCodes valueForKey:kErrorKeyApi];
+                                     self->requestIsCompleted = YES;
+                                     NSDictionary *jsError = [self->errorCodes valueForKey:kErrorKeyApi];
                                      [self rejectPromiseWithCode:jsError[kErrorKeyCode] message:error.localizedDescription];
                                      return;
                                  }
@@ -381,10 +381,10 @@ RCT_EXPORT_METHOD(confirmPaymentIntent:(NSDictionary<NSString*, id>*)untypedPara
                                                                          withAuthenticationContext:self
                                                                                          returnURL:nil
                                                                                         completion:^(STPPaymentHandlerActionStatus status, STPPaymentIntent * intent, NSError * error) {
-                                                                                            requestIsCompleted = YES;
+                                                                                            self->requestIsCompleted = YES;
 
                                                                                             if (error) {
-                                                                                                NSDictionary *jsError = [errorCodes valueForKey:kErrorKeyApi];
+                                                                                                NSDictionary *jsError = [self->errorCodes valueForKey:kErrorKeyApi];
                                                                                                 [self rejectPromiseWithCode:jsError[kErrorKeyCode] message:error.localizedDescription];
                                                                                                 return;
                                                                                             }
@@ -397,13 +397,13 @@ RCT_EXPORT_METHOD(confirmPaymentIntent:(NSDictionary<NSString*, id>*)untypedPara
                                                                                                     break;
                                                                                                 case STPPaymentHandlerActionStatusFailed:
                                                                                                     // This should not happen, as we should respond with an error -- what should we do?
-                                                                                                    [self rejectPromiseWithCode:[errorCodes valueForKey:kErrorKeyApi][kErrorKeyCode] message:@"FAILED"];
+                                                                                                    [self rejectPromiseWithCode:[self->errorCodes valueForKey:kErrorKeyApi][kErrorKeyCode] message:@"FAILED"];
                                                                                                     break;
                                                                                             }
                                                                                         }];
                                  } else {
                                      // We can't do anything else for the other intent status cases, so let's just return control to the App
-                                     requestIsCompleted = YES;
+                                     self->requestIsCompleted = YES;
                                      [self resolvePromise: [self convertConfirmPaymentIntentResult:intent]];
                                  }
                              }];
@@ -430,10 +430,10 @@ RCT_EXPORT_METHOD(authenticatePaymentIntent:(NSDictionary<NSString*, id> *)untyp
                                         withAuthenticationContext:self
                                                         returnURL:nil
                                                        completion:^(STPPaymentHandlerActionStatus status, STPPaymentIntent * intent, NSError * error) {
-                                                           requestIsCompleted = YES;
+                                                           self->requestIsCompleted = YES;
 
                                                            if (error) {
-                                                               NSDictionary *jsError = [errorCodes valueForKey:kErrorKeyApi];
+                                                               NSDictionary *jsError = [self->errorCodes valueForKey:kErrorKeyApi];
                                                                [self rejectPromiseWithCode:jsError[kErrorKeyCode] message:error.localizedDescription];
                                                                return;
                                                            }
@@ -446,7 +446,7 @@ RCT_EXPORT_METHOD(authenticatePaymentIntent:(NSDictionary<NSString*, id> *)untyp
                                                                    break;
                                                                case STPPaymentHandlerActionStatusFailed:
                                                                    // This should not happen, as we should respond with an error -- what should we do?
-                                                                   [self rejectPromiseWithCode:[errorCodes valueForKey:kErrorKeyApi][kErrorKeyCode] message:@"FAILED"];
+                                                                   [self rejectPromiseWithCode:[self->errorCodes valueForKey:kErrorKeyApi][kErrorKeyCode] message:@"FAILED"];
                                                                    break;
                                                            }
                                                        }];
@@ -471,8 +471,8 @@ RCT_EXPORT_METHOD(confirmSetupIntent:(NSDictionary<NSString*, id> *)untypedParam
     [api confirmSetupIntentWithParams:parsed
                            completion:^(STPSetupIntent * __nullable intent, NSError * __nullable error){
                                if (error) {
-                                   requestIsCompleted = YES;
-                                   NSDictionary *jsError = [errorCodes valueForKey:kErrorKeyApi];
+                                   self->requestIsCompleted = YES;
+                                   NSDictionary *jsError = [self->errorCodes valueForKey:kErrorKeyApi];
                                    [self rejectPromiseWithCode:jsError[kErrorKeyCode] message:error.localizedDescription];
                                    return;
                                }
@@ -483,10 +483,10 @@ RCT_EXPORT_METHOD(confirmSetupIntent:(NSDictionary<NSString*, id> *)untypedParam
                                                                            withAuthenticationContext:self
                                                                                            returnURL:nil
                                                                                           completion:^(STPPaymentHandlerActionStatus status, STPSetupIntent * intent, NSError * error) {
-                                                                                              requestIsCompleted = YES;
+                                                                                              self->requestIsCompleted = YES;
 
                                                                                               if (error) {
-                                                                                                  NSDictionary *jsError = [errorCodes valueForKey:kErrorKeyApi];
+                                                                                                  NSDictionary *jsError = [self->errorCodes valueForKey:kErrorKeyApi];
                                                                                                   [self rejectPromiseWithCode:jsError[kErrorKeyCode] message:error.localizedDescription];
                                                                                                   return;
                                                                                               }
@@ -499,13 +499,13 @@ RCT_EXPORT_METHOD(confirmSetupIntent:(NSDictionary<NSString*, id> *)untypedParam
                                                                                                       break;
                                                                                                   case STPPaymentHandlerActionStatusFailed:
                                                                                                       // This should not happen, as we should respond with an error -- what should we do?
-                                                                                                      [self rejectPromiseWithCode:[errorCodes valueForKey:kErrorKeyApi][kErrorKeyCode] message:@"FAILED"];
+                                                                                                      [self rejectPromiseWithCode:[self->errorCodes valueForKey:kErrorKeyApi][kErrorKeyCode] message:@"FAILED"];
                                                                                                       break;
                                                                                               }
                                                                                           }];
                                } else {
                                    // We can't do anything else for the other intent status cases, so let's just return control to the App
-                                   requestIsCompleted = YES;
+                                   self->requestIsCompleted = YES;
                                    [self resolvePromise: [self convertConfirmSetupIntentResult:intent]];
                                }
                            }];
@@ -532,10 +532,10 @@ RCT_EXPORT_METHOD(authenticateSetupIntent:(NSDictionary<NSString*, id>*)params
                                             withAuthenticationContext:self
                                                             returnURL:nil
                                                            completion:^(STPPaymentHandlerActionStatus status, STPSetupIntent * _Nullable intent, NSError * _Nullable error) {
-                                                               requestIsCompleted = YES;
+                                                               self->requestIsCompleted = YES;
 
                                                                if (error) {
-                                                                   NSDictionary *jsError = [errorCodes valueForKey:kErrorKeyApi];
+                                                                   NSDictionary *jsError = [self->errorCodes valueForKey:kErrorKeyApi];
                                                                    [self rejectPromiseWithCode:jsError[kErrorKeyCode] message:error.localizedDescription];
                                                                    return;
                                                                }
@@ -548,7 +548,7 @@ RCT_EXPORT_METHOD(authenticateSetupIntent:(NSDictionary<NSString*, id>*)params
                                                                        break;
                                                                    case STPPaymentHandlerActionStatusFailed:
                                                                        // This should not happen, as we should respond with an error -- what should we do?
-                                                                       [self rejectPromiseWithCode:[errorCodes valueForKey:kErrorKeyApi][kErrorKeyCode] message:@"FAILED"];
+                                                                       [self rejectPromiseWithCode:[self->errorCodes valueForKey:kErrorKeyApi][kErrorKeyCode] message:@"FAILED"];
                                                                        break;
                                                                }
                                                            }];
@@ -593,10 +593,10 @@ RCT_EXPORT_METHOD(createTokenWithCard:(NSDictionary *)params
     STPAPIClient *stripeAPIClient = [self newAPIClient];
 
     [stripeAPIClient createTokenWithCard:cardParams completion:^(STPToken *token, NSError *error) {
-        requestIsCompleted = YES;
+        self->requestIsCompleted = YES;
 
         if (error) {
-            NSDictionary *jsError = [errorCodes valueForKey:kErrorKeyApi];
+            NSDictionary *jsError = [self->errorCodes valueForKey:kErrorKeyApi];
             [self rejectPromiseWithCode:jsError[kErrorKeyCode] message:error.localizedDescription];
         } else {
             resolve([self convertTokenObject:token]);
@@ -630,10 +630,10 @@ RCT_EXPORT_METHOD(createTokenWithBankAccount:(NSDictionary *)params
     STPAPIClient *stripeAPIClient = [self newAPIClient];
 
     [stripeAPIClient createTokenWithBankAccount:bankAccount completion:^(STPToken *token, NSError *error) {
-        requestIsCompleted = YES;
+        self->requestIsCompleted = YES;
 
         if (error) {
-            NSDictionary *jsError = [errorCodes valueForKey:kErrorKeyApi];
+            NSDictionary *jsError = [self->errorCodes valueForKey:kErrorKeyApi];
             [self rejectPromiseWithCode:jsError[kErrorKeyCode] message:error.localizedDescription];
         } else {
             resolve([self convertTokenObject:token]);
@@ -681,21 +681,21 @@ RCT_EXPORT_METHOD(createSourceWithParams:(NSDictionary *)params
     STPAPIClient* stripeAPIClient = [self newAPIClient];
 
     [stripeAPIClient createSourceWithParams:sourceParams completion:^(STPSource *source, NSError *error) {
-        requestIsCompleted = YES;
+        self->requestIsCompleted = YES;
 
         if (error) {
-            NSDictionary *jsError = [errorCodes valueForKey:kErrorKeyApi];
+            NSDictionary *jsError = [self->errorCodes valueForKey:kErrorKeyApi];
             reject(jsError[kErrorKeyCode], error.localizedDescription, nil);
         } else {
             if (source.redirect) {
                 self.redirectContext = [[STPRedirectContext alloc] initWithSource:source completion:^(NSString *sourceID, NSString *clientSecret, NSError *error) {
                     if (error) {
-                        NSDictionary *jsError = [errorCodes valueForKey:kErrorKeyRedirectSpecific];
+                        NSDictionary *jsError = [self->errorCodes valueForKey:kErrorKeyRedirectSpecific];
                         reject(jsError[kErrorKeyCode], error.localizedDescription, nil);
                     } else {
                         [stripeAPIClient startPollingSourceWithId:sourceID clientSecret:clientSecret timeout:10 completion:^(STPSource *source, NSError *error) {
                             if (error) {
-                                NSDictionary *jsError = [errorCodes valueForKey:kErrorKeyApi];
+                                NSDictionary *jsError = [self->errorCodes valueForKey:kErrorKeyApi];
                                 reject(jsError[kErrorKeyCode], error.localizedDescription, nil);
                             } else {
                                 switch (source.status) {
@@ -704,22 +704,22 @@ RCT_EXPORT_METHOD(createSourceWithParams:(NSDictionary *)params
                                         resolve([self convertSourceObject:source]);
                                         break;
                                     case STPSourceStatusCanceled: {
-                                        NSDictionary *error = [errorCodes valueForKey:kErrorKeySourceStatusCanceled];
+                                        NSDictionary *error = [self->errorCodes valueForKey:kErrorKeySourceStatusCanceled];
                                         reject(error[kErrorKeyCode], error[kErrorKeyDescription], nil);
                                     }
                                         break;
                                     case STPSourceStatusPending: {
-                                        NSDictionary *error = [errorCodes valueForKey:kErrorKeySourceStatusPending];
+                                        NSDictionary *error = [self->errorCodes valueForKey:kErrorKeySourceStatusPending];
                                         reject(error[kErrorKeyCode], error[kErrorKeyDescription], nil);
                                     }
                                         break;
                                     case STPSourceStatusFailed: {
-                                        NSDictionary *error = [errorCodes valueForKey:kErrorKeySourceStatusFailed];
+                                        NSDictionary *error = [self->errorCodes valueForKey:kErrorKeySourceStatusFailed];
                                         reject(error[kErrorKeyCode], error[kErrorKeyDescription], nil);
                                     }
                                         break;
                                     case STPSourceStatusUnknown: {
-                                        NSDictionary *error = [errorCodes valueForKey:kErrorKeySourceStatusUnknown];
+                                        NSDictionary *error = [self->errorCodes valueForKey:kErrorKeySourceStatusUnknown];
                                         reject(error[kErrorKeyCode], error[kErrorKeyDescription], nil);
                                     }
                                         break;
@@ -1190,11 +1190,11 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     STPAPIClient *stripeAPIClient = [self newAPIClient];
 
     [stripeAPIClient createTokenWithPayment:payment completion:^(STPToken * _Nullable token, NSError * _Nullable error) {
-        requestIsCompleted = YES;
+        self->requestIsCompleted = YES;
 
         if (error) {
             // Save for deffered use
-            applePayStripeError = error;
+            self->applePayStripeError = error;
             [self resolveApplePayCompletion:PKPaymentAuthorizationStatusFailure];
         } else {
             NSDictionary *result = [self convertTokenObject:token];
@@ -1215,16 +1215,17 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
 - (void)paymentAuthorizationViewControllerDidFinish:(PKPaymentAuthorizationViewController *)controller {
     [self resetApplePayCallback];
 
-    void(^completion)() = ^{
-        if (!requestIsCompleted) {
-            requestIsCompleted = YES;
-            NSDictionary *error = [errorCodes valueForKey:kErrorKeyCancelled];
+    void(^completion)(void) = ^{
+        if (!self->requestIsCompleted) {
+            self->requestIsCompleted = YES;
+            NSDictionary *error = [self->errorCodes valueForKey:kErrorKeyCancelled];
             [self rejectPromiseWithCode:error[kErrorKeyCode] message:error[kErrorKeyDescription]];
         } else {
-            if (applePayStripeError) {
-                NSDictionary *error = [errorCodes valueForKey:kErrorKeyApi];
-                [self rejectPromiseWithCode:error[kErrorKeyCode] message:applePayStripeError.localizedDescription];
-                applePayStripeError = nil;
+            if (self->applePayStripeError) {
+                NSDictionary *error = [self->errorCodes valueForKey:kErrorKeyApi];
+                [self rejectPromiseWithCode:error[kErrorKeyCode]
+                                    message:self->applePayStripeError.localizedDescription];
+                self->applePayStripeError = nil;
             } else {
                 [self resolvePromise:nil];
             }
