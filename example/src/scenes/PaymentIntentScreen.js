@@ -110,7 +110,7 @@ export default class PaymentIntentScreen extends PureComponent {
       })
       console.log('stripe.authenticatePaymentIntent()', authResponse)
 
-      if (authResponse.status == 'requires_payment_method') {
+      if (authResponse.status === 'requires_paymentMethod') {
         response = {
           message: 'Authentication failed, a new PaymentMethod needs to be attached.',
           status: authResponse.status,
@@ -190,7 +190,7 @@ export default class PaymentIntentScreen extends PureComponent {
             message: 'payment succeeded without requiring authentication',
           }
           console.log('Succeeded')
-        } else if (confirmResult.status == 'requires_payment_method') {
+        } else if (confirmResult.status === 'requires_paymentMethod') {
           // The initial confirm did not require_action - a new payment method is required instead.
           response = confirmResult
         }
