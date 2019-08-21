@@ -890,13 +890,11 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     }
 
     STPPaymentMethodCardParams * card = nil;
-    if ([params isKindOfClass:NSString.class]) {
-        card = [[STPPaymentMethodCardParams alloc] init];
-        card.token = (NSString*)params;
-    } else if ([params isKindOfClass:NSDictionary.class]) {
+    if ([params isKindOfClass:NSDictionary.class]) {
         card = [[STPPaymentMethodCardParams alloc] initWithCardSourceParams:[self extractCardParamsFromDictionary:params]];
+        card.token = [RCTConvert NSString:params[TPSStripeParam(CardParams, token)]]
     } else {
-        NSParameterAssert([params isKindOfClass:NSString.class] || [params isKindOfClass:NSDictionary.class]);
+        NSParameterAssert([params isKindOfClass:NSDictionary.class]);
         return nil;
     }
     return card;

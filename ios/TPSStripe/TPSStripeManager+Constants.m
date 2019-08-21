@@ -56,6 +56,7 @@ TPSStripeBridgeKeyDeclare(CardParams, addressCity);
 TPSStripeBridgeKeyDeclare(CardParams, addressState);
 TPSStripeBridgeKeyDeclare(CardParams, addressCountry);
 TPSStripeBridgeKeyDeclare(CardParams, addressZip);
+TPSStripeBridgeKeyDeclare(CardParams, token);
 
 TPSStripeBridgeTypeDefine(confirmPayment);
 TPSStripeBridgeKeyDeclare(confirmPayment, clientSecret);
