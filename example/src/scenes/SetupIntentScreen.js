@@ -93,7 +93,7 @@ export default class SetupIntentScreen extends PureComponent {
         {setupIntent && (
           <>
             <Text style={styles.content} {...testID('setupIntentObject')}>
-                Source: {JSON.stringify(setupIntent)}
+              Source: {JSON.stringify(setupIntent)}
             </Text>
 
             <View style={styles.row}>

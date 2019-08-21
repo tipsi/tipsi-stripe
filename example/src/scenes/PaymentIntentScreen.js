@@ -284,7 +284,7 @@ export default class PaymentIntentScreen extends PureComponent {
         {paymentIntent && (
           <>
             <Text style={styles.content} {...testID('paymentIntentObject')}>
-                Source: {JSON.stringify(paymentIntent)}
+              Source: {JSON.stringify(paymentIntent)}
             </Text>
 
             <View style={styles.row}>
