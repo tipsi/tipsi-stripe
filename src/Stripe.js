@@ -285,6 +285,11 @@ class Stripe {
    * @param {AuthenticateSetupIntentParams} params
    * @returns {Promise<SetupIntentAuthenticationResult>}
    */
+  /*
+
+  DISABLED FOR NOW - you should be able to use confirmSetupIntent
+  Will re-add if needed.
+
   authenticateSetupIntent = (params = {}) => {
     checkInit(this)
     checkArgs(
@@ -295,6 +300,7 @@ class Stripe {
     )
     return StripeModule.authenticateSetupIntent(params)
   }
+  */
 }
 
 export default new Stripe()
