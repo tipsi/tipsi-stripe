@@ -233,14 +233,15 @@ Choose either:
 
 (if multiple are given, the one present that is highest in the list above is used)
 */
-export const confirmPaymentPropType = {
+export const confirmPaymentIntentPropType = {
   clientSecret: PropTypes.string,
   paymentMethod: PropTypes.shape(createPaymentMethodPropType),
   paymentMethodId: PropTypes.string,
   savePaymentMethod: PropTypes.bool,
+  returnURL: PropTypes.string,
 }
 
-export const authenticatePaymentPropType = {
+export const authenticatePaymentIntentPropType = {
   clientSecret: PropTypes.string,
 }
 
@@ -255,8 +256,9 @@ export const confirmSetupIntentPropType = {
   clientSecret: PropTypes.string,
   paymentMethod: PropTypes.shape(createPaymentMethodPropType),
   paymentMethodId: PropTypes.string,
+  returnURL: PropTypes.string,
 }
 
-export const authenticateSetupPropType = {
+export const authenticateSetupIntentPropType = {
   clientSecret: PropTypes.string,
 }

@@ -244,20 +244,20 @@ class Stripe {
    * @param {ConfirmPaymentIntentParams} params
    * @returns {Promise<PaymentIntentConfirmationResult>}
    */
-  confirmPayment = (params = {}) => {
+  confirmPaymentIntent = (params = {}) => {
     checkInit(this)
-    checkArgs(types.confirmPaymentPropType, params, 'params', 'Stripe.confirmPayment')
-    return StripeModule.confirmPayment(params)
+    checkArgs(types.confirmPaymentIntentPropType, params, 'params', 'Stripe.confirmPaymentIntent')
+    return StripeModule.confirmPaymentIntent(params)
   }
 
   /**
    * @param {AuthenticatePaymentIntentParams} params
    * @returns {Promise<PaymentIntentAuthenticationResult>}
    */
-  authenticatePayment = (params = {}) => {
+  authenticatePaymentIntent = (params = {}) => {
     checkInit(this)
-    checkArgs(types.authenticatePaymentPropType, params, 'params', 'Stripe.authenticatePayment')
-    return StripeModule.authenticatePayment(params)
+    checkArgs(types.authenticatePaymentIntentPropType, params, 'params', 'Stripe.authenticatePaymentIntent')
+    return StripeModule.authenticatePaymentIntent(params)
   }
 
   /**
@@ -275,10 +275,10 @@ class Stripe {
    * @param {AuthenticateSetupIntentParams} params
    * @returns {Promise<SetupIntentAuthenticationResult>}
    */
-  authenticateSetup = (params = {}) => {
+  authenticateSetupIntent = (params = {}) => {
     checkInit(this)
-    checkArgs(types.authenticateSetupPropType, params, 'params', 'Stripe.authenticateSetup')
-    return StripeModule.authenticateSetup(params)
+    checkArgs(types.authenticateSetupIntentPropType, params, 'params', 'Stripe.authenticateSetupIntent')
+    return StripeModule.authenticateSetupIntent(params)
   }
 }
 

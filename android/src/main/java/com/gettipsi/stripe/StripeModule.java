@@ -308,7 +308,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void confirmPayment(final ReadableMap options, final Promise promise) {
+  public void confirmPaymentIntent(final ReadableMap options, final Promise promise) {
     attachPaymentResultActivityListener(promise);
 
     Activity activity = getCurrentActivity();
@@ -318,7 +318,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void authenticatePayment(final ReadableMap options, final Promise promise) {
+  public void authenticatePaymentIntent(final ReadableMap options, final Promise promise) {
     attachPaymentResultActivityListener(promise);
 
     String clientSecret = options.getString(CLIENT_SECRET);
@@ -339,7 +339,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void authenticateSetup(final ReadableMap options, final Promise promise) {
+  public void authenticateSetupIntent(final ReadableMap options, final Promise promise) {
     attachSetupResultActivityListener(promise);
 
     String clientSecret = options.getString(CLIENT_SECRET);
