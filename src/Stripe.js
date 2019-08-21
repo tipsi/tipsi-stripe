@@ -36,12 +36,12 @@ import deprecatedMethodsForInstance from './Stripe.deprecated'
 /* eslint-disable max-len */
 /**
  * https://stripe.com/docs/api/payment_intents/object#payment_intent_object-status
- * @typedef {('unknown'|'canceled'|'processing'|'requires_action'|'requires_capture'|'requires_paymentMethod'|'requires_confirmation'|'succeeded')} StripePaymentIntentStatus
+ * @typedef {('unknown'|'canceled'|'processing'|'requires_action'|'requires_capture'|'requires_payment_method'|'requires_confirmation'|'succeeded')} StripePaymentIntentStatus
  */
 
 /**
  * https://stripe.com/docs/api/setup_intents/object#setup_intent_object-status
- * @typedef {('unknown'|'canceled'|'processing'|'requires_action'|'requires_paymentMethod'|'requires_confirmation'|'succeeded')} StripeSetupIntentStatus
+ * @typedef {('unknown'|'canceled'|'processing'|'requires_action'|'requires_payment_method'|'requires_confirmation'|'succeeded')} StripeSetupIntentStatus
  */
 /* eslint-enable max-len */
 

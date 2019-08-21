@@ -104,7 +104,7 @@ TPSStripeBridgeKeyDeclare(PaymentIntentStatus, canceled);
 TPSStripeBridgeKeyDeclare(PaymentIntentStatus, processing);
 TPSStripeBridgeKeyDeclare(PaymentIntentStatus, requires_action);
 TPSStripeBridgeKeyDeclare(PaymentIntentStatus, requires_capture);
-TPSStripeBridgeKeyDeclare(PaymentIntentStatus, requires_paymentMethod);
+TPSStripeBridgeKeyDeclare(PaymentIntentStatus, requires_payment_method);
 TPSStripeBridgeKeyDeclare(PaymentIntentStatus, requires_confirmation);
 TPSStripeBridgeKeyDeclare(PaymentIntentStatus, succeeded);
 
@@ -113,7 +113,7 @@ TPSStripeBridgeKeyDeclare(SetupIntentStatus, unknown);
 TPSStripeBridgeKeyDeclare(SetupIntentStatus, canceled);
 TPSStripeBridgeKeyDeclare(SetupIntentStatus, processing);
 TPSStripeBridgeKeyDeclare(SetupIntentStatus, requires_action);
-TPSStripeBridgeKeyDeclare(SetupIntentStatus, requires_paymentMethod);
+TPSStripeBridgeKeyDeclare(SetupIntentStatus, requires_payment_method);
 TPSStripeBridgeKeyDeclare(SetupIntentStatus, requires_confirmation);
 TPSStripeBridgeKeyDeclare(SetupIntentStatus, succeeded);
 

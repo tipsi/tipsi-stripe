@@ -138,7 +138,7 @@ RCT_ENUM_CONVERTER(STPPaymentIntentStatus,
                       TPSEntry(processing, Processing),
                       TPSEntry(requires_action, RequiresAction),
                       TPSEntry(requires_capture, RequiresCapture),
-                      TPSEntry(requires_paymentMethod, RequiresPaymentMethod),
+                      TPSEntry(requires_payment_method, RequiresPaymentMethod),
                       TPSEntry(requires_confirmation, RequiresConfirmation),
                       TPSEntry(succeeded, Succeeded)
                       }),
@@ -154,7 +154,7 @@ RCT_ENUM_CONVERTER(STPPaymentIntentStatus,
             TPSEntry(processing, Processing)
             TPSEntry(requires_action, RequiresAction)
             TPSEntry(requires_capture, RequiresCapture)
-            TPSEntry(requires_paymentMethod, RequiresPaymentMethod)
+            TPSEntry(requires_payment_method, RequiresPaymentMethod)
             TPSEntry(requires_confirmation, RequiresConfirmation)
             TPSEntry(succeeded, Succeeded)
     }
@@ -168,7 +168,7 @@ RCT_ENUM_CONVERTER(STPSetupIntentStatus,
                       TPSEntry(canceled, Canceled),
                       TPSEntry(processing, Processing),
                       TPSEntry(requires_action, RequiresAction),
-                      TPSEntry(requires_paymentMethod, RequiresPaymentMethod),
+                      TPSEntry(requires_payment_method, RequiresPaymentMethod),
                       TPSEntry(requires_confirmation, RequiresConfirmation),
                       TPSEntry(succeeded, Succeeded)
                       }),
@@ -183,7 +183,7 @@ RCT_ENUM_CONVERTER(STPSetupIntentStatus,
             TPSEntry(canceled, Canceled)
             TPSEntry(processing, Processing)
             TPSEntry(requires_action, RequiresAction)
-            TPSEntry(requires_paymentMethod, RequiresPaymentMethod)
+            TPSEntry(requires_payment_method, RequiresPaymentMethod)
             TPSEntry(requires_confirmation, RequiresConfirmation)
             TPSEntry(succeeded, Succeeded)
     }
