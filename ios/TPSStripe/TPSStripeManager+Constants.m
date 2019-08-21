@@ -58,20 +58,20 @@ TPSStripeBridgeKeyDeclare(CardParams, addressCountry);
 TPSStripeBridgeKeyDeclare(CardParams, addressZip);
 TPSStripeBridgeKeyDeclare(CardParams, token);
 
-TPSStripeBridgeTypeDefine(confirmPayment);
-TPSStripeBridgeKeyDeclare(confirmPayment, clientSecret);
-TPSStripeBridgeKeyDeclare(confirmPayment, paymentMethod);
-TPSStripeBridgeKeyDeclare(confirmPayment, paymentMethodId);
-TPSStripeBridgeKeyDeclare(confirmPayment, sourceId);
-TPSStripeBridgeKeyDeclare(confirmPayment, returnURL);
-TPSStripeBridgeKeyDeclare(confirmPayment, savePaymentMethod);
+TPSStripeBridgeTypeDefine(confirmPaymentIntent);
+TPSStripeBridgeKeyDeclare(confirmPaymentIntent, clientSecret);
+TPSStripeBridgeKeyDeclare(confirmPaymentIntent, paymentMethod);
+TPSStripeBridgeKeyDeclare(confirmPaymentIntent, paymentMethodId);
+TPSStripeBridgeKeyDeclare(confirmPaymentIntent, sourceId);
+TPSStripeBridgeKeyDeclare(confirmPaymentIntent, returnURL);
+TPSStripeBridgeKeyDeclare(confirmPaymentIntent, savePaymentMethod);
 
 TPSStripeBridgeTypeDefine(ConfirmPaymentIntentResult);
 TPSStripeBridgeKeyDeclare(ConfirmPaymentIntentResult, paymentIntentId);
 TPSStripeBridgeKeyDeclare(ConfirmPaymentIntentResult, status);
 
-TPSStripeBridgeTypeDefine(authenticatePayment);
-TPSStripeBridgeKeyDeclare(authenticatePayment, clientSecret);
+TPSStripeBridgeTypeDefine(authenticatePaymentIntent);
+TPSStripeBridgeKeyDeclare(authenticatePaymentIntent, clientSecret);
 
 TPSStripeBridgeTypeDefine(AuthenticatePaymentIntentResult);
 TPSStripeBridgeKeyDeclare(AuthenticatePaymentIntentResult, paymentIntentId);
@@ -89,8 +89,8 @@ TPSStripeBridgeTypeDefine(ConfirmSetupIntentResult);
 TPSStripeBridgeKeyDeclare(ConfirmSetupIntentResult, setupIntentId);
 TPSStripeBridgeKeyDeclare(ConfirmSetupIntentResult, status);
 
-TPSStripeBridgeTypeDefine(authenticateSetup);
-TPSStripeBridgeKeyDeclare(authenticateSetup, clientSecret);
+TPSStripeBridgeTypeDefine(authenticateSetupIntent);
+TPSStripeBridgeKeyDeclare(authenticateSetupIntent, clientSecret);
 
 TPSStripeBridgeTypeDefine(AuthenticateSetupIntentResult);
 TPSStripeBridgeKeyDeclare(AuthenticateSetupIntentResult, setupIntentId);

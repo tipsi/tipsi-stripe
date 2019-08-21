@@ -351,10 +351,10 @@ RCT_EXPORT_METHOD(createPaymentMethod:(NSDictionary<NSString *, id> *)untypedPar
                             }];
 }
 
-RCT_EXPORT_METHOD(confirmPayment:(NSDictionary<NSString*, id>*)untypedParams
+RCT_EXPORT_METHOD(confirmPaymentIntent:(NSDictionary<NSString*, id>*)untypedParams
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
-    NSDictionary<TPSStripeType(confirmPayment), id> *params = untypedParams;
+    NSDictionary<TPSStripeType(confirmPaymentIntent), id> *params = untypedParams;
 
     STPPaymentIntentParams * parsed = [self extractConfirmPaymentIntentParamsFromDictionary:params];
     if(!requestIsCompleted) {
@@ -409,12 +409,12 @@ RCT_EXPORT_METHOD(confirmPayment:(NSDictionary<NSString*, id>*)untypedParams
                              }];
 }
 
-RCT_EXPORT_METHOD(authenticatePayment:(NSDictionary<NSString*, id> *)untypedParams
+RCT_EXPORT_METHOD(authenticatePaymentIntent:(NSDictionary<NSString*, id> *)untypedParams
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
-    NSDictionary<TPSStripeType(authenticatePayment), id> *params = untypedParams;
+    NSDictionary<TPSStripeType(authenticatePaymentIntent), id> *params = untypedParams;
 
-    NSString * clientSecret = params[TPSStripeParam(authenticatePayment, clientSecret)];
+    NSString * clientSecret = params[TPSStripeParam(authenticatePaymentIntent, clientSecret)];
 
     if(!requestIsCompleted) {
         NSDictionary *error = [errorCodes valueForKey:kErrorKeyBusy];
@@ -511,11 +511,11 @@ RCT_EXPORT_METHOD(confirmSetupIntent:(NSDictionary<NSString*, id> *)untypedParam
                            }];
 }
 
-RCT_EXPORT_METHOD(authenticateSetup:(NSDictionary<NSString*, id>*)params
+RCT_EXPORT_METHOD(authenticateSetupIntent:(NSDictionary<NSString*, id>*)params
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
 
-    NSString * clientSecret = TPSStripeParam(authenticateSetup, clientSecret);
+    NSString * clientSecret = TPSStripeParam(authenticateSetupIntent, clientSecret);
 
     if(!requestIsCompleted) {
         NSDictionary *error = [errorCodes valueForKey:kErrorKeyBusy];
@@ -950,15 +950,15 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     return [STPPaymentMethodParams paramsWithCard:card billingDetails:details metadata:metadata];
 }
 
-- (STPPaymentIntentParams*)extractConfirmPaymentIntentParamsFromDictionary:(NSDictionary<TPSStripeType(confirmPayment), id> *)params {
-#define simpleUnpack(key) result.key = [RCTConvert NSString:params[TPSStripeParam(confirmPayment, key)]]
-    NSString* clientSecret = params[TPSStripeParam(confirmPayment, clientSecret)];
+- (STPPaymentIntentParams*)extractConfirmPaymentIntentParamsFromDictionary:(NSDictionary<TPSStripeType(confirmPaymentIntent), id> *)params {
+#define simpleUnpack(key) result.key = [RCTConvert NSString:params[TPSStripeParam(confirmPaymentIntent, key)]]
+    NSString* clientSecret = params[TPSStripeParam(confirmPaymentIntent, clientSecret)];
     NSParameterAssert(clientSecret);
 
     STPPaymentIntentParams * result = [[STPPaymentIntentParams alloc] initWithClientSecret:clientSecret];
 
-    NSString * paymentMethodId = params[TPSStripeParam(confirmPayment, paymentMethodId)];
-    STPPaymentMethodParams * methodParams = [self extractCreatePaymentMethodParamsFromDictionary:params[TPSStripeParam(confirmPayment, paymentMethod)]];
+    NSString * paymentMethodId = params[TPSStripeParam(confirmPaymentIntent, paymentMethodId)];
+    STPPaymentMethodParams * methodParams = [self extractCreatePaymentMethodParamsFromDictionary:params[TPSStripeParam(confirmPaymentIntent, paymentMethod)]];
     NSParameterAssert(paymentMethodId || methodParams);
 
     result.paymentMethodId = paymentMethodId;
@@ -966,7 +966,7 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
 
     simpleUnpack(sourceId);
     simpleUnpack(returnURL);
-    result.savePaymentMethod = @([RCTConvert BOOL:params[TPSStripeParam(confirmPayment, savePaymentMethod)]]);
+    result.savePaymentMethod = @([RCTConvert BOOL:params[TPSStripeParam(confirmPaymentIntent, savePaymentMethod)]]);
 #undef simpleUnpack
     return result;
 }
