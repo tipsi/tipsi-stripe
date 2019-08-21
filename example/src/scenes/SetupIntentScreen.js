@@ -112,7 +112,7 @@ export default class SetupIntentScreen extends PureComponent {
                   <Button
                     {...testID(card.name)}
                     style={styles.rowButton}
-                    text={card.name + ' - ' + card.last4}
+                    text={`${card.name} - ${card.last4}`}
                     loading={loading}
                     onPress={() => this.onAttachPaymentMethod(card.number)}
                   />
@@ -158,12 +158,6 @@ const styles = StyleSheet.create({
   rowButton: {
     flex: 1,
     alignSelf: 'center',
-  },
-  content: {
-    color: '#333333',
-    margin: 8,
-    textAlign: 'center',
-    width: '100%',
   },
   error: {
     color: 'darkred',
