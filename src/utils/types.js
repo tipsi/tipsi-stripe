@@ -228,29 +228,34 @@ export const createPaymentMethodPropType = {
   // TODO: customerId support
 }
 
-const confirmPaymentPropTypeBase = {
+const confirmPaymentIntentPropTypeBase = {
   clientSecret: PropTypes.string.isRequired,
   savePaymentMethod: PropTypes.bool,
+  returnURL: PropTypes.string,
 }
 /**
  * One of the following must be provided:
  * - paymentMethod
  * - paymentMethodId (any supported ID, including IDs for saved card sources)
  */
-export const confirmPaymentPropType = PropTypes.oneOfType([
+export const confirmPaymentIntentPropType = PropTypes.oneOfType([
   PropTypes.shape({
-    ...confirmPaymentPropTypeBase,
+    ...confirmPaymentIntentPropTypeBase,
     paymentMethod: PropTypes.shape(createPaymentMethodPropType).isRequired,
   }),
-  PropTypes.shape({ ...confirmPaymentPropTypeBase, paymentMethodId: PropTypes.string.isRequired }),
+  PropTypes.shape({
+    ...confirmPaymentIntentPropTypeBase,
+    paymentMethodId: PropTypes.string.isRequired,
+  }),
 ]).isRequired
 
-export const authenticatePaymentPropType = {
+export const authenticatePaymentIntentPropType = {
   clientSecret: PropTypes.string.isRequired,
 }
 
 const confirmSetupIntentPropTypeBase = {
   clientSecret: PropTypes.string.isRequired,
+  returnURL: PropTypes.string,
 }
 /**
  * One of the following must be provided:
@@ -265,6 +270,6 @@ export const confirmSetupIntentPropType = PropTypes.oneOfType([
   PropTypes.shape({ ...confirmSetupIntentPropTypeBase, paymentMethodId: PropTypes.string }),
 ]).isRequired
 
-export const authenticateSetupPropType = {
+export const authenticateSetupIntentPropType = {
   clientSecret: PropTypes.string.isRequired,
 }
