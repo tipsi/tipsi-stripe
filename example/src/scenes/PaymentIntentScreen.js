@@ -42,7 +42,7 @@ export default class PaymentIntentScreen extends PureComponent {
   onCreatePaymentIntent = async ({ confirmationMethod = 'automatic' }) => {
     this.reset({ withState: { loading: true, confirmationMethod } })
     try {
-      const response = await fetch(PaymentIntentScreen.BACKEND_URL + '/create_intent', {
+      const response = await fetch(`${PaymentIntentScreen.BACKEND_URL}/create_intent`, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -73,7 +73,7 @@ export default class PaymentIntentScreen extends PureComponent {
       body = { ...body, payment_method: paymentMethodId }
     }
 
-    const response = await fetch(PaymentIntentScreen.BACKEND_URL + '/confirm_payment', {
+    const response = await fetch(`${PaymentIntentScreen.BACKEND_URL}/confirm_payment`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -86,24 +86,23 @@ export default class PaymentIntentScreen extends PureComponent {
       const body = await response.json()
       console.log('Received response', body)
       return body
-    } else {
-      const body = await response.json()
-      console.log(body)
-      const display = {
-        status: body.status,
-        message: body.message,
-        code: body.code,
-        json: body.json,
-      }
-
-      console.log('Non-200 response', display)
-
-      return display
     }
+    const body = await response.json()
+    console.log(body)
+    const display = {
+      status: body.status,
+      message: body.message,
+      code: body.code,
+      json: body.json,
+    }
+
+    console.log('Non-200 response', display)
+
+    return display
   }
 
   handleAuthenticationChallenge = async ({ clientSecret }) => {
-    let response
+    let response = null
     try {
       console.log('Calling stripe.authenticatePayment()')
       authResponse = await stripe.authenticatePayment({
@@ -116,7 +115,7 @@ export default class PaymentIntentScreen extends PureComponent {
           message: 'Authentication failed, a new PaymentMethod needs to be attached.',
           status: authResponse.status,
         }
-      } else if (authResponse.status == 'requires_confirmation') {
+      } else if (authResponse.status === 'requires_confirmation') {
         response = {
           message: 'Authentication passed, requires confirmation (server-side)',
           status: authResponse.status,
@@ -136,7 +135,7 @@ export default class PaymentIntentScreen extends PureComponent {
   onAttachPaymentMethod = async (cardNumber) => {
     this.setState({ ...this.state, loading: true })
 
-    if (this.state.confirmationMethod == 'manual') {
+    if (this.state.confirmationMethod === 'manual') {
       // Create a payment method
       console.log('Calling stripe.createPaymentMethod()')
 
@@ -186,7 +185,7 @@ export default class PaymentIntentScreen extends PureComponent {
             )
             console.log('response from confirming after successfully authenticating', response)
           }
-        } else if (confirmResult.status == 'succeeded') {
+        } else if (confirmResult.status === 'succeeded') {
           response = {
             message: 'payment succeeded without requiring authentication',
           }
@@ -197,14 +196,14 @@ export default class PaymentIntentScreen extends PureComponent {
         }
         this.setState({ ...this.state, loading: false, display: response })
       }
-    } else if (this.state.confirmationMethod == 'automatic') {
+    } else if (this.state.confirmationMethod === 'automatic') {
       // Here we're in automatic confirmation mode.
       // In this mode, we can confirm the payment from the client side and
       // fulfill the order on the client side by listening to webhooks.
 
       // For cards, we also get immediate confirmation of the outcome of the payment.
 
-      let display
+      let display = null
       try {
         console.log('Confirming')
         confirmPaymentResult = await stripe.confirmPayment({
@@ -237,7 +236,7 @@ export default class PaymentIntentScreen extends PureComponent {
         clientSecret: this.state.paymentIntent.secret,
         paymentMethod: demoPaymentMethodDetailsWithToken(token.tokenId),
       })
-      display = confirmPaymentResult
+      const display = confirmPaymentResult
 
       this.setState({ ...this.state, display })
     } catch (e) {
@@ -247,15 +246,7 @@ export default class PaymentIntentScreen extends PureComponent {
   }
 
   render() {
-    const {
-      error,
-      loading,
-      paymentIntent,
-      paymentMethod,
-      display,
-      token,
-      showCardSelection,
-    } = this.state
+    const { error, loading, paymentIntent, display, token, showCardSelection } = this.state
 
     const onShowCardSelection = () => {
       this.setState({ ...this.state, showCardSelection: !showCardSelection })
@@ -304,12 +295,12 @@ export default class PaymentIntentScreen extends PureComponent {
               />
             </View>
             {showCardSelection &&
-              demoTestCards.map((card, idx) => (
+              demoTestCards.map((card) => (
                 <View style={styles.row} key={card.name}>
                   <Button
                     {...testID(card.name)}
                     style={styles.rowButton}
-                    text={card.name + ' - ' + card.last4}
+                    text={`${card.name} - ${card.last4}`}
                     loading={loading}
                     onPress={() => this.onAttachPaymentMethod(card.number)}
                   />
