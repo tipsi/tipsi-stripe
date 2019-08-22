@@ -101,6 +101,10 @@
         "title": "<PaymentCardTextField />",
         "sidebar_label": "<PaymentCardTextField />"
       },
+      "paymentIntents": {
+        "title": "Payment Intent API",
+        "sidebar_label": "Payment Intent API"
+      },
       "paymentMethod": {
         "title": "Payment Method",
         "sidebar_label": "Payment Method"

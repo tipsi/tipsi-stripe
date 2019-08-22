@@ -9,6 +9,7 @@
       "google-pay",
       "usage",
       "example",
+      "paymentIntents",
       "changelog"
     ],
     "Objects": [
