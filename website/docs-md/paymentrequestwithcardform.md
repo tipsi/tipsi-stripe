@@ -4,7 +4,7 @@ title: .paymentRequestWithCardForm(options) -> Promise
 sidebar_label: .paymentRequestWithCardForm()
 ---
 
-Opens the `Add Card` view to to accept a payment.
+Opens the `Add Card` view to to accept a payment. On success the returned object is a PaymentMethod
 
 **options (iOS only)** — An object with the following keys:
 
@@ -65,10 +65,10 @@ const options = {
   },
 }
 
-const token = await stripe.paymentRequestWithCardForm(options)
+const paymentMethod = await stripe.paymentRequestWithCardForm(options)
 
-// Client specific code
-// api.sendTokenToBackend(token)
+// Application-specific code
+// api.sendPaymentMethodToBackend(paymentMethod)
 ```
 
 ![](https://cloud.githubusercontent.com/assets/1177226/20274560/1432abf2-aaa6-11e6-8505-0cdc3017fe22.gif)  ![](https://cloud.githubusercontent.com/assets/1177226/20572150/54192810-b1bb-11e6-9df6-5c068bf69904.gif)

@@ -762,11 +762,11 @@ RCT_EXPORT_METHOD(paymentRequestWithCardForm:(NSDictionary *)options
     [configuration setCompanyName:companyName];
     [configuration setPublishableKey:nextPublishableKey];
 
-    STPAddCardViewController *addCardViewController = [[STPAddCardViewController alloc] initWithConfiguration:configuration theme:theme];
-    [addCardViewController setDelegate:self];
-    [addCardViewController setPrefilledInformation:prefilledInformation];
+    STPAddCardViewController *vc = [[STPAddCardViewController alloc] initWithConfiguration:configuration theme:theme];
+    vc.delegate = self;
+    vc.prefilledInformation = prefilledInformation;
     // STPAddCardViewController must be shown inside a UINavigationController.
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:addCardViewController];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
     [navigationController setModalPresentationStyle:formPresentation];
     navigationController.navigationBar.stp_theme = theme;
     // move to the end of main queue
@@ -1148,24 +1148,14 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
 
 #pragma mark - STPAddCardViewControllerDelegate
 
-- (void)addCardViewController:(STPAddCardViewController *)controller
-               didCreateToken:(STPToken *)token
+- (void)addCardViewController:(STPAddCardViewController *)addCardViewController
+       didCreatePaymentMethod:(STPPaymentMethod *)paymentMethod
                    completion:(STPErrorBlock)completion {
     [RCTPresentedViewController() dismissViewControllerAnimated:YES completion:nil];
 
     requestIsCompleted = YES;
     completion(nil);
-    [self resolvePromise:[self convertTokenObject:token]];
-}
-
-- (void)addCardViewController:(STPAddCardViewController *)controller
-              didCreateSource:(STPSource *)source
-                   completion:(STPErrorBlock)completion {
-    [RCTPresentedViewController() dismissViewControllerAnimated:YES completion:nil];
-
-    requestIsCompleted = YES;
-    completion(nil);
-    [self resolvePromise:[self convertSourceObject:source]];
+    [self resolvePromise:[self convertPaymentMethod:paymentMethod]];
 }
 
 - (void)addCardViewControllerDidCancel:(STPAddCardViewController *)addCardViewController {
@@ -1176,7 +1166,6 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
         NSDictionary *error = [errorCodes valueForKey:kErrorKeyCancelled];
         [self rejectPromiseWithCode:error[kErrorKeyCode] message:error[kErrorKeyDescription]];
     }
-
 }
 
 #pragma mark PKPaymentAuthorizationViewControllerDelegate
@@ -1795,7 +1784,7 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
 
 - (nonnull UIViewController *)authenticationPresentingViewController {
     // React-Native should only have 1 active view controller
-    return [UIApplication sharedApplication].delegate.window.rootViewController;
+    return RCTPresentedViewController();
 }
 
 @end

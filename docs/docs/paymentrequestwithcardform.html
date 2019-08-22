@@ -8,7 +8,7 @@
     <meta name="generator" content="Docusaurus" />
     <meta
       name="description"
-      content="&lt;p&gt;Opens the &lt;code&gt;Add Card&lt;/code&gt; view to to accept a payment.&lt;/p&gt;
+      content="&lt;p&gt;Opens the &lt;code&gt;Add Card&lt;/code&gt; view to to accept a payment. On success the returned object is a PaymentMethod&lt;/p&gt;
 "
     />
     <meta name="docsearch:language" content="en" />
@@ -20,7 +20,7 @@
     <meta property="og:url" content="https://tipsi.github.io/tipsi-stripe/index.html" />
     <meta
       property="og:description"
-      content="&lt;p&gt;Opens the &lt;code&gt;Add Card&lt;/code&gt; view to to accept a payment.&lt;/p&gt;
+      content="&lt;p&gt;Opens the &lt;code&gt;Add Card&lt;/code&gt; view to to accept a payment. On success the returned object is a PaymentMethod&lt;/p&gt;
 "
     />
     <meta name="twitter:card" content="summary" />
@@ -409,7 +409,10 @@
               <article>
                 <div>
                   <span
-                    ><p>Opens the <code>Add Card</code> view to to accept a payment.</p>
+                    ><p>
+                      Opens the <code>Add Card</code> view to to accept a payment. On success the
+                      returned object is a PaymentMethod
+                    </p>
                     <p><strong>options (iOS only)</strong> — An object with the following keys:</p>
                     <table>
                       <thead>
@@ -657,10 +660,10 @@
   },
 }
 
-<span class="hljs-keyword">const</span> token = <span class="hljs-keyword">await</span> stripe.paymentRequestWithCardForm(options)
+<span class="hljs-keyword">const</span> paymentMethod = <span class="hljs-keyword">await</span> stripe.paymentRequestWithCardForm(options)
 
-<span class="hljs-comment">// Client specific code</span>
-<span class="hljs-comment">// api.sendTokenToBackend(token)</span>
+<span class="hljs-comment">// Application-specific code</span>
+<span class="hljs-comment">// api.sendPaymentMethodToBackend(paymentMethod)</span>
 </code></pre>
                     <p>
                       <img
