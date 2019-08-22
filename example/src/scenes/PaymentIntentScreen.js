@@ -65,12 +65,12 @@ export default class PaymentIntentScreen extends PureComponent {
   }
 
   attachPaymentMethodAndConfirmPayment = async (paymentIntentId, paymentMethodId) => {
-    let body = {
+    let post = {
       payment_intent_id: paymentIntentId,
     }
 
     if (paymentMethodId) {
-      body = { ...body, payment_method: paymentMethodId }
+      post = { ...post, payment_method: paymentMethodId }
     }
 
     const response = await fetch(`${PaymentIntentScreen.BACKEND_URL}/confirm_payment`, {
@@ -79,16 +79,14 @@ export default class PaymentIntentScreen extends PureComponent {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(body),
+      body: JSON.stringify(post),
     })
 
+    const body = await response.json()
+    console.log('Received response', body)
     if (response.status == 200) {
-      const body = await response.json()
-      console.log('Received response', body)
       return body
     }
-    const body = await response.json()
-    console.log(body)
     const display = {
       status: body.status,
       message: body.message,
@@ -97,9 +95,9 @@ export default class PaymentIntentScreen extends PureComponent {
     }
 
     console.log('Non-200 response', display)
-
     return display
   }
+
 
   handleAuthenticationChallenge = async ({ clientSecret }) => {
     let response = null
