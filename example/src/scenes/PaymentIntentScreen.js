@@ -84,7 +84,7 @@ export default class PaymentIntentScreen extends PureComponent {
 
     const body = await response.json()
     console.log('Received response', body)
-    if (response.status == 200) {
+    if (response.status === 200) {
       return body
     }
     const display = {
@@ -97,7 +97,6 @@ export default class PaymentIntentScreen extends PureComponent {
     console.log('Non-200 response', display)
     return display
   }
-
 
   handleAuthenticationChallenge = async ({ clientSecret }) => {
     let response = null
