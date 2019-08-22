@@ -15,6 +15,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.ReadableMapKeySetIterator;
 import com.gettipsi.stripe.dialog.AddCardDialogFragment;
 import com.gettipsi.stripe.util.ArgCheck;
 import com.gettipsi.stripe.util.Converters;
@@ -37,6 +38,7 @@ import com.stripe.android.model.Source.SourceStatus;
 import com.stripe.android.model.SourceParams;
 import com.stripe.android.model.Token;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static com.gettipsi.stripe.Errors.getDescription;
@@ -495,10 +497,20 @@ public class StripeModule extends ReactContextBaseJavaModule {
 
     ReadableMap cardParams = getMapOrNull(options, "card");
     ReadableMap billingDetailsParams = getMapOrNull(options, "billingDetails");
+    ReadableMap metadataParams = getMapOrNull(options, "metadata");
 
     PaymentMethodCreateParams.Card card = null;
     PaymentMethod.BillingDetails billingDetails = null;
     Address address = null;
+    Map<String, String> metadata = new HashMap<>();
+
+    if (metadataParams != null) {
+      ReadableMapKeySetIterator iter = metadataParams.keySetIterator();
+      while (iter.hasNextKey()) {
+        String key = iter.nextKey();
+        metadata.put(key, metadataParams.getString(key));
+      }
+    }
 
     if (billingDetailsParams != null) {
 
@@ -539,7 +551,8 @@ public class StripeModule extends ReactContextBaseJavaModule {
 
     return PaymentMethodCreateParams.create(
       card,
-      billingDetails
+      billingDetails,
+      metadata
     );
   }
 

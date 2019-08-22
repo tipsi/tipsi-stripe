@@ -222,8 +222,7 @@ export const createPaymentMethodPropType = {
     PropTypes.shape({ token: PropTypes.string }),
   ]),
 
-  // Undocumented Extra Metadata
-  // TODO metadata support on Android
+  // TODO: Add documentation for metadata (supported on iOS and Android)
   metadata: PropTypes.object,
   // TODO: customerId support
 }
