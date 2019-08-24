@@ -1,7 +1,8 @@
 #import "TPSStripeManager+Constants.h"
 
 #define TPSStripeBridgeTypeDefine(identifier)
-#define TPSStripeBridgeKeyDeclare(identifier, key) TPSStripeType(identifier) const TPSStripe_##identifier##Key_##key = @"" #key
+#define TPSStripeBridgeKeyDeclare(identifier, key) TPSStripeType(identifier) const TPSStripe_##identifier##_##key = @"" #key
+#define TPSStripeBridgeKeyDeclareCustom(identifier, key, value) TPSStripeType(identifier) const TPSStripe_##identifier##_##key = value
 
 TPSStripeBridgeTypeDefine(createPaymentMethod);
 TPSStripeBridgeKeyDeclare(createPaymentMethod, id);

@@ -1,9 +1,9 @@
 #import <Foundation/Foundation.h>
 
-#define TPSStripeType(identifier) TPSStripe_##identifier##Key
-#define TPSStripeBridgeTypeDefine(methodOrIdentifier) typedef NSString * TPSStripeType(methodOrIdentifier) NS_EXTENSIBLE_STRING_ENUM
-
-#define TPSStripeBridgeKeyDeclare(method, key) extern TPSStripeType(method) const TPSStripe_##method##Key_##key
+#define TPSStripeType(identifier) TPSStripe_##identifier
+#define TPSStripeBridgeTypeDefine(identifier) typedef NSString * TPSStripeType(identifier) NS_EXTENSIBLE_STRING_ENUM
+#define TPSStripeBridgeKeyDeclare(identifier, key) extern TPSStripeType(identifier) const TPSStripe_##identifier##_##key
+#define TPSStripeBridgeKeyDeclareCustom(identifier, key, value) extern TPSStripeType(identifier) const TPSStripe_##identifier##_##key
 
 TPSStripeBridgeTypeDefine(createPaymentMethod);
 TPSStripeBridgeKeyDeclare(createPaymentMethod, id);
@@ -117,8 +117,9 @@ TPSStripeBridgeKeyDeclare(SetupIntentStatus, requires_payment_method);
 TPSStripeBridgeKeyDeclare(SetupIntentStatus, requires_confirmation);
 TPSStripeBridgeKeyDeclare(SetupIntentStatus, succeeded);
 
+#undef TPSStripeBridgeKeyDeclareCustom
 #undef TPSStripeBridgeKeyDeclare
 #undef TPSStripeBridgeTypeDefine
 
 // Lookup helper
-#define TPSStripeParam(methodOrIdentifier, key) (TPSStripe_##methodOrIdentifier##Key_##key)
+#define TPSStripeParam(identifier, key) (TPSStripe_##identifier##Key_##key)
