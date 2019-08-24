@@ -30,7 +30,7 @@ import deprecatedMethodsForInstance from './Stripe.deprecated'
  * @property {boolean} livemode
  * @property {string} type
  * @property {BillingDetails} billingDetails
- * @property {string} customerId
+ * @property {string} customerId to set this, you must attach the PaymentMethod to a customer on your backend
  */
 
 /* eslint-disable max-len */
@@ -56,7 +56,6 @@ import deprecatedMethodsForInstance from './Stripe.deprecated'
  * @property {BillingDetails} billingDetails
  * @property {(PaymentMethodCardParams|PaymentMethodParamsCardByToken)} card - the Parameters to build a card
  * @property {Object} metadata
- * @property {string} customerId
  */
 
 /**
