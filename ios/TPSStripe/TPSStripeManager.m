@@ -936,7 +936,6 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
 
 - (STPPaymentMethodParams*)extractCreatePaymentMethodParamsFromDictionary:(NSDictionary<TPSStripeType(createPaymentMethod), id>*)params {
     NSDictionary<TPSStripeType(CardParams), id> * cardParamsInput = params[TPSStripeParam(createPaymentMethod, card)];
-    NSParameterAssert(cardParamsInput);
     if (!cardParamsInput) {return nil;}
 
     STPPaymentMethodCardParams * card = [self extractPaymentMethodCardParamsFromDictionary:cardParamsInput];
