@@ -1410,22 +1410,7 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
 }
 
 - (NSString *)cardBrand:(STPCardBrand)inputBrand {
-    switch (inputBrand) {
-        case STPCardBrandJCB:
-            return @"JCB";
-        case STPCardBrandAmex:
-            return @"American Express";
-        case STPCardBrandVisa:
-            return @"Visa";
-        case STPCardBrandDiscover:
-            return @"Discover";
-        case STPCardBrandDinersClub:
-            return @"Diners Club";
-        case STPCardBrandMasterCard:
-            return @"MasterCard";
-        default:
-            return @"Unknown";
-    }
+    return STPStringFromCardBrand(inputBrand);
 }
 
 - (NSString *)cardFunding:(STPCardFundingType)inputFunding {
