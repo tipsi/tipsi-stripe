@@ -16,11 +16,21 @@ import deprecatedMethodsForInstance from './Stripe.deprecated'
  */
 
 /**
- * @typedef {Object} BillingDetails
+ * @typedef {Object} PaymentMethodBillingDetails
  * @property {PaymentMethodAddress} address
  * @property {string} email
  * @property {string} name
  * @property {string} phone
+ */
+
+/**
+ * @typedef {Object} PaymentMethodCard
+ * @property {'Unknown'|'American Express'|'Diners Club'|'Discover'|'JCB'|'MasterCard'|'UnionPay'|'Visa'} brand https://stripe.com/docs/api/cards/object#card_object-brand
+ * @property {string} country ISO Country String
+ * @property {number} expMonth
+ * @property {number} expYear
+ * @property {'credit'|'debit'|'prepaid'|'unknown'} funding
+ * @property {string} last4
  */
 
 /**
@@ -29,7 +39,8 @@ import deprecatedMethodsForInstance from './Stripe.deprecated'
  * @property {number} created
  * @property {boolean} livemode
  * @property {string} type
- * @property {BillingDetails} billingDetails
+ * @property {PaymentMethodCard} PaymentMethodCard
+ * @property {PaymentMethodBillingDetails} billingDetails
  * @property {string} customerId to set this, you must attach the PaymentMethod to a customer on your backend
  */
 
