@@ -69,11 +69,11 @@ public class Converters {
 
     billingContactMap.putString("emailAddress", emailAddress);
     shippingContactMap.putString("emailAddress", emailAddress);
-    
+
 
     extra.putMap("billingContact", billingContactMap);
     extra.putMap("shippingContact", shippingContactMap);
-    
+
     tokenMap.putMap("extra", extra);
 
     return tokenMap;
@@ -97,7 +97,7 @@ public class Converters {
     result.putString("addressZip", card.getAddressZip() );
     result.putString("addressCountry", card.getAddressCountry() );
     result.putString("last4", card.getLast4() );
-    result.putString("brand", card.getBrand() );
+    result.putString("brand", Converters.convertCardBrandToString(card.getBrand()) );
     result.putString("funding", card.getFunding() );
     result.putString("fingerprint", card.getFingerprint() );
     result.putString("country", card.getCountry() );
@@ -284,6 +284,23 @@ public class Converters {
   }
 
   @NonNull
+  public static String convertCardBrandToString(@Nullable final PaymentMethod.Card.CardBrand brand) {
+    // Documentation: https://stripe.com/docs/api/cards/object#card_object-brand
+    switch(brand) {
+      case Card.CardBrand.AMERICAN_EXPRESS: return "American Express";
+      case Card.CardBrand.DINERS_CLUB: return "Diners Club";
+      case Card.CardBrand.DISCOVER: return "Discover";
+      case Card.CardBrand.JCB: return "JCB";
+      case Card.CardBrand.MASTERCARD: return "MasterCard";
+      case Card.CardBrand.UNIONPAY: return "UnionPay";
+      case Card.CardBrand.VISA: return "Visa";
+      case Card.CardBrand.UNKNOWN:
+      default:
+        return "Unknown";
+    }
+  }
+
+  @NonNull
   public static WritableMap convertPaymentMethodCardToWritableMap(@Nullable final PaymentMethod.Card card) {
     WritableMap wm = Arguments.createMap();
 
@@ -293,7 +310,7 @@ public class Converters {
 
     // Omitted (can be introduced later): card.checks, card.threeDSecureUsage, card.wallet
 
-    wm.putString("brand", card.brand);
+    wm.putString("brand", Converters.convertCardBrandToString(card.brand));
     wm.putString("country", card.country);
     wm.putInt("expMonth", card.expiryMonth);
     wm.putInt("expYear", card.expiryYear);
