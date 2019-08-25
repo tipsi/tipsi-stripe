@@ -15,7 +15,6 @@ import com.google.android.gms.identity.intents.model.UserAddress;
 import com.google.android.gms.wallet.PaymentData;
 import com.stripe.android.PaymentIntentResult;
 import com.stripe.android.SetupIntentResult;
-import com.stripe.android.StripeIntentResult;
 import com.stripe.android.model.Address;
 import com.stripe.android.model.BankAccount;
 import com.stripe.android.model.Card;
@@ -25,7 +24,6 @@ import com.stripe.android.model.SourceCodeVerification;
 import com.stripe.android.model.SourceOwner;
 import com.stripe.android.model.SourceReceiver;
 import com.stripe.android.model.SourceRedirect;
-import com.stripe.android.model.StripeIntent;
 import com.stripe.android.model.Token;
 
 import java.util.ArrayList;
@@ -97,7 +95,7 @@ public class Converters {
     result.putString("addressZip", card.getAddressZip() );
     result.putString("addressCountry", card.getAddressCountry() );
     result.putString("last4", card.getLast4() );
-    result.putString("brand", Converters.convertCardBrandToString(card.getBrand()) );
+    result.putString("brand", card.getBrand() );
     result.putString("funding", card.getFunding() );
     result.putString("fingerprint", card.getFingerprint() );
     result.putString("country", card.getCountry() );
@@ -284,23 +282,6 @@ public class Converters {
   }
 
   @NonNull
-  public static String convertCardBrandToString(@Nullable final PaymentMethod.Card.CardBrand brand) {
-    // Documentation: https://stripe.com/docs/api/cards/object#card_object-brand
-    switch(brand) {
-      case Card.CardBrand.AMERICAN_EXPRESS: return "American Express";
-      case Card.CardBrand.DINERS_CLUB: return "Diners Club";
-      case Card.CardBrand.DISCOVER: return "Discover";
-      case Card.CardBrand.JCB: return "JCB";
-      case Card.CardBrand.MASTERCARD: return "MasterCard";
-      case Card.CardBrand.UNIONPAY: return "UnionPay";
-      case Card.CardBrand.VISA: return "Visa";
-      case Card.CardBrand.UNKNOWN:
-      default:
-        return "Unknown";
-    }
-  }
-
-  @NonNull
   public static WritableMap convertPaymentMethodCardToWritableMap(@Nullable final PaymentMethod.Card card) {
     WritableMap wm = Arguments.createMap();
 
@@ -310,7 +291,7 @@ public class Converters {
 
     // Omitted (can be introduced later): card.checks, card.threeDSecureUsage, card.wallet
 
-    wm.putString("brand", Converters.convertCardBrandToString(card.brand));
+    wm.putString("brand", card.brand);
     wm.putString("country", card.country);
     wm.putInt("expMonth", card.expiryMonth);
     wm.putInt("expYear", card.expiryYear);
