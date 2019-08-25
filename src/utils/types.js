@@ -39,6 +39,39 @@ export const availableSourceTypes = [
   'card',
 ]
 
+/** Keys are lower-cased slug|string */
+export const brandToBrandSlugMapping = {
+  unknown: 'unknown',
+  amex: 'amex',
+  diners: 'diners',
+  discover: 'discover',
+  jcb: 'jcb',
+  mastercard: 'mastercard',
+  unionpay: 'unionpay',
+  visa: 'visa',
+
+  'american express': 'amex',
+  'diners club': 'diners',
+}
+export const exactBrandSlugs = new Set(Object.values(brandToBrandSlugMapping))
+/** Keys are lower-cased slug|string */
+export const brandToPresentableBrandStringMapping = {
+  unknown: 'Unknown',
+  amex: 'American Express',
+  diners: 'Diners Club',
+  discover: 'Discover',
+  jcb: 'JCB',
+  mastercard: 'MasterCard',
+  unionpay: 'UnionPay',
+  visa: 'Visa',
+
+  'american express': 'American Express',
+  'diners club': 'Diners Club',
+}
+export const exactPresentableBrandStrings = new Set(
+  Object.values(brandToPresentableBrandStringMapping)
+)
+
 export const setOptionsOptionsPropTypes = {
   publishableKey: PropTypes.string,
   merchantId: PropTypes.string,

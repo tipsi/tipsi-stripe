@@ -157,6 +157,26 @@ class Stripe {
   }
 
   /**
+   * Normalizes a card's brand in the format of a short identifier called a 'slug', eg 'amex'
+   * @param brand {string|CardBrandSlug|CardBrandPresentableString}
+   * @returns {CardBrandSlug}
+   */
+  slugForCardBrand = (brand = 'unknown') =>
+    types.exactBrandSlugs.has(brand)
+      ? brand
+      : types.brandToBrandSlugMapping[(brand || 'unknown').toLowerCase()] || 'unknown'
+
+  /**
+   * Normalizes a card's brand in the format of a human presentable name, eg 'American Express'
+   * @param brand {string|CardBrandSlug|CardBrandPresentableString}
+   * @returns {CardBrandPresentableString}
+   */
+  presentableStringForCardBrand = (brand = 'Unknown') =>
+    types.exactPresentableBrandStrings.has(brand)
+      ? brand
+      : types.brandToPresentableBrandStringMapping[(brand || 'unknown').toLowerCase()] || 'Unknown'
+
+  /**
    * @returns {Promise<boolean>}
    */
   deviceSupportsNativePay = () =>
