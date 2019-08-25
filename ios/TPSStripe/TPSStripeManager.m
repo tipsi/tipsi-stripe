@@ -1052,7 +1052,7 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
 #define TPSEntry(key) TPSStripeParam(PaymentMethodCard, key): card.key ?: NSNull.null
 #define TPSEntryNum(key) TPSStripeParam(PaymentMethodCard, key): @(card.key)
     return @{
-             TPSStripeParam(PaymentMethodCard, brand): [self cardBrand: card.brand] ?: NSNull.null,
+             TPSStripeParam(PaymentMethodCard, brand): [self cardBrandAsBrandSlug: card.brand] ?: NSNull.null,
              TPSEntry(country),
              TPSEntryNum(expMonth),
              TPSEntryNum(expYear),
@@ -1253,7 +1253,7 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
 
         [card setValue:token.card.stripeID forKey:@"cardId"];
 
-        [card setValue:[self cardBrand:token.card.brand] forKey:@"brand"];
+        [card setValue:[self cardBrandAsPresentableBrandString:token.card.brand] forKey:@"brand"];
         [card setValue:[self cardFunding:token.card.funding] forKey:@"funding"];
         [card setValue:token.card.last4 forKey:@"last4"];
         [card setValue:token.card.dynamicLast4 forKey:@"dynamicLast4"];
@@ -1386,7 +1386,7 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
         [cardDetails setValue:source.cardDetails.last4 forKey:@"last4"];
         [cardDetails setValue:@(source.cardDetails.expMonth) forKey:@"expMonth"];
         [cardDetails setValue:@(source.cardDetails.expYear) forKey:@"expYear"];
-        [cardDetails setValue:[self cardBrand:source.cardDetails.brand] forKey:@"brand"];
+        [cardDetails setValue:[self cardBrandAsPresentableBrandString:source.cardDetails.brand] forKey:@"brand"];
         [cardDetails setValue:[self cardFunding:source.cardDetails.funding] forKey:@"funding"];
         [cardDetails setValue:source.cardDetails.country forKey:@"country"];
         [cardDetails setValue:[self card3DSecureStatus:source.cardDetails.threeDSecure] forKey:@"threeDSecure"];
@@ -1409,7 +1409,29 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     return result;
 }
 
-- (NSString *)cardBrand:(STPCardBrand)inputBrand {
+/// API: https://stripe.com/docs/api/payment_methods/object#payment_method_object-card-brand
+- (NSString *)cardBrandAsBrandSlug:(STPCardBrand)inputBrand {
+    switch (inputBrand) {
+        case STPCardBrandJCB:
+            return @"jcb";
+        case STPCardBrandAmex:
+            return @"amex";
+        case STPCardBrandVisa:
+            return @"visa";
+        case STPCardBrandDiscover:
+            return @"discover";
+        case STPCardBrandDinersClub:
+            return @"diners";
+        case STPCardBrandMasterCard:
+            return @"mastercard";
+        case STPCardBrandUnknown:
+        default:
+            return @"unknown";
+    }
+}
+
+/// API: https://stripe.com/docs/api/cards/object#card_object-brand
+- (NSString *)cardBrandAsPresentableBrandString:(STPCardBrand)inputBrand {
     return STPStringFromCardBrand(inputBrand);
 }
 

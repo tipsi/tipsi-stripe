@@ -23,9 +23,24 @@ import deprecatedMethodsForInstance from './Stripe.deprecated'
  * @property {string} phone
  */
 
+/* eslint-disable max-len */
+/**
+ * API: https://stripe.com/docs/api/payment_methods/object#payment_method_object-card-brand
+ * iOS: https://github.com/stripe/stripe-ios/blob/d4d32db2542e9ef65e423f7fbd8cd00e98936990/Stripe/STPPaymentMethodCard.m#L82-L102
+ * Android: https://github.com/stripe/stripe-android/blob/2a247df77bc088e1755a97cab407168cb428fa21/stripe/src/main/java/com/stripe/android/model/PaymentMethod.java#L512-L521
+ * @typedef {'unknown'|'amex'|'diners'|'discover'|'jcb'|'mastercard'|'unionpay'|'visa'} CardBrandSlug
+ */
+
+/**
+ * API: https://stripe.com/docs/api/cards/object#card_object-brand
+ * iOS: https://github.com/stripe/stripe-ios/blob/d4d32db2542e9ef65e423f7fbd8cd00e98936990/Stripe/STPCard.m#L43-L63
+ * Android: https://github.com/stripe/stripe-android/blob/2a247df77bc088e1755a97cab407168cb428fa21/stripe/src/main/java/com/stripe/android/model/Card.java#L49-L58
+ * @typedef {'Unknown'|'American Express'|'Diners Club'|'Discover'|'JCB'|'MasterCard'|'UnionPay'|'Visa'} CardBrandPresentableString
+ */
+
 /**
  * @typedef {Object} PaymentMethodCard
- * @property {'Unknown'|'American Express'|'Diners Club'|'Discover'|'JCB'|'MasterCard'|'UnionPay'|'Visa'} brand https://stripe.com/docs/api/cards/object#card_object-brand
+ * @property {CardBrandSlug} brand
  * @property {string} country ISO Country String
  * @property {number} expMonth
  * @property {number} expYear
@@ -44,7 +59,6 @@ import deprecatedMethodsForInstance from './Stripe.deprecated'
  * @property {string} customerId to set this, you must attach the PaymentMethod to a customer on your backend
  */
 
-/* eslint-disable max-len */
 /**
  * https://stripe.com/docs/api/payment_intents/object#payment_intent_object-status
  * @typedef {('unknown'|'canceled'|'processing'|'requires_action'|'requires_capture'|'requires_payment_method'|'requires_confirmation'|'succeeded')} StripePaymentIntentStatus
