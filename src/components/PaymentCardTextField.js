@@ -16,6 +16,53 @@ const FieldStylePropType = PropTypes.shape({
   color: PropTypes.string,
 })
 
+/**
+ * @typedef {Object} PaymentCardTextFieldNativeEventParams
+ * @property {string} number -- card number as a string
+ * @property {number} expMonth
+ * @property {number} expYear
+ * @property {string} cvc
+ */
+
+/**
+ * @typedef {Object} PaymentCardTextFieldNativeEvent
+ * @property {boolean}  valid
+ * @property {PaymentCardTextFieldNativeEventParams} params
+ */
+
+/**
+ * @callback OnChangeCallback
+ * @param {PaymentCardTextFieldNativeEvent} params
+ */
+
+/**
+ * // TODO: Get a more precise type here, not sure how to JSDoc react-native Style Types
+ * @typedef {Object} PaymentComponentTextFieldStyleProp
+ */
+
+/**
+ * A Component that collects the CardNumber, ExpirationDate, and CVC all in one.
+ * @typedef {Object} PaymentCardTextFieldProps
+ *
+ * @property {string} expirationPlaceholder
+ * @property {string} numberPlaceholder
+ * @property {string} cvcPlaceholder
+ * @property {boolean} disabled
+ * @property {OnChangeCallback} onChange
+ * @property {PaymentComponentTextFieldStyleProp} style
+ *
+ * @property {string} cursorColor iOS-only!
+ * @property {string} textErrorColor iOS-only!
+ * @property {string} placeholderColor iOS-only!
+ * @property {"default"|"light"|"dark"} keyboardAppearance iOS-only!
+ *
+ * @property {boolean} setEnabled Android-only!
+ * @property {string} backgroundColor Android-only!
+ * @property {string} cardNumber Android-only!
+ * @property {string} expDate Android-only!
+ * @property {string} securityCode Android-only!
+ */
+
 const NativePaymentCardTextField = requireNativeComponent('TPSCardField', PaymentCardTextField, {
   nativeOnly: {
     borderColor: true,
@@ -33,6 +80,9 @@ const NativePaymentCardTextField = requireNativeComponent('TPSCardField', Paymen
   },
 })
 
+/**
+ * @type {import('react').ComponentClass<PaymentCardTextFieldProps>}
+ */
 export default class PaymentCardTextField extends Component {
   static propTypes = {
     ...ViewPropTypes,

@@ -28,6 +28,9 @@ module.exports = {
         "ignoreRegExpLiterals": true
       }
     ],
+    // We have some utility methods exposed on the Stripe JS Class
+    // These don't reference 'this', so this rule doesn't apply in our library
+    'class-methods-use-this': 0,
     // This would prevent the ForInStatement which has been in the codebase for
     // 2 years, so we're overriding the tipsi-style to allow this
     "no-restricted-syntax": 0,
