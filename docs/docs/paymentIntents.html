@@ -726,10 +726,10 @@
                       <a
                         class="anchor"
                         aria-hidden="true"
-                        id="the-merchant-initiated-a-payment-that-requires-authentication-from-the-user"
+                        id="you-initiated-a-payment-on-the-server-that-required-authentication-from-the-user"
                       ></a
                       ><a
-                        href="#the-merchant-initiated-a-payment-that-requires-authentication-from-the-user"
+                        href="#you-initiated-a-payment-on-the-server-that-required-authentication-from-the-user"
                         aria-hidden="true"
                         class="hash-link"
                         ><svg
@@ -744,9 +744,36 @@
                             fill-rule="evenodd"
                             d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
                           ></path></svg></a
-                      >The merchant initiated a payment that requires authentication from the user
+                      >You initiated a payment on the server that required authentication from the
+                      user
                     </h2>
-                    <p>TODO</p>
+                    <p>
+                      In this scenario, you attempted to confirm a PaymentIntent on the server using
+                      a payment method with <code>off_session=true</code>, however the payment
+                      required authentication. The <code>/confirm</code> API call would fail and the
+                      PaymentIntent would transition to <code>status=requires_payment_method</code>.
+                    </p>
+                    <p>
+                      At this stage the user needs to be brought back on-session, via an email or
+                      notification. When the user is brought into the app, you should, for the same
+                      PaymentIntent:
+                    </p>
+                    <ol>
+                      <li>
+                        Present the option to attempt the payment using the same card, or to provide
+                        a new one.
+                      </li>
+                      <li>
+                        Attach the selected card to the payment method to the PaymentIntent on the
+                        server side.
+                      </li>
+                      <li>
+                        Handle the payment as though it were an on-session payment. See the section
+                        <a href="#initiating-a-payment-from-the-mobile-app"
+                          >Initiating a payment from the mobile app</a
+                        >
+                      </li>
+                    </ol>
                     <h2>
                       <a
                         class="anchor"
@@ -771,7 +798,32 @@
                           ></path></svg></a
                       >The user is saving a card for future use
                     </h2>
-                    <p>TODO</p>
+                    <p>
+                      When saving a card as a PaymentMethod to either bill a user later, or for the
+                      user to make purchases with, we want to collect authentication up-front, if
+                      it's needed by the card, to minimize the chance that we will need to interrupt
+                      them for authentication on future payments. We can prepare the card by using a
+                      SetupIntent. Here are the steps:
+                    </p>
+                    <ol>
+                      <li>
+                        Create a SetupIntent on the server (use
+                        <code>confirmation_method=automatic</code>) for the selected payment method.
+                      </li>
+                      <li>Return the <code>client_secret</code> of the SetupIntent to the app.</li>
+                      <li>
+                        Call <code>stripe.confirmSetupIntent()</code>. This will prompt the user for
+                        authentication (if needed) and finishes the setup.
+                      </li>
+                    </ol>
+                    <pre><code class="hljs css language-js"><span class="hljs-keyword">try</span> {
+  <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> stripe.confirmSetupIntent({
+    <span class="hljs-attr">clientSecret</span> : <span class="hljs-string">"..."</span>
+  })
+} <span class="hljs-keyword">catch</span> (e) {
+  <span class="hljs-comment">// handle exception here</span>
+}
+</code></pre>
                   </span>
                 </div>
               </article>

@@ -143,10 +143,39 @@ In this flow, follow these steps:
   * On your backend, you can listen for webhooks of the payment intent succeeding that will be sent by Stripe.
 
 
-## The merchant initiated a payment that requires authentication from the user 
+## You initiated a payment on the server that required authentication from the user 
 
-TODO
+In this scenario, you attempted to confirm a PaymentIntent on the server using a payment method
+with `off_session=true`, however the payment required authentication.
+The `/confirm` API call would fail and the PaymentIntent would transition to `status=requires_payment_method`.
+
+At this stage the user needs to be brought back on-session, via an email or notification.  When
+the user is brought into the app, you should, for the same PaymentIntent:
+
+1) Present the option to attempt the payment using the same card, or to provide a new one.
+2) Attach the selected card to the payment method to the PaymentIntent on the server side.
+3) Handle the payment as though it were an on-session payment.  See the section [Initiating a payment from the mobile app](#initiating-a-payment-from-the-mobile-app)
+
+
 
 ## The user is saving a card for future use
 
-TODO
+When saving a card as a PaymentMethod to either bill a user later, or for the user to make purchases
+with, we want to collect authentication up-front, if it's needed by the card, to minimize the chance
+that we will need to interrupt them for authentication on future payments.  We can prepare the card
+by using a SetupIntent.  Here are the steps:
+
+1) Create a SetupIntent on the server (use `confirmation_method=automatic`) for the selected payment method.
+2) Return the `client_secret` of the SetupIntent to the app.
+3) Call `stripe.confirmSetupIntent()`.  This will prompt the user for authentication (if needed) and
+finishes the setup.    
+  
+```js
+try {
+  const result = await stripe.confirmSetupIntent({
+    clientSecret : "..."
+  })
+} catch (e) {
+  // handle exception here
+}
+```
