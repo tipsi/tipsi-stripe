@@ -3,45 +3,32 @@ package com.gettipsi.stripe.dialog;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-import android.content.Context;
-import android.text.TextUtils;
 
 import com.devmarvel.creditcardentry.fields.SecurityCodeText;
 import com.devmarvel.creditcardentry.library.CreditCard;
 import com.devmarvel.creditcardentry.library.CreditCardForm;
-import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
-import com.facebook.react.bridge.WritableMap;
-import com.gettipsi.stripe.Errors;
 import com.gettipsi.stripe.R;
 import com.gettipsi.stripe.StripeModule;
 import com.gettipsi.stripe.util.CardFlipAnimator;
 import com.gettipsi.stripe.util.Converters;
 import com.gettipsi.stripe.util.Utils;
-import com.google.android.gms.wallet.WalletConstants;
 import com.stripe.android.ApiResultCallback;
-import com.stripe.android.SourceCallback;
-import com.stripe.android.Stripe;
-import com.stripe.android.TokenCallback;
 import com.stripe.android.model.Card;
 import com.stripe.android.model.PaymentMethod;
 import com.stripe.android.model.PaymentMethodCreateParams;
-import com.stripe.android.model.Source;
-import com.stripe.android.model.SourceParams;
-import com.stripe.android.model.Token;
-
-import static com.gettipsi.stripe.Errors.toErrorCode;
-import static com.gettipsi.stripe.util.Converters.convertPaymentMethodToWritableMap;
 
 /**
  * Created by dmitriy on 11/13/16
@@ -49,18 +36,12 @@ import static com.gettipsi.stripe.util.Converters.convertPaymentMethodToWritable
 
 public class AddCardDialogFragment extends DialogFragment {
 
-  private static final String KEY = "KEY";
   public static final String ERROR_CODE = "errorCode";
   public static final String ERROR_DESCRIPTION = "errorDescription";
-
-  private static final String CREATE_CARD_SOURCE_KEY = "CREATE_CARD_SOURCE_KEY";
-  private static final String TAG = AddCardDialogFragment.class.getSimpleName();
   private static final String CCV_INPUT_CLASS_NAME = SecurityCodeText.class.getSimpleName();
 
-  private String PUBLISHABLE_KEY;
   private String errorCode;
   private String errorDescription;
-  private boolean CREATE_CARD_SOURCE;
 
   private ProgressBar progressBar;
   private CreditCardForm from;
@@ -73,16 +54,12 @@ public class AddCardDialogFragment extends DialogFragment {
   private Button doneButton;
 
   public static AddCardDialogFragment newInstance(
-    final String PUBLISHABLE_KEY,
     final String errorCode,
-    final String errorDescription,
-    final boolean CREATE_CARD_SOURCE
+    final String errorDescription
   ) {
     Bundle args = new Bundle();
-    args.putString(KEY, PUBLISHABLE_KEY);
     args.putString(ERROR_CODE, errorCode);
     args.putString(ERROR_DESCRIPTION, errorDescription);
-    args.putBoolean(CREATE_CARD_SOURCE_KEY, CREATE_CARD_SOURCE);
 
     AddCardDialogFragment fragment = new AddCardDialogFragment();
     fragment.setArguments(args);
@@ -99,10 +76,8 @@ public class AddCardDialogFragment extends DialogFragment {
     super.onCreate(savedInstanceState);
     Bundle arguments = getArguments();
     if (arguments != null) {
-      PUBLISHABLE_KEY = arguments.getString(KEY);
       errorCode = arguments.getString(ERROR_CODE);
       errorDescription = arguments.getString(ERROR_DESCRIPTION);
-      CREATE_CARD_SOURCE = arguments.getBoolean(CREATE_CARD_SOURCE_KEY);
     }
   }
 
@@ -205,7 +180,6 @@ public class AddCardDialogFragment extends DialogFragment {
 
     String errorMessage = Utils.validateCard(card);
     if (errorMessage == null) {
-      if (CREATE_CARD_SOURCE) {
 
         PaymentMethodCreateParams pmcp = PaymentMethodCreateParams.create(
           new PaymentMethodCreateParams.Card.Builder().
@@ -237,29 +211,6 @@ public class AddCardDialogFragment extends DialogFragment {
               }
             }
         });
-
-      } else {
-
-        StripeModule.getInstance().getStripe().createToken(
-          card,
-          PUBLISHABLE_KEY,
-          new TokenCallback() {
-            public void onSuccess(Token token) {
-              if (promise != null) {
-                promise.resolve(Converters.convertTokenToWritableMap(token));
-                promise = null;
-              }
-              successful = true;
-              dismiss();
-            }
-
-            public void onError(Exception error) {
-              doneButton.setEnabled(true);
-              progressBar.setVisibility(View.GONE);
-              showToast(error.getLocalizedMessage());
-            }
-          });
-      }
 
     } else {
       doneButton.setEnabled(true);
