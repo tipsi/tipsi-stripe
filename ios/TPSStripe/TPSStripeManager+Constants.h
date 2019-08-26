@@ -122,4 +122,4 @@ TPSStripeBridgeKeyDeclare(SetupIntentStatus, succeeded);
 #undef TPSStripeBridgeTypeDefine
 
 // Lookup helper
-#define TPSStripeParam(identifier, key) (TPSStripe_##identifier##Key_##key)
+#define TPSStripeParam(identifier, key) (TPSStripe_##identifier##_##key)
