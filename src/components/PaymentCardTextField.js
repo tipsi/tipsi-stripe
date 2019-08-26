@@ -152,7 +152,8 @@ export default class PaymentCardTextField extends Component {
     this.params = nativeEvent.params
 
     if (onChange) {
-      onChange(event)
+      // Send the intended parameters back into JS
+      onChange({ ...nativeEvent })
     }
 
     if (onParamsChange) {
