@@ -10,22 +10,23 @@ export default class CardFormScreen extends PureComponent {
 
   state = {
     loading: false,
-    token: null,
+    paymentMethod: null,
   }
 
   handleCardPayPress = async () => {
     try {
-      this.setState({ loading: true, token: null })
-      const token = await stripe.paymentRequestWithCardForm(demoCardFormParameters)
+      this.setState({ loading: true, paymentMethod: null })
 
-      this.setState({ loading: false, token })
+      const paymentMethod = await stripe.paymentRequestWithCardForm(demoCardFormParameters)
+
+      this.setState({ loading: false, paymentMethod })
     } catch (error) {
       this.setState({ loading: false })
     }
   }
 
   render() {
-    const { loading, token } = this.state
+    const { loading, paymentMethod } = this.state
 
     return (
       <View style={styles.container}>
@@ -37,8 +38,8 @@ export default class CardFormScreen extends PureComponent {
           onPress={this.handleCardPayPress}
           {...testID('cardFormButton')}
         />
-        <View style={styles.token} {...testID('cardFormToken')}>
-          {token && <Text style={styles.instruction}>Token: {token.tokenId}</Text>}
+        <View style={styles.paymentMethod} {...testID('cardFormPaymentMethod')}>
+          {paymentMethod && <Text style={styles.instruction}>Payment Method: {JSON.stringify(paymentMethod)}</Text>}
         </View>
       </View>
     )
@@ -61,7 +62,7 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginBottom: 5,
   },
-  token: {
+  paymentMethod: {
     height: 20,
   },
 })

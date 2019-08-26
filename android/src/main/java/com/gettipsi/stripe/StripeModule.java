@@ -231,10 +231,8 @@ public class StripeModule extends ReactContextBaseJavaModule {
       ArgCheck.notEmptyString(mPublicKey);
 
       final AddCardDialogFragment cardDialog = AddCardDialogFragment.newInstance(
-        mPublicKey,
         getErrorCode(mErrorCodes, "cancelled"),
-        getDescription(mErrorCodes, "cancelled"),
-        params.hasKey("createCardSource") && params.getBoolean("createCardSource")
+        getDescription(mErrorCodes, "cancelled")
       );
       cardDialog.setPromise(promise);
       cardDialog.show(currentActivity.getFragmentManager(), "AddNewCard");
