@@ -96,6 +96,7 @@ import deprecatedMethodsForInstance from './Stripe.deprecated'
  * @typedef {Object} PaymentIntentConfirmationResult
  * @property {StripePaymentIntentStatus} status
  * @property {string} paymentIntentId
+ * @property {string} paymentMethodId -- if available -- iOS-Only for now
  */
 
 /**
@@ -107,6 +108,7 @@ import deprecatedMethodsForInstance from './Stripe.deprecated'
  * @typedef {Object} PaymentIntentAuthenticationResult
  * @property {StripePaymentIntentStatus} status
  * @property {string} paymentIntentId
+ * @property {string} paymentMethodId -- if available -- iOS-Only for now
  */
 
 /**
@@ -121,6 +123,7 @@ import deprecatedMethodsForInstance from './Stripe.deprecated'
  * @typedef {Object} SetupIntentConfirmationResult
  * @property {StripeSetupIntentStatus} status
  * @property {string} setupIntentId
+ * @property {string} paymentMethodId -- if available
  */
 
 /**
@@ -132,6 +135,7 @@ import deprecatedMethodsForInstance from './Stripe.deprecated'
  * @typedef {Object} SetupIntentAuthenticationResult
  * @property {StripeSetupIntentStatus} status
  * @property {string} setupIntentId
+ * @property {string} paymentMethodId -- if available
  */
 
 const { StripeModule } = NativeModules

@@ -242,8 +242,16 @@ public class Converters {
       return wm;
     }
 
-    wm.putString("status", paymentIntentResult.getIntent().getStatus().toString());
-    wm.putString("paymentIntentId", paymentIntentResult.getIntent().getId());
+    PaymentIntent intent = paymentIntentResult.getIntent();
+    wm.putString("status", intent.getStatus().toString());
+    wm.putString("paymentIntentId", intent.getId());
+
+    // The current generation of stripe-android does not expose getPaymentMethodId on PaymentIntents :(
+    // Feature Request: https://github.com/stripe/stripe-android/issues/1445
+    // String paymentMethodId = intent.getPaymentMethodId();
+    // if (paymentMethodId != null) {
+    //   wm.putString("paymentMethodId", paymentMethodId);
+    // }
     return wm;
   }
 
@@ -256,8 +264,14 @@ public class Converters {
       return wm;
     }
 
-    wm.putString("status", setupIntentResult.getIntent().getStatus().toString());
-    wm.putString("setupIntentId", setupIntentResult.getIntent().getId());
+    SetupIntent intent = setupIntentResult.getIntent();
+    wm.putString("status", intent.getStatus().toString());
+    wm.putString("setupIntentId", intent.getId());
+
+    String paymentMethodId = intent.getPaymentMethodId();
+    if (paymentMethodId != null) {
+      wm.putString("paymentMethodId", paymentMethodId);
+    }
     return wm;
   }
 

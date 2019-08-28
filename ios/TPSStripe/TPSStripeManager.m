@@ -995,20 +995,32 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
         return @{ TPSStripeParam(ConfirmPaymentIntentResult, status): [RCTConvert STPPaymentIntentStatusString: STPPaymentIntentStatusUnknown] };
     }
 
-    return @{
-             TPSStripeParam(ConfirmPaymentIntentResult, paymentIntentId): intent.stripeId,
-             TPSStripeParam(ConfirmPaymentIntentResult, status): [RCTConvert STPPaymentIntentStatusString: intent.status],
-             };
+    NSMutableDictionary * result
+    = @{
+        TPSStripeParam(ConfirmPaymentIntentResult, paymentIntentId): intent.stripeId,
+        TPSStripeParam(ConfirmPaymentIntentResult, status): [RCTConvert STPPaymentIntentStatusString: intent.status],
+        }.mutableCopy;
+
+    // Optional parameters need to be serialized differently than non-nullable ones
+    [result setValue:intent.paymentMethodId forKey:TPSStripeParam(ConfirmPaymentIntentResult, paymentMethodId)];
+
+    return result;
 }
 - (NSDictionary<TPSStripeType(AuthenticatePaymentIntentResult), id>*)convertAuthenticatePaymentIntentResult:(STPPaymentIntent*)intent {
     if (!intent) {
         return @{ TPSStripeParam(AuthenticatePaymentIntentResult, status): [RCTConvert STPPaymentIntentStatusString: STPPaymentIntentStatusUnknown] };
     }
 
-    return @{
-             TPSStripeParam(AuthenticatePaymentIntentResult, paymentIntentId): intent.stripeId,
-             TPSStripeParam(AuthenticatePaymentIntentResult, status): [RCTConvert STPPaymentIntentStatusString: intent.status],
-             };
+    NSMutableDictionary * result
+    = @{
+        TPSStripeParam(AuthenticatePaymentIntentResult, paymentIntentId): intent.stripeId,
+        TPSStripeParam(AuthenticatePaymentIntentResult, status): [RCTConvert STPPaymentIntentStatusString: intent.status],
+        }.mutableCopy;
+
+    // Optional parameters need to be serialized differently than non-nullable ones
+    [result setValue:intent.paymentMethodId forKey:TPSStripeParam(AuthenticatePaymentIntentResult, paymentMethodId)];
+
+    return result;
 }
 
 - (NSDictionary<TPSStripeType(ConfirmSetupIntentResult), id>*)convertConfirmSetupIntentResult:(STPSetupIntent*)intent {
@@ -1016,20 +1028,32 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
         return @{ TPSStripeParam(ConfirmSetupIntentResult, status): [RCTConvert STPSetupIntentStatusString: STPSetupIntentStatusUnknown] };
     }
 
-    return @{
-             TPSStripeParam(ConfirmSetupIntentResult, setupIntentId): intent.stripeID,
-             TPSStripeParam(ConfirmSetupIntentResult, status): [RCTConvert STPSetupIntentStatusString: intent.status],
-             };
+    NSMutableDictionary * result
+    = @{
+        TPSStripeParam(ConfirmSetupIntentResult, setupIntentId): intent.stripeID,
+        TPSStripeParam(ConfirmSetupIntentResult, status): [RCTConvert STPSetupIntentStatusString: intent.status],
+        }.mutableCopy;
+
+    // Optional parameters need to be serialized differently than non-nullable ones
+    [result setValue:intent.paymentMethodID forKey:TPSStripeParam(ConfirmSetupIntentResult, paymentMethodId)];
+
+    return result;
 }
 - (NSDictionary<TPSStripeType(AuthenticateSetupIntentResult), id>*)convertAuthenticateSetupIntentResult:(STPSetupIntent*)intent {
     if (!intent) {
         return @{ TPSStripeParam(AuthenticateSetupIntentResult, status): [RCTConvert STPSetupIntentStatusString: STPSetupIntentStatusUnknown] };
     }
 
-    return @{
-             TPSStripeParam(AuthenticateSetupIntentResult, setupIntentId): intent.stripeID,
-             TPSStripeParam(AuthenticateSetupIntentResult, status): [RCTConvert STPSetupIntentStatusString: intent.status],
-             };
+    NSMutableDictionary * result
+    = @{
+        TPSStripeParam(AuthenticateSetupIntentResult, setupIntentId): intent.stripeID,
+        TPSStripeParam(AuthenticateSetupIntentResult, status): [RCTConvert STPSetupIntentStatusString: intent.status],
+        }.mutableCopy;
+
+    // Optional parameters need to be serialized differently than non-nullable ones
+    [result setValue:intent.paymentMethodID forKey:TPSStripeParam(AuthenticateSetupIntentResult, paymentMethodId)];
+
+    return result;
 }
 
 - (NSDictionary*)convertPaymentMethod:(STPPaymentMethod*)method {
