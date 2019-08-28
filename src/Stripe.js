@@ -54,7 +54,7 @@ import deprecatedMethodsForInstance from './Stripe.deprecated'
  * @property {number} created
  * @property {boolean} livemode
  * @property {string} type
- * @property {PaymentMethodCard} PaymentMethodCard
+ * @property {PaymentMethodCard} card
  * @property {PaymentMethodBillingDetails} billingDetails
  * @property {string} customerId to set this, you must attach the PaymentMethod to a customer on your backend
  */
@@ -77,7 +77,6 @@ import deprecatedMethodsForInstance from './Stripe.deprecated'
 
 /**
  * @typedef {Object} CreatePaymentMethodParams
- * @property {string} id
  * @property {BillingDetails} billingDetails
  * @property {(PaymentMethodCardParams|PaymentMethodParamsCardByToken)} card - the Parameters to build a card
  * @property {Object} metadata
@@ -146,7 +145,7 @@ class Stripe {
   }
   /**
    * @param options: {StripeOptions}
-   * @returns {void}
+   * @returns {Promise<void>}
    */
   setOptions = (options = {}) => {
     checkArgs(types.setOptionsOptionsPropTypes, options, 'options', 'Stripe.setOptions')
