@@ -22,7 +22,7 @@
 NSString * const TPSAppInfoName = @"tipsi-stripe";
 NSString * const TPSAppInfoPartnerId = @"tipsi-stripe";
 NSString * const TPSAppInfoURL = @"https://github.com/tipsi/tipsi-stripe";
-NSString * const TPSAppInfoVersion = @"7.x";
+NSString * const TPSAppInfoVersion = @"8.x";
 
 NSString * const kErrorKeyCode = @"errorCode";
 NSString * const kErrorKeyDescription = @"description";
