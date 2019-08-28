@@ -71,7 +71,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
   // - https://stripe.com/docs/building-plugins#setappinfo
   private static final String APP_INFO_NAME    = "tipsi-stripe";
   private static final String APP_INFO_URL     = "https://github.com/tipsi/tipsi-stripe";
-  private static final String APP_INFO_VERSION = "7.x";
+  private static final String APP_INFO_VERSION = "8.x";
   public static final String CLIENT_SECRET = "clientSecret";
 
   private static StripeModule sInstance = null;

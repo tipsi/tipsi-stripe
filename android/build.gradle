@@ -57,8 +57,8 @@ repositories {
     url "https://jitpack.io"
   }
   jcenter()
-  maven {
-    // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
-    url "$rootDir/../example/node_modules/react-native/android"
-  }
+//  maven {
+//    // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+//    url "$rootDir/../example/node_modules/react-native/android"
+//  }
 }
