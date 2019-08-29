@@ -283,6 +283,7 @@ export const confirmPaymentIntentPropType = PropTypes.oneOfType([
 
 export const authenticatePaymentIntentPropType = {
   clientSecret: PropTypes.string.isRequired,
+  returnURL: PropTypes.string,
 }
 
 const confirmSetupIntentPropTypeBase = {
@@ -304,4 +305,5 @@ export const confirmSetupIntentPropType = PropTypes.oneOfType([
 
 export const authenticateSetupIntentPropType = {
   clientSecret: PropTypes.string.isRequired,
+  returnURL: PropTypes.string,
 }

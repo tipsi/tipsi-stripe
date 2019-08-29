@@ -74,6 +74,7 @@ TPSStripeBridgeKeyDeclare(ConfirmPaymentIntentResult, status);
 
 TPSStripeBridgeTypeDefine(authenticatePaymentIntent);
 TPSStripeBridgeKeyDeclare(authenticatePaymentIntent, clientSecret);
+TPSStripeBridgeKeyDeclare(authenticatePaymentIntent, returnURL);
 
 TPSStripeBridgeTypeDefine(AuthenticatePaymentIntentResult);
 TPSStripeBridgeKeyDeclare(AuthenticatePaymentIntentResult, paymentIntentId);
@@ -95,6 +96,7 @@ TPSStripeBridgeKeyDeclare(ConfirmSetupIntentResult, status);
 
 TPSStripeBridgeTypeDefine(authenticateSetupIntent);
 TPSStripeBridgeKeyDeclare(authenticateSetupIntent, clientSecret);
+TPSStripeBridgeKeyDeclare(authenticateSetupIntent, returnURL);
 
 TPSStripeBridgeTypeDefine(AuthenticateSetupIntentResult);
 TPSStripeBridgeKeyDeclare(AuthenticateSetupIntentResult, setupIntentId);

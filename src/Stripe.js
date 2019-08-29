@@ -102,6 +102,7 @@ import deprecatedMethodsForInstance from './Stripe.deprecated'
 /**
  * @typedef {Object} AuthenticatePaymentIntentParams
  * @property {string} clientSecret
+ * @property {string} returnURL
  */
 
 /**
@@ -129,6 +130,7 @@ import deprecatedMethodsForInstance from './Stripe.deprecated'
 /**
  * @typedef {Object} AuthenticateSetupIntentParams
  * @property {string} clientSecret
+ * @property {string} returnURL
  */
 
 /**
