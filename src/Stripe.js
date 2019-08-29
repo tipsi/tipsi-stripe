@@ -96,7 +96,7 @@ import deprecatedMethodsForInstance from './Stripe.deprecated'
  * @typedef {Object} PaymentIntentConfirmationResult
  * @property {StripePaymentIntentStatus} status
  * @property {string} paymentIntentId
- * @property {string} paymentMethodId -- if available -- iOS-Only for now
+ * @property {string} paymentMethodId -- if available
  */
 
 /**
@@ -108,7 +108,7 @@ import deprecatedMethodsForInstance from './Stripe.deprecated'
  * @typedef {Object} PaymentIntentAuthenticationResult
  * @property {StripePaymentIntentStatus} status
  * @property {string} paymentIntentId
- * @property {string} paymentMethodId -- if available -- iOS-Only for now
+ * @property {string} paymentMethodId -- if available
  */
 
 /**
