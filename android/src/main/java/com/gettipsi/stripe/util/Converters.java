@@ -239,6 +239,7 @@ public class Converters {
     WritableMap wm = Arguments.createMap();
 
     if (paymentIntentResult == null) {
+      wm.putString("status", "unknown");
       return wm;
     }
 
@@ -261,6 +262,7 @@ public class Converters {
     WritableMap wm = Arguments.createMap();
 
     if (setupIntentResult == null) {
+      wm.putString("status", "unknown");
       return wm;
     }
 
