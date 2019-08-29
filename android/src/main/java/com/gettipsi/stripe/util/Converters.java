@@ -18,7 +18,9 @@ import com.stripe.android.SetupIntentResult;
 import com.stripe.android.model.Address;
 import com.stripe.android.model.BankAccount;
 import com.stripe.android.model.Card;
+import com.stripe.android.model.PaymentIntent;
 import com.stripe.android.model.PaymentMethod;
+import com.stripe.android.model.SetupIntent;
 import com.stripe.android.model.Source;
 import com.stripe.android.model.SourceCodeVerification;
 import com.stripe.android.model.SourceOwner;
@@ -247,12 +249,10 @@ public class Converters {
     wm.putString("status", intent.getStatus().toString());
     wm.putString("paymentIntentId", intent.getId());
 
-    // The current generation of stripe-android does not expose getPaymentMethodId on PaymentIntents :(
-    // Feature Request: https://github.com/stripe/stripe-android/issues/1445
-    // String paymentMethodId = intent.getPaymentMethodId();
-    // if (paymentMethodId != null) {
-    //   wm.putString("paymentMethodId", paymentMethodId);
-    // }
+    String paymentMethodId = intent.getPaymentMethodId();
+    if (paymentMethodId != null) {
+      wm.putString("paymentMethodId", paymentMethodId);
+    }
     return wm;
   }
 

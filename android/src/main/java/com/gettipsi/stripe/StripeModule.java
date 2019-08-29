@@ -246,7 +246,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
     getPayFlow().paymentRequestWithAndroidPay(payParams, promise);
   }
 
-  public void attachPaymentResultActivityListener(final Promise promise) {
+  private void attachPaymentResultActivityListener(final Promise promise) {
     ActivityEventListener ael = new BaseActivityEventListener() {
 
       @Override
@@ -277,7 +277,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
     getReactApplicationContext().addActivityEventListener(ael);
   }
 
-  public void attachSetupResultActivityListener(final Promise promise) {
+  private void attachSetupResultActivityListener(final Promise promise) {
     ActivityEventListener ael = new BaseActivityEventListener() {
       @Override
       public void onActivityResult(Activity a, int requestCode, int resultCode, Intent data) {

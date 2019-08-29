@@ -8,7 +8,7 @@
 - Target SDK Version increased from 26 -> 28
 - Min SDK Version increased from 16 -> 19
 - Support libraries increased from 27.1.0 to 28.0.0
-- `stripe-android` upgraded from 8.1.0 to 10.2.1
+- `stripe-android` upgraded from 8.1.0 to 10.4.0
 
 ### iOS
 
