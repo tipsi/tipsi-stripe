@@ -88,7 +88,7 @@ import deprecatedMethodsForInstance from './Stripe.deprecated'
  * @property {CreatePaymentMethodParams} paymentMethod
  * @property {string} paymentMethodId
  * @property {string} sourceId
- * @property {string} returnURL
+ * @property {string} returnURL - Optional see: https://stripe.com/docs/mobile/ios/authentication#return-url
  * @property {boolean} savePaymentMethod
  */
 
@@ -102,7 +102,7 @@ import deprecatedMethodsForInstance from './Stripe.deprecated'
 /**
  * @typedef {Object} AuthenticatePaymentIntentParams
  * @property {string} clientSecret
- * @property {string} returnURL
+ * @property {string} returnURL - Optional see: https://stripe.com/docs/mobile/ios/authentication#return-url
  */
 
 /**
@@ -117,7 +117,7 @@ import deprecatedMethodsForInstance from './Stripe.deprecated'
  * @property {string} clientSecret
  * @property {CreatePaymentMethodParams} paymentMethod
  * @property {string} paymentMethodId
- * @property {string} returnURL
+ * @property {string} returnURL - Optional see: https://stripe.com/docs/mobile/ios/authentication#return-url
  */
 
 /**
@@ -130,7 +130,7 @@ import deprecatedMethodsForInstance from './Stripe.deprecated'
 /**
  * @typedef {Object} AuthenticateSetupIntentParams
  * @property {string} clientSecret
- * @property {string} returnURL
+ * @property {string} returnURL - Optional see: https://stripe.com/docs/mobile/ios/authentication#return-url
  */
 
 /**
