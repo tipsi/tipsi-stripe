@@ -26,6 +26,7 @@ files_to_copy=(
   .appiumhelperrc
   package.json
   package-lock.json
+  app.json
   index.{ios,android}.js
   android/appium-config.json
   android/build.gradle

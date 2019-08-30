@@ -249,10 +249,10 @@ public class Converters {
     wm.putString("status", intent.getStatus().toString());
     wm.putString("paymentIntentId", intent.getId());
 
-    String paymentMethodId = intent.getPaymentMethodId();
-    if (paymentMethodId != null) {
-      wm.putString("paymentMethodId", paymentMethodId);
-    }
+//    String paymentMethodId = intent.getPaymentMethodId();
+//    if (paymentMethodId != null) {
+//      wm.putString("paymentMethodId", paymentMethodId);
+//    }
     return wm;
   }
 

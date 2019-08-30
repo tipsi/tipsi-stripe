@@ -414,6 +414,9 @@ public class StripeModule extends ReactContextBaseJavaModule {
     String returnURL = getStringOrNull(options, "returnURL");
     String clientSecret = options.getString("clientSecret");
     ConfirmSetupIntentParams csip = null;
+    if (returnURL ==  null) {
+      returnURL = "stripejs://use_stripe_sdk/return_url";
+    }
 
     if (paymentMethod != null) {
       csip = ConfirmSetupIntentParams.create(extractPaymentMethodCreateParams(paymentMethod),
@@ -438,6 +441,9 @@ public class StripeModule extends ReactContextBaseJavaModule {
     // String sourceId = getStringOrNull(options,"sourceId");
 
     String returnURL = getStringOrNull(options, "returnURL");
+    if (returnURL ==  null) {
+      returnURL = "stripejs://use_stripe_sdk/return_url";
+    }
     boolean savePaymentMethod = getBooleanOrNull(options, "savePaymentMethod", false);
 
     // TODO support extra params in each of the create methods below

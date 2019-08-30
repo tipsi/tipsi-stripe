@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, ScrollView } from 'react-native'
 import stripe from 'tipsi-stripe'
 import Button from '../components/Button'
 import testID from '../utils/testID'
@@ -80,7 +80,7 @@ export default class SetupIntentScreen extends PureComponent {
       this.setState({ ...this.state, showCardSelection: !showCardSelection })
 
     return (
-      <View style={styles.column}>
+      <ScrollView style={styles.column}>
         <Text style={styles.header}>Create Setup Intent</Text>
 
         <Button
@@ -132,7 +132,7 @@ export default class SetupIntentScreen extends PureComponent {
             Error: {JSON.stringify(error)}
           </Text>
         )}
-      </View>
+      </ScrollView>
     )
   }
 }
