@@ -373,7 +373,7 @@ RCT_EXPORT_METHOD(confirmPaymentIntent:(NSDictionary<NSString*, id>*)untypedPara
                                  if (error) {
                                      self->requestIsCompleted = YES;
                                      NSDictionary *jsError = [self->errorCodes valueForKey:kErrorKeyApi];
-                                     [self rejectPromiseWithCode:jsError[kErrorKeyCode] message:error.localizedDescription];
+                                     [self rejectPromiseWithCode:jsError[kErrorKeyCode] message:error.localizedDescription error:error];
                                      return;
                                  }
                                  if (intent.status == STPPaymentIntentStatusRequiresAction) {
@@ -386,7 +386,7 @@ RCT_EXPORT_METHOD(confirmPaymentIntent:(NSDictionary<NSString*, id>*)untypedPara
 
                                                                                             if (error) {
                                                                                                 NSDictionary *jsError = [self->errorCodes valueForKey:kErrorKeyApi];
-                                                                                                [self rejectPromiseWithCode:jsError[kErrorKeyCode] message:error.localizedDescription];
+                                                                                                [self rejectPromiseWithCode:jsError[kErrorKeyCode] message:error.localizedDescription error:error];
                                                                                                 return;
                                                                                             }
 
@@ -436,7 +436,7 @@ RCT_EXPORT_METHOD(authenticatePaymentIntent:(NSDictionary<NSString*, id> *)untyp
 
                                                            if (error) {
                                                                NSDictionary *jsError = [self->errorCodes valueForKey:kErrorKeyApi];
-                                                               [self rejectPromiseWithCode:jsError[kErrorKeyCode] message:error.localizedDescription];
+                                                               [self rejectPromiseWithCode:jsError[kErrorKeyCode] message:error.localizedDescription error:error];
                                                                return;
                                                            }
 
@@ -476,7 +476,7 @@ RCT_EXPORT_METHOD(confirmSetupIntent:(NSDictionary<NSString*, id> *)untypedParam
                                if (error) {
                                    self->requestIsCompleted = YES;
                                    NSDictionary *jsError = [self->errorCodes valueForKey:kErrorKeyApi];
-                                   [self rejectPromiseWithCode:jsError[kErrorKeyCode] message:error.localizedDescription];
+                                   [self rejectPromiseWithCode:jsError[kErrorKeyCode] message:error.localizedDescription error:error];
                                    return;
                                }
 
@@ -490,7 +490,7 @@ RCT_EXPORT_METHOD(confirmSetupIntent:(NSDictionary<NSString*, id> *)untypedParam
 
                                                                                               if (error) {
                                                                                                   NSDictionary *jsError = [self->errorCodes valueForKey:kErrorKeyApi];
-                                                                                                  [self rejectPromiseWithCode:jsError[kErrorKeyCode] message:error.localizedDescription];
+                                                                                                  [self rejectPromiseWithCode:jsError[kErrorKeyCode] message:error.localizedDescription error:error];
                                                                                                   return;
                                                                                               }
 
@@ -1126,8 +1126,11 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
 }
 
 - (void)rejectPromiseWithCode:(NSString *)code message:(NSString *)message {
+    [self rejectPromiseWithCode:code message:message error:nil];
+}
+- (void)rejectPromiseWithCode:(NSString *)code message:(NSString *)message error:(NSError*)error {
     if (promiseRejector) {
-        promiseRejector(code, message, nil);
+        promiseRejector(code, message, error);
     }
     [self resetPromiseCallbacks];
 }
