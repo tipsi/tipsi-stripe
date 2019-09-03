@@ -85,3 +85,4 @@ tmp
 example_tmp
 example_podspec
 *.tgz
+*~
