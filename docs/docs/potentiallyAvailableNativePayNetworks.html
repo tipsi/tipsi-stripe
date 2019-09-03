@@ -2,15 +2,18 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>.cancelApplePayRequest() -&gt; Promise · tipsi-stripe</title>
+    <title>.potentiallyAvailableNativePayNetworks([options]) -&gt; Promise · tipsi-stripe</title>
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content="Docusaurus" />
-    <meta property="og:title" content=".cancelApplePayRequest() -&gt; Promise · tipsi-stripe" />
+    <meta
+      property="og:title"
+      content=".potentiallyAvailableNativePayNetworks([options]) -&gt; Promise · tipsi-stripe"
+    />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://tipsi.github.io/tipsi-stripe/index.html" />
     <meta
       property="og:description"
-      content="__Method is deprecated, use [`cancelNativePayRequest()`](/tipsi-stripe/docs/cancelNativePayRequest.html) instead.__"
+      content="Provides a list of payment networks potentially available on this device for this specific operating system version."
     />
     <link rel="shortcut icon" href="/tipsi-stripe/img/favicon.png" />
     <link
@@ -61,7 +64,7 @@
               <section class="navWrapper wrapper">
                 <div class="navBreadcrumb wrapper">
                   <div class="navToggle" id="navToggler"><i></i></div>
-                  <h2><i>›</i><span>Deprecated Docs</span></h2>
+                  <h2><i>›</i><span>Native Pay -  &amp; G</span></h2>
                 </div>
                 <div class="navGroups">
                   <div class="navGroup navGroupActive">
@@ -143,9 +146,9 @@
                           >.deviceSupportsNativePay()</a
                         >
                       </li>
-                      <li class="navListItem">
+                      <li class="navListItem navListItemActive">
                         <a
-                          class="navItem"
+                          class="navItem navItemActive"
                           href="/tipsi-stripe/docs/potentiallyAvailableNativePayNetworks.html"
                           >.potentiallyAvailableNativePayNetworks()</a
                         >
@@ -311,10 +314,8 @@
                           >.completeApplePayRequest()</a
                         >
                       </li>
-                      <li class="navListItem navListItemActive">
-                        <a
-                          class="navItem navItemActive"
-                          href="/tipsi-stripe/docs/cancelapplepayrequest.html"
+                      <li class="navListItem">
+                        <a class="navItem" href="/tipsi-stripe/docs/cancelapplepayrequest.html"
                           >.cancelApplePayRequest()</a
                         >
                       </li>
@@ -335,61 +336,91 @@
         <div class="container mainContainer">
           <div class="wrapper">
             <div class="post">
-              <header class="postHeader"><h1>.cancelApplePayRequest() -&gt; Promise</h1></header>
+              <header class="postHeader">
+                <h1>.potentiallyAvailableNativePayNetworks([options]) -&gt; Promise</h1>
+              </header>
               <article>
                 <div>
                   <span
                     ><p>
-                      <strong
-                        >Method is deprecated, use
-                        <a href="/tipsi-stripe/docs/cancelNativePayRequest.html"
-                          ><code>cancelNativePayRequest()</code></a
+                      Provides a list of payment networks potentially available on this device for
+                      this specific operating system version.
+                    </p>
+                    <h2>
+                      <a class="anchor" aria-hidden="true" id="all-platforms"></a
+                      ><a href="#all-platforms" aria-hidden="true" class="hash-link"
+                        ><svg
+                          aria-hidden="true"
+                          height="16"
+                          version="1.1"
+                          viewBox="0 0 16 16"
+                          width="16"
                         >
-                        instead.</strong
-                      >
-                    </p>
+                          <path
+                            fill-rule="evenodd"
+                            d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+                          ></path></svg></a
+                      >All Platforms
+                    </h2>
                     <p>
-                      After <code>paymentRequestWithApplePay</code> you should complete the
-                      operation by calling <code>cancelApplePayRequest</code> if an error occurred.
+                      When referring to <code>networks</code> below, we mean values from this list:
                     </p>
-                    <pre><code class="hljs css js"><span class="hljs-keyword">const</span> items = [{
-  <span class="hljs-attr">label</span>: <span class="hljs-string">'Whisky'</span>,
-  <span class="hljs-attr">amount</span>: <span class="hljs-string">'50.00'</span>,
-}, {
-  <span class="hljs-attr">label</span>: <span class="hljs-string">'Tipsi, Inc'</span>,
-  <span class="hljs-attr">amount</span>: <span class="hljs-string">'50.00'</span>,
-}]
+                    <ul>
+                      <li><code>american_express</code></li>
+                      <li><code>cartes_bancaires</code></li>
+                      <li><code>china_union_pay</code></li>
+                      <li><code>discover</code></li>
+                      <li><code>eftpos</code></li>
+                      <li><code>electron</code></li>
+                      <li><code>elo</code></li>
+                      <li><code>id_credit</code></li>
+                      <li><code>interac</code></li>
+                      <li><code>jcb</code></li>
+                      <li><code>mada</code></li>
+                      <li><code>maestro</code></li>
+                      <li><code>master_card</code></li>
+                      <li><code>private_label</code></li>
+                      <li><code>quic_pay</code></li>
+                      <li><code>suica</code></li>
+                      <li><code>visa</code></li>
+                      <li><code>vpay</code></li>
+                    </ul>
+                    <h3>
+                      <a class="anchor" aria-hidden="true" id="example"></a
+                      ><a href="#example" aria-hidden="true" class="hash-link"
+                        ><svg
+                          aria-hidden="true"
+                          height="16"
+                          version="1.1"
+                          viewBox="0 0 16 16"
+                          width="16"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+                          ></path></svg></a
+                      >Example
+                    </h3>
+                    <pre><code class="hljs css js"><span class="hljs-keyword">import</span> stripe <span class="hljs-keyword">from</span> <span class="hljs-string">'tipsi-stripe'</span>
 
-<span class="hljs-keyword">const</span> shippingMethods = [{
-  <span class="hljs-attr">id</span>: <span class="hljs-string">'fedex'</span>,
-  <span class="hljs-attr">label</span>: <span class="hljs-string">'FedEX'</span>,
-  <span class="hljs-attr">detail</span>: <span class="hljs-string">'Test @ 10'</span>,
-  <span class="hljs-attr">amount</span>: <span class="hljs-string">'10.00'</span>,
-}]
-
-<span class="hljs-keyword">const</span> options = {
-  <span class="hljs-attr">requiredBillingAddressFields</span>: <span class="hljs-string">'all'</span>,
-  <span class="hljs-attr">requiredShippingAddressFields</span>: <span class="hljs-string">'all'</span>,
-  shippingMethods,
-}
-
-<span class="hljs-keyword">try</span> {
-  <span class="hljs-keyword">await</span> stripe.paymentRequestWithApplePay(items, options)
-
-  <span class="hljs-comment">// You should complete the operation by calling</span>
-  <span class="hljs-comment">// stripe.completeApplePayRequest()</span>
-} <span class="hljs-keyword">catch</span> (error) {
-  <span class="hljs-comment">// Or cancel if an error occurred</span>
-  stripe.cancelApplePayRequest()
-}
+<span class="hljs-keyword">await</span> stripe.potentiallyAvailableNativePayNetworks()
+<span class="hljs-comment">// -&gt; returns null if Native Pay is disabled</span>
+<span class="hljs-comment">// -&gt; returns [] if it Native Pay is enabled, but it doesn't know what networks are available (on Android)</span>
+<span class="hljs-comment">// -&gt; returns [ 'american_express', 'discover', ...a list of all supported networks, documented above...]</span>
 </code></pre>
+                    <p>
+                      <strong>Android Note</strong> -- this returns <code>[]</code> an empty array
+                      or null, as the networks aren't exposed to application code
+                    </p>
                   </span>
                 </div>
               </article>
             </div>
             <div class="docs-prevnext">
-              <a class="docs-prev button" href="completeapplepayrequest.html"
-                >← .completeApplePayRequest() -&gt; Promise</a
+              <a class="docs-prev button" href="deviceSupportsNativePay.html"
+                >← .deviceSupportsNativePay() -&gt; Promise</a
+              ><a class="docs-next button" href="completeNativePayRequest.html"
+                >.completeNativePayRequest() -&gt; Promise →</a
               >
             </div>
           </div>

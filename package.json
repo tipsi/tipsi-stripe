@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "babel-eslint": "^10.0.2",
-    "docusaurus": "1.11.x",
+    "docusaurus": "^1.11.1",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^17.1.1",
     "eslint-config-prettier": "^6.0.0",
