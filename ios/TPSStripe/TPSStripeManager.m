@@ -1266,6 +1266,9 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
 
     STPAPIClient * client = [[STPAPIClient alloc] initWithPublishableKey:[Stripe defaultPublishableKey]];
     client.appInfo = info;
+
+    // Singleton sharedHandler should have the matching API Client!
+    STPPaymentHandler.sharedHandler.apiClient = client;
     return client;
 }
 
