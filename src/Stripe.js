@@ -21,6 +21,10 @@ class Stripe {
     return StripeModule.init(options, errorCodes)
   }
 
+  setStripeAccount = (stripeAccount) => (
+    StripeModule.setStripeAccount(stripeAccount)
+  )
+
   // @deprecated use deviceSupportsNativePay
   deviceSupportsAndroidPay = () => (
     StripeModule.deviceSupportsAndroidPay()

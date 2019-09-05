@@ -144,6 +144,11 @@ public class StripeModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
+  public void setStripeAccount(final String stripeAccount) {
+    getPayFlow().setStripeAccount(stripeAccount);
+  }
+
+  @ReactMethod
   public void createTokenWithCard(final ReadableMap cardData, final Promise promise) {
     try {
       ArgCheck.nonNull(mStripe);
