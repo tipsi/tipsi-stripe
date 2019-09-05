@@ -106,6 +106,13 @@ const errorCodes = {
   authentication: {
     errorCode: 'authentication',
   },
+  /**
+   * Failures to authenticate will get this error
+   * @see: (confirm/authenticate)(Setup/Payment)Intent
+   */
+  authenticationFailed: {
+    errorCode: 'authenticationFailed',
+  },
   permission: {
     errorCode: 'permission',
   },
