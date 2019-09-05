@@ -145,7 +145,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void setStripeAccount(final String stripeAccount) {
-    getPayFlow().setStripeAccount(stripeAccount);
+    mStripe.setStripeAccount(stripeAccount);
   }
 
   @ReactMethod

@@ -19,6 +19,8 @@ stripe.setOptions({
   androidPayMode: 'test',
 })
 
+stripe.setStripeAccount('<STRIPE_ACCOUNT>')
+
 export default class Root extends PureComponent {
   state = {
     index: 0,
