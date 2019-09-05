@@ -379,7 +379,10 @@ RCT_EXPORT_METHOD(confirmPaymentIntent:(NSDictionary<NSString*, id>*)untypedPara
                                      [self rejectPromiseWithCode:jsError[kErrorKeyCode] message:error.localizedDescription error:error];
                                      return;
                                  }
-                                 if (intent.status == STPPaymentIntentStatusRequiresAction) {
+                                 if (intent.status == STPPaymentIntentStatusSucceeded) {
+                                     self->requestIsCompleted = YES;
+                                     [self resolvePromise: [self convertConfirmPaymentIntentResult: intent]];
+                                 } else if (intent.status == STPPaymentIntentStatusRequiresAction) {
                                      // From example in step 3 of https://stripe.com/docs/payments/payment-intents/ios#manual-confirmation-ios
                                      [[STPPaymentHandler sharedHandler] handleNextActionForPayment:intent.clientSecret
                                                                          withAuthenticationContext:self
@@ -407,9 +410,16 @@ RCT_EXPORT_METHOD(confirmPaymentIntent:(NSDictionary<NSString*, id>*)untypedPara
                                  } else {
                                      // We can't do anything else for the other intent status cases, so let's return control to the App
                                      self->requestIsCompleted = YES;
-                                     [self rejectPromiseWithCode:[self->errorCodes valueForKey:kErrorKeyAuthenticationFailed][kErrorKeyCode]
-                                                         message:error.localizedDescription ?: [self->errorCodes valueForKey:kErrorKeyAuthenticationFailed][kErrorKeyDescription] ?: @"FAILED"
-                                                           error:error];
+                                     if (intent.status == STPSetupIntentStatusCanceled) {
+                                         [self rejectPromiseWithCode:[self->errorCodes valueForKey:kErrorKeyCancelled][kErrorKeyCode]
+                                                             message:error.localizedDescription ?: [self->errorCodes valueForKey:kErrorKeyCancelled][kErrorKeyDescription]
+                                                               error:error];
+                                     } else {
+                                         [self rejectPromiseWithCode:[self->errorCodes valueForKey:kErrorKeyAuthenticationFailed][kErrorKeyCode]
+                                                             message:error.localizedDescription ?: [self->errorCodes valueForKey:kErrorKeyAuthenticationFailed][kErrorKeyDescription] ?: @"FAILED"
+                                                               error:error];
+
+                                     }
                                  }
                              }];
 }
@@ -482,8 +492,10 @@ RCT_EXPORT_METHOD(confirmSetupIntent:(NSDictionary<NSString*, id> *)untypedParam
                                    [self rejectPromiseWithCode:jsError[kErrorKeyCode] message:error.localizedDescription error:error];
                                    return;
                                }
-
-                               if (intent.status == STPPaymentIntentStatusRequiresAction) {
+                               if (intent.status == STPSetupIntentStatusSucceeded) {
+                                   self->requestIsCompleted = YES;
+                                   [self resolvePromise: [self convertConfirmSetupIntentResult: intent]];
+                               } else if (intent.status == STPSetupIntentStatusRequiresAction) {
                                    // From example in step 3 of https://stripe.com/docs/payments/payment-intents/ios#manual-confirmation-ios
                                    [[STPPaymentHandler sharedHandler] handleNextActionForSetupIntent:intent.clientSecret
                                                                            withAuthenticationContext:self
@@ -493,7 +505,6 @@ RCT_EXPORT_METHOD(confirmSetupIntent:(NSDictionary<NSString*, id> *)untypedParam
 
                                                                                               switch (status) {
                                                                                                   case STPPaymentHandlerActionStatusSucceeded:
-                                                                                                      // Succeeded should all be attached to the intent
                                                                                                       [self resolvePromise: [self convertConfirmSetupIntentResult: intent]];
                                                                                                       return;
                                                                                                   case STPPaymentHandlerActionStatusCanceled:
@@ -511,9 +522,15 @@ RCT_EXPORT_METHOD(confirmSetupIntent:(NSDictionary<NSString*, id> *)untypedParam
                                } else {
                                    // We can't do anything else for the other intent status cases, so let's return control to the App
                                    self->requestIsCompleted = YES;
-                                   [self rejectPromiseWithCode:[self->errorCodes valueForKey:kErrorKeyAuthenticationFailed][kErrorKeyCode]
-                                                       message:error.localizedDescription ?: [self->errorCodes valueForKey:kErrorKeyAuthenticationFailed][kErrorKeyDescription] ?: @"FAILED"
-                                                         error:error];
+                                   if (intent.status == STPSetupIntentStatusCanceled) {
+                                       [self rejectPromiseWithCode:[self->errorCodes valueForKey:kErrorKeyCancelled][kErrorKeyCode]
+                                                           message:error.localizedDescription ?: [self->errorCodes valueForKey:kErrorKeyCancelled][kErrorKeyDescription]
+                                                             error:error];
+                                   } else {
+                                       [self rejectPromiseWithCode:[self->errorCodes valueForKey:kErrorKeyAuthenticationFailed][kErrorKeyCode]
+                                                           message:error.localizedDescription ?: [self->errorCodes valueForKey:kErrorKeyAuthenticationFailed][kErrorKeyDescription] ?: @"FAILED"
+                                                             error:error];
+                                   }
                                }
                            }];
 }
