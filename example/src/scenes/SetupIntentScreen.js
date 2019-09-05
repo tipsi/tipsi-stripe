@@ -68,8 +68,9 @@ export default class SetupIntentScreen extends PureComponent {
 
       this.setState({ ...this.state, loading: false, confirmSetupResult })
     } catch (e) {
-      console.log(e)
-      this.setState({ ...this.state, loading: false })
+      console.log("error");
+      console.dir(e)
+      this.setState({ ...this.state, loading: false, confirmSetupResult: e})
     }
   }
 
@@ -96,6 +97,12 @@ export default class SetupIntentScreen extends PureComponent {
               Source: {JSON.stringify(setupIntent)}
             </Text>
 
+            {confirmSetupResult && (
+              <Text style={styles.content} {...testID('confirmSetupResult')}>
+                confirmSetupResult: {JSON.stringify(confirmSetupResult)}
+              </Text>
+            )}
+
             <View style={styles.row}>
               <Button
                 style={styles.rowButton}
@@ -119,11 +126,6 @@ export default class SetupIntentScreen extends PureComponent {
                 </View>
               ))}
 
-            {confirmSetupResult && (
-              <Text style={styles.content} {...testID('confirmSetupResult')}>
-                confirmSetupResult: {JSON.stringify(confirmSetupResult)}
-              </Text>
-            )}
           </>
         )}
 
