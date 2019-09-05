@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.facebook.react.bridge.ActivityEventListener;
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.BaseActivityEventListener;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -36,11 +37,15 @@ import com.stripe.android.model.PaymentMethodCreateParams;
 import com.stripe.android.model.Source;
 import com.stripe.android.model.Source.SourceStatus;
 import com.stripe.android.model.SourceParams;
+import com.stripe.android.model.StripeIntent;
 import com.stripe.android.model.Token;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.gettipsi.stripe.Errors.AUTHENTICATION_FAILED;
+import static com.gettipsi.stripe.Errors.UNEXPECTED;
+import static com.gettipsi.stripe.Errors.CANCELLED;
 import static com.gettipsi.stripe.Errors.getDescription;
 import static com.gettipsi.stripe.Errors.getErrorCode;
 import static com.gettipsi.stripe.Errors.toErrorCode;
@@ -59,6 +64,9 @@ import static com.gettipsi.stripe.util.InitializationOptions.ANDROID_PAY_MODE_KE
 import static com.gettipsi.stripe.util.InitializationOptions.ANDROID_PAY_MODE_PRODUCTION;
 import static com.gettipsi.stripe.util.InitializationOptions.ANDROID_PAY_MODE_TEST;
 import static com.gettipsi.stripe.util.InitializationOptions.PUBLISHABLE_KEY;
+import static com.stripe.android.model.StripeIntent.Status.RequiresAction;
+import static com.stripe.android.model.StripeIntent.Status.RequiresPaymentMethod;
+import static com.stripe.android.model.StripeIntent.Status.Succeeded;
 
 public class StripeModule extends ReactContextBaseJavaModule {
 
@@ -287,7 +295,25 @@ public class StripeModule extends ReactContextBaseJavaModule {
           @Override
           public void onSuccess(@NonNull SetupIntentResult result) {
             getReactApplicationContext().removeActivityEventListener(ael);
-            promise.resolve(convertSetupIntentResultToWritableMap(result));
+
+            try {
+              switch (result.getIntent().getStatus()) {
+                case RequiresAction:
+                  // The Setup Intent was canceled, so reject the promise with a predefined code.
+                  promise.reject(CANCELLED, "The SetupIntent was canceled by the user.");
+                  break;
+                case RequiresPaymentMethod:
+                  promise.reject(AUTHENTICATION_FAILED, "The user failed authentication.");
+                  break;
+                case Succeeded:
+                  promise.resolve(convertSetupIntentResultToWritableMap(result));
+                  break;
+                default:
+                  promise.reject(UNEXPECTED, "Unexpected state");
+              }
+            } catch (Exception e) {
+              promise.reject(UNEXPECTED, "Unexpected error");
+            }
           }
 
           @Override
