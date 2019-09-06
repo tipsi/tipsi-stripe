@@ -266,18 +266,21 @@ const confirmPaymentIntentPropTypeBase = {
   returnURL: PropTypes.string,
 }
 /**
- * One of the following must be provided:
+ * One of the following may be provided
  * - paymentMethod
  * - paymentMethodId (any supported ID, including IDs for saved card sources)
+ *
+ * If you don't provide these, then you're required to attach the paymentMethod
+ *  on your backend before you call this API.
  */
 export const confirmPaymentIntentPropType = PropTypes.oneOfType([
   PropTypes.shape({
     ...confirmPaymentIntentPropTypeBase,
-    paymentMethod: PropTypes.shape(createPaymentMethodPropType).isRequired,
+    paymentMethod: PropTypes.shape(createPaymentMethodPropType),
   }),
   PropTypes.shape({
     ...confirmPaymentIntentPropTypeBase,
-    paymentMethodId: PropTypes.string.isRequired,
+    paymentMethodId: PropTypes.string,
   }),
 ]).isRequired
 
@@ -298,9 +301,12 @@ const confirmSetupIntentPropTypeBase = {
 export const confirmSetupIntentPropType = PropTypes.oneOfType([
   PropTypes.shape({
     ...confirmSetupIntentPropTypeBase,
-    paymentMethod: PropTypes.shape(createPaymentMethodPropType),
+    paymentMethod: PropTypes.shape(createPaymentMethodPropType).isRequired,
   }),
-  PropTypes.shape({ ...confirmSetupIntentPropTypeBase, paymentMethodId: PropTypes.string }),
+  PropTypes.shape({
+    ...confirmSetupIntentPropTypeBase,
+    paymentMethodId: PropTypes.string.isRequired,
+  }),
 ]).isRequired
 
 export const authenticateSetupIntentPropType = {
