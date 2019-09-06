@@ -159,6 +159,10 @@ class Stripe {
     return StripeModule.init(options, errorCodes)
   }
 
+  setStripeAccount = (stripeAccount) => (
+    StripeModule.setStripeAccount(stripeAccount)
+  )
+
   /**
    * Normalizes a card's brand in the format of a short identifier called a 'slug', eg 'amex'
    * @param brand {string|CardBrandSlug|CardBrandPresentableString}

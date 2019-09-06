@@ -299,6 +299,10 @@ RCT_EXPORT_METHOD(init:(NSDictionary *)options errorCodes:(NSDictionary *)errors
     [Stripe setDefaultPublishableKey:publishableKey];
 }
 
+RCT_EXPORT_METHOD(setStripeAccount:(NSString *)stripeAccount) {
+    [[STPAPIClient sharedClient] setStripeAccount:stripeAccount];
+}
+
 RCT_EXPORT_METHOD(deviceSupportsApplePay:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
     resolve(@([PKPaymentAuthorizationViewController canMakePayments]));
