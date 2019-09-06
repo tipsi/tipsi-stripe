@@ -21,7 +21,10 @@ stripe.setOptions({
   androidPayMode: 'test',
 })
 
-stripe.setStripeAccount('<STRIPE_ACCOUNT>')
+const connectedAccount = '<STRIPE_ACCOUNT>';
+if (connectedAccount != '') {
+  stripe.setStripeAccount(connectedAccount)
+}
 
 export default class Root extends PureComponent {
   state = {
