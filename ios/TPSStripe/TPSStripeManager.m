@@ -379,6 +379,7 @@ RCT_EXPORT_METHOD(confirmPaymentIntent:(NSDictionary<NSString*, id>*)untypedPara
                                      [self rejectPromiseWithCode:jsError[kErrorKeyCode] message:error.localizedDescription error:error];
                                      return;
                                  }
+
                                  if (intent.status == STPPaymentIntentStatusSucceeded) {
                                      self->requestIsCompleted = YES;
                                      [self resolvePromise: [self convertConfirmPaymentIntentResult: intent]];
@@ -492,6 +493,7 @@ RCT_EXPORT_METHOD(confirmSetupIntent:(NSDictionary<NSString*, id> *)untypedParam
                                    [self rejectPromiseWithCode:jsError[kErrorKeyCode] message:error.localizedDescription error:error];
                                    return;
                                }
+
                                if (intent.status == STPSetupIntentStatusSucceeded) {
                                    self->requestIsCompleted = YES;
                                    [self resolvePromise: [self convertConfirmSetupIntentResult: intent]];
