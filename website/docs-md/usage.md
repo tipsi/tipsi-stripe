@@ -23,12 +23,3 @@ stripe.setOptions({
 `androidPayMode` _String_ (Android only) - Corresponds to [WALLET_ENVIRONMENT](https://developers.google.com/android/reference/com/google/android/gms/wallet/WalletConstants
 ).
 Can be one of: `test|production`.
-
-
-### Usage with Stripe Connect
-
-If you're using Connect and need to set a `stripeAccount` do the following:
-
-```js
-stripe.setStripeAccount('<ACCT_>')
-```
