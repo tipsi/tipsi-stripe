@@ -981,7 +981,9 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
 
     NSString * paymentMethodId = params[TPSStripeParam(confirmPaymentIntent, paymentMethodId)];
     STPPaymentMethodParams * methodParams = [self extractCreatePaymentMethodParamsFromDictionary:params[TPSStripeParam(confirmPaymentIntent, paymentMethod)]];
-    NSParameterAssert(paymentMethodId || methodParams);
+    // Don't assert, as it's allowed to omit a paymentMethodId/paymentMethodParams
+    // for confirmPaymentIntent -- if the user had already attached the
+    // paymentMethod on the backend.
 
     result.paymentMethodId = paymentMethodId;
     result.paymentMethodParams = methodParams;
