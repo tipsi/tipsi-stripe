@@ -358,7 +358,6 @@ RCT_EXPORT_METHOD(confirmPaymentIntent:(NSDictionary<NSString*, id>*)untypedPara
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
     NSDictionary<TPSStripeType(confirmPaymentIntent), id> *params = untypedParams;
-    NSString * returnURL = [RCTConvert NSString:TPSStripeParam(confirmPaymentIntent, returnURL)];
 
     STPPaymentIntentParams * parsed = [self extractConfirmPaymentIntentParamsFromDictionary:params];
     if(!requestIsCompleted) {
@@ -387,7 +386,7 @@ RCT_EXPORT_METHOD(confirmPaymentIntent:(NSDictionary<NSString*, id>*)untypedPara
                                      // From example in step 3 of https://stripe.com/docs/payments/payment-intents/ios#manual-confirmation-ios
                                      [[STPPaymentHandler sharedHandler] handleNextActionForPayment:intent.clientSecret
                                                                          withAuthenticationContext:self
-                                                                                         returnURL:returnURL
+                                                                                         returnURL:parsed.returnURL
                                                                                         completion:^(STPPaymentHandlerActionStatus status, STPPaymentIntent * intent, NSError * error) {
                                                                                             self->requestIsCompleted = YES;
 
@@ -472,7 +471,6 @@ RCT_EXPORT_METHOD(confirmSetupIntent:(NSDictionary<NSString*, id> *)untypedParam
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
     NSDictionary<TPSStripeType(confirmSetupIntent), id> *params = untypedParams;
-    NSString * returnURL = [RCTConvert NSString:TPSStripeParam(confirmSetupIntent, returnURL)];
 
     STPSetupIntentConfirmParams * parsed = [self extractConfirmSetupIntentParamsFromDictionary:params];
     if(!requestIsCompleted) {
@@ -501,7 +499,7 @@ RCT_EXPORT_METHOD(confirmSetupIntent:(NSDictionary<NSString*, id> *)untypedParam
                                    // From example in step 3 of https://stripe.com/docs/payments/payment-intents/ios#manual-confirmation-ios
                                    [[STPPaymentHandler sharedHandler] handleNextActionForSetupIntent:intent.clientSecret
                                                                            withAuthenticationContext:self
-                                                                                           returnURL:returnURL
+                                                                                           returnURL:parsed.returnURL
                                                                                           completion:^(STPPaymentHandlerActionStatus status, STPSetupIntent * intent, NSError * error) {
                                                                                               self->requestIsCompleted = YES;
 
