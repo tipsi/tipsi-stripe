@@ -411,7 +411,7 @@ RCT_EXPORT_METHOD(confirmPaymentIntent:(NSDictionary<NSString*, id>*)untypedPara
                                  } else {
                                      // We can't do anything else for the other intent status cases, so let's return control to the App
                                      self->requestIsCompleted = YES;
-                                     if (intent.status == STPSetupIntentStatusCanceled) {
+                                     if (intent.status == STPPaymentIntentStatusCanceled) {
                                          [self rejectPromiseWithCode:[self->errorCodes valueForKey:kErrorKeyCancelled][kErrorKeyCode]
                                                              message:error.localizedDescription ?: [self->errorCodes valueForKey:kErrorKeyCancelled][kErrorKeyDescription]
                                                                error:error];
