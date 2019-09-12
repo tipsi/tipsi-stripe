@@ -494,7 +494,7 @@ RCT_EXPORT_METHOD(confirmSetupIntent:(NSDictionary<NSString*, id> *)untypedParam
                                    return;
                                }
 
-                               if (intent.status == STPSetupIntentStatusSucceeded) {
+                               if (intent.status == STPSetupIntentStatusSucceeded || intent.status == STPPaymentIntentStatusRequiresCapture) {
                                    self->requestIsCompleted = YES;
                                    [self resolvePromise: [self convertConfirmSetupIntentResult: intent]];
                                } else if (intent.status == STPSetupIntentStatusRequiresAction) {
