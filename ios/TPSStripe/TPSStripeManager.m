@@ -993,6 +993,7 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     simpleUnpack(sourceId);
     simpleUnpack(returnURL);
     result.savePaymentMethod = @([RCTConvert BOOL:params[TPSStripeParam(confirmPaymentIntent, savePaymentMethod)]]);
+    result.useStripeSDK = @YES;
 #undef simpleUnpack
     return result;
 }
@@ -1011,8 +1012,7 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     result.paymentMethodParams = methodParams;
 
     simpleUnpack(returnURL);
-    NSString * returnURL = [RCTConvert NSString:params[TPSStripeParam(confirmSetupIntent, returnURL)]];
-    result.useStripeSDK = (returnURL == nil || (id)returnURL == NSNull.null || [returnURL isEqualToString:@""] ) ? @YES : @NO;
+    result.useStripeSDK = @YES;
 #undef simpleUnpack
     return result;
 }
