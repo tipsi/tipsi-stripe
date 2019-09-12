@@ -380,7 +380,7 @@ RCT_EXPORT_METHOD(confirmPaymentIntent:(NSDictionary<NSString*, id>*)untypedPara
                                      return;
                                  }
 
-                                 if (intent.status == STPPaymentIntentStatusSucceeded) {
+                                 if (intent.status == STPPaymentIntentStatusSucceeded || intent.status == STPPaymentIntentStatusRequiresCapture) {
                                      self->requestIsCompleted = YES;
                                      [self resolvePromise: [self convertConfirmPaymentIntentResult: intent]];
                                  } else if (intent.status == STPPaymentIntentStatusRequiresAction) {
@@ -494,7 +494,7 @@ RCT_EXPORT_METHOD(confirmSetupIntent:(NSDictionary<NSString*, id> *)untypedParam
                                    return;
                                }
 
-                               if (intent.status == STPSetupIntentStatusSucceeded || intent.status == STPPaymentIntentStatusRequiresCapture) {
+                               if (intent.status == STPSetupIntentStatusSucceeded) {
                                    self->requestIsCompleted = YES;
                                    [self resolvePromise: [self convertConfirmSetupIntentResult: intent]];
                                } else if (intent.status == STPSetupIntentStatusRequiresAction) {
