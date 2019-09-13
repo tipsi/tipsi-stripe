@@ -17,6 +17,7 @@ public final class Errors {
   private static final Map<String, String> exceptionNameToErrorCode = new HashMap<>();
 
   public static final String CANCELLED = "cancelled";
+  public static final String FAILED = "failed";
   public static final String AUTHENTICATION_FAILED = "authenticationFailed";
   public static final String UNEXPECTED = "unexpected";
 

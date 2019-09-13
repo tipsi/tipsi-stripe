@@ -44,8 +44,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.gettipsi.stripe.Errors.AUTHENTICATION_FAILED;
-import static com.gettipsi.stripe.Errors.UNEXPECTED;
 import static com.gettipsi.stripe.Errors.CANCELLED;
+import static com.gettipsi.stripe.Errors.FAILED;
+import static com.gettipsi.stripe.Errors.UNEXPECTED;
 import static com.gettipsi.stripe.Errors.getDescription;
 import static com.gettipsi.stripe.Errors.getErrorCode;
 import static com.gettipsi.stripe.Errors.toErrorCode;
@@ -59,13 +60,14 @@ import static com.gettipsi.stripe.util.Converters.createCard;
 import static com.gettipsi.stripe.util.Converters.getBooleanOrNull;
 import static com.gettipsi.stripe.util.Converters.getMapOrNull;
 import static com.gettipsi.stripe.util.Converters.getStringOrNull;
-
 import static com.gettipsi.stripe.util.InitializationOptions.ANDROID_PAY_MODE_KEY;
 import static com.gettipsi.stripe.util.InitializationOptions.ANDROID_PAY_MODE_PRODUCTION;
 import static com.gettipsi.stripe.util.InitializationOptions.ANDROID_PAY_MODE_TEST;
 import static com.gettipsi.stripe.util.InitializationOptions.PUBLISHABLE_KEY;
+import static com.stripe.android.model.StripeIntent.Status.Canceled;
 import static com.stripe.android.model.StripeIntent.Status.RequiresAction;
-import static com.stripe.android.model.StripeIntent.Status.RequiresPaymentMethod;
+import static com.stripe.android.model.StripeIntent.Status.RequiresCapture;
+import static com.stripe.android.model.StripeIntent.Status.RequiresConfirmation;
 import static com.stripe.android.model.StripeIntent.Status.Succeeded;
 
 public class StripeModule extends ReactContextBaseJavaModule {
@@ -265,7 +267,22 @@ public class StripeModule extends ReactContextBaseJavaModule {
           @Override
           public void onSuccess(@NonNull PaymentIntentResult result) {
             getReactApplicationContext().removeActivityEventListener(ael);
-            promise.resolve(convertPaymentIntentResultToWritableMap(result));
+
+            StripeIntent.Status resultingStatus = result.getIntent().getStatus();
+
+            if (Succeeded.equals(resultingStatus) ||
+                RequiresCapture.equals(resultingStatus)) {
+              promise.resolve(convertPaymentIntentResultToWritableMap(result));
+            } else {
+              if (Canceled.equals(resultingStatus) ||
+                  RequiresAction.equals(resultingStatus) ||
+                  RequiresConfirmation.equals(resultingStatus)
+              ) {
+                promise.reject(CANCELLED, CANCELLED);      // TODO - normalize the message
+              } else {
+                promise.reject(FAILED, FAILED);
+              }
+            }
           }
 
           @Override
@@ -298,16 +315,19 @@ public class StripeModule extends ReactContextBaseJavaModule {
 
             try {
               switch (result.getIntent().getStatus()) {
-                case RequiresAction:
+                case Canceled:
                   // The Setup Intent was canceled, so reject the promise with a predefined code.
                   promise.reject(CANCELLED, "The SetupIntent was canceled by the user.");
                   break;
+                case RequiresAction:
                 case RequiresPaymentMethod:
                   promise.reject(AUTHENTICATION_FAILED, "The user failed authentication.");
                   break;
                 case Succeeded:
                   promise.resolve(convertSetupIntentResultToWritableMap(result));
                   break;
+                case RequiresCapture:
+                case RequiresConfirmation:
                 default:
                   promise.reject(UNEXPECTED, "Unexpected state");
               }
