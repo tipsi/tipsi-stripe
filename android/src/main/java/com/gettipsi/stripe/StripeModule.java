@@ -50,6 +50,7 @@ import static com.gettipsi.stripe.Errors.UNEXPECTED;
 import static com.gettipsi.stripe.Errors.getDescription;
 import static com.gettipsi.stripe.Errors.getErrorCode;
 import static com.gettipsi.stripe.Errors.toErrorCode;
+import static com.gettipsi.stripe.Errors.toUserInfo;
 import static com.gettipsi.stripe.util.Converters.convertPaymentIntentResultToWritableMap;
 import static com.gettipsi.stripe.util.Converters.convertPaymentMethodToWritableMap;
 import static com.gettipsi.stripe.util.Converters.convertSetupIntentResultToWritableMap;
@@ -201,11 +202,11 @@ public class StripeModule extends ReactContextBaseJavaModule {
           }
           public void onError(Exception error) {
             error.printStackTrace();
-            promise.reject(toErrorCode(error), error.getMessage());
+            promise.reject(toErrorCode(error), error.getMessage(), toUserInfo(error));
           }
         });
     } catch (Exception e) {
-      promise.reject(toErrorCode(e), e.getMessage());
+      promise.reject(toErrorCode(e), e.getMessage(), toUserInfo(e));
     }
   }
 
@@ -225,11 +226,11 @@ public class StripeModule extends ReactContextBaseJavaModule {
           }
           public void onError(Exception error) {
             error.printStackTrace();
-            promise.reject(toErrorCode(error), error.getMessage());
+            promise.reject(toErrorCode(error), error.getMessage(), toUserInfo(error));
           }
         });
     } catch (Exception e) {
-      promise.reject(toErrorCode(e), e.getMessage());
+      promise.reject(toErrorCode(e), e.getMessage(), toUserInfo(e));
     }
   }
 
@@ -247,7 +248,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
       cardDialog.setPromise(promise);
       cardDialog.show(currentActivity.getFragmentManager(), "AddNewCard");
     } catch (Exception e) {
-      promise.reject(toErrorCode(e), e.getMessage());
+      promise.reject(toErrorCode(e), e.getMessage(), toUserInfo(e));
     }
   }
 
@@ -289,7 +290,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
           public void onError(@NonNull Exception e) {
             getReactApplicationContext().removeActivityEventListener(ael);
             e.printStackTrace();
-            promise.reject(toErrorCode(e), e.getMessage());
+            promise.reject(toErrorCode(e), e.getMessage(), toUserInfo(e));
           }
         });
       }
@@ -340,7 +341,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
           public void onError(@NonNull Exception e) {
             getReactApplicationContext().removeActivityEventListener(ael);
             e.printStackTrace();
-            promise.reject(toErrorCode(e), e.getMessage());
+            promise.reject(toErrorCode(e), e.getMessage(), toUserInfo(e));
           }
         });
       }
@@ -405,7 +406,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
 
       @Override
       public void onError(Exception error) {
-        promise.reject(toErrorCode(error), error.getMessage());
+        promise.reject(toErrorCode(error), error.getMessage(), toUserInfo(error));
       }
 
       @Override
@@ -426,7 +427,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
     mStripe.createSource(sourceParams, new SourceCallback() {
       @Override
       public void onError(Exception error) {
-        promise.reject(toErrorCode(error));
+        promise.reject(toErrorCode(error), error.getMessage(), toUserInfo(error));
       }
 
       @Override
