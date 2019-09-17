@@ -271,7 +271,8 @@ public class StripeModule extends ReactContextBaseJavaModule {
             StripeIntent.Status resultingStatus = result.getIntent().getStatus();
 
             if (Succeeded.equals(resultingStatus) ||
-                RequiresCapture.equals(resultingStatus)) {
+                RequiresCapture.equals(resultingStatus) ||
+                RequiresConfirmation.equals(resultingStatus)) {
               promise.resolve(convertPaymentIntentResultToWritableMap(result));
             } else {
               if (Canceled.equals(resultingStatus) ||
