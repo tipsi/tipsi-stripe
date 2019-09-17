@@ -12,7 +12,7 @@
 
 ### iOS
 
-- Minimum compatible `stripe-ios` sdk -> 16.0.0, but recommended 16.0.6 or later (update your `Podfile` or vendored `stripe-ios`!)
+- Minimum compatible `stripe-ios` sdk -> 16.0.7, but recommended 17.0.1 or later (update your `Podfile` or vendored `stripe-ios`!)
 - Xcode version: recommended 10.3.1 or later
 
 ### New SCA-ready APIs
