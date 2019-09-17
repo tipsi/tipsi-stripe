@@ -276,8 +276,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
               promise.resolve(convertPaymentIntentResultToWritableMap(result));
             } else {
               if (Canceled.equals(resultingStatus) ||
-                  RequiresAction.equals(resultingStatus) ||
-                  RequiresConfirmation.equals(resultingStatus)
+                  RequiresAction.equals(resultingStatus)
               ) {
                 promise.reject(CANCELLED, CANCELLED);      // TODO - normalize the message
               } else {
