@@ -146,7 +146,7 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "androidx.legacy:legacy-support-v4:1.0.0"
     implementation "com.android.support:design:27.1.0"
-    implementation "com.androidx.appcompat:1.1.0"
+    implementation "androidx.appcompat:appcompat:1.1.0"
     implementation "com.facebook.react:react-native:+"  // From node_modules
 }
 
