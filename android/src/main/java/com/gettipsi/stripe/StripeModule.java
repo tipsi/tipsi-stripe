@@ -32,6 +32,7 @@ import com.stripe.android.TokenCallback;
 import com.stripe.android.model.Address;
 import com.stripe.android.model.ConfirmPaymentIntentParams;
 import com.stripe.android.model.ConfirmSetupIntentParams;
+import com.stripe.android.model.PaymentIntent;
 import com.stripe.android.model.PaymentMethod;
 import com.stripe.android.model.PaymentMethodCreateParams;
 import com.stripe.android.model.Source;
@@ -269,6 +270,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
             getReactApplicationContext().removeActivityEventListener(ael);
 
             StripeIntent.Status resultingStatus = result.getIntent().getStatus();
+            PaymentIntent.Error error = result.getIntent().getLastPaymentError();
 
             if (Succeeded.equals(resultingStatus) ||
                 RequiresCapture.equals(resultingStatus) ||
@@ -280,7 +282,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
               ) {
                 promise.reject(CANCELLED, CANCELLED);      // TODO - normalize the message
               } else {
-                promise.reject(FAILED, FAILED);
+                promise.reject(error.code, error.message);
               }
             }
           }
