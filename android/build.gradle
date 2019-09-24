@@ -29,15 +29,15 @@ android {
 }
 
 dependencies {
-  def firebaseVersion = project.hasProperty('firebaseVersion') ? project.firebaseVersion : DEFAULT_FIREBASE_MESSAGING_VERSION
-  def googlePlayServicesVersion = rootProject.hasProperty('googlePlayServicesVersion')  ? rootProject.googlePlayServicesVersion : DEFAULT_GOOGLE_PLAY_SERVICES_VERSION
+  def firebaseCoreVersion = project.hasProperty('firebaseCoreVersion') ? project.firebaseVersion  : project.hasProperty('firebaseVersion') ? project.firebaseVersion : DEFAULT_FIREBASE_MESSAGING_VERSION
+  def googlePlayServicesWalletVersion = rootProject.hasProperty('googlePlayServicesWalletVersion') ? project.googlePlayServicesWalletVersion : rootProject.hasProperty('googlePlayServicesVersion')  ? rootProject.googlePlayServicesVersion : DEFAULT_GOOGLE_PLAY_SERVICES_VERSION
 
   implementation fileTree(include: ['*.jar'], dir: 'libs')
   implementation 'com.facebook.react:react-native:+'
   implementation 'com.android.support:support-v4:27.1.0'
   implementation 'com.android.support:appcompat-v7:27.1.0'
-  implementation "com.google.android.gms:play-services-wallet:$googlePlayServicesVersion"
-  implementation "com.google.firebase:firebase-core:$firebaseVersion"
+  implementation "com.google.android.gms:play-services-wallet:$googlePlayServicesWalletVersion"
+  implementation "com.google.firebase:firebase-core:$firebaseCoreVersion"
   implementation 'com.stripe:stripe-android:8.1.0'
   implementation 'com.github.tipsi:CreditCardEntry:1.5.1'
 }
