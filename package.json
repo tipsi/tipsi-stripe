@@ -28,12 +28,6 @@
     "url": "https://github.com/tipsi/tipsi-stripe/issues"
   },
   "homepage": "https://github.com/tipsi/tipsi-stripe#readme",
-  "rnpm": {
-    "commands": {
-      "prelink": "node_modules/tipsi-stripe/scripts/pre-link.sh",
-      "postlink": "node_modules/tipsi-stripe/scripts/post-link.sh"
-    }
-  },
   "peerDependencies": {
     "react": ">=15.4.0 || >=16.x",
     "react-native": ">=0.40"
