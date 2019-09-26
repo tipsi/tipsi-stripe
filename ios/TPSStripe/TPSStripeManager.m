@@ -115,6 +115,7 @@ RCT_ENUM_CONVERTER(STPPaymentMethodType,
                       @"card": @(STPPaymentMethodTypeCard),
                       @"iDEAL": @(STPPaymentMethodTypeiDEAL),
                       @"card_present": @(STPPaymentMethodTypeCardPresent),
+                      @"fpx": @(STPPaymentMethodTypeUnknown),
                       @"unknown": @(STPPaymentMethodTypeUnknown),
                       }),
                    STPPaymentMethodTypeUnknown,
@@ -125,7 +126,9 @@ RCT_ENUM_CONVERTER(STPPaymentMethodType,
         case STPPaymentMethodTypeCard: return @"card";
         case STPPaymentMethodTypeiDEAL: return @"iDEAL";
         case STPPaymentMethodTypeCardPresent: return @"card_present";
-        case STPPaymentMethodTypeUnknown: return @"unknown";
+        case STPPaymentMethodTypeFPX: return @"fpx";
+        case STPPaymentMethodTypeUnknown:
+        default: return @"unknown";
     }
 }
 
@@ -160,6 +163,7 @@ RCT_ENUM_CONVERTER(STPPaymentIntentStatus,
             TPSEntry(requires_payment_method, RequiresPaymentMethod)
             TPSEntry(requires_confirmation, RequiresConfirmation)
             TPSEntry(succeeded, Succeeded)
+            default: return TPSStripeParam(PaymentIntentStatus, unknown);
     }
 #undef TPSEntry
 }
@@ -189,6 +193,7 @@ RCT_ENUM_CONVERTER(STPSetupIntentStatus,
             TPSEntry(requires_payment_method, RequiresPaymentMethod)
             TPSEntry(requires_confirmation, RequiresConfirmation)
             TPSEntry(succeeded, Succeeded)
+            default: return TPSStripeParam(SetupIntentStatus, unknown);
     }
 #undef TPSEntry
 }
