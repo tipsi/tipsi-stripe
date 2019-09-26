@@ -68,9 +68,9 @@ export default class SetupIntentScreen extends PureComponent {
 
       this.setState({ ...this.state, loading: false, confirmSetupResult })
     } catch (e) {
-      console.log("error");
+      console.log('error')
       console.dir(e)
-      this.setState({ ...this.state, loading: false, confirmSetupResult: e})
+      this.setState({ ...this.state, loading: false, confirmSetupResult: e })
     }
   }
 
@@ -125,7 +125,6 @@ export default class SetupIntentScreen extends PureComponent {
                   />
                 </View>
               ))}
-
           </>
         )}
 

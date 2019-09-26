@@ -39,7 +39,9 @@ export default class CardFormScreen extends PureComponent {
           {...testID('cardFormButton')}
         />
         <View style={styles.paymentMethod} {...testID('cardFormPaymentMethod')}>
-          {paymentMethod && <Text style={styles.instruction}>Payment Method: {JSON.stringify(paymentMethod)}</Text>}
+          {paymentMethod && (
+            <Text style={styles.instruction}>Payment Method: {JSON.stringify(paymentMethod)}</Text>
+          )}
         </View>
       </View>
     )
