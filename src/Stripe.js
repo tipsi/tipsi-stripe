@@ -159,7 +159,9 @@ class Stripe {
     return StripeModule.init(options, errorCodes)
   }
 
-  setStripeAccount = (stripeAccount) => StripeModule.setStripeAccount(stripeAccount)
+  setStripeAccount = (stripeAccount) => (
+    StripeModule.setStripeAccount(stripeAccount)
+  )
 
   /**
    * Normalizes a card's brand in the format of a short identifier called a 'slug', eg 'amex'
@@ -189,6 +191,8 @@ class Stripe {
       ios: () => this.deviceSupportsApplePay(),
       android: () => this.deviceSupportsAndroidPay(),
     })()
+
+  apiVersion = () => StripeModule.apiVersion()
 
   // iOS requires networks array while Android requires nothing
   canMakeNativePayPayments = (options = {}) =>
@@ -244,6 +248,20 @@ class Stripe {
       'Stripe.paymentRequestWithCardForm'
     )
     return StripeModule.paymentRequestWithCardForm({
+      ...options,
+      theme: processTheme(options.theme),
+    })
+  }
+
+  paymentRequestWithOptionForm = (options = {}) => {
+    checkInit(this)
+    checkArgs(
+        types.paymentRequestWithOptionFormOptionsPropTypes,
+        options,
+        'options',
+        'Stripe.paymentRequestWithOptionForm'
+    )
+    return StripeModule.paymentRequestWithOptionForm({
       ...options,
       theme: processTheme(options.theme),
     })

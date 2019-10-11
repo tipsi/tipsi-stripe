@@ -146,6 +146,35 @@ export const paymentRequestWithCardFormOptionsPropTypes = {
   }),
 }
 
+export const paymentRequestWithOptionFormOptionsPropTypes = {
+  ephermalCustomerData: PropTypes.object,
+  requiredBillingAddressFields: PropTypes.oneOf(['full', 'name', 'zip']),
+  smsAutofillDisabled: PropTypes.bool,
+  prefilledInformation: PropTypes.shape({
+    email: PropTypes.string,
+    phone: PropTypes.string,
+    billingAddress: PropTypes.shape({
+      name: PropTypes.string,
+      line1: PropTypes.string,
+      line2: PropTypes.string,
+      city: PropTypes.string,
+      state: PropTypes.string,
+      postalCode: PropTypes.string,
+      country: PropTypes.string,
+      phone: PropTypes.string,
+      email: PropTypes.string,
+    }),
+  }),
+  theme: PropTypes.shape({
+    primaryBackgroundColor: PropTypes.string,
+    secondaryBackgroundColor: PropTypes.string,
+    primaryForegroundColor: PropTypes.string,
+    secondaryForegroundColor: PropTypes.string,
+    accentColor: PropTypes.string,
+    errorColor: PropTypes.string,
+  }),
+}
+
 export const createTokenWithCardParamsPropTypes = {
   number: PropTypes.string.isRequired,
   expMonth: PropTypes.number.isRequired,
