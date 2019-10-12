@@ -222,10 +222,11 @@
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../../../React/**",
 					"$(SRCROOT)/../../react-native/React/**",
-					"${SRCROOT}/../../../ios/Pods/Headers/Public",
-					"${SRCROOT}/../../../ios/Pods/Headers/Public/Stripe",
+					"${SRCROOT}/../../../ios/**",
+					"${SRCROOT}/../../ios/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -278,10 +279,11 @@
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../../../React/**",
 					"$(SRCROOT)/../../react-native/React/**",
-					"${SRCROOT}/../../../ios/Pods/Headers/Public",
-					"${SRCROOT}/../../../ios/Pods/Headers/Public/Stripe",
+					"${SRCROOT}/../../../ios/**",
+					"${SRCROOT}/../../ios/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
