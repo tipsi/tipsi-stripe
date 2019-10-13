@@ -1346,7 +1346,6 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
                                 completion:(void (^)(PKPaymentAuthorizationStatus))completion {
     // Save for deffered call
     applePayCompletion = completion;
-    NSLog(@"PKPayment %@", payment);
     STPAPIClient *stripeAPIClient = [self newAPIClient];
     
     [stripeAPIClient createPaymentMethodWithPayment:payment completion:^(STPPaymentMethod * _Nullable paymentMethod, NSError * _Nullable error) {
@@ -1358,14 +1357,6 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
             [self resolveApplePayCompletion:PKPaymentAuthorizationStatusFailure];
         } else {
             NSDictionary *result = [self convertPaymentMethod:paymentMethod];
-            NSDictionary *extra = @{
-                                    @"billingContact": [self contactDetails:payment.billingContact] ?: [NSNull null],
-                                    @"shippingContact": [self contactDetails:payment.shippingContact] ?: [NSNull null],
-                                    @"shippingMethod": [self shippingDetails:payment.shippingMethod] ?: [NSNull null]
-                                    };
-
-            [result setValue:extra forKey:@"extra"];
-
             [self resolvePromise:result];
         }
     }];
