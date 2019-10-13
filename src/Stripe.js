@@ -192,7 +192,9 @@ class Stripe {
       android: () => this.deviceSupportsAndroidPay(),
     })()
 
-  apiVersion = () => StripeModule.apiVersion()
+  apiVersion = () => {
+    return StripeModule.apiVersion()
+  }
 
   // iOS requires networks array while Android requires nothing
   canMakeNativePayPayments = (options = {}) =>
