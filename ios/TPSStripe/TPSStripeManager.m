@@ -877,6 +877,8 @@ RCT_EXPORT_METHOD(paymentRequestWithOptionForm:(NSDictionary *)options
     });
 }
 
+// MARK: Apple Pay
+
 RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
                   withOptions:(NSDictionary *)options
                   resolver:(RCTPromiseResolveBlock)resolve
@@ -1337,17 +1339,17 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     }
 }
 
-#pragma mark PKPaymentAuthorizationViewControllerDelegate
+// MARK: Apple Pay Delegate - PKPaymentAuthorizationViewControllerDelegate
 
 - (void)paymentAuthorizationViewController:(PKPaymentAuthorizationViewController *)controller
                        didAuthorizePayment:(PKPayment *)payment
                                 completion:(void (^)(PKPaymentAuthorizationStatus))completion {
     // Save for deffered call
     applePayCompletion = completion;
-
+    NSLog(@"PKPayment %@", payment);
     STPAPIClient *stripeAPIClient = [self newAPIClient];
-
-    [stripeAPIClient createTokenWithPayment:payment completion:^(STPToken * _Nullable token, NSError * _Nullable error) {
+    
+    [stripeAPIClient createPaymentMethodWithPayment:payment completion:^(STPPaymentMethod * _Nullable paymentMethod, NSError * _Nullable error) {
         self->requestIsCompleted = YES;
 
         if (error) {
@@ -1355,7 +1357,7 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
             self->applePayStripeError = error;
             [self resolveApplePayCompletion:PKPaymentAuthorizationStatusFailure];
         } else {
-            NSDictionary *result = [self convertTokenObject:token];
+            NSDictionary *result = [self convertPaymentMethod:paymentMethod];
             NSDictionary *extra = @{
                                     @"billingContact": [self contactDetails:payment.billingContact] ?: [NSNull null],
                                     @"shippingContact": [self contactDetails:payment.shippingContact] ?: [NSNull null],
