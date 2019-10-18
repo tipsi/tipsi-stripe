@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if [[ "$(uname)" == "Darwin" ]]; then
 	ruby $(dirname "$0")/post-link-ios.rb

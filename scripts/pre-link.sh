@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if [[ "$(uname)" == "Darwin" ]]; then
   echo "Preparing to link tipsi-stripe for iOS"

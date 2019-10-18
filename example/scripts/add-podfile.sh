@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 echo "# Use iOS 9 and above
 platform :ios, '9.0'
