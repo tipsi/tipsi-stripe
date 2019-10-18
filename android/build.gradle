@@ -28,6 +28,7 @@ android {
     manifestPlaceholders = [
       tipsiStripeRedirectScheme: "example"
     ]
+    multiDexEnabled true
   }
   buildTypes {
     release {
