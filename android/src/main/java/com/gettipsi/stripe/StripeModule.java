@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.facebook.react.bridge.ActivityEventListener;
 import com.facebook.react.bridge.Arguments;
@@ -24,14 +25,20 @@ import com.gettipsi.stripe.util.Fun0;
 import com.google.android.gms.wallet.WalletConstants;
 import com.stripe.android.ApiResultCallback;
 import com.stripe.android.AppInfo;
+import com.stripe.android.CustomerSession;
+import com.stripe.android.EphemeralKeyProvider;
+import com.stripe.android.EphemeralKeyUpdateListener;
+import com.stripe.android.PaymentConfiguration;
 import com.stripe.android.PaymentIntentResult;
 import com.stripe.android.SetupIntentResult;
 import com.stripe.android.SourceCallback;
 import com.stripe.android.Stripe;
+import com.stripe.android.StripeError;
 import com.stripe.android.TokenCallback;
 import com.stripe.android.model.Address;
 import com.stripe.android.model.ConfirmPaymentIntentParams;
 import com.stripe.android.model.ConfirmSetupIntentParams;
+import com.stripe.android.model.Customer;
 import com.stripe.android.model.PaymentMethod;
 import com.stripe.android.model.PaymentMethodCreateParams;
 import com.stripe.android.model.Source;
@@ -39,6 +46,8 @@ import com.stripe.android.model.Source.SourceStatus;
 import com.stripe.android.model.SourceParams;
 import com.stripe.android.model.StripeIntent;
 import com.stripe.android.model.Token;
+import com.stripe.android.view.PaymentMethodsActivity;
+import com.stripe.android.view.PaymentMethodsActivityStarter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -145,6 +154,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
       Stripe.setAppInfo(AppInfo.create(APP_INFO_NAME, APP_INFO_VERSION, APP_INFO_URL));
       mStripe = new Stripe(getReactApplicationContext(), mPublicKey);
       getPayFlow().setPublishableKey(mPublicKey);
+      PaymentConfiguration.init(mPublicKey);
     }
 
     if (newAndroidPayMode != null) {
@@ -174,6 +184,38 @@ public class StripeModule extends ReactContextBaseJavaModule {
   private static int androidPayModeToEnvironment(@NonNull String androidPayMode) {
     ArgCheck.notEmptyString(androidPayMode);
     return ANDROID_PAY_MODE_TEST.equals(androidPayMode.toLowerCase()) ? WalletConstants.ENVIRONMENT_TEST : WalletConstants.ENVIRONMENT_PRODUCTION;
+  }
+
+  @ReactMethod
+  public void apiVersion(final Promise promise) {
+    promise.resolve(Stripe.API_VERSION);
+  }
+
+  @ReactMethod
+  public void paymentRequestWithOptionForm(final ReadableMap options, final Promise promise) {
+    CustomerSession.initCustomerSession(
+            getReactApplicationContext(),
+            new OwnKeyProvider(options.getString("ephermalCustomerDataString")),
+            true
+    );
+
+    final StripeModule module = this;
+
+    CustomerSession.getInstance().retrieveCurrentCustomer(new CustomerSession.CustomerRetrievalListener() {
+      @Override
+      public void onCustomerRetrieved(@NonNull Customer customer) {
+        module.attachPaymentMethodsActivityResultListener(promise);
+
+        PaymentMethodsActivityStarter paymentStarterActivity = new PaymentMethodsActivityStarter(getCurrentActivity());
+        paymentStarterActivity.startForResult();
+      }
+
+      @Override
+      public void onError(int errorCode, @NonNull String errorMessage, @Nullable StripeError stripeError) {
+        promise.reject(new Error(errorMessage));
+      }
+    });
+
   }
 
   @ReactMethod
@@ -254,6 +296,36 @@ public class StripeModule extends ReactContextBaseJavaModule {
   @ReactMethod
   public void paymentRequestWithAndroidPay(final ReadableMap payParams, final Promise promise) {
     getPayFlow().paymentRequestWithAndroidPay(payParams, promise);
+  }
+
+  private void attachPaymentMethodsActivityResultListener(final Promise promise) {
+      ActivityEventListener ael = new BaseActivityEventListener() {
+        @Override
+        public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
+
+          final ActivityEventListener ael = this;
+          getReactApplicationContext().removeActivityEventListener(ael);
+
+          if (requestCode == PaymentMethodsActivityStarter.REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
+              PaymentMethodsActivityStarter.Result result = PaymentMethodsActivityStarter.Result.fromIntent(data);
+              if (result != null) {
+                  PaymentMethod paymentMethod = result.paymentMethod;
+                  promise.resolve(Converters.convertPaymentMethodToWritableMap(paymentMethod));
+                  return;
+              }
+          } else if (resultCode == Activity.RESULT_CANCELED) {
+            promise.reject(CANCELLED, CANCELLED);
+            return;
+          }
+          promise.reject(FAILED, FAILED);
+        }
+
+        @Override
+        public void onActivityResult(int requestCode, int resultCode, Intent data) {
+          super.onActivityResult(requestCode, resultCode, data);
+        }
+      };
+      getReactApplicationContext().addActivityEventListener(ael);
   }
 
   private void attachPaymentResultActivityListener(final Promise promise) {
