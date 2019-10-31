@@ -1,5 +1,52 @@
 # Changelog
 
+## [8.0.0] - 2019-09-01
+
+### Android
+
+- Compile SDK Version increased from 26 -> 28
+- Target SDK Version increased from 26 -> 28
+- Min SDK Version increased from 16 -> 19
+- Support libraries increased from 27.1.0 to 28.0.0
+- `stripe-android` upgraded from 8.1.0 to 10.4.0
+
+### iOS
+
+- Minimum compatible `stripe-ios` sdk -> 16.0.7, but recommended 17.0.1 or later (update your `Podfile` or vendored `stripe-ios`!)
+- Xcode version: recommended 10.3.1 or later
+
+### New SCA-ready APIs
+
+- `stripe.createPaymentMethod(…)`
+- `stripe.confirmPaymentIntent(…)`
+- `stripe.confirmSetupIntent(…)`
+- `stripe.authenticatePaymentIntent(…)` (only used with manual confirmation mode)
+- `stripe.potentiallyAvailableNativePayNetworks(…)`
+
+### Common
+
+- **Breaking** The Card form now returns a PaymentMethod. The Card form will no longer return a token (or Source)
+- **Warning** Supports React Native 59.x (*other versions at your own risk*)
+- JSDoc-annotated API Descriptions for the new APIs
+- Helper methods `stripe.slugForCardBrand(…)` and `stripe.presentableStringForCardBrand(…)` to normalize Card Brand Strings that change values depending on which API you're working with. (Stripe API oddity)
+
+### Bug fixes
+
+- Prevented toErrorCode from itself causing an error
+
+### Examples
+
+- The example app has new PaymentIntent and SetupIntent screens that can be used to test various card scenarios
+- The example app requires a backend for those screens, which can be forked and one-click deployed to Heroku from:
+  - [mindlapse/example-tipsi-stripe-backend](https://github.com/mindlapse/example-tipsi-stripe-backend)
+  - You need to set the environment variable BACKEND_URL to the location it is deployed
+
+### Dev tooling
+
+- Added .circleci config
+- Added eslint & prettier config
+
+
 ## [7.5.0] - 2019-04-22
 
 - [Google pay: capture email](https://github.com/tipsi/tipsi-stripe/pull/469)

@@ -54,7 +54,7 @@ export default class CustomCardScreen extends PureComponent {
     }
   }
 
-  renderMandatoryFields = params => (
+  renderMandatoryFields = (params) => (
     <View style={styles.params}>
       <Text style={styles.param}>Number: {params.number}</Text>
       <Text style={styles.param}>Month: {params.expMonth}</Text>
@@ -67,12 +67,8 @@ export default class CustomCardScreen extends PureComponent {
 
     return (
       <View style={styles.container}>
-        <Text style={styles.header}>
-          Custom Card Params Example
-        </Text>
-        <Spoiler title="Mandatory Fields">
-          {this.renderMandatoryFields(params)}
-        </Spoiler>
+        <Text style={styles.header}>Custom Card Params Example</Text>
+        <Spoiler title="Mandatory Fields">{this.renderMandatoryFields(params)}</Spoiler>
         <Spoiler title="Mandatory Fields - Error" defaultOpen={false}>
           {this.renderMandatoryFields(errorParams)}
         </Spoiler>
@@ -102,16 +98,16 @@ export default class CustomCardScreen extends PureComponent {
           onPress={() => this.handleCustomPayPress(false)}
           {...testID('customCardErrorButton')}
         />
-        {token &&
+        {token && (
           <View style={styles.token} {...testID('customCardToken')}>
             <Text style={styles.instruction}>Token: {token.tokenId}</Text>
           </View>
-        }
-        {error &&
+        )}
+        {error && (
           <View style={styles.token} {...testID('customCardTokenError')}>
             <Text style={styles.instruction}>Error: {JSON.stringify(error.message)}</Text>
           </View>
-        }
+        )}
       </View>
     )
   }

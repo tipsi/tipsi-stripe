@@ -26,26 +26,18 @@ export default class Spoiler extends PureComponent {
   render() {
     const { title, style, children } = this.props
     const { open } = this.state
-    const headerStyles = open ?
-      [styles.header, styles.headerOpen] :
-      styles.header
-    const arrowStyles = open ?
-      styles.arrowDown :
-      styles.arrowUp
+    const headerStyles = open ? [styles.header, styles.headerOpen] : styles.header
+    const arrowStyles = open ? styles.arrowDown : styles.arrowUp
 
     return (
       <View style={[styles.spoiler, style]}>
-        <TouchableHighlight
-          underlayColor="rgba(0,0,0,0.5)"
-          onPress={this.handlePress}>
+        <TouchableHighlight underlayColor="rgba(0,0,0,0.5)" onPress={this.handlePress}>
           <View style={headerStyles}>
             <Text style={styles.title}>{title}</Text>
             <Text style={arrowStyles}>›</Text>
           </View>
         </TouchableHighlight>
-        <View>
-          {open && children}
-        </View>
+        <View>{open && children}</View>
       </View>
     )
   }

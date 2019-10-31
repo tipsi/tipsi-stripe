@@ -13,9 +13,14 @@ import com.facebook.react.bridge.WritableNativeMap;
 import com.google.android.gms.identity.intents.model.CountrySpecification;
 import com.google.android.gms.identity.intents.model.UserAddress;
 import com.google.android.gms.wallet.PaymentData;
+import com.stripe.android.PaymentIntentResult;
+import com.stripe.android.SetupIntentResult;
 import com.stripe.android.model.Address;
 import com.stripe.android.model.BankAccount;
 import com.stripe.android.model.Card;
+import com.stripe.android.model.PaymentIntent;
+import com.stripe.android.model.PaymentMethod;
+import com.stripe.android.model.SetupIntent;
 import com.stripe.android.model.Source;
 import com.stripe.android.model.SourceCodeVerification;
 import com.stripe.android.model.SourceOwner;
@@ -64,11 +69,11 @@ public class Converters {
 
     billingContactMap.putString("emailAddress", emailAddress);
     shippingContactMap.putString("emailAddress", emailAddress);
-    
+
 
     extra.putMap("billingContact", billingContactMap);
     extra.putMap("shippingContact", shippingContactMap);
-    
+
     tokenMap.putMap("extra", extra);
 
     return tokenMap;
@@ -230,6 +235,102 @@ public class Converters {
 
     return newSource;
   }
+
+  @NonNull
+  public static WritableMap convertPaymentIntentResultToWritableMap(@Nullable PaymentIntentResult paymentIntentResult) {
+    WritableMap wm = Arguments.createMap();
+
+    if (paymentIntentResult == null) {
+      wm.putString("status", "unknown");
+      return wm;
+    }
+
+    PaymentIntent intent = paymentIntentResult.getIntent();
+    wm.putString("status", intent.getStatus().toString());
+    wm.putString("paymentIntentId", intent.getId());
+
+//    String paymentMethodId = intent.getPaymentMethodId();
+//    if (paymentMethodId != null) {
+//      wm.putString("paymentMethodId", paymentMethodId);
+//    }
+    return wm;
+  }
+
+
+  @NonNull
+  public static WritableMap convertSetupIntentResultToWritableMap(@Nullable SetupIntentResult setupIntentResult) {
+    WritableMap wm = Arguments.createMap();
+
+    if (setupIntentResult == null) {
+      wm.putString("status", "unknown");
+      return wm;
+    }
+
+    SetupIntent intent = setupIntentResult.getIntent();
+    wm.putString("status", intent.getStatus().toString());
+    wm.putString("setupIntentId", intent.getId());
+
+    String paymentMethodId = intent.getPaymentMethodId();
+    if (paymentMethodId != null) {
+      wm.putString("paymentMethodId", paymentMethodId);
+    }
+    return wm;
+  }
+
+  @NonNull
+  public static WritableMap convertPaymentMethodToWritableMap(@Nullable PaymentMethod paymentMethod) {
+    WritableMap wm = Arguments.createMap();
+
+    if (paymentMethod == null) {
+      return wm;
+    }
+
+    wm.putString("id", paymentMethod.id);
+    wm.putInt("created", paymentMethod.created.intValue());
+    wm.putBoolean("livemode", paymentMethod.liveMode);
+    wm.putString("type", paymentMethod.type);
+    wm.putMap("billingDetails", convertBillingDetailsToWritableMap(paymentMethod.billingDetails));
+    wm.putMap("card", convertPaymentMethodCardToWritableMap(paymentMethod.card));
+    wm.putString("customerId", paymentMethod.customerId);
+
+    // TODO support metadata
+    return wm;
+  }
+
+  @NonNull
+  public static WritableMap convertPaymentMethodCardToWritableMap(@Nullable final PaymentMethod.Card card) {
+    WritableMap wm = Arguments.createMap();
+
+    if (card == null) {
+      return wm;
+    }
+
+    // Omitted (can be introduced later): card.checks, card.threeDSecureUsage, card.wallet
+
+    wm.putString("brand", card.brand);
+    wm.putString("country", card.country);
+    wm.putInt("expMonth", card.expiryMonth);
+    wm.putInt("expYear", card.expiryYear);
+    wm.putString("funding", card.funding);
+    wm.putString("last4", card.last4);
+    return wm;
+  }
+
+  @NonNull
+  public static WritableMap convertBillingDetailsToWritableMap(@Nullable final PaymentMethod.BillingDetails billingDetails) {
+    WritableMap wm = Arguments.createMap();
+
+    if (billingDetails == null) {
+      return wm;
+    }
+
+    wm.putMap("address", convertAddressToWritableMap(billingDetails.address));
+    wm.putString("email", billingDetails.email);
+    wm.putString("name", billingDetails.name);
+    wm.putString("phone", billingDetails.phone);
+    return wm;
+  }
+
 
   @NonNull
   public static WritableMap stringMapToWritableMap(@Nullable Map<String, String> map) {
@@ -406,6 +507,14 @@ public class Converters {
 
   public static String getStringOrNull(@NonNull ReadableMap map, @NonNull String key) {
     return map.hasKey(key) ? map.getString(key) : null;
+  }
+
+  public static ReadableMap getMapOrNull(@NonNull ReadableMap map, @NonNull String key) {
+    return map.hasKey(key) ? map.getMap(key) : null;
+  }
+
+  public static boolean getBooleanOrNull(@NonNull ReadableMap map, @NonNull String key, boolean defaultVal) {
+    return map.hasKey(key) ? map.getBoolean(key) : defaultVal;
   }
 
   public static void putIfNotEmpty(final WritableMap map, final String key, final String value) {

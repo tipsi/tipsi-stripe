@@ -26,6 +26,7 @@ files_to_copy=(
   .appiumhelperrc
   package.json
   package-lock.json
+  app.json
   index.{ios,android}.js
   android/appium-config.json
   android/build.gradle
@@ -50,6 +51,7 @@ isMacOS() {
 
 # Check Stripe environment variables
 [ -z "$PUBLISHABLE_KEY" ] && echo "Need to set Stripe PUBLISHABLE_KEY" && exit 1;
+[ -z "$BACKEND_URL" ] && echo "Warning!  You need BACKEND_URL defined to run payment intent use cases"
 # Skip iOS step if current os is not macOS
 ! isMacOS && echo "Current os is not macOS, setup for iOS will be skipped"
 # Install react-native-cli if not exist
@@ -106,7 +108,7 @@ isMacOS && npm run set-stripe-url-type
 
 # Install dependencies
 rm -rf node_modules && npm ci
-npm i tipsi-stripe@../tipsi-stripe-latest.tgz --save
+npm i tipsi-stripe@../tipsi-stripe-$library_version.tgz --save
 
 echo "Unlinking $library_name"
 react-native unlink $library_name --verbose

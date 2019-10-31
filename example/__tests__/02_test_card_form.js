@@ -29,7 +29,7 @@ test('Test if user can use Card Form', async (t) => {
     android: idFromResourceId('android:id/button1'),
   })
   const nextButtonId = idFromAccessId('Next')
-  const tokenId = idFromAccessId('cardFormToken')
+  const paymentMethodResultId = idFromAccessId('cardFormPaymentMethod')
 
   await openTestSuite('Card Form')
 
@@ -88,21 +88,21 @@ test('Test if user can use Card Form', async (t) => {
   // it is related to problems with current container or slow android emulator
   if (platform('android')) {
     try {
-       elem = await driver.$(tokenId)
+       elem = await driver.$(paymentMethodResultId)
        await elem.waitForDisplayed(180000)
     } catch (error) {
       try {
-        t.pass('Token does not exist, try click done button again')
+        t.pass('Payment Method does not exist, try click done button again')
         elem = await driver.$(doneButtonId)
         await elem.waitForDisplayed(50000)
         elem.click()
       } catch (error) { // eslint-disable-line no-shadow, no-empty
-        t.pass('Done button does not exist, wait for token')
+        t.pass('Done button does not exist, wait for payment method')
       }
     }
   }
 
-  elem = await driver.$(tokenId)
+  elem = await driver.$(paymentMethodResultId)
   await elem.waitForDisplayed(50000)
-  t.pass('User should see token')
+  t.pass('User should see Payment Method')
 })

@@ -10,6 +10,3 @@ execSync('rm -rf *.tgz', { cwd: rootDirectory })
 
 // 2. Do npm pack
 execSync('npm pack', { cwd: rootDirectory })
-
-// 3. Rename .tgz to tipsi-stripe-latest.tgz
-execSync(`mv ${name}-${version}.tgz ${name}-latest.tgz`, { cwd: rootDirectory })
