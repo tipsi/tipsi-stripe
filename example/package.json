@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "preinstall": "scripts/pre-install.js",
+    "postinstall": "scripts/post-install.js",
     "rn-cli": "node node_modules/react-native/local-cli/cli.js start",
     "start": "npm run rn-cli -- --config $(pwd)/rn-cli.config.js",
     "cold-start": "npm start -- --reset-cache",
@@ -11,23 +12,28 @@
     "configure": "scripts/configure.sh",
     "build:android": "scripts/build-android.sh",
     "build:ios": "scripts/build-ios.sh",
-    "test:android": "TEST_SUITE=android appium-helper --platform android",
+    "test:android": "TEST_SUITE=android appium-helper --platform android --driver-config ./android/appium-config.json",
     "test:ios": "TEST_SUITE=ios appium-helper --platform ios",
     "add-podfile": "scripts/add-podfile.sh",
     "set-stripe-url-type": "scripts/setUrlTypeForStripe.js"
   },
   "dependencies": {
-    "prop-types": "15.6.1",
-    "react": "16.0.0-alpha.12",
-    "react-native": "0.45.0",
-    "react-native-drawer-layout-polyfill": "1.3.1",
-    "tipsi-stripe": "file:../tipsi-stripe-latest.tgz"
+    "prop-types": "15.7.2",
+    "react": "16.8.6",
+    "react-native": "0.59.10",
+    "react-native-drawer-layout-polyfill": "1.3.1"
   },
   "devDependencies": {
-    "appium": "1.10.0",
-    "babel-preset-react-native": "4.0.0",
+    "@babel/core": "^7.4.5",
+    "@babel/runtime": "^7.4.5",
+    "appium": "1.14.0",
+    "babel-jest": "^24.8.0",
+    "jest": "^24.8.0",
+    "metro-react-native-babel-preset": "0.55.0",
+    "react-test-renderer": "16.8.3",
     "tape-async": "2.3.0",
-    "tipsi-appium-helper": "2.1.3",
-    "webdriverio": "4.7.1"
+    "tipsi-appium-helper": "3.3.0",
+    "webdriverio": "5.11.x",
+    "xcode": "2.0.x"
   }
 }

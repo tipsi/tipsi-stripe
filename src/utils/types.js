@@ -1,6 +1,26 @@
 import PropTypes from 'prop-types'
+import { Platform } from 'react-native'
 
-export const availableApplePayNetworks = ['american_express', 'discover', 'master_card', 'visa']
+export const availableApplePayNetworks = [
+  'american_express',
+  'cartes_bancaires',
+  'china_union_pay',
+  'discover',
+  'eftpos',
+  'electron',
+  'elo',
+  'id_credit',
+  'interac',
+  'jcb',
+  'mada',
+  'maestro',
+  'master_card',
+  'private_label',
+  'quic_pay',
+  'suica',
+  'visa',
+  'vpay',
+]
 export const availableApplePayAddressFields = ['all', 'name', 'email', 'phone', 'postal_address']
 export const availableApplePayShippingTypes = [
   'shipping',
@@ -19,6 +39,39 @@ export const availableSourceTypes = [
   'card',
 ]
 
+/** Keys are lower-cased slug|string */
+export const brandToBrandSlugMapping = {
+  unknown: 'unknown',
+  amex: 'amex',
+  diners: 'diners',
+  discover: 'discover',
+  jcb: 'jcb',
+  mastercard: 'mastercard',
+  unionpay: 'unionpay',
+  visa: 'visa',
+
+  'american express': 'amex',
+  'diners club': 'diners',
+}
+export const exactBrandSlugs = new Set(Object.values(brandToBrandSlugMapping))
+/** Keys are lower-cased slug|string */
+export const brandToPresentableBrandStringMapping = {
+  unknown: 'Unknown',
+  amex: 'American Express',
+  diners: 'Diners Club',
+  discover: 'Discover',
+  jcb: 'JCB',
+  mastercard: 'MasterCard',
+  unionpay: 'UnionPay',
+  visa: 'Visa',
+
+  'american express': 'American Express',
+  'diners club': 'Diners Club',
+}
+export const exactPresentableBrandStrings = new Set(
+  Object.values(brandToPresentableBrandStringMapping)
+)
+
 export const setOptionsOptionsPropTypes = {
   publishableKey: PropTypes.string,
   merchantId: PropTypes.string,
@@ -30,6 +83,12 @@ export const availableApplePayNetworkPropTypes = PropTypes.oneOf(availableAppleP
 export const canMakeApplePayPaymentsOptionsPropTypes = {
   networks: PropTypes.arrayOf(availableApplePayNetworkPropTypes),
 }
+export const potentiallyAvailableNativePayPaymentsOptionsPropTypes = Platform.select({
+  ios: {
+    networks: PropTypes.arrayOf(availableApplePayNetworkPropTypes),
+  },
+  android: {},
+})
 
 export const paymentRequestWithApplePayItemPropTypes = {
   label: PropTypes.string.isRequired,
@@ -38,9 +97,7 @@ export const paymentRequestWithApplePayItemPropTypes = {
 }
 
 export const paymentRequestWithApplePayItemsPropTypes = {
-  items: PropTypes.arrayOf(
-    PropTypes.shape(paymentRequestWithApplePayItemPropTypes)
-  ).isRequired,
+  items: PropTypes.arrayOf(PropTypes.shape(paymentRequestWithApplePayItemPropTypes)).isRequired,
 }
 
 export const applePayAddressFieldsPropTypes = PropTypes.oneOf(availableApplePayAddressFields)
@@ -62,8 +119,7 @@ export const paymentRequestWithApplePayOptionsPropTypes = {
 }
 
 export const paymentRequestWithCardFormOptionsPropTypes = {
-  requiredBillingAddressFields: PropTypes.oneOf(['full', 'zip']),
-  managedAccountCurrency: PropTypes.string,
+  requiredBillingAddressFields: PropTypes.oneOf(['full', 'name', 'zip']),
   smsAutofillDisabled: PropTypes.bool,
   prefilledInformation: PropTypes.shape({
     email: PropTypes.string,
@@ -167,4 +223,93 @@ export const createSourceWithParamsPropType = {
   funding: PropTypes.string,
   id: PropTypes.string,
   last4: PropTypes.string,
+}
+
+// Corresponds to https://stripe.com/docs/api/payment_methods/create
+export const createPaymentMethodPropType = {
+  // BillingDetails properties:
+  billingDetails: PropTypes.shape({
+    address: PropTypes.shape({
+      city: PropTypes.string,
+      country: PropTypes.string,
+      line1: PropTypes.string,
+      line2: PropTypes.string,
+      postalCode: PropTypes.string,
+      state: PropTypes.string,
+    }),
+    email: PropTypes.string,
+    name: PropTypes.string,
+    phone: PropTypes.string,
+  }),
+
+  // Card properties:
+  // - As an alternative to providing card PAN info, you can also provide a Stripe token:
+  //   https://stripe.com/docs/api/payment_methods/create#create_payment_method-card
+  card: PropTypes.oneOfType([
+    PropTypes.shape({
+      cvc: PropTypes.string,
+      expMonth: PropTypes.number,
+      expYear: PropTypes.number,
+      number: PropTypes.string,
+    }),
+    PropTypes.shape({ token: PropTypes.string }),
+  ]),
+
+  // TODO: Add documentation for metadata (supported on iOS and Android)
+  metadata: PropTypes.object,
+  // TODO: customerId support
+}
+
+const confirmPaymentIntentPropTypeBase = {
+  clientSecret: PropTypes.string.isRequired,
+  savePaymentMethod: PropTypes.bool,
+  returnURL: PropTypes.string,
+}
+/**
+ * One of the following may be provided
+ * - paymentMethod
+ * - paymentMethodId (any supported ID, including IDs for saved card sources)
+ *
+ * If you don't provide these, then you're required to attach the paymentMethod
+ *  on your backend before you call this API.
+ */
+export const confirmPaymentIntentPropType = PropTypes.oneOfType([
+  PropTypes.shape({
+    ...confirmPaymentIntentPropTypeBase,
+    paymentMethod: PropTypes.shape(createPaymentMethodPropType),
+  }),
+  PropTypes.shape({
+    ...confirmPaymentIntentPropTypeBase,
+    paymentMethodId: PropTypes.string,
+  }),
+]).isRequired
+
+export const authenticatePaymentIntentPropType = {
+  clientSecret: PropTypes.string.isRequired,
+  returnURL: PropTypes.string,
+}
+
+const confirmSetupIntentPropTypeBase = {
+  clientSecret: PropTypes.string.isRequired,
+  returnURL: PropTypes.string,
+}
+/**
+ * One of the following must be provided:
+ * - paymentMethod
+ * - paymentMethodId (any supported ID, including IDs for saved card sources)
+ */
+export const confirmSetupIntentPropType = PropTypes.oneOfType([
+  PropTypes.shape({
+    ...confirmSetupIntentPropTypeBase,
+    paymentMethod: PropTypes.shape(createPaymentMethodPropType).isRequired,
+  }),
+  PropTypes.shape({
+    ...confirmSetupIntentPropTypeBase,
+    paymentMethodId: PropTypes.string.isRequired,
+  }),
+]).isRequired
+
+export const authenticateSetupIntentPropType = {
+  clientSecret: PropTypes.string.isRequired,
+  returnURL: PropTypes.string,
 }

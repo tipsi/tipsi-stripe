@@ -191,7 +191,6 @@ test('paymentRequestWithCardFormOptionsPropTypes', (t) => {
   billingAddressFields.forEach((billingAddressField) => {
     const passedProps = {
       requiredBillingAddressFields: billingAddressField,
-      managedAccountCurrency: 'managedAccountCurrency',
       smsAutofillDisabled: true,
       prefilledInformation: {
         email: 'email',
