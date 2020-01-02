@@ -39,7 +39,6 @@ import static com.gettipsi.stripe.util.InitializationOptions.ANDROID_PAY_MODE_TE
 import static com.gettipsi.stripe.util.InitializationOptions.PUBLISHABLE_KEY;
 
 import com.stripe.android.CardUtils;
-import com.stripe.android.model.Card;
 
 public class StripeModule extends ReactContextBaseJavaModule {
 
@@ -95,18 +94,6 @@ public class StripeModule extends ReactContextBaseJavaModule {
   @ReactMethod
   public void isCardNumberValid(String cardNumber, Promise promise) {
     promise.resolve(CardUtils.isValidCardNumber(cardNumber));
-  }
-
-  @ReactMethod
-  public void isDateValid(Integer expMonth, Integer expYear, Promise promise) {
-    Card card = new Card("4242424242424242", expMonth, expYear, "123");
-    promise.resolve(card.validateExpiryDate());
-  }
-
-  @ReactMethod
-  public void isCardValid(String cardNumber, Integer expMonth, Integer expYear, String cvc, Promise promise) {
-    Card card = new Card(cardNumber, expMonth, expYear, cvc);
-    promise.resolve(card.validateCard());
   }
 
   @ReactMethod
