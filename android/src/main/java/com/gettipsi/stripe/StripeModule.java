@@ -92,7 +92,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void isCardNumberValid(String cardNumber, Promise promise) {
+  public void isValidCardNumber(String cardNumber, Promise promise) {
     promise.resolve(CardUtils.isValidCardNumber(cardNumber));
   }
 

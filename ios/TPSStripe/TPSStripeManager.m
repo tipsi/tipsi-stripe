@@ -385,7 +385,7 @@ RCT_EXPORT_METHOD(paymentRequestWithCardForm:(NSDictionary *)options
     });
 }
 
-RCT_EXPORT_METHOD(isCardNumberValid:(NSString*)number isValid:(RCTPromiseResolveBlock)resolve orNot:(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(isValidCardNumber:(NSString*)number isValid:(RCTPromiseResolveBlock)resolve orNot:(RCTPromiseRejectBlock)reject) {
     STPCardValidationState state = [STPCardValidator validationStateForNumber:number validatingCardBrand:YES];
     if (state == STPCardValidationStateValid) resolve(@(YES));
     if (state == STPCardValidationStateInvalid || state == STPCardValidationStateIncomplete) resolve(@(NO));

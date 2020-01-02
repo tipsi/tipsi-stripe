@@ -70,9 +70,9 @@ class Stripe {
     return StripeModule.paymentRequestWithAndroidPay(options)
   }
 
-  isCardNumberValid = (cardNumber= '') => {
+  isValidCardNumber = (cardNumber= '') => {
     checkInit(this)
-    return StripeModule.isCardNumberValid(cardNumber)
+    return StripeModule.isValidCardNumber(cardNumber)
   }
 
   // @deprecated use paymentRequestWithNativePay
