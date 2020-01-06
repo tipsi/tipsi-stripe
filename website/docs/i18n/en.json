@@ -49,6 +49,10 @@
         "title": ".deviceSupportsApplePay() -> Promise",
         "sidebar_label": ".deviceSupportsApplePay()"
       },
+      "isValidCardNumber": {
+        "title": ".isValidCardNumber(cardNumber) -> Promise",
+        "sidebar_label": ".isValidCardNumber"
+      },
       "errorcodes": {
         "title": "Error Codes",
         "sidebar_label": "Error Codes"
@@ -68,9 +72,6 @@
       "installation": {
         "title": "Installation",
         "sidebar_label": "Installation"
-      },
-      "isValidCardNumber": {
-        "title": "isValidCardNumber"
       },
       "license": {
         "title": "License",
