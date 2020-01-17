@@ -16,23 +16,6 @@ const FieldStylePropType = PropTypes.shape({
   color: PropTypes.string,
 })
 
-const NativePaymentCardTextField = requireNativeComponent('TPSCardField', PaymentCardTextField, {
-  nativeOnly: {
-    borderColor: true,
-    borderWidth: true,
-    cornerRadius: true,
-    textColor: true,
-    fontFamily: true,
-    fontWeight: true,
-    fontStyle: true,
-    fontSize: true,
-    enabled: true,
-    onChange: true,
-    params: true, // Currently iOS only
-    keyboardAppearance: true, // iOS only
-  },
-})
-
 export default class PaymentCardTextField extends Component {
   static propTypes = {
     ...ViewPropTypes,
@@ -213,6 +196,23 @@ const styles = StyleSheet.create({
     // have to set the component's height explicitly on the
     // surrounding view to ensure it gets rendered.
     height: 44,
+  },
+})
+
+const NativePaymentCardTextField = requireNativeComponent('TPSCardField', PaymentCardTextField, {
+  nativeOnly: {
+    borderColor: true,
+    borderWidth: true,
+    cornerRadius: true,
+    textColor: true,
+    fontFamily: true,
+    fontWeight: true,
+    fontStyle: true,
+    fontSize: true,
+    enabled: true,
+    onChange: true,
+    params: true, // Currently iOS only
+    keyboardAppearance: true, // iOS only
   },
 })
 
