@@ -10,7 +10,7 @@ const { StripeModule } = NativeModules
 
 const stripeEmitter = new NativeEventEmitter(StripeModule)
 
-const subscription = calendarManagerEmitter.addListener(
+const subscription = stripeEmitter.addListener(
   'ShippingMethodDidChange',
   (data) => {
      console.log(data)
