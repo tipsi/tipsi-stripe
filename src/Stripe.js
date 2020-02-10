@@ -4,10 +4,21 @@ import checkArgs from './utils/checkArgs'
 import checkInit from './utils/checkInit'
 import * as types from './utils/types'
 import errorCodes from './errorCodes'
+import EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter'
 
 const { StripeModule } = NativeModules
 
-class Stripe {
+const stripeEmitter = new NativeEventEmitter(StripeModule)
+
+const subscription = calendarManagerEmitter.addListener(
+  'ShippingMethodDidChange',
+  (data) => {
+     console.log(data)
+     eventEmitter.emit('onShippingMethodChanged', data)
+  }
+);
+
+class Stripe extends EventEmitter {
   stripeInitialized = false
 
   setOptions = (options = {}) => {
