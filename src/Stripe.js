@@ -1,4 +1,4 @@
-import { NativeModules, Platform } from 'react-native'
+import { NativeEventEmitter, NativeModules, Platform } from 'react-native'
 import processTheme from './utils/processTheme'
 import checkArgs from './utils/checkArgs'
 import checkInit from './utils/checkInit'
