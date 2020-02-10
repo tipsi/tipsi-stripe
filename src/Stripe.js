@@ -14,7 +14,7 @@ const subscription = stripeEmitter.addListener(
   'ShippingMethodDidChange',
   (data) => {
      console.log(data)
-     eventEmitter.emit('onShippingMethodChanged', data)
+     emit('onShippingMethodChanged', data)
   }
 );
 
