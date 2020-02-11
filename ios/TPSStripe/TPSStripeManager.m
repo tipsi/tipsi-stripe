@@ -463,6 +463,7 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     }
 }
 
+/// Callback to update summary items and total when shipping method changes
 RCT_EXPORT_METHOD(updateSummaryItems: (NSArray *) items
                   withErrors: (NSArray *)errors
                   callback: (RCTResponseSenderBlock) callback) {
