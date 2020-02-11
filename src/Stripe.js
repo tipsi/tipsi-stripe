@@ -4,20 +4,19 @@ import checkArgs from './utils/checkArgs'
 import checkInit from './utils/checkInit'
 import * as types from './utils/types'
 import errorCodes from './errorCodes'
-import EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter'
 
 const { StripeModule } = NativeModules
 
-const stripeEmitter = new NativeEventEmitter(StripeModule)
+//const stripeEmitter = new NativeEventEmitter(StripeModule)
 
-const subscription = stripeEmitter.addListener(
-  'ShippingMethodDidChange',
-  (data) => {
-     console.log(data)
-  }
-);
+// const subscription = stripeEmitter.addListener(
+//   'ShippingMethodDidChange',
+//   (data) => {
+//      console.log(data)
+//   }
+// );
 
-class Stripe extends EventEmitter {
+class Stripe {
   stripeInitialized = false
 
   setOptions = (options = {}) => {
