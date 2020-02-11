@@ -113,6 +113,7 @@ NSString * const TPSPaymentNetworkVisa = @"visa";
     BOOL requestIsCompleted;
 
     void (^applePayCompletion)(PKPaymentAuthorizationStatus);
+    void (^ _Nullable shippingMethodCompletion)(PKPaymentRequestShippingMethodUpdate * _Nonnull);
     NSError *applePayStripeError;
 }
 
@@ -596,6 +597,7 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
                                    handler:(void (^)(PKPaymentRequestShippingMethodUpdate *update))completion  API_AVAILABLE(ios(11.0)){
     NSLog(@"didSelectShippingMethod");
     if (hasListeners) {
+        shippingMethodCompletion = completion;
         [self sendEventWithName: kShippingEventName body:@{@"shipping_id": shippingMethod.identifier} ];
     }
 }
