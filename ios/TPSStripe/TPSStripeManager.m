@@ -425,26 +425,9 @@ RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
     NSString* currencyCode = options[@"currencyCode"] ? options[@"currencyCode"] : @"USD";
     NSString* countryCode = options[@"countryCode"] ? options[@"countryCode"] : @"US";
 
-    NSMutableArray *shippingMethods = [NSMutableArray array];
+   NSArray *shippingMethods = [self shippingMethodsFromItems:shippingMethodsItems];
 
-    for (NSDictionary *item in shippingMethodsItems) {
-        PKShippingMethod *shippingItem = [[PKShippingMethod alloc] init];
-        shippingItem.label = item[@"label"];
-        shippingItem.detail = item[@"detail"];
-        shippingItem.amount = [NSDecimalNumber decimalNumberWithString:item[@"amount"]];
-        shippingItem.identifier = item[@"id"];
-        [shippingMethods addObject:shippingItem];
-    }
-
-    NSMutableArray *summaryItems = [NSMutableArray array];
-
-    for (NSDictionary *item in items) {
-        PKPaymentSummaryItem *summaryItem = [[PKPaymentSummaryItem alloc] init];
-        summaryItem.label = item[@"label"];
-        summaryItem.amount = [NSDecimalNumber decimalNumberWithString:item[@"amount"]];
-        summaryItem.type = [@"pending" isEqualToString:item[@"type"]] ? PKPaymentSummaryItemTypePending : PKPaymentSummaryItemTypeFinal;
-        [summaryItems addObject:summaryItem];
-    }
+   NSArray *summaryItems = [self summaryItemsFromItems:items];
 
     PKPaymentRequest *paymentRequest = [Stripe paymentRequestWithMerchantIdentifier:merchantId country:countryCode currency:currencyCode];
 
@@ -481,6 +464,36 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
 }
 
 #pragma mark - Private
+
+- (NSArray*) shippingMethodsFromItems: (NSArray *)items {
+    NSMutableArray *shippingMethods = [NSMutableArray array];
+
+    for (NSDictionary *item in items) {
+        PKShippingMethod *shippingItem = [[PKShippingMethod alloc] init];
+        shippingItem.label = item[@"label"];
+        shippingItem.detail = item[@"detail"];
+        shippingItem.amount = [NSDecimalNumber decimalNumberWithString:item[@"amount"]];
+        shippingItem.identifier = item[@"id"];
+        [shippingMethods addObject:shippingItem];
+    }
+
+    return shippingMethods;
+}
+
+- (NSArray*) summaryItemsFromItems: (NSArray *)items {
+    NSMutableArray *summaryItems = [NSMutableArray array];
+
+    for (NSDictionary *item in items) {
+        PKPaymentSummaryItem *summaryItem = [PKPaymentSummaryItem new];
+        summaryItem.label = item[@"label"];
+        summaryItem.amount = [NSDecimalNumber decimalNumberWithString:item[@"amount"]];
+        summaryItem.type = [@"pending" isEqualToString:item[@"type"]] ? PKPaymentSummaryItemTypePending : PKPaymentSummaryItemTypeFinal;
+        [summaryItems addObject:summaryItem];
+    }
+
+    return summaryItems;
+}
+
 
 - (STPCardParams *)createCard:(NSDictionary *)params {
     STPCardParams *cardParams = [[STPCardParams alloc] init];
