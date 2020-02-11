@@ -98,7 +98,7 @@ class Stripe {
       { items }, 'items', 'Stripe.paymentRequestWithApplePay'
     )
 
-    return TPSStripeManager.updateSummaryItems(items, errors, callback)
+    return StripeModule.updateSummaryItems(items, errors, callback)
   }
 
   // @deprecated use completeNativePayRequest
