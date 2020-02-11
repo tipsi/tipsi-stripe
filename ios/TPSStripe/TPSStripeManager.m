@@ -214,10 +214,10 @@ RCT_EXPORT_METHOD(createTokenWithCard:(NSDictionary *)params
     STPAPIClient *stripeAPIClient = [self newAPIClient];
 
     [stripeAPIClient createTokenWithCard:cardParams completion:^(STPToken *token, NSError *error) {
-        requestIsCompleted = YES;
+        self->requestIsCompleted = YES;
 
         if (error) {
-            NSDictionary *jsError = [errorCodes valueForKey:kErrorKeyApi];
+            NSDictionary *jsError = [self->errorCodes valueForKey:kErrorKeyApi];
             [self rejectPromiseWithCode:jsError[kErrorKeyCode] message:error.localizedDescription];
         } else {
             resolve([self convertTokenObject:token]);
@@ -252,10 +252,10 @@ RCT_EXPORT_METHOD(createTokenWithBankAccount:(NSDictionary *)params
     STPAPIClient *stripeAPIClient = [self newAPIClient];
 
     [stripeAPIClient createTokenWithBankAccount:bankAccount completion:^(STPToken *token, NSError *error) {
-        requestIsCompleted = YES;
+        self->requestIsCompleted = YES;
 
         if (error) {
-            NSDictionary *jsError = [errorCodes valueForKey:kErrorKeyApi];
+            NSDictionary *jsError = [self->errorCodes valueForKey:kErrorKeyApi];
             [self rejectPromiseWithCode:jsError[kErrorKeyCode] message:error.localizedDescription];
         } else {
             resolve([self convertTokenObject:token]);
@@ -304,10 +304,10 @@ RCT_EXPORT_METHOD(createSourceWithParams:(NSDictionary *)params
     STPAPIClient* stripeAPIClient = [self newAPIClient];
 
     [stripeAPIClient createSourceWithParams:sourceParams completion:^(STPSource *source, NSError *error) {
-        requestIsCompleted = YES;
+        self->requestIsCompleted = YES;
 
         if (error) {
-            NSDictionary *jsError = [errorCodes valueForKey:kErrorKeyApi];
+            NSDictionary *jsError = [self->errorCodes valueForKey:kErrorKeyApi];
             reject(jsError[kErrorKeyCode], error.localizedDescription, nil);
         } else {
             if (source.redirect) {
@@ -518,7 +518,7 @@ RCT_EXPORT_METHOD(updateSummaryItems: (NSArray *)items) {
     cardParams.address.state = params[@"addressState"];
     cardParams.address.country = params[@"addressCountry"];
     cardParams.address.postalCode = params[@"addressZip"];
-    
+
     return cardParams;
 }
 
@@ -629,25 +629,27 @@ RCT_EXPORT_METHOD(updateSummaryItems: (NSArray *)items) {
     applePayCompletion = completion;
 
     STPAPIClient *stripeAPIClient = [self newAPIClient];
+    __weak __typeof__(self) weakSelf = self;
 
     [stripeAPIClient createTokenWithPayment:payment completion:^(STPToken * _Nullable token, NSError * _Nullable error) {
-        requestIsCompleted = YES;
+        __typeof__(self) strongSelf = weakSelf;
+        strongSelf->requestIsCompleted = YES;
 
         if (error) {
             // Save for deffered use
-            applePayStripeError = error;
-            [self resolveApplePayCompletion:PKPaymentAuthorizationStatusFailure];
+            strongSelf->applePayStripeError = error;
+            [strongSelf resolveApplePayCompletion:PKPaymentAuthorizationStatusFailure];
         } else {
-            NSDictionary *result = [self convertTokenObject:token];
+            NSDictionary *result = [strongSelf convertTokenObject:token];
             NSDictionary *extra = @{
-                @"billingContact": [self contactDetails:payment.billingContact] ?: [NSNull null],
-                @"shippingContact": [self contactDetails:payment.shippingContact] ?: [NSNull null],
-                @"shippingMethod": [self shippingDetails:payment.shippingMethod] ?: [NSNull null]
+                @"billingContact": [strongSelf contactDetails:payment.billingContact] ?: [NSNull null],
+                @"shippingContact": [strongSelf contactDetails:payment.shippingContact] ?: [NSNull null],
+                @"shippingMethod": [strongSelf shippingDetails:payment.shippingMethod] ?: [NSNull null]
             };
 
             [result setValue:extra forKey:@"extra"];
 
-            [self resolvePromise:result];
+            [strongSelf resolvePromise:result];
         }
     }];
 }
@@ -656,18 +658,20 @@ RCT_EXPORT_METHOD(updateSummaryItems: (NSArray *)items) {
 - (void)paymentAuthorizationViewControllerDidFinish:(PKPaymentAuthorizationViewController *)controller {
     [self resetApplePayCallback];
 
-    void(^completion)() = ^{
-        if (!requestIsCompleted) {
-            requestIsCompleted = YES;
-            NSDictionary *error = [errorCodes valueForKey:kErrorKeyCancelled];
-            [self rejectPromiseWithCode:error[kErrorKeyCode] message:error[kErrorKeyDescription]];
+    __weak __typeof__(self) weakSelf = self;
+    void(^completion)(void) = ^{
+        __typeof__(self) strongSelf = weakSelf;
+        if (!strongSelf->requestIsCompleted) {
+            strongSelf->requestIsCompleted = YES;
+            NSDictionary *error = [strongSelf->errorCodes valueForKey:kErrorKeyCancelled];
+            [strongSelf rejectPromiseWithCode:error[kErrorKeyCode] message:error[kErrorKeyDescription]];
         } else {
-            if (applePayStripeError) {
-                NSDictionary *error = [errorCodes valueForKey:kErrorKeyApi];
-                [self rejectPromiseWithCode:error[kErrorKeyCode] message:applePayStripeError.localizedDescription];
-                applePayStripeError = nil;
+            if (strongSelf->applePayStripeError) {
+                NSDictionary *error = [strongSelf->errorCodes valueForKey:kErrorKeyApi];
+                [strongSelf rejectPromiseWithCode:error[kErrorKeyCode] message:strongSelf->applePayStripeError.localizedDescription];
+                strongSelf->applePayStripeError = nil;
             } else {
-                [self resolvePromise:nil];
+                [strongSelf resolvePromise:nil];
             }
         }
     };
