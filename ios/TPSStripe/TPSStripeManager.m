@@ -463,6 +463,19 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     }
 }
 
+RCT_EXPORT_METHOD(updateSummaryItems: (NSArray *) items
+                  withErrors: (NSArray *)errors
+                  callback: (RCTResponseSenderBlock) callback) {
+    NSArray *summaryItems = [self summaryItemsFromItems:items];
+
+    if (shippingMethodCompletion) {
+        shippingMethodCompletion([[PKPaymentRequestShippingMethodUpdate alloc] initWithPaymentSummaryItems:summaryItems]);
+        shippingMethodCompletion = nil;
+    }
+
+    callback(nil);
+}
+
 #pragma mark - Private
 
 - (NSArray*) shippingMethodsFromItems: (NSArray *)items {
