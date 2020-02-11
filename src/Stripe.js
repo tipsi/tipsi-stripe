@@ -1,4 +1,4 @@
-import { NativeEventEmitter, NativeModules, Platform } from 'react-native'
+import { NativeModules, Platform } from 'react-native'
 import processTheme from './utils/processTheme'
 import checkArgs from './utils/checkArgs'
 import checkInit from './utils/checkInit'
@@ -6,15 +6,6 @@ import * as types from './utils/types'
 import errorCodes from './errorCodes'
 
 const { StripeModule } = NativeModules
-
-//const stripeEmitter = new NativeEventEmitter(StripeModule)
-
-// const subscription = stripeEmitter.addListener(
-//   'ShippingMethodDidChange',
-//   (data) => {
-//      console.log(data)
-//   }
-// );
 
 class Stripe {
   stripeInitialized = false
