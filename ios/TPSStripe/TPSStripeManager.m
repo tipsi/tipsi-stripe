@@ -464,22 +464,17 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
 }
 
 /// Callback to update summary items and total when shipping method changes
-RCT_EXPORT_METHOD(updateSummaryItems: (NSArray *) items
-                  withErrors: (NSArray *)errors
-                  callback: (RCTResponseSenderBlock) callback) {
+RCT_EXPORT_METHOD(updateSummaryItems: (NSArray *)items) {
     NSArray *summaryItems = [self summaryItemsFromItems:items];
-
     if (shippingMethodCompletion) {
         shippingMethodCompletion([[PKPaymentRequestShippingMethodUpdate alloc] initWithPaymentSummaryItems:summaryItems]);
         shippingMethodCompletion = nil;
     }
-
-    callback(nil);
 }
 
 #pragma mark - Private
 
-- (NSArray*) shippingMethodsFromItems: (NSArray *)items {
+- (NSArray *)shippingMethodsFromItems: (NSArray *)items {
     NSMutableArray *shippingMethods = [NSMutableArray array];
 
     for (NSDictionary *item in items) {
@@ -494,7 +489,7 @@ RCT_EXPORT_METHOD(updateSummaryItems: (NSArray *) items
     return shippingMethods;
 }
 
-- (NSArray*) summaryItemsFromItems: (NSArray *)items {
+- (NSArray *)summaryItemsFromItems: (NSArray *)items {
     NSMutableArray *summaryItems = [NSMutableArray array];
 
     for (NSDictionary *item in items) {

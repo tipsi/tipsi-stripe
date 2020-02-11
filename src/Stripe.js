@@ -91,14 +91,14 @@ class Stripe {
     })()
   }
 
-  updateSummaryItems = ( items = [], errors = [], callback = () => {}) => {
+  updateSummaryItems(items = []) {
     checkInit(this)
     checkArgs(
       types.paymentRequestWithApplePayItemsPropTypes,
       { items }, 'items', 'Stripe.paymentRequestWithApplePay'
     )
 
-    return StripeModule.updateSummaryItems(items, errors, callback)
+    return StripeModule.updateSummaryItems(items)
   }
 
   // @deprecated use completeNativePayRequest
