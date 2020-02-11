@@ -10,6 +10,13 @@ const { StripeModule } = NativeModules
 
 const stripeEmitter = new NativeEventEmitter(StripeModule)
 
+const subscription = stripeEmitter.addListener(
+  'ShippingMethodDidChange',
+  (data) => {
+     console.log(data)
+  }
+);
+
 class Stripe extends EventEmitter {
   stripeInitialized = false
 
@@ -84,18 +91,6 @@ class Stripe extends EventEmitter {
       types.paymentRequestWithApplePayOptionsPropTypes,
       options, 'options', 'Stripe.paymentRequestWithApplePay'
     )
-
-    let eventEmitter = this
-    this.clearEventListeners()
-
-    this.onShippingMethodDidChange = stripeEmitter.addListener(
-      'ShippingMethodDidChange',
-      (method) => { 
-        console.log(method)
-        eventEmitter.emit('ShippingMethodDidChange', method) 
-      }
-    )
-
     return StripeModule.paymentRequestWithApplePay(items, options)
   }
 
@@ -104,13 +99,6 @@ class Stripe extends EventEmitter {
       ios: () => this.paymentRequestWithApplePay(items, options),
       android: () => this.paymentRequestWithAndroidPay(options),
     })()
-  }
-
-  clearEventListeners = () => {
-    if (this.onShippingMethodDidChange) {
-      this.onShippingMethodDidChange.remove()
-      this.onShippingMethodDidChange = null
-    }
   }
 
   // @deprecated use completeNativePayRequest
