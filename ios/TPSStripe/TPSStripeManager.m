@@ -967,7 +967,7 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     if (!cardParamsInput && NSNull.null != (id)cardParamsInput) {return nil;}
 
     STPPaymentMethodCardParams * card = [self extractPaymentMethodCardParamsFromDictionary:cardParamsInput];
-    STPPaymentMethodBillingDetails * details = [self extractPaymentMethodBillingDetailsFromDictionary: params[TPSStripeParam(createPaymentMethod, card)]];
+    STPPaymentMethodBillingDetails * details = [self extractPaymentMethodBillingDetailsFromDictionary: params[TPSStripeParam(createPaymentMethod, billingDetails)]];
     NSDictionary* metadata = params[TPSStripeParam(createPaymentMethod, metadata)];
 
     // TODO: decide if we want to support iDEAL bank accounts
