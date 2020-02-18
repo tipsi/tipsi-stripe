@@ -138,6 +138,7 @@ RCT_ENUM_CONVERTER(STPPaymentMethodType,
                       @"iDEAL": @(STPPaymentMethodTypeiDEAL),
                       @"card_present": @(STPPaymentMethodTypeCardPresent),
                       @"fpx": @(STPPaymentMethodTypeFPX),
+                      @"sepa_debit": @(STPPaymentMethodTypeSEPADebit),
                       @"unknown": @(STPPaymentMethodTypeUnknown),
                       }),
                    STPPaymentMethodTypeUnknown,
@@ -149,6 +150,7 @@ RCT_ENUM_CONVERTER(STPPaymentMethodType,
         case STPPaymentMethodTypeiDEAL: return @"iDEAL";
         case STPPaymentMethodTypeCardPresent: return @"card_present";
         case STPPaymentMethodTypeFPX: return @"fpx";
+        case STPPaymentMethodTypeSEPADebit: return @"sepa_debit";
         case STPPaymentMethodTypeUnknown: return @"unknown";
     }
 }
@@ -409,9 +411,13 @@ RCT_EXPORT_METHOD(confirmPaymentIntent:(NSDictionary<NSString*, id>*)untypedPara
                                      return;
                                  }
 
-                                 if (intent.status == STPPaymentIntentStatusSucceeded || intent.status == STPPaymentIntentStatusRequiresCapture) {
-                                     self->requestIsCompleted = YES;
-                                     [self resolvePromise: [self convertConfirmPaymentIntentResult: intent]];
+                                 if (
+                                     intent.status == STPPaymentIntentStatusSucceeded ||
+                                     intent.status == STPPaymentIntentStatusRequiresCapture ||
+                                     intent.status == STPPaymentIntentStatusProcessing
+                                     ) {
+                                        self->requestIsCompleted = YES;
+                                        [self resolvePromise: [self convertConfirmPaymentIntentResult: intent]];
                                  } else if (intent.status == STPPaymentIntentStatusRequiresAction) {
                                      // From example in step 3 of https://stripe.com/docs/payments/payment-intents/ios#manual-confirmation-ios
                                      [[STPPaymentHandler sharedHandler] handleNextActionForPayment:intent.clientSecret
@@ -708,27 +714,35 @@ RCT_EXPORT_METHOD(createSourceWithParams:(NSDictionary *)params
     STPSourceParams *sourceParams;
     if ([sourceType isEqualToString:@"bancontact"]) {
         sourceParams = [STPSourceParams bancontactParamsWithAmount:[[params objectForKey:@"amount"] unsignedIntegerValue] name:params[@"name"] returnURL:params[@"returnURL"] statementDescriptor:params[@"statementDescriptor"]];
-    }
-    if ([sourceType isEqualToString:@"giropay"]) {
+    } else if ([sourceType isEqualToString:@"giropay"]) {
         sourceParams = [STPSourceParams giropayParamsWithAmount:[[params objectForKey:@"amount"] unsignedIntegerValue] name:params[@"name"] returnURL:params[@"returnURL"] statementDescriptor:params[@"statementDescriptor"]];
     }
-    if ([sourceType isEqualToString:@"ideal"]) {
+    else if ([sourceType isEqualToString:@"ideal"]) {
         sourceParams = [STPSourceParams idealParamsWithAmount:[[params objectForKey:@"amount"] unsignedIntegerValue] name:params[@"name"] returnURL:params[@"returnURL"] statementDescriptor:params[@"statementDescriptor"] bank:params[@"bank"]];
     }
-    if ([sourceType isEqualToString:@"sepaDebit"]) {
+    else if ([sourceType isEqualToString:@"sepaDebit"]) {
         sourceParams = [STPSourceParams sepaDebitParamsWithName:params[@"name"] iban:params[@"iban"] addressLine1:params[@"addressLine1"] city:params[@"city"] postalCode:params[@"postalCode"] country:params[@"country"]];
     }
-    if ([sourceType isEqualToString:@"sofort"]) {
+    else if ([sourceType isEqualToString:@"sofort"]) {
         sourceParams = [STPSourceParams sofortParamsWithAmount:[[params objectForKey:@"amount"] unsignedIntegerValue] returnURL:params[@"returnURL"] country:params[@"country"] statementDescriptor:params[@"statementDescriptor"]];
     }
-    if ([sourceType isEqualToString:@"threeDSecure"]) {
+    else if ([sourceType isEqualToString:@"threeDSecure"]) {
         sourceParams = [STPSourceParams threeDSecureParamsWithAmount:[[params objectForKey:@"amount"] unsignedIntegerValue] currency:params[@"currency"] returnURL:params[@"returnURL"] card:params[@"card"]];
     }
-    if ([sourceType isEqualToString:@"alipay"]) {
+    else if ([sourceType isEqualToString:@"alipay"]) {
         sourceParams = [STPSourceParams alipayParamsWithAmount:[[params objectForKey:@"amount"] unsignedIntegerValue] currency:params[@"currency"] returnURL:params[@"returnURL"]];
     }
-    if ([sourceType isEqualToString:@"card"]) {
+    else if ([sourceType isEqualToString:@"card"]) {
         sourceParams = [STPSourceParams cardParamsWithCard:[self extractCardParamsFromDictionary:params]];
+    }
+    else if ([sourceType isEqualToString:@"klarna"]) {
+        NSMutableArray *lineItems = [NSMutableArray new];
+        for (NSDictionary *item in params[@"items"]) {
+            STPKlarnaLineItem *lineItem = [[STPKlarnaLineItem alloc] initWithItemType:[item[@"type"] integerValue] itemDescription:item[@"desc"] quantity:item[@"quantity"] totalAmount:item[@"amount"]];
+            [lineItems addObject:lineItem];
+        }
+        
+        sourceParams = [STPSourceParams klarnaParamsWithReturnURL:params[@"returnURL"] currency:params[@"currency"] purchaseCountry:params[@"country"] items:lineItems customPaymentMethods:0];
     }
 
     STPAPIClient* stripeAPIClient = [self newAPIClient];
@@ -1057,17 +1071,21 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     NSParameterAssert(clientSecret);
 
     STPPaymentIntentParams * result = [[STPPaymentIntentParams alloc] initWithClientSecret:clientSecret];
+    NSString *paymentId = params[@"id"];
+    
+    if ([params[@"type"] isEqual:@"paymentMethod"]) {
+        STPPaymentMethodParams * methodParams = [self extractCreatePaymentMethodParamsFromDictionary:params[TPSStripeParam(confirmPaymentIntent, paymentMethod)]];
+        // Don't assert, as it's allowed to omit a paymentMethodId/paymentMethodParams
+        // for confirmPaymentIntent -- if the user had already attached the
+        // paymentMethod on the backend.
 
-    NSString * paymentMethodId = params[TPSStripeParam(confirmPaymentIntent, paymentMethodId)];
-    STPPaymentMethodParams * methodParams = [self extractCreatePaymentMethodParamsFromDictionary:params[TPSStripeParam(confirmPaymentIntent, paymentMethod)]];
-    // Don't assert, as it's allowed to omit a paymentMethodId/paymentMethodParams
-    // for confirmPaymentIntent -- if the user had already attached the
-    // paymentMethod on the backend.
+        result.paymentMethodId = paymentId;
+        result.paymentMethodParams = methodParams;
+        result.savePaymentMethod = @YES;
+    } else if ([params[@"type"] isEqual:@"source"]) {
+        result.sourceId = paymentId;
+    }
 
-    result.paymentMethodId = paymentMethodId;
-    result.paymentMethodParams = methodParams;
-
-    simpleUnpack(sourceId);
     simpleUnpack(returnURL);
     result.savePaymentMethod = @([RCTConvert BOOL:params[TPSStripeParam(confirmPaymentIntent, savePaymentMethod)]]);
     result.useStripeSDK = @YES;
