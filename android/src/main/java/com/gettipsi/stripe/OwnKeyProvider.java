@@ -1,6 +1,6 @@
 package com.gettipsi.stripe;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.stripe.android.EphemeralKeyProvider;
 import com.stripe.android.EphemeralKeyUpdateListener;
