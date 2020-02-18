@@ -16,6 +16,11 @@ public final class Errors {
 
   private static final Map<String, String> exceptionNameToErrorCode = new HashMap<>();
 
+  public static final String CANCELLED = "cancelled";
+  public static final String FAILED = "failed";
+  public static final String AUTHENTICATION_FAILED = "authenticationFailed";
+  public static final String UNEXPECTED = "unexpected";
+
   static {
     exceptionNameToErrorCode.put("APIConnectionException", "apiConnection");
     exceptionNameToErrorCode.put("StripeException", "stripe");
@@ -27,11 +32,15 @@ public final class Errors {
     exceptionNameToErrorCode.put("APIException", "api");
   }
 
-  static String toErrorCode(@NonNull Exception exception) {
+  public static String toErrorCode(@NonNull Exception exception) {
     ArgCheck.nonNull(exception);
     String simpleName = exception.getClass().getSimpleName();
     String errorCode = exceptionNameToErrorCode.get(simpleName);
-    ArgCheck.nonNull(errorCode, simpleName);
+
+    if (errorCode == null) {
+      errorCode = simpleName;
+    }
+//    ArgCheck.nonNull(errorCode, simpleName);
 
     return errorCode;
   }

@@ -52,12 +52,8 @@ export default class SourceScreen extends PureComponent {
 
     return (
       <View style={styles.container}>
-        <Text style={styles.header}>
-          Source Example
-        </Text>
-        <Text style={styles.instruction}>
-          Click button to create a source.
-        </Text>
+        <Text style={styles.header}>Source Example</Text>
+        <Text style={styles.instruction}>Click button to create a source.</Text>
 
         <Button
           text="Create source for card payment"
@@ -74,7 +70,7 @@ export default class SourceScreen extends PureComponent {
 
         {source && (
           <Text style={styles.source} {...testID('sourceObject')}>
-              Source: {JSON.stringify(source)}
+            Source: {JSON.stringify(source)}
           </Text>
         )}
 

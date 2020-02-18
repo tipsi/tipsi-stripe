@@ -9,6 +9,10 @@
         "title": ".cancelApplePayRequest() -> Promise",
         "sidebar_label": ".cancelApplePayRequest()"
       },
+      "cancelNativePayRequest": {
+        "title": ".cancelNativePayRequest() -> Promise",
+        "sidebar_label": ".cancelNativePayRequest()"
+      },
       "canmakeandroidpaypayments": {
         "title": ".canMakeAndroidPayPayments() -> Promise",
         "sidebar_label": ".canMakeAndroidPayPayments()"
@@ -16,6 +20,10 @@
       "canmakeapplepaypaymentsoptions": {
         "title": ".canMakeApplePayPayments([options]) -> Promise",
         "sidebar_label": ".canMakeApplePayPayments()"
+      },
+      "canMakeNativePayPayments": {
+        "title": ".canMakeNativePayPayments([options]) -> Promise",
+        "sidebar_label": ".canMakeNativePayPayments()"
       },
       "changelog": {
         "title": "Changelog",
@@ -28,6 +36,14 @@
       "completeapplepayrequest": {
         "title": ".completeApplePayRequest() -> Promise",
         "sidebar_label": ".completeApplePayRequest()"
+      },
+      "completeNativePayRequest": {
+        "title": ".completeNativePayRequest() -> Promise",
+        "sidebar_label": ".completeNativePayRequest()"
+      },
+      "createCardOrSubscription": {
+        "title": "Create Card Or Subscription",
+        "sidebar_label": "Save Card/Subscription"
       },
       "createsourcewithparamsparams": {
         "title": ".createSourceWithParams(params) -> Promise",
@@ -48,6 +64,10 @@
       "deviceSupportsApplePay": {
         "title": ".deviceSupportsApplePay() -> Promise",
         "sidebar_label": ".deviceSupportsApplePay()"
+      },
+      "deviceSupportsNativePay": {
+        "title": ".deviceSupportsNativePay() -> Promise",
+        "sidebar_label": ".deviceSupportsNativePay()"
       },
       "errorcodes": {
         "title": "Error Codes",
@@ -77,6 +97,10 @@
         "title": "Linking",
         "sidebar_label": "Linking"
       },
+      "migrationIssues": {
+        "title": "Migration Guide & Issues",
+        "sidebar_label": "Migration"
+      },
       "openapplepaysetup": {
         "title": ".openApplePaySetup()",
         "sidebar_label": ".openApplePaySetup()"
@@ -84,6 +108,14 @@
       "paymentcardtextfield": {
         "title": "<PaymentCardTextField />",
         "sidebar_label": "<PaymentCardTextField />"
+      },
+      "paymentIntents": {
+        "title": "Payment Intent API",
+        "sidebar_label": "Payment Intent API"
+      },
+      "paymentMethod": {
+        "title": "Payment Method",
+        "sidebar_label": "Payment Method"
       },
       "paymentrequestwithandroidpay": {
         "title": ".paymentRequestWithAndroidPay(options) -> Promise",
@@ -96,6 +128,14 @@
       "paymentrequestwithcardform": {
         "title": ".paymentRequestWithCardForm(options) -> Promise",
         "sidebar_label": ".paymentRequestWithCardForm()"
+      },
+      "paymentRequestWithNativePay": {
+        "title": ".paymentRequestWithNativePay(options, [items]) -> Promise",
+        "sidebar_label": ".paymentRequestWithNativePay()"
+      },
+      "potentiallyAvailableNativePayNetworks": {
+        "title": ".potentiallyAvailableNativePayNetworks([options]) -> Promise",
+        "sidebar_label": ".potentiallyAvailableNativePayNetworks()"
       },
       "running-apple-pay-on-a-real-device": {
         "title": "Running  Pay on a real Device",
@@ -145,8 +185,7 @@
     "categories": {
       "Overview": "Overview",
       "Objects": "Objects",
-      " Pay": " Pay",
-      "G Pay": "G Pay",
+      "Native Pay -  & G": "Native Pay -  & G",
       "Card Form": "Card Form",
       "Card Params Object": "Card Params Object",
       "Bank Account Params Object": "Bank Account Params Object",
@@ -154,7 +193,8 @@
       "Components": "Components",
       "Error Codes": "Error Codes",
       "Tests": "Tests",
-      "Troubleshooting": "Troubleshooting"
+      "Troubleshooting": "Troubleshooting",
+      "Deprecated Docs": "Deprecated Docs"
     }
   },
   "pages-strings": {

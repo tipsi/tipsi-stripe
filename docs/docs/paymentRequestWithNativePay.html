@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>.paymentRequestWithNativePay(options, [items]) -&gt; Promise · tipsi-stripe</title>
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content="Docusaurus" />
+    <meta
+      name="description"
+      content="&lt;p&gt;Launches the Native Pay view to accept payment.&lt;/p&gt;
+"
+    />
+    <meta name="docsearch:language" content="en" />
+    <meta
+      property="og:title"
+      content=".paymentRequestWithNativePay(options, [items]) -&gt; Promise · tipsi-stripe"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://tipsi.github.io/tipsi-stripe/index.html" />
+    <meta
+      property="og:description"
+      content="&lt;p&gt;Launches the Native Pay view to accept payment.&lt;/p&gt;
+"
+    />
+    <meta name="twitter:card" content="summary" />
+    <link rel="shortcut icon" href="/tipsi-stripe/img/favicon.png" />
+    <link
+      rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"
+    />
+    <link
+      rel="alternate"
+      type="application/atom+xml"
+      href="https://tipsi.github.io/tipsi-stripe/blog/atom.xml"
+      title="tipsi-stripe Blog ATOM Feed"
+    />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      href="https://tipsi.github.io/tipsi-stripe/blog/feed.xml"
+      title="tipsi-stripe Blog RSS Feed"
+    />
+    <script type="text/javascript" src="https://buttons.github.io/buttons.js"></script>
+    <script src="/tipsi-stripe/js/scrollSpy.js"></script>
+    <link rel="stylesheet" href="/tipsi-stripe/css/main.css" />
+    <script src="/tipsi-stripe/js/codetabs.js"></script>
+  </head>
+  <body class="sideNavVisible">
+    <div class="fixedHeaderContainer">
+      <div class="headerWrapper wrapper">
+        <header>
+          <a href="/tipsi-stripe/"
+            ><img class="logo" src="/tipsi-stripe/img/favicon.png" alt="tipsi-stripe" />
+            <h2 class="headerTitleWithLogo">tipsi-stripe</h2></a
+          >
+          <div class="navigationWrapper navigationSlider">
+            <nav class="slidingNav">
+              <ul class="nav-site nav-site-internal">
+                <li class=""><a href="/tipsi-stripe/docs/index.html" target="_self">Docs</a></li>
+                <li class=""><a href="/tipsi-stripe/blog/" target="_self">Blog</a></li>
+              </ul>
+            </nav>
+          </div>
+        </header>
+      </div>
+    </div>
+    <div class="navPusher">
+      <div class="docMainWrapper wrapper">
+        <div class="container mainContainer">
+          <div class="wrapper">
+            <div class="post">
+              <header class="postHeader">
+                <h1 class="postHeaderTitle">
+                  .paymentRequestWithNativePay(options, [items]) -&gt; Promise
+                </h1>
+              </header>
+              <article>
+                <div>
+                  <span
+                    ><p>Launches the Native Pay view to accept payment.</p>
+                    <h3>
+                      <a class="anchor" aria-hidden="true" id="ios"></a
+                      ><a href="#ios" aria-hidden="true" class="hash-link"
+                        ><svg
+                          class="hash-link-icon"
+                          aria-hidden="true"
+                          height="16"
+                          version="1.1"
+                          viewBox="0 0 16 16"
+                          width="16"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+                          ></path></svg></a
+                      >iOS
+                    </h3>
+                    <h4>
+                      <a
+                        class="anchor"
+                        aria-hidden="true"
+                        id="options-an-object-with-the-following-keys"
+                      ></a
+                      ><a
+                        href="#options-an-object-with-the-following-keys"
+                        aria-hidden="true"
+                        class="hash-link"
+                        ><svg
+                          class="hash-link-icon"
+                          aria-hidden="true"
+                          height="16"
+                          version="1.1"
+                          viewBox="0 0 16 16"
+                          width="16"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+                          ></path></svg></a
+                      ><code>options</code> — An object with the following keys:
+                    </h4>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th style="text-align:left">Key</th>
+                          <th style="text-align:left">Type</th>
+                          <th style="text-align:left">Description</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td style="text-align:left">requiredBillingAddressFields</td>
+                          <td style="text-align:left">Array[String]</td>
+                          <td style="text-align:left">
+                            A bit field of billing address fields that you need in order to process
+                            the transaction. It can contain values of:
+                            <strong>all ‖ name ‖ email ‖ phone ‖ postal_address</strong> or be left
+                            unspecified to disable
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="text-align:left">requiredShippingAddressFields</td>
+                          <td style="text-align:left">Array[String]</td>
+                          <td style="text-align:left">
+                            A bit field of shipping address fields that you need in order to process
+                            the transaction. It can contain values of:
+                            <strong>all ‖ name ‖ email ‖ phone ‖ postal_address</strong> or be left
+                            unspecified to disable
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="text-align:left">shippingMethods</td>
+                          <td style="text-align:left">Array</td>
+                          <td style="text-align:left">
+                            An array of <code>shippingMethod</code> objects that describe the
+                            supported shipping methods.
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="text-align:left">currencyCode</td>
+                          <td style="text-align:left">String</td>
+                          <td style="text-align:left">
+                            The three-letter ISO 4217 currency code. Default is <strong>USD</strong>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="text-align:left">countryCode</td>
+                          <td style="text-align:left">String</td>
+                          <td style="text-align:left">
+                            The two-letter code for the country where the payment will be processed.
+                            Default is <strong>US</strong>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="text-align:left">shippingType</td>
+                          <td style="text-align:left">String</td>
+                          <td style="text-align:left">
+                            An optional value that indicates how purchased items are to be shipped.
+                            Default is <strong>shipping</strong>. Available options are:
+                            <strong>shipping ‖ delivery ‖ store_pickup ‖ service_pickup</strong>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <h5>
+                      <a
+                        class="anchor"
+                        aria-hidden="true"
+                        id="shippingmethod-an-object-with-the-following-keys"
+                      ></a
+                      ><a
+                        href="#shippingmethod-an-object-with-the-following-keys"
+                        aria-hidden="true"
+                        class="hash-link"
+                        ><svg
+                          class="hash-link-icon"
+                          aria-hidden="true"
+                          height="16"
+                          version="1.1"
+                          viewBox="0 0 16 16"
+                          width="16"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+                          ></path></svg></a
+                      ><code>shippingMethod</code> — An object with the following keys:
+                    </h5>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th style="text-align:left">Key</th>
+                          <th style="text-align:left">Type</th>
+                          <th style="text-align:left">Description</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td style="text-align:left">id</td>
+                          <td style="text-align:left">String</td>
+                          <td style="text-align:left">
+                            A unique identifier for the shipping method, used by the app
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="text-align:left">id</td>
+                          <td style="text-align:left">String</td>
+                          <td style="text-align:left">
+                            A short, localized description of the shipping method
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="text-align:left">label</td>
+                          <td style="text-align:left">String</td>
+                          <td style="text-align:left">
+                            A unique identifier for the shipping method, used by the app
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="text-align:left">detail</td>
+                          <td style="text-align:left">String</td>
+                          <td style="text-align:left">
+                            A user-readable description of the shipping method
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="text-align:left">amount</td>
+                          <td style="text-align:left">String</td>
+                          <td style="text-align:left">The shipping method’s amount</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <h4>
+                      <a
+                        class="anchor"
+                        aria-hidden="true"
+                        id="items-an-array-of-object-with-the-following-keys"
+                      ></a
+                      ><a
+                        href="#items-an-array-of-object-with-the-following-keys"
+                        aria-hidden="true"
+                        class="hash-link"
+                        ><svg
+                          class="hash-link-icon"
+                          aria-hidden="true"
+                          height="16"
+                          version="1.1"
+                          viewBox="0 0 16 16"
+                          width="16"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+                          ></path></svg></a
+                      ><code>items</code> — An array of object with the following keys:
+                    </h4>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th style="text-align:left">Key</th>
+                          <th style="text-align:left">Type</th>
+                          <th style="text-align:left">Description</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td style="text-align:left">label</td>
+                          <td style="text-align:left"><em>String</em></td>
+                          <td style="text-align:left">
+                            A short, localized description of the item.
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="text-align:left">amount</td>
+                          <td style="text-align:left"><em>String</em></td>
+                          <td style="text-align:left">The summary item’s amount.</td>
+                        </tr>
+                        <tr>
+                          <td style="text-align:left">type</td>
+                          <td style="text-align:left"><em>String</em></td>
+                          <td style="text-align:left">
+                            The summary item’s type. Must be &quot;pending&quot; or
+                            &quot;final&quot;. Defaults to &quot;final&quot;.
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <p>
+                      <strong>NOTE</strong>: The final item should represent your company; it'll be
+                      prepended with the word &quot;Pay&quot; (i.e. &quot;Pay Tipsi, Inc $50&quot;)
+                    </p>
+                    <h4>
+                      <a class="anchor" aria-hidden="true" id="example"></a
+                      ><a href="#example" aria-hidden="true" class="hash-link"
+                        ><svg
+                          class="hash-link-icon"
+                          aria-hidden="true"
+                          height="16"
+                          version="1.1"
+                          viewBox="0 0 16 16"
+                          width="16"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+                          ></path></svg></a
+                      >Example
+                    </h4>
+                    <pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> items = [{
+  <span class="hljs-attr">label</span>: <span class="hljs-string">'Whisky'</span>,
+  <span class="hljs-attr">amount</span>: <span class="hljs-string">'50.00'</span>,
+}, {
+  <span class="hljs-attr">label</span>: <span class="hljs-string">'Tipsi, Inc'</span>,
+  <span class="hljs-attr">amount</span>: <span class="hljs-string">'50.00'</span>,
+}]
+
+<span class="hljs-keyword">const</span> shippingMethods = [{
+  <span class="hljs-attr">id</span>: <span class="hljs-string">'fedex'</span>,
+  <span class="hljs-attr">label</span>: <span class="hljs-string">'FedEX'</span>,
+  <span class="hljs-attr">detail</span>: <span class="hljs-string">'Test @ 10'</span>,
+  <span class="hljs-attr">amount</span>: <span class="hljs-string">'10.00'</span>,
+}]
+
+<span class="hljs-keyword">const</span> options = {
+  <span class="hljs-attr">requiredBillingAddressFields</span>: [<span class="hljs-string">'all'</span>],
+  <span class="hljs-attr">requiredShippingAddressFields</span>: [<span class="hljs-string">'phone'</span>, <span class="hljs-string">'postal_address'</span>],
+  shippingMethods,
+}
+
+<span class="hljs-keyword">const</span> token = <span class="hljs-keyword">await</span> stripe.paymentRequestWithNativePay(items, options)
+</code></pre>
+                    <h4>
+                      <a
+                        class="anchor"
+                        aria-hidden="true"
+                        id="token-structure-paymentrequestwithnativepay-response"
+                      ></a
+                      ><a
+                        href="#token-structure-paymentrequestwithnativepay-response"
+                        aria-hidden="true"
+                        class="hash-link"
+                        ><svg
+                          class="hash-link-icon"
+                          aria-hidden="true"
+                          height="16"
+                          version="1.1"
+                          viewBox="0 0 16 16"
+                          width="16"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+                          ></path></svg></a
+                      >Token structure – <code>paymentRequestWithNativePay</code> response
+                    </h4>
+                    <p><code>extra</code> — An object with the following keys:</p>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th style="text-align:left">Key</th>
+                          <th style="text-align:left">Type</th>
+                          <th style="text-align:left">Description</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td style="text-align:left">shippingMethod</td>
+                          <td style="text-align:left">Object</td>
+                          <td style="text-align:left">Selected shippingMethod object</td>
+                        </tr>
+                        <tr>
+                          <td style="text-align:left">billingContact</td>
+                          <td style="text-align:left">Object</td>
+                          <td style="text-align:left">The user's billing contact object</td>
+                        </tr>
+                        <tr>
+                          <td style="text-align:left">shippingContact</td>
+                          <td style="text-align:left">Object</td>
+                          <td style="text-align:left">The user's shipping contact object</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <p><code>contact</code> — An object with the following keys:</p>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th style="text-align:left">Key</th>
+                          <th style="text-align:left">Type</th>
+                          <th style="text-align:left">Description</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td style="text-align:left">name</td>
+                          <td style="text-align:left">String</td>
+                          <td style="text-align:left">The contact’s name</td>
+                        </tr>
+                        <tr>
+                          <td style="text-align:left">phoneNumber</td>
+                          <td style="text-align:left">String</td>
+                          <td style="text-align:left">The contact’s phone number</td>
+                        </tr>
+                        <tr>
+                          <td style="text-align:left">emailAddress</td>
+                          <td style="text-align:left">String</td>
+                          <td style="text-align:left">The contact’s email address</td>
+                        </tr>
+                        <tr>
+                          <td style="text-align:left">street</td>
+                          <td style="text-align:left">String</td>
+                          <td style="text-align:left">The street name in a postal address</td>
+                        </tr>
+                        <tr>
+                          <td style="text-align:left">city</td>
+                          <td style="text-align:left">String</td>
+                          <td style="text-align:left">The city name in a postal address</td>
+                        </tr>
+                        <tr>
+                          <td style="text-align:left">state</td>
+                          <td style="text-align:left">String</td>
+                          <td style="text-align:left">The state name in a postal address</td>
+                        </tr>
+                        <tr>
+                          <td style="text-align:left">country</td>
+                          <td style="text-align:left">String</td>
+                          <td style="text-align:left">The country name in a postal address</td>
+                        </tr>
+                        <tr>
+                          <td style="text-align:left">ISOCountryCode</td>
+                          <td style="text-align:left">String</td>
+                          <td style="text-align:left">
+                            The ISO country code for the country in a postal address
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="text-align:left">postalCode</td>
+                          <td style="text-align:left">String</td>
+                          <td style="text-align:left">The postal code in a postal address</td>
+                        </tr>
+                        <tr>
+                          <td style="text-align:left">supplementarySubLocality</td>
+                          <td style="text-align:left">String</td>
+                          <td style="text-align:left">The contact’s sublocality</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <p>
+                      <img
+                        src="https://cloud.githubusercontent.com/assets/1177226/20272773/008e5994-aaa0-11e6-8c24-b4bedf245741.gif"
+                        alt=""
+                      />
+                    </p>
+                    <h3>
+                      <a class="anchor" aria-hidden="true" id="android"></a
+                      ><a href="#android" aria-hidden="true" class="hash-link"
+                        ><svg
+                          class="hash-link-icon"
+                          aria-hidden="true"
+                          height="16"
+                          version="1.1"
+                          viewBox="0 0 16 16"
+                          width="16"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+                          ></path></svg></a
+                      >Android
+                    </h3>
+                    <p><strong>options</strong> — An object with the following keys:</p>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th style="text-align:left">Key</th>
+                          <th style="text-align:left">Type</th>
+                          <th style="text-align:left">Description</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td style="text-align:left">total_price</td>
+                          <td style="text-align:left">String</td>
+                          <td style="text-align:left">Total price for items</td>
+                        </tr>
+                        <tr>
+                          <td style="text-align:left">currency_code</td>
+                          <td style="text-align:left">String</td>
+                          <td style="text-align:left">
+                            Three-letter ISO currency code representing the currency paid out to the
+                            bank account
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="text-align:left">shipping_address_required (Optional)</td>
+                          <td style="text-align:left">Bool</td>
+                          <td style="text-align:left">
+                            Is shipping address menu required? Default is <strong>false</strong>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="text-align:left">billing_address_required (Optional)</td>
+                          <td style="text-align:left">Bool</td>
+                          <td style="text-align:left">
+                            Is billing address menu required? Default is <strong>false</strong>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="text-align:left">phone_number_required (Optional)</td>
+                          <td style="text-align:left">Bool</td>
+                          <td style="text-align:left">
+                            Is phone number required? Default is <strong>false</strong>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="text-align:left">line_items</td>
+                          <td style="text-align:left">Array</td>
+                          <td style="text-align:left">
+                            Array of purchased items. Each item contains <strong>line_item</strong>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <p><strong>line_item</strong> — An object with the following keys:</p>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th style="text-align:left">Key</th>
+                          <th style="text-align:left">Type</th>
+                          <th style="text-align:left">Description</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td style="text-align:left">currency_code</td>
+                          <td style="text-align:left">String</td>
+                          <td style="text-align:left">Currency code string</td>
+                        </tr>
+                        <tr>
+                          <td style="text-align:left">description</td>
+                          <td style="text-align:left">String</td>
+                          <td style="text-align:left">
+                            Short description that will be shown to the user
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="text-align:left">total_price</td>
+                          <td style="text-align:left">String</td>
+                          <td style="text-align:left">Total order price</td>
+                        </tr>
+                        <tr>
+                          <td style="text-align:left">unit_price</td>
+                          <td style="text-align:left">String</td>
+                          <td style="text-align:left">Price per unit</td>
+                        </tr>
+                        <tr>
+                          <td style="text-align:left">quantity</td>
+                          <td style="text-align:left">String</td>
+                          <td style="text-align:left">Number of items</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <h4>
+                      <a class="anchor" aria-hidden="true" id="example-1"></a
+                      ><a href="#example-1" aria-hidden="true" class="hash-link"
+                        ><svg
+                          class="hash-link-icon"
+                          aria-hidden="true"
+                          height="16"
+                          version="1.1"
+                          viewBox="0 0 16 16"
+                          width="16"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+                          ></path></svg></a
+                      >Example
+                    </h4>
+                    <pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> options = {
+  <span class="hljs-attr">total_price</span>: <span class="hljs-string">'80.00'</span>,
+  <span class="hljs-attr">currency_code</span>: <span class="hljs-string">'USD'</span>,
+  <span class="hljs-attr">shipping_address_required</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-attr">billing_address_required</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">shipping_countries</span>: [<span class="hljs-string">"US"</span>, <span class="hljs-string">"CA"</span>],
+  <span class="hljs-attr">line_items</span>: [{
+    <span class="hljs-attr">currency_code</span>: <span class="hljs-string">'USD'</span>,
+    <span class="hljs-attr">description</span>: <span class="hljs-string">'Whisky'</span>,
+    <span class="hljs-attr">total_price</span>: <span class="hljs-string">'50.00'</span>,
+    <span class="hljs-attr">unit_price</span>: <span class="hljs-string">'50.00'</span>,
+    <span class="hljs-attr">quantity</span>: <span class="hljs-string">'1'</span>,
+  }, {
+    <span class="hljs-attr">currency_code</span>: <span class="hljs-string">'USD'</span>,
+    <span class="hljs-attr">description</span>: <span class="hljs-string">'Vine'</span>,
+    <span class="hljs-attr">total_price</span>: <span class="hljs-string">'30.00'</span>,
+    <span class="hljs-attr">unit_price</span>: <span class="hljs-string">'30.00'</span>,
+    <span class="hljs-attr">quantity</span>: <span class="hljs-string">'1'</span>,
+  }],
+}
+
+<span class="hljs-keyword">const</span> token = <span class="hljs-keyword">await</span> stripe.paymentRequestWithAndroidPay(options)
+
+<span class="hljs-comment">// Client specific code</span>
+<span class="hljs-comment">// api.sendTokenToBackend(token)</span>
+</code></pre>
+                    <p>Example of token:</p>
+                    <pre><code class="hljs"><span class="hljs-string">{</span> <span class="hljs-attr">card:</span>
+  <span class="hljs-string">{</span> <span class="hljs-attr">currency:</span> <span class="hljs-literal">null</span><span class="hljs-string">,</span>
+<span class="hljs-attr">    fingerprint:</span> <span class="hljs-literal">null</span><span class="hljs-string">,</span>
+<span class="hljs-attr">    funding:</span> <span class="hljs-string">"credit"</span><span class="hljs-string">,</span>
+<span class="hljs-attr">    brand:</span> <span class="hljs-string">"MasterCard"</span><span class="hljs-string">,</span>
+<span class="hljs-attr">    number:</span> <span class="hljs-literal">null</span><span class="hljs-string">,</span>
+<span class="hljs-attr">    addressState:</span> <span class="hljs-literal">null</span><span class="hljs-string">,</span>
+<span class="hljs-attr">    country:</span> <span class="hljs-string">"US"</span><span class="hljs-string">,</span>
+<span class="hljs-attr">    cvc:</span> <span class="hljs-literal">null</span><span class="hljs-string">,</span>
+<span class="hljs-attr">    expMonth:</span> <span class="hljs-number">12</span><span class="hljs-string">,</span>
+<span class="hljs-attr">    addressLine1:</span> <span class="hljs-literal">null</span><span class="hljs-string">,</span>
+<span class="hljs-attr">    expYear:</span> <span class="hljs-number">2022</span><span class="hljs-string">,</span>
+<span class="hljs-attr">    addressCountry:</span> <span class="hljs-literal">null</span><span class="hljs-string">,</span>
+<span class="hljs-attr">    name:</span> <span class="hljs-literal">null</span><span class="hljs-string">,</span>
+<span class="hljs-attr">    last4:</span> <span class="hljs-string">"4448"</span><span class="hljs-string">,</span>
+<span class="hljs-attr">    addressLine2:</span> <span class="hljs-literal">null</span><span class="hljs-string">,</span>
+<span class="hljs-attr">    addressCity:</span> <span class="hljs-literal">null</span><span class="hljs-string">,</span>
+<span class="hljs-attr">    addressZip:</span> <span class="hljs-literal">null</span>
+  <span class="hljs-string">},</span>
+<span class="hljs-attr">  created:</span> <span class="hljs-number">1512322244000</span><span class="hljs-string">,</span>
+<span class="hljs-attr">  used:</span> <span class="hljs-literal">false</span><span class="hljs-string">,</span>
+<span class="hljs-attr">  extra:</span> <span class="hljs-string">{</span>
+<span class="hljs-attr">    email:</span> <span class="hljs-string">"randomemail@mail.com"</span><span class="hljs-string">,</span>
+<span class="hljs-attr">    billingContact:</span> <span class="hljs-string">{</span>
+<span class="hljs-attr">      postalCode:</span> <span class="hljs-string">"220019"</span><span class="hljs-string">,</span>
+<span class="hljs-attr">      name:</span> <span class="hljs-string">"John Doe"</span><span class="hljs-string">,</span>
+<span class="hljs-attr">      locality:</span> <span class="hljs-string">"NY"</span><span class="hljs-string">,</span>
+<span class="hljs-attr">      countryCode:</span> <span class="hljs-string">"US"</span><span class="hljs-string">,</span>
+<span class="hljs-attr">      administrativeArea:</span> <span class="hljs-string">"US"</span><span class="hljs-string">,</span>
+<span class="hljs-attr">      address1:</span> <span class="hljs-string">"Time square 1/11"</span>
+    <span class="hljs-string">},</span>
+<span class="hljs-attr">    shippingContact:</span> <span class="hljs-string">{}</span>
+  <span class="hljs-string">},</span>
+<span class="hljs-attr">  livemode:</span> <span class="hljs-literal">false</span><span class="hljs-string">,</span>
+<span class="hljs-attr">  tokenId:</span> <span class="hljs-string">"tok_1BV1IeDZwqOES60ZphBXBoDr"</span>
+<span class="hljs-string">}</span>
+</code></pre>
+                    <p>
+                      Where <code>billingContact</code> and <code>shippingContact</code> are
+                      representation of
+                      <a
+                        href="https://developers.google.com/android/reference/com/google/android/gms/identity/intents/model/UserAddress"
+                        >UserAddress.</a
+                      >
+                    </p>
+                  </span>
+                </div>
+              </article>
+            </div>
+            <div class="docs-prevnext"></div>
+          </div>
+        </div>
+      </div>
+      <footer class="nav-footer" id="footer">
+        <section class="sitemap">
+          <a href="/tipsi-stripe/" class="nav-home"></a>
+          <div>
+            <h5>Docs</h5>
+            <a href="/tipsi-stripe/docs/en/index.html">Getting Started</a
+            ><a href="/tipsi-stripe/docs/en/running-apple-pay-on-a-real-device.html"
+              >Running on Device</a
+            ><a href="/tipsi-stripe/docs/en/index.html">API Reference</a>
+          </div>
+          <div>
+            <h5>More</h5>
+            <a href="/tipsi-stripe/blog">Blog</a><a href="https://github.com/">GitHub</a
+            ><a
+              data-show-count="true"
+              class="github-button"
+              href="https://github.com/tipsi/tipsi-stripe"
+              data-icon="octicon-star"
+              data-count-href="/tipsi/tipsi-stripe/stargazers"
+              data-count-aria-label="# stargazers on GitHub"
+              aria-label="Star this project on GitHub"
+              >Star</a
+            >
+          </div>
+        </section>
+        <section class="copyright">Copyright © 2019 Tipsi.</section>
+      </footer>
+    </div>
+  </body>
+</html>
