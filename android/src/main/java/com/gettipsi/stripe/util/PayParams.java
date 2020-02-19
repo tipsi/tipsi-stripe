@@ -7,6 +7,7 @@ package com.gettipsi.stripe.util;
 public abstract class PayParams {
 
   public static final String CURRENCY_CODE = "currency_code";
+  public static final String COUNTRY_CODE = "country_code";
   public static final String BILLING_ADDRESS_REQUIRED = "billing_address_required";
   public static final String SHIPPING_ADDRESS_REQUIRED = "shipping_address_required";
   public static final String PHONE_NUMBER_REQUIRED = "phone_number_required";
