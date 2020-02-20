@@ -38,6 +38,10 @@ const siteConfig = {
   highlight: { theme: 'default' },
   scripts: ['https://buttons.github.io/buttons.js'],
   repoUrl: 'https://github.com/tipsi/tipsi-stripe',
+  algolia: {
+    apiKey: '3f8ac9b9932eef475114a7db0665311f',
+    indexName: 'tipsi-stripe',
+  }
 }
 
 module.exports = siteConfig
