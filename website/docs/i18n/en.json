@@ -4,158 +4,84 @@
     "next": "Next",
     "previous": "Previous",
     "tagline": "Stripe support for React-Native",
-    "docs": {
-      "cancelapplepayrequest": {
-        "title": ".cancelApplePayRequest() -> Promise",
-        "sidebar_label": ".cancelApplePayRequest()"
-      },
-      "canmakeandroidpaypayments": {
-        "title": ".canMakeAndroidPayPayments() -> Promise",
-        "sidebar_label": ".canMakeAndroidPayPayments()"
-      },
-      "canmakeapplepaypaymentsoptions": {
-        "title": ".canMakeApplePayPayments([options]) -> Promise",
-        "sidebar_label": ".canMakeApplePayPayments()"
-      },
-      "changelog": {
-        "title": "Changelog",
-        "sidebar_label": "Changelog"
-      },
-      "compatibility": {
-        "title": "Compatibility",
-        "sidebar_label": "Compatibility"
-      },
-      "completeapplepayrequest": {
-        "title": ".completeApplePayRequest() -> Promise",
-        "sidebar_label": ".completeApplePayRequest()"
-      },
-      "createsourcewithparamsparams": {
-        "title": ".createSourceWithParams(params) -> Promise",
-        "sidebar_label": ".createSourceWithParams()"
-      },
-      "createtokenwithbankaccount": {
-        "title": ".createTokenWithBankAccount(params) -> Promise",
-        "sidebar_label": ".createTokenWithBankAccount()"
-      },
-      "createtokenwithcard": {
-        "title": ".createTokenWithCard(params) -> Promise",
-        "sidebar_label": ".createTokenWithCard()"
-      },
-      "devicesupportsandroidpay": {
-        "title": ".deviceSupportsAndroidPay() -> Promise",
-        "sidebar_label": ".deviceSupportsAndroidPay()"
-      },
-      "deviceSupportsApplePay": {
-        "title": ".deviceSupportsApplePay() -> Promise",
-        "sidebar_label": ".deviceSupportsApplePay()"
-      },
-      "errorcodes": {
-        "title": "Error Codes",
-        "sidebar_label": "Error Codes"
-      },
-      "example": {
-        "title": "Example",
-        "sidebar_label": "Example"
-      },
-      "google-pay": {
-        "title": "Google Pay",
-        "sidebar_label": "Google Pay"
-      },
-      "index": {
-        "title": "Start here",
-        "sidebar_label": "Start here"
-      },
-      "installation": {
-        "title": "Installation",
-        "sidebar_label": "Installation"
-      },
-      "license": {
-        "title": "License",
-        "sidebar_label": "License"
-      },
-      "linking": {
-        "title": "Linking",
-        "sidebar_label": "Linking"
-      },
-      "openapplepaysetup": {
-        "title": ".openApplePaySetup()",
-        "sidebar_label": ".openApplePaySetup()"
-      },
-      "paymentcardtextfield": {
-        "title": "<PaymentCardTextField />",
-        "sidebar_label": "<PaymentCardTextField />"
-      },
-      "paymentrequestwithandroidpay": {
-        "title": ".paymentRequestWithAndroidPay(options) -> Promise",
-        "sidebar_label": ".paymentRequestWithAndroidPay()"
-      },
-      "paymentrequestwithapplepayitemsoptions": {
-        "title": ".paymentRequestWithApplePay(items, [options]) -> Promise",
-        "sidebar_label": ".paymentRequestWithApplePay()"
-      },
-      "paymentrequestwithcardform": {
-        "title": ".paymentRequestWithCardForm(options) -> Promise",
-        "sidebar_label": ".paymentRequestWithCardForm()"
-      },
-      "running-apple-pay-on-a-real-device": {
-        "title": "Running  Pay on a real Device",
-        "sidebar_label": "Running  Pay on a real Device"
-      },
-      "source": {
-        "title": "Source",
-        "sidebar_label": "Source"
-      },
-      "tests-local-ci": {
-        "title": "Local CI",
-        "sidebar_label": "Local CI"
-      },
-      "tests-manual": {
-        "title": "Manual",
-        "sidebar_label": "Manual"
-      },
-      "token": {
-        "title": "Token",
-        "sidebar_label": "Token"
-      },
-      "troubleshooting-android": {
-        "title": "Android",
-        "sidebar_label": "Android"
-      },
-      "troubleshooting-jest": {
-        "title": "Jest",
-        "sidebar_label": "Jest"
-      },
-      "troubleshooting-tests": {
-        "title": "Tests",
-        "sidebar_label": "Tests"
-      },
-      "troubleshooting-useframeworks-issue": {
-        "title": "use_frameworks issue",
-        "sidebar_label": "use_frameworks issue"
-      },
-      "usage": {
-        "title": "Usage",
-        "sidebar_label": "Usage"
-      }
-    },
-    "links": {
-      "Docs": "Docs",
-      "Blog": "Blog"
-    },
-    "categories": {
-      "Overview": "Overview",
-      "Objects": "Objects",
-      " Pay": " Pay",
-      "G Pay": "G Pay",
-      "Card Form": "Card Form",
-      "Card Params Object": "Card Params Object",
-      "Bank Account Params Object": "Bank Account Params Object",
-      "Create Source Object With Params": "Create Source Object With Params",
-      "Components": "Components",
-      "Error Codes": "Error Codes",
-      "Tests": "Tests",
-      "Troubleshooting": "Troubleshooting"
-    }
+    "cancelapplepayrequest": ".cancelApplePayRequest() -> Promise",
+    ".cancelApplePayRequest()": ".cancelApplePayRequest()",
+    "canmakeandroidpaypayments": ".canMakeAndroidPayPayments() -> Promise",
+    ".canMakeAndroidPayPayments()": ".canMakeAndroidPayPayments()",
+    "canmakeapplepaypaymentsoptions": ".canMakeApplePayPayments([options]) -> Promise",
+    ".canMakeApplePayPayments()": ".canMakeApplePayPayments()",
+    "changelog": "Changelog",
+    "Changelog": "Changelog",
+    "compatibility": "Compatibility",
+    "Compatibility": "Compatibility",
+    "completeapplepayrequest": ".completeApplePayRequest() -> Promise",
+    ".completeApplePayRequest()": ".completeApplePayRequest()",
+    "createsourcewithparamsparams": ".createSourceWithParams(params) -> Promise",
+    ".createSourceWithParams()": ".createSourceWithParams()",
+    "createtokenwithbankaccount": ".createTokenWithBankAccount(params) -> Promise",
+    ".createTokenWithBankAccount()": ".createTokenWithBankAccount()",
+    "createtokenwithcard": ".createTokenWithCard(params) -> Promise",
+    ".createTokenWithCard()": ".createTokenWithCard()",
+    "devicesupportsandroidpay": ".deviceSupportsAndroidPay() -> Promise",
+    ".deviceSupportsAndroidPay()": ".deviceSupportsAndroidPay()",
+    "deviceSupportsApplePay": ".deviceSupportsApplePay() -> Promise",
+    ".deviceSupportsApplePay()": ".deviceSupportsApplePay()",
+    "errorcodes": "Error Codes",
+    "Error Codes": "Error Codes",
+    "example": "Example",
+    "Example": "Example",
+    "google-pay": "Google Pay",
+    "Google Pay": "Google Pay",
+    "index": "Start here",
+    "Start here": "Start here",
+    "installation": "Installation",
+    "Installation": "Installation",
+    "license": "License",
+    "License": "License",
+    "linking": "Linking",
+    "Linking": "Linking",
+    "openapplepaysetup": ".openApplePaySetup()",
+    ".openApplePaySetup()": ".openApplePaySetup()",
+    "paymentcardtextfield": "<PaymentCardTextField />",
+    "<PaymentCardTextField />": "<PaymentCardTextField />",
+    "paymentrequestwithandroidpay": ".paymentRequestWithAndroidPay(options) -> Promise",
+    ".paymentRequestWithAndroidPay()": ".paymentRequestWithAndroidPay()",
+    "paymentrequestwithapplepayitemsoptions": ".paymentRequestWithApplePay(items, [options]) -> Promise",
+    ".paymentRequestWithApplePay()": ".paymentRequestWithApplePay()",
+    "paymentrequestwithcardform": ".paymentRequestWithCardForm(options) -> Promise",
+    ".paymentRequestWithCardForm()": ".paymentRequestWithCardForm()",
+    "running-apple-pay-on-a-real-device": "Running  Pay on a real Device",
+    "Running  Pay on a real Device": "Running  Pay on a real Device",
+    "source": "Source",
+    "Source": "Source",
+    "tests-local-ci": "Local CI",
+    "Local CI": "Local CI",
+    "tests-manual": "Manual",
+    "Manual": "Manual",
+    "token": "Token",
+    "Token": "Token",
+    "troubleshooting-android": "Android",
+    "Android": "Android",
+    "troubleshooting-jest": "Jest",
+    "Jest": "Jest",
+    "troubleshooting-tests": "Tests",
+    "Tests": "Tests",
+    "troubleshooting-useframeworks-issue": "use_frameworks issue",
+    "use_frameworks issue": "use_frameworks issue",
+    "usage": "Usage",
+    "Usage": "Usage",
+    "Docs": "Docs",
+    "Blog": "Blog",
+    "Overview": "Overview",
+    "Objects": "Objects",
+    " Pay": " Pay",
+    "G Pay": "G Pay",
+    "Card Form": "Card Form",
+    "Card Params Object": "Card Params Object",
+    "Bank Account Params Object": "Bank Account Params Object",
+    "Create Source Object With Params": "Create Source Object With Params",
+    "Components": "Components",
+    "Troubleshooting": "Troubleshooting"
   },
   "pages-strings": {
     "Help Translate|recruit community translators for your project": "Help Translate",

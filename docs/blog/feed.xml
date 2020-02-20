@@ -12,13 +12,14 @@
             <url>https://tipsi.github.io/tipsi-stripe/img/favicon.png</url>
             <link>https://tipsi.github.io/tipsi-stripe/blog</link>
         </image>
-        <copyright>Copyright © 2019 Tipsi</copyright>
+        <copyright>Copyright © 2020 Tipsi</copyright>
         <item>
             <title><![CDATA[Added new docs]]></title>
             <link>https://tipsi.github.io/tipsi-stripe/blog/2018/03/27/added-new-docs.html</link>
             <guid>https://tipsi.github.io/tipsi-stripe/blog/2018/03/27/added-new-docs.html</guid>
             <pubDate>Tue, 27 Mar 2018 06:00:00 GMT</pubDate>
-            <description><![CDATA[<p>Please welcome, new docs!</p> ]]></description>
+            <description><![CDATA[<p>Please welcome, new docs!</p>
+]]></description>
         </item>
     </channel>
 </rss>

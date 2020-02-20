@@ -7,14 +7,15 @@
     <link rel="alternate" href="https://tipsi.github.io/tipsi-stripe/blog"/>
     <subtitle>The best place to stay up-to-date with the latest tipsi-stripe news and events.</subtitle>
     <logo>https://tipsi.github.io/tipsi-stripe/img/favicon.png</logo>
-    <rights>Copyright © 2019 Tipsi</rights>
+    <rights>Copyright © 2020 Tipsi</rights>
     <entry>
         <title type="html"><![CDATA[Added new docs]]></title>
         <id>https://tipsi.github.io/tipsi-stripe/blog/2018/03/27/added-new-docs.html</id>
         <link href="https://tipsi.github.io/tipsi-stripe/blog/2018/03/27/added-new-docs.html">
         </link>
         <updated>2018-03-27T06:00:00Z</updated>
-        <summary type="html"><![CDATA[<p>Please welcome, new docs!</p> ]]></summary>
+        <summary type="html"><![CDATA[<p>Please welcome, new docs!</p>
+]]></summary>
         <author>
             <name>Anton Kuznetsov</name>
             <uri>http://twitter.com/isnifer</uri>
