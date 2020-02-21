@@ -4,7 +4,7 @@ title: .paymentRequestWithApplePay(items, [options]) -> Promise
 sidebar_label: .paymentRequestWithApplePay()
 ---
 
-__Method is deprecated, use paymentRequestWithNativePay() instead.__
+__Method is deprecated, use [`paymentRequestWithNativePay()`](paymentRequestWithNativePay.md) instead.__
 
 Launch the  Pay view to accept payment.
 

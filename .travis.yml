@@ -1,34 +1,32 @@
+env:
+  global:
+    - COMPILE_API_LEVEL=28
+    - EMULATOR_API_LEVEL=24 # It seems emulator levels 25,26,27 from main repos have google_apis by default, and do not support armeabi-v7a. Check commit comment.
+    - EMULATOR_TAG=default # Possible values are default, google_apis, android-tv, android-wear, android-wear-cn
+    - EMULATOR_ABI=armeabi-v7a # Default is armeabi-v7a, possible options are: x86, x86_64, mips, arm64-v8a, armeabi-v7a. Note: check commit comment
+    - EMULATOR_NAME=test
+    - ANDROID_BUILD_TOOLS_VERSION=28.0.3 # Match build-tools version used in build.gradle
+    - EMULATOR="system-images;android-${EMULATOR_API_LEVEL};${EMULATOR_TAG};${EMULATOR_ABI}" # Used to install/create emulator
+
 matrix:
   include:
     - os: osx
-      language: objective-c
-      osx_image: xcode9.1
+      language: node_js
+      osx_image: xcode10.3
       env:
         - JOB_NAME=DEFAULT_IOS
     - os: osx
-      language: objective-c
-      osx_image: xcode9.1
+      language: node_js
+      osx_image: xcode10.3
       install: echo "PODSPEC install"
       before_script: echo "PODSPEC before_script"
       script: .travis/podspec/ci.sh
       env:
         - JOB_NAME=PODSPEC_IOS
     - os: linux
-      language: android
-      jdk: oraclejdk8
+      language: node_js
+      jdk: oraclejdk9
       sudo: required
-      android:
-        components:
-          - platform-tools
-          - tools
-          - build-tools-25.0.0
-          - build-tools-26.0.2
-          - android-21
-          - android-26
-          - sys-img-armeabi-v7a-android-21
-          - extra-android-m2repository
-          - extra-google-m2repository
-          - extra-google-google_play_services
       env:
         - JOB_NAME=ANDROID_5
 

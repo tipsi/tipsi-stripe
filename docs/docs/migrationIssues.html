@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Migration Guide &amp; Issues · tipsi-stripe</title>
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content="Docusaurus" />
+    <meta
+      name="description"
+      content='&lt;h4&gt;&lt;a class="anchor" aria-hidden="true" id="how-to-migrate-from-react-native-x-to-060x"&gt;&lt;/a&gt;&lt;a href="#how-to-migrate-from-react-native-x-to-060x" aria-hidden="true" class="hash-link"&gt;&lt;svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"&gt;&lt;path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;How to migrate from React Native X to 0.60.x&lt;/h4&gt;
+'
+    />
+    <meta name="docsearch:language" content="en" />
+    <meta property="og:title" content="Migration Guide &amp; Issues · tipsi-stripe" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://tipsi.github.io/tipsi-stripe/index.html" />
+    <meta
+      property="og:description"
+      content='&lt;h4&gt;&lt;a class="anchor" aria-hidden="true" id="how-to-migrate-from-react-native-x-to-060x"&gt;&lt;/a&gt;&lt;a href="#how-to-migrate-from-react-native-x-to-060x" aria-hidden="true" class="hash-link"&gt;&lt;svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"&gt;&lt;path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;How to migrate from React Native X to 0.60.x&lt;/h4&gt;
+'
+    />
+    <meta name="twitter:card" content="summary" />
+    <link rel="shortcut icon" href="/tipsi-stripe/img/favicon.png" />
+    <link
+      rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"
+    />
+    <link
+      rel="alternate"
+      type="application/atom+xml"
+      href="https://tipsi.github.io/tipsi-stripe/blog/atom.xml"
+      title="tipsi-stripe Blog ATOM Feed"
+    />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      href="https://tipsi.github.io/tipsi-stripe/blog/feed.xml"
+      title="tipsi-stripe Blog RSS Feed"
+    />
+    <script type="text/javascript" src="https://buttons.github.io/buttons.js"></script>
+    <script src="/tipsi-stripe/js/scrollSpy.js"></script>
+    <link rel="stylesheet" href="/tipsi-stripe/css/main.css" />
+    <script src="/tipsi-stripe/js/codetabs.js"></script>
+  </head>
+  <body class="sideNavVisible">
+    <div class="fixedHeaderContainer">
+      <div class="headerWrapper wrapper">
+        <header>
+          <a href="/tipsi-stripe/"
+            ><img class="logo" src="/tipsi-stripe/img/favicon.png" alt="tipsi-stripe" />
+            <h2 class="headerTitleWithLogo">tipsi-stripe</h2></a
+          >
+          <div class="navigationWrapper navigationSlider">
+            <nav class="slidingNav">
+              <ul class="nav-site nav-site-internal">
+                <li class="siteNavGroupActive">
+                  <a href="/tipsi-stripe/docs/index.html" target="_self">Docs</a>
+                </li>
+                <li class=""><a href="/tipsi-stripe/blog/" target="_self">Blog</a></li>
+              </ul>
+            </nav>
+          </div>
+        </header>
+      </div>
+    </div>
+    <div class="navPusher">
+      <div class="docMainWrapper wrapper">
+        <div class="container docsNavContainer" id="docsNav">
+          <nav class="toc">
+            <div class="toggleNav">
+              <section class="navWrapper wrapper">
+                <div class="navBreadcrumb wrapper">
+                  <div class="navToggle" id="navToggler">
+                    <div class="hamburger-menu">
+                      <div class="line1"></div>
+                      <div class="line2"></div>
+                      <div class="line3"></div>
+                    </div>
+                  </div>
+                  <h2><i>›</i><span>Overview</span></h2>
+                </div>
+                <div class="navGroups">
+                  <div class="navGroup">
+                    <h3 class="navGroupCategoryTitle">Overview</h3>
+                    <ul class="">
+                      <li class="navListItem">
+                        <a class="navItem" href="/tipsi-stripe/docs/index.html">Start here</a>
+                      </li>
+                      <li class="navListItem">
+                        <a class="navItem" href="/tipsi-stripe/docs/compatibility.html"
+                          >Compatibility</a
+                        >
+                      </li>
+                      <li class="navListItem">
+                        <a class="navItem" href="/tipsi-stripe/docs/installation.html"
+                          >Installation</a
+                        >
+                      </li>
+                      <li class="navListItem">
+                        <a class="navItem" href="/tipsi-stripe/docs/linking.html">Linking</a>
+                      </li>
+                      <li class="navListItem">
+                        <a
+                          class="navItem"
+                          href="/tipsi-stripe/docs/running-apple-pay-on-a-real-device.html"
+                          >Running  Pay on a real Device</a
+                        >
+                      </li>
+                      <li class="navListItem">
+                        <a class="navItem" href="/tipsi-stripe/docs/google-pay.html">Google Pay</a>
+                      </li>
+                      <li class="navListItem">
+                        <a class="navItem" href="/tipsi-stripe/docs/usage.html">Usage</a>
+                      </li>
+                      <li class="navListItem">
+                        <a class="navItem" href="/tipsi-stripe/docs/example.html">Example</a>
+                      </li>
+                      <li class="navListItem">
+                        <a class="navItem" href="/tipsi-stripe/docs/paymentIntents.html"
+                          >Payment Intent API</a
+                        >
+                      </li>
+                      <li class="navListItem">
+                        <a class="navItem" href="/tipsi-stripe/docs/createCardOrSubscription.html"
+                          >Save Card/Subscription</a
+                        >
+                      </li>
+                      <li class="navListItem navListItemActive">
+                        <a class="navItem" href="/tipsi-stripe/docs/migrationIssues.html"
+                          >Migration</a
+                        >
+                      </li>
+                      <li class="navListItem">
+                        <a class="navItem" href="/tipsi-stripe/docs/changelog.html">Changelog</a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="navGroup">
+                    <h3 class="navGroupCategoryTitle">Objects</h3>
+                    <ul class="">
+                      <li class="navListItem">
+                        <a class="navItem" href="/tipsi-stripe/docs/token.html">Token</a>
+                      </li>
+                      <li class="navListItem">
+                        <a class="navItem" href="/tipsi-stripe/docs/source.html">Source</a>
+                      </li>
+                      <li class="navListItem">
+                        <a class="navItem" href="/tipsi-stripe/docs/paymentMethod.html"
+                          >Payment Method</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="navGroup">
+                    <h3 class="navGroupCategoryTitle">Native Pay -  &amp; G</h3>
+                    <ul class="">
+                      <li class="navListItem">
+                        <a class="navItem" href="/tipsi-stripe/docs/canMakeNativePayPayments.html"
+                          >.canMakeNativePayPayments()</a
+                        >
+                      </li>
+                      <li class="navListItem">
+                        <a class="navItem" href="/tipsi-stripe/docs/deviceSupportsNativePay.html"
+                          >.deviceSupportsNativePay()</a
+                        >
+                      </li>
+                      <li class="navListItem">
+                        <a
+                          class="navItem"
+                          href="/tipsi-stripe/docs/potentiallyAvailableNativePayNetworks.html"
+                          >.potentiallyAvailableNativePayNetworks()</a
+                        >
+                      </li>
+                      <li class="navListItem">
+                        <a class="navItem" href="/tipsi-stripe/docs/completeNativePayRequest.html"
+                          >.completeNativePayRequest()</a
+                        >
+                      </li>
+                      <li class="navListItem">
+                        <a class="navItem" href="/tipsi-stripe/docs/cancelNativePayRequest.html"
+                          >.cancelNativePayRequest()</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="navGroup">
+                    <h3 class="navGroupCategoryTitle">Card Form</h3>
+                    <ul class="">
+                      <li class="navListItem">
+                        <a class="navItem" href="/tipsi-stripe/docs/paymentrequestwithcardform.html"
+                          >.paymentRequestWithCardForm()</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="navGroup">
+                    <h3 class="navGroupCategoryTitle">Card Params Object</h3>
+                    <ul class="">
+                      <li class="navListItem">
+                        <a class="navItem" href="/tipsi-stripe/docs/createtokenwithcard.html"
+                          >.createTokenWithCard()</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="navGroup">
+                    <h3 class="navGroupCategoryTitle">Bank Account Params Object</h3>
+                    <ul class="">
+                      <li class="navListItem">
+                        <a class="navItem" href="/tipsi-stripe/docs/createtokenwithbankaccount.html"
+                          >.createTokenWithBankAccount()</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="navGroup">
+                    <h3 class="navGroupCategoryTitle">Create Source Object With Params</h3>
+                    <ul class="">
+                      <li class="navListItem">
+                        <a
+                          class="navItem"
+                          href="/tipsi-stripe/docs/createsourcewithparamsparams.html"
+                          >.createSourceWithParams()</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="navGroup">
+                    <h3 class="navGroupCategoryTitle">Components</h3>
+                    <ul class="">
+                      <li class="navListItem">
+                        <a class="navItem" href="/tipsi-stripe/docs/paymentcardtextfield.html"
+                          >&lt;PaymentCardTextField /&gt;</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="navGroup">
+                    <h3 class="navGroupCategoryTitle">Error Codes</h3>
+                    <ul class="">
+                      <li class="navListItem">
+                        <a class="navItem" href="/tipsi-stripe/docs/errorcodes.html">Error Codes</a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="navGroup">
+                    <h3 class="navGroupCategoryTitle">Tests</h3>
+                    <ul class="">
+                      <li class="navListItem">
+                        <a class="navItem" href="/tipsi-stripe/docs/tests-local-ci.html"
+                          >Local CI</a
+                        >
+                      </li>
+                      <li class="navListItem">
+                        <a class="navItem" href="/tipsi-stripe/docs/tests-manual.html">Manual</a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="navGroup">
+                    <h3 class="navGroupCategoryTitle">Troubleshooting</h3>
+                    <ul class="">
+                      <li class="navListItem">
+                        <a class="navItem" href="/tipsi-stripe/docs/troubleshooting-android.html"
+                          >Android</a
+                        >
+                      </li>
+                      <li class="navListItem">
+                        <a class="navItem" href="/tipsi-stripe/docs/troubleshooting-jest.html"
+                          >Jest</a
+                        >
+                      </li>
+                      <li class="navListItem">
+                        <a class="navItem" href="/tipsi-stripe/docs/troubleshooting-tests.html"
+                          >Tests</a
+                        >
+                      </li>
+                      <li class="navListItem">
+                        <a
+                          class="navItem"
+                          href="/tipsi-stripe/docs/troubleshooting-useframeworks-issue.html"
+                          >use_frameworks issue</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="navGroup">
+                    <h3 class="navGroupCategoryTitle">Deprecated Docs</h3>
+                    <ul class="">
+                      <li class="navListItem">
+                        <a class="navItem" href="/tipsi-stripe/docs/openapplepaysetup.html"
+                          >.openApplePaySetup()</a
+                        >
+                      </li>
+                      <li class="navListItem">
+                        <a class="navItem" href="/tipsi-stripe/docs/deviceSupportsApplePay.html"
+                          >.deviceSupportsApplePay()</a
+                        >
+                      </li>
+                      <li class="navListItem">
+                        <a class="navItem" href="/tipsi-stripe/docs/devicesupportsandroidpay.html"
+                          >.deviceSupportsAndroidPay()</a
+                        >
+                      </li>
+                      <li class="navListItem">
+                        <a class="navItem" href="/tipsi-stripe/docs/canmakeandroidpaypayments.html"
+                          >.canMakeAndroidPayPayments()</a
+                        >
+                      </li>
+                      <li class="navListItem">
+                        <a
+                          class="navItem"
+                          href="/tipsi-stripe/docs/canmakeapplepaypaymentsoptions.html"
+                          >.canMakeApplePayPayments()</a
+                        >
+                      </li>
+                      <li class="navListItem">
+                        <a
+                          class="navItem"
+                          href="/tipsi-stripe/docs/paymentrequestwithandroidpay.html"
+                          >.paymentRequestWithAndroidPay()</a
+                        >
+                      </li>
+                      <li class="navListItem">
+                        <a
+                          class="navItem"
+                          href="/tipsi-stripe/docs/paymentrequestwithapplepayitemsoptions.html"
+                          >.paymentRequestWithApplePay()</a
+                        >
+                      </li>
+                      <li class="navListItem">
+                        <a class="navItem" href="/tipsi-stripe/docs/completeapplepayrequest.html"
+                          >.completeApplePayRequest()</a
+                        >
+                      </li>
+                      <li class="navListItem">
+                        <a class="navItem" href="/tipsi-stripe/docs/cancelapplepayrequest.html"
+                          >.cancelApplePayRequest()</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </section>
+            </div>
+            <script>
+              var coll = document.getElementsByClassName('collapsible');
+              var checkActiveCategory = true;
+              for (var i = 0; i < coll.length; i++) {
+                var links = coll[i].nextElementSibling.getElementsByTagName('*');
+                if (checkActiveCategory) {
+                  for (var j = 0; j < links.length; j++) {
+                    if (links[j].classList.contains('navListItemActive')) {
+                      coll[i].nextElementSibling.classList.toggle('hide');
+                      coll[i].childNodes[1].classList.toggle('rotate');
+                      checkActiveCategory = false;
+                      break;
+                    }
+                  }
+                }
+
+                coll[i].addEventListener('click', function() {
+                  var arrow = this.childNodes[1];
+                  arrow.classList.toggle('rotate');
+                  var content = this.nextElementSibling;
+                  content.classList.toggle('hide');
+                });
+              }
+
+              document.addEventListener('DOMContentLoaded', function() {
+                createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+                createToggler('#tocToggler', 'body', 'tocActive');
+
+                var headings = document.querySelector('.toc-headings');
+                headings &&
+                  headings.addEventListener(
+                    'click',
+                    function(event) {
+                      var el = event.target;
+                      while (el !== headings) {
+                        if (el.tagName === 'A') {
+                          document.body.classList.remove('tocActive');
+                          break;
+                        } else {
+                          el = el.parentNode;
+                        }
+                      }
+                    },
+                    false
+                  );
+
+                function createToggler(togglerSelector, targetSelector, className) {
+                  var toggler = document.querySelector(togglerSelector);
+                  var target = document.querySelector(targetSelector);
+
+                  if (!toggler) {
+                    return;
+                  }
+
+                  toggler.onclick = function(event) {
+                    event.preventDefault();
+
+                    target.classList.toggle(className);
+                  };
+                }
+              });
+            </script>
+          </nav>
+        </div>
+        <div class="container mainContainer">
+          <div class="wrapper">
+            <div class="post">
+              <header class="postHeader">
+                <h1 class="postHeaderTitle">Migration Guide &amp; Issues</h1>
+              </header>
+              <article>
+                <div>
+                  <span
+                    ><h4>
+                      <a
+                        class="anchor"
+                        aria-hidden="true"
+                        id="how-to-migrate-from-react-native-x-to-060x"
+                      ></a
+                      ><a
+                        href="#how-to-migrate-from-react-native-x-to-060x"
+                        aria-hidden="true"
+                        class="hash-link"
+                        ><svg
+                          class="hash-link-icon"
+                          aria-hidden="true"
+                          height="16"
+                          version="1.1"
+                          viewBox="0 0 16 16"
+                          width="16"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+                          ></path></svg></a
+                      >How to migrate from React Native X to 0.60.x
+                    </h4>
+                    <ol>
+                      <li>
+                        <p>
+                          For more fast upgrade use Upgrade Helper. Just select your total RN
+                          version and target RN version. Implement diff changes into your
+                          application
+                          <a href="https://react-native-community.github.io/upgrade-helper/"
+                            >https://react-native-community.github.io/upgrade-helper/</a
+                          >
+                        </p>
+                      </li>
+                      <li><p>Need to disable auto linking. Add into react-native.config.js</p></li>
+                    </ol>
+                    <pre><code class="hljs css language-js"><span class="hljs-built_in">module</span>.exports = {
+ <span class="hljs-attr">dependencies</span>: {
+   <span class="hljs-string">'react-native-fbsdk'</span>: {
+     <span class="hljs-attr">platforms</span>: {
+       <span class="hljs-attr">android</span>: <span class="hljs-literal">null</span>,
+       <span class="hljs-attr">ios</span>: <span class="hljs-literal">null</span>,
+     }
+   }
+ }
+}
+</code></pre>
+                    <ol start="3">
+                      <li>Also read this additional information</li>
+                    </ol>
+                    <p>
+                      <a
+                        href="https://github.com/react-native-community/discussions-and-proposals/issues/129"
+                        >https://github.com/react-native-community/discussions-and-proposals/issues/129</a
+                      >
+                      <a href="https://github.com/facebook/react-native-fbsdk/issues/429"
+                        >https://github.com/facebook/react-native-fbsdk/issues/429</a
+                      >
+                    </p>
+                    <ol start="4">
+                      <li>For build Android before building app use Jetify. Run</li>
+                    </ol>
+                    <pre><code class="hljs css language-bash">npx jetify
+</code></pre>
+                    <pre><code class="hljs css language-bash">npx react-native run-android
+</code></pre>
+                    <h2>
+                      <a class="anchor" aria-hidden="true" id="troubleshooting"></a
+                      ><a href="#troubleshooting" aria-hidden="true" class="hash-link"
+                        ><svg
+                          class="hash-link-icon"
+                          aria-hidden="true"
+                          height="16"
+                          version="1.1"
+                          viewBox="0 0 16 16"
+                          width="16"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+                          ></path></svg></a
+                      >Troubleshooting
+                    </h2>
+                    <p>####Android</p>
+                    <p>Issue:</p>
+                    <pre><code class="hljs">Could not <span class="hljs-built_in">get</span> unknown property <span class="hljs-string">'mergeResourcesProvider'</span> <span class="hljs-keyword">for</span> object of <span class="hljs-built_in">type</span> <span class="hljs-keyword">com</span>.android.build.gradle.internal.api.ApplicationVariantImpl.
+
+http<span class="hljs-variable">s:</span>//github.<span class="hljs-keyword">com</span>/wix/react-native-navigation/issues/<span class="hljs-number">4757</span>
+
+&gt; Could not <span class="hljs-built_in">resolve</span> <span class="hljs-keyword">all</span> artifacts <span class="hljs-keyword">for</span> configuration <span class="hljs-string">':classpath'</span>.
+   &gt; Could not <span class="hljs-keyword">find</span> io.fabric.tool<span class="hljs-variable">s:gradle</span>:<span class="hljs-number">1.25</span>.<span class="hljs-number">4</span>.
+     Searched in the following location<span class="hljs-variable">s:</span>
+       - http<span class="hljs-variable">s:</span>//<span class="hljs-keyword">dl</span>.google.<span class="hljs-keyword">com</span>/<span class="hljs-keyword">dl</span>/android/maven2/io/fabric/tools/gradle/<span class="hljs-number">1.25</span>.<span class="hljs-number">4</span>/gradle-<span class="hljs-number">1.25</span>.<span class="hljs-number">4</span>.pom
+       - http<span class="hljs-variable">s:</span>//<span class="hljs-keyword">dl</span>.google.<span class="hljs-keyword">com</span>/<span class="hljs-keyword">dl</span>/android/maven2/io/fabric/tools/gradle/<span class="hljs-number">1.25</span>.<span class="hljs-number">4</span>/gradle-<span class="hljs-number">1.25</span>.<span class="hljs-number">4</span>.jar
+       - http<span class="hljs-variable">s:</span>//jcenter.bintray.<span class="hljs-keyword">com</span>/io/fabric/tools/gradle/<span class="hljs-number">1.25</span>.<span class="hljs-number">4</span>/gradle-<span class="hljs-number">1.25</span>.<span class="hljs-number">4</span>.pom
+       - http<span class="hljs-variable">s:</span>//jcenter.bintray.<span class="hljs-keyword">com</span>/io/fabric/tools/gradle/<span class="hljs-number">1.25</span>.<span class="hljs-number">4</span>/gradle-<span class="hljs-number">1.25</span>.<span class="hljs-number">4</span>.jar
+     Required by:
+         project :
+</code></pre>
+                    <p>
+                      Solution:
+                      <code
+                        >https://stackoverflow.com/questions/46787741/could-not-find-io-fabric-toolsgradle</code
+                      >
+                    </p>
+                    <hr />
+                    <p>Issue:</p>
+                    <pre><code class="hljs">A problem occurred evaluating script.
+&gt; Could <span class="hljs-keyword">not</span> find <span class="hljs-function"><span class="hljs-keyword">method</span> <span class="hljs-title">leftShift</span><span class="hljs-params">()</span> <span class="hljs-title">for</span> <span class="hljs-title">arguments</span> [<span class="hljs-title">setup_eyrc4t7859zi4o3488yvdtnd5</span>$_<span class="hljs-title">run_closure2</span>@3<span class="hljs-title">d71a0b7</span>] <span class="hljs-title">on</span> <span class="hljs-title">task</span> ':</span>app:preBuild<span class="hljs-string">' of type org.gradle.api.DefaultTask.
+</span></code></pre>
+                    <p>
+                      Solution:
+                      <code
+                        >https://stackoverflow.com/questions/55793095/could-not-find-method-leftshift-for-arguments-after-updating-studio-3-4</code
+                      >
+                    </p>
+                    <hr />
+                    <p>Issue:</p>
+                    <pre><code class="hljs">* What went wrong:
+A problem occurred configuring project <span class="hljs-string">':app'</span>.
+&gt; compileSdkVersion <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> specified.
+
+</code></pre>
+                    <p>
+                      Solution:
+                      <code
+                        >https://stackoverflow.com/questions/50530889/gradle-sync-failed-cause-compilesdkversion-is-not-specified</code
+                      >
+                    </p>
+                    <hr />
+                    <p>Issue:</p>
+                    <pre><code class="hljs"><span class="hljs-regexp">/Users/</span>igor<span class="hljs-regexp">/Work/</span>Tipsi<span class="hljs-regexp">/tipsi/</span>packages<span class="hljs-regexp">/app/</span>android<span class="hljs-regexp">/app/</span>src<span class="hljs-regexp">/main/</span>java<span class="hljs-regexp">/com/</span>tipsi/MainApplication.<span class="hljs-string">java:</span><span class="hljs-number">10</span>: <span class="hljs-string">error:</span> <span class="hljs-keyword">package</span> android.support.multidex does not exist
+<span class="hljs-keyword">import</span> android.support.multidex.MultiDexApplication;
+</code></pre>
+                    <p>
+                      Solution:
+                      <code
+                        >https://medium.com/@aungmt/multidex-on-androidx-for-rn-0-60-x-cbb37c50d85</code
+                      >
+                    </p>
+                    <hr />
+                    <p>Issue:</p>
+                    <pre><code class="hljs">/Users<span class="hljs-meta-keyword">/igor/</span>Work/Tipsi<span class="hljs-meta-keyword">/tipsi/</span>packages<span class="hljs-meta-keyword">/app/</span>android<span class="hljs-meta-keyword">/app/</span>src<span class="hljs-meta-keyword">/main/</span>java<span class="hljs-meta-keyword">/com/</span>tipsi/MainApplication.java:<span class="hljs-number">11</span>: error: cannot find symbol
+import com.facebook.CallbackManager;
+                   ^
+<span class="hljs-symbol">  symbol:</span>   class CallbackManager
+<span class="hljs-symbol">  location:</span> package com.facebook
+/Users<span class="hljs-meta-keyword">/igor/</span>Work/Tipsi<span class="hljs-meta-keyword">/tipsi/</span>packages<span class="hljs-meta-keyword">/app/</span>android<span class="hljs-meta-keyword">/app/</span>src<span class="hljs-meta-keyword">/main/</span>java<span class="hljs-meta-keyword">/com/</span>tipsi/MainApplication.java:<span class="hljs-number">12</span>: error: cannot find symbol
+import com.facebook.FacebookSdk;
+                   ^
+<span class="hljs-symbol">  symbol:</span>   class FacebookSdk
+<span class="hljs-symbol">  location:</span> package com.facebook
+/Users<span class="hljs-meta-keyword">/igor/</span>Work/Tipsi<span class="hljs-meta-keyword">/tipsi/</span>packages<span class="hljs-meta-keyword">/app/</span>android<span class="hljs-meta-keyword">/app/</span>src<span class="hljs-meta-keyword">/main/</span>java<span class="hljs-meta-keyword">/com/</span>tipsi/MainApplication.java:<span class="hljs-number">13</span>: error: package com.facebook.appevents does not exist
+import com.facebook.appevents.AppEventsLogger;
+</code></pre>
+                    <p>Solution: Downgrade FBSDK to 0.10.1</p>
+                    <hr />
+                    <p>Issue:</p>
+                    <pre><code class="hljs"><span class="hljs-regexp">/Users/</span>igor<span class="hljs-regexp">/Work/</span>Tipsi<span class="hljs-regexp">/tipsi/</span>packages<span class="hljs-regexp">/app/</span>node_modules<span class="hljs-regexp">/react-native-fbsdk/</span>android<span class="hljs-regexp">/src/</span>main<span class="hljs-regexp">/java/</span>com<span class="hljs-regexp">/facebook/</span>reactnative<span class="hljs-regexp">/androidsdk/</span>Utility.<span class="hljs-string">java:</span><span class="hljs-number">52</span>: <span class="hljs-string">error:</span> <span class="hljs-keyword">package</span> android.support.annotation does not exist
+<span class="hljs-keyword">import</span> android.support.annotation.Nullable;
+                                 ^
+<span class="hljs-regexp">/Users/</span>igor<span class="hljs-regexp">/Work/</span>Tipsi<span class="hljs-regexp">/tipsi/</span>packages<span class="hljs-regexp">/app/</span>node_modules<span class="hljs-regexp">/react-native-fbsdk/</span>android<span class="hljs-regexp">/src/</span>main<span class="hljs-regexp">/java/</span>com<span class="hljs-regexp">/facebook/</span>reactnative<span class="hljs-regexp">/androidsdk/</span>FBAppEventsLoggerModule.<span class="hljs-string">java:</span><span class="hljs-number">23</span>: <span class="hljs-string">error:</span> <span class="hljs-keyword">package</span> android.support.annotation does not exist
+<span class="hljs-keyword">import</span> android.support.annotation.Nullable;
+</code></pre>
+                    <p>
+                      Solution: Add to <code>MainApplication.java</code> this
+                      <code>import androidx.annotation.Nullable;</code>
+                    </p>
+                    <hr />
+                    <p>Issue:</p>
+                    <pre><code class="hljs">/Users/igor/Work/Tipsi/tipsi/packages/app/android/app/build/generated/rncli/src/main/java/com/facebook/react/PackageList.java:<span class="hljs-number">70</span>: error: <span class="hljs-function"><span class="hljs-keyword">constructor</span> <span class="hljs-title">FBSDKPackage</span> <span class="hljs-title">in</span> <span class="hljs-title">class</span> <span class="hljs-title">FBSDKPackage</span> <span class="hljs-title">cannot</span> <span class="hljs-title">be</span> <span class="hljs-title">applied</span> <span class="hljs-title">to</span> <span class="hljs-title">given</span> <span class="hljs-title">types</span>;</span>
+      <span class="hljs-keyword">new</span> FBSDKPackage(),
+      ^
+  required: CallbackManager
+  found: no arguments
+  reason: actual <span class="hljs-keyword">and</span> formal argument lists differ <span class="hljs-keyword">in</span> length
+<span class="hljs-number">1</span> error
+</code></pre>
+                    <p>Solution: Downgrade FBSDK to 0.10.1</p>
+                  </span>
+                </div>
+              </article>
+            </div>
+            <div class="docs-prevnext">
+              <a class="docs-prev button" href="/tipsi-stripe/docs/createCardOrSubscription.html"
+                ><span class="arrow-prev">← </span><span>Save Card/Subscription</span></a
+              ><a class="docs-next button" href="/tipsi-stripe/docs/changelog.html"
+                ><span>Changelog</span><span class="arrow-next"> →</span></a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer class="nav-footer" id="footer">
+        <section class="sitemap">
+          <a href="/tipsi-stripe/" class="nav-home"></a>
+          <div>
+            <h5>Docs</h5>
+            <a href="/tipsi-stripe/docs/en/index.html">Getting Started</a
+            ><a href="/tipsi-stripe/docs/en/running-apple-pay-on-a-real-device.html"
+              >Running on Device</a
+            ><a href="/tipsi-stripe/docs/en/index.html">API Reference</a>
+          </div>
+          <div>
+            <h5>More</h5>
+            <a href="/tipsi-stripe/blog">Blog</a><a href="https://github.com/">GitHub</a
+            ><a
+              data-show-count="true"
+              class="github-button"
+              href="https://github.com/tipsi/tipsi-stripe"
+              data-icon="octicon-star"
+              data-count-href="/tipsi/tipsi-stripe/stargazers"
+              data-count-aria-label="# stargazers on GitHub"
+              aria-label="Star this project on GitHub"
+              >Star</a
+            >
+          </div>
+        </section>
+        <section class="copyright">Copyright © 2019 Tipsi.</section>
+      </footer>
+    </div>
+  </body>
+</html>

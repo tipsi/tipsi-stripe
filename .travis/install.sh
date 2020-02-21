@@ -11,9 +11,13 @@ case "${TRAVIS_OS_NAME}" in
   ;;
 esac
 
-rm -rf node_modules && npm install
+rm -rf node_modules && npm ci
+npm i tipsi-stripe@../tipsi-stripe-$(node -p "require('../package.json').version").tgz --save
 
+echo "Unlinking $library_name"
 react-native unlink $library_name
+
+echo "Linking"
 react-native link
 
 case "${TRAVIS_OS_NAME}" in
@@ -25,4 +29,8 @@ case "${TRAVIS_OS_NAME}" in
 esac
 
 # Make sure that dependencies work correctly after reinstallation
-rm -rf node_modules && npm install
+echo "Removing node modules"
+rm -rf node_modules
+
+echo "Calling npm i"
+npm i > /dev/null
