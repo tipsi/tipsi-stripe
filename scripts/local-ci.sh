@@ -25,7 +25,10 @@ library_version=$(node -p "require('./package.json').version")
 files_to_copy=(
   .appiumhelperrc
   package.json
+  package-lock.json
+  app.json
   index.{ios,android}.js
+  android/appium-config.json
   android/build.gradle
   android/app/build.gradle
   android/gradle/wrapper/gradle-wrapper.properties
@@ -48,6 +51,7 @@ isMacOS() {
 
 # Check Stripe environment variables
 [ -z "$PUBLISHABLE_KEY" ] && echo "Need to set Stripe PUBLISHABLE_KEY" && exit 1;
+[ -z "$BACKEND_URL" ] && echo "Warning!  You need BACKEND_URL defined to run payment intent use cases"
 # Skip iOS step if current os is not macOS
 ! isMacOS && echo "Current os is not macOS, setup for iOS will be skipped"
 # Install react-native-cli if not exist
@@ -72,6 +76,7 @@ elif (! $skip_new && ! $use_old); then
   # Init new test project in tmp directory
   mkdir tmp
   cd tmp
+  echo "Initializing react native"
   react-native init $proj_dir_old --version $react_native_version
   # Remove __tests__ folder to avoid conflicts
   rm -rf $proj_dir_old/__tests__
@@ -95,26 +100,31 @@ else
   cd $proj_dir_old
 fi
 
-npm run set-stripe-url-type
+isMacOS && npm run set-stripe-url-type
 
 ###################
 # INSTALL         #
 ###################
 
 # Install dependencies
-rm -rf node_modules && npm install
-# Link project
-react-native unlink $library_name
+rm -rf node_modules && npm ci
+npm i tipsi-stripe@../tipsi-stripe-$library_version.tgz --save
+
+echo "Unlinking $library_name"
+react-native unlink $library_name --verbose
+
+echo "Linking"
 react-native link
 
-# Install iOS dependencies
 if isMacOS; then
+  echo "Install iOS dependencies"
   cd ios
   pod install
   cd ..
 fi
 
 # Make sure that dependencies work correctly after reinstallation
+echo "Removing node modules and reinstall"
 rm -rf node_modules && npm install
 
 ###################

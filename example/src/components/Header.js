@@ -9,13 +9,12 @@ export default function Header({ title, onMenuPress }) {
       <TouchableOpacity
         style={styles.button}
         onPress={onMenuPress}
-        {...testID('toggleDrawerButton')}>
+        {...testID('toggleDrawerButton')}
+      >
         <Image style={styles.buttonImage} source={require('../assets/menu.png')} />
       </TouchableOpacity>
       <View style={styles.title}>
-        <Text style={styles.titleText}>
-          {title}
-        </Text>
+        <Text style={styles.titleText}>{title}</Text>
       </View>
     </View>
   )

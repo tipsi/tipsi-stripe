@@ -4,7 +4,7 @@ title: .paymentRequestWithAndroidPay(options) -> Promise
 sidebar_label: .paymentRequestWithAndroidPay()
 ---
 
-__Method is deprecated, use paymentRequestWithNativePay() instead.__
+__Method is deprecated, use [`paymentRequestWithNativePay()`](paymentRequestWithNativePay.md) instead.__
 
 **options** — An object with the following keys:
 

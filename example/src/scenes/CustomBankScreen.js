@@ -41,20 +41,12 @@ export default class CustomBankScreen extends PureComponent {
     }
   }
 
-  renderMandatoryFields = params => (
+  renderMandatoryFields = (params) => (
     <View style={styles.params}>
-      <Text style={styles.param}>
-        Routing Number: {params.routingNumber}
-      </Text>
-      <Text style={styles.param}>
-        Account Number: {params.accountNumber}
-      </Text>
-      <Text style={styles.param}>
-        Country Code: {params.countryCode}
-      </Text>
-      <Text style={styles.param}>
-        Currency: {params.currency}
-      </Text>
+      <Text style={styles.param}>Routing Number: {params.routingNumber}</Text>
+      <Text style={styles.param}>Account Number: {params.accountNumber}</Text>
+      <Text style={styles.param}>Country Code: {params.countryCode}</Text>
+      <Text style={styles.param}>Currency: {params.currency}</Text>
     </View>
   )
 
@@ -63,40 +55,22 @@ export default class CustomBankScreen extends PureComponent {
 
     return (
       <View style={styles.container}>
-        <Text style={styles.header}>
-          Custom Account Params Example
-        </Text>
-        <Spoiler title="Mandatory Fields">
-          {this.renderMandatoryFields(params)}
-        </Spoiler>
+        <Text style={styles.header}>Custom Account Params Example</Text>
+        <Spoiler title="Mandatory Fields">{this.renderMandatoryFields(params)}</Spoiler>
         <Spoiler title="Mandatory Fields - Error case" defaultOpen={false}>
           {this.renderMandatoryFields(errorParams)}
         </Spoiler>
         <Spoiler title="Optional Fields" defaultOpen={false}>
           <View style={styles.params}>
-            <Text style={styles.param}>
-              Account Type: {params.accountType}
-            </Text>
-            <Text style={styles.param}>
-              Account HolderType: {params.accountHolderType}
-            </Text>
-            <Text style={styles.param}>
-              Account Holder Name: {params.accountHolderName}
-            </Text>
-            <Text style={styles.param}>
-              Fingerprint: {params.fingerprint}
-            </Text>
-            <Text style={styles.param}>
-              Bank name: {params.bankName}
-            </Text>
-            <Text style={styles.param}>
-              Last4: {params.last4}
-            </Text>
+            <Text style={styles.param}>Account Type: {params.accountType}</Text>
+            <Text style={styles.param}>Account HolderType: {params.accountHolderType}</Text>
+            <Text style={styles.param}>Account Holder Name: {params.accountHolderName}</Text>
+            <Text style={styles.param}>Fingerprint: {params.fingerprint}</Text>
+            <Text style={styles.param}>Bank name: {params.bankName}</Text>
+            <Text style={styles.param}>Last4: {params.last4}</Text>
           </View>
         </Spoiler>
-        <Text style={styles.instruction}>
-          Click button to get token based on params.
-        </Text>
+        <Text style={styles.instruction}>Click button to get token based on params.</Text>
         <Button
           text="Pay with custom params"
           loading={loading}
@@ -109,24 +83,16 @@ export default class CustomBankScreen extends PureComponent {
           onPress={() => this.handleBankAccountPayPress(false)}
           {...testID('customAccountErrorButton')}
         />
-        {token &&
-          <View
-            style={styles.token}
-            {...testID('customAccountToken')}>
-            <Text style={styles.instruction}>
-              Token: {token.tokenId}
-            </Text>
+        {token && (
+          <View style={styles.token} {...testID('customAccountToken')}>
+            <Text style={styles.instruction}>Token: {token.tokenId}</Text>
           </View>
-        }
-        {error &&
-          <View
-            style={styles.token}
-            {...testID('customAccountTokenError')}>
-            <Text style={styles.instruction}>
-              Error: {JSON.stringify(error.message)}
-            </Text>
+        )}
+        {error && (
+          <View style={styles.token} {...testID('customAccountTokenError')}>
+            <Text style={styles.instruction}>Error: {JSON.stringify(error.message)}</Text>
           </View>
-        }
+        )}
       </View>
     )
   }
