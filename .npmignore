@@ -12,3 +12,4 @@ website
 Makefile
 *~
 *.tgz
+.envrc
