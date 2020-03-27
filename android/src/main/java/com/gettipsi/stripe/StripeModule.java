@@ -564,7 +564,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
 
     if (billingDetailsParams != null) {
 
-      ReadableMap addressParams = getMapOrNull(options, "address");
+      ReadableMap addressParams = getMapOrNull(billingDetailsParams, "address");
 
       if (addressParams != null) {
         address = new Address.Builder().
