@@ -38,11 +38,10 @@ export default class CardTextFieldScreen extends PureComponent {
         behavior="padding"
         style={styles.container}
         onResponderGrant={dismissKeyboard}
-        onStartShouldSetResponder={() => true}>
+        onStartShouldSetResponder={() => true}
+      >
         <View>
-          <Text style={styles.header}>
-            PaymentCardTextField Example
-          </Text>
+          <Text style={styles.header}>PaymentCardTextField Example</Text>
           <PaymentCardTextField
             accessible={false}
             style={styles.field}
@@ -53,31 +52,20 @@ export default class CardTextFieldScreen extends PureComponent {
             {...testID('cardTextField')}
           />
           <Spoiler title="Params" style={styles.spoiler}>
-            <View
-              style={styles.params}>
-              <Text
-                style={styles.instruction}
-                {...testID('paramValid')}>
+            <View style={styles.params}>
+              <Text style={styles.instruction} {...testID('paramValid')}>
                 Valid: {String(valid)}
               </Text>
-              <Text
-                style={styles.instruction}
-                {...testID('paramNumber')}>
+              <Text style={styles.instruction} {...testID('paramNumber')}>
                 Number: {params.number || '-'}
               </Text>
-              <Text
-                style={styles.instruction}
-                {...testID('paramExpMonth')}>
+              <Text style={styles.instruction} {...testID('paramExpMonth')}>
                 Month: {params.expMonth || '-'}
               </Text>
-              <Text
-                style={styles.instruction}
-                {...testID('paramExpYear')}>
+              <Text style={styles.instruction} {...testID('paramExpYear')}>
                 Year: {params.expYear || '-'}
               </Text>
-              <Text
-                style={styles.instruction}
-                {...testID('paramCVC')}>
+              <Text style={styles.instruction} {...testID('paramCVC')}>
                 CVC: {params.cvc || '-'}
               </Text>
             </View>

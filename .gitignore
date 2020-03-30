@@ -1,3 +1,11 @@
+# React Native
+*/fastlane/report.xml
+*/fastlane/Preview.html
+*/fastlane/screenshots
+
+# Bundle artifact
+*.jsbundle
+
 # OSX
 #
 .DS_Store
@@ -70,10 +78,11 @@ android/gradle/wrapper/gradle-wrapper.properties
 
 # node.js
 #
-node_modules/
+**/node_modules/
 npm-debug.log
 
 tmp
 example_tmp
 example_podspec
 *.tgz
+*~
