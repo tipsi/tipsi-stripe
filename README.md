@@ -14,6 +14,18 @@ It takes to much resources to release stable version but you can use beta releas
 
 Latest beta release is: [8.0.0-beta.10](/CHANGELOG.md)
 
+To upgrade:
+
+```
+# package.json
+"tipsi-stripe": "^8.0.0-beta.10"
+
+# Make sure you are running Stripe 19.0.1 or later
+# ios/Podfile
+pod 'Stripe', '~> 19.0.1'
+pod 'tipsi-stripe', :path => '../node_modules/tipsi-stripe'
+```
+
 Then, join our Discord channel to access the beta, to get support from the contributors, and to help us 
 be aware of any issues you find.  Here is the invite link: https://discord.gg/8g6ppq2
 
