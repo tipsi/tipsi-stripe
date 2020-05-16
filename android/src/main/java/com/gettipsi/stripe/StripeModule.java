@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.facebook.react.bridge.ActivityEventListener;
@@ -17,6 +17,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableMapKeySetIterator;
+import com.facebook.react.bridge.ReadableType;
 import com.gettipsi.stripe.dialog.AddCardDialogFragment;
 import com.gettipsi.stripe.util.ArgCheck;
 import com.gettipsi.stripe.util.Converters;
@@ -425,13 +426,57 @@ public class StripeModule extends ReactContextBaseJavaModule {
     });
   }
 
+  /**
+   * toMap converts a {@link ReadableMap} into a HashMap.
+   *
+   * @param readableMap The ReadableMap to be converted.
+   * @return A HashMap containing the data that was in the ReadableMap.
+   */
+  public static Map<String, String> toMap(@Nullable ReadableMap readableMap) {
+    if (readableMap == null) {
+      return null;
+    }
+
+    com.facebook.react.bridge.ReadableMapKeySetIterator iterator = readableMap.keySetIterator();
+    if (!iterator.hasNextKey()) {
+      return null;
+    }
+
+    Map<String, String> result = new HashMap<>();
+    while (iterator.hasNextKey()) {
+      String key = iterator.nextKey();
+      ReadableType type = readableMap.getType(key);
+      switch(type) {
+        case Null:
+          break;
+        case Boolean:
+
+          break;
+        case Number:
+
+          break;
+        case String:
+          result.put(key, readableMap.getString(key));
+          break;
+        default:
+          throw new IllegalArgumentException("Unsupported type " + type);
+      }
+    }
+
+    return result;
+  }
+
 
   @ReactMethod
   public void createSourceWithParams(final ReadableMap options, final Promise promise) {
 
     SourceParams sourceParams = extractSourceParams(options);
-
+    Map<String,String> metadata=toMap(getMapOrNull(options,"metadata"));
     ArgCheck.nonNull(sourceParams);
+
+    sourceParams.setMetaData(metadata);
+
+
 
     mStripe.createSource(sourceParams, new SourceCallback() {
       @Override
