@@ -8,30 +8,35 @@ import com.gettipsi.stripe.util.ArgCheck;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.stripe.android.exception.*;
+
 /**
  * Created by ngoriachev on 30/07/2018.
  */
 
 public final class Errors {
 
-  private static final Map<String, String> exceptionNameToErrorCode = new HashMap<>();
+  private static final Map<Class, String> exceptionClassToErrorCode = new HashMap<>();
 
   static {
-    exceptionNameToErrorCode.put("APIConnectionException", "apiConnection");
-    exceptionNameToErrorCode.put("StripeException", "stripe");
-    exceptionNameToErrorCode.put("CardException", "card");
-    exceptionNameToErrorCode.put("AuthenticationException", "authentication");
-    exceptionNameToErrorCode.put("PermissionException", "permission");
-    exceptionNameToErrorCode.put("InvalidRequestException", "invalidRequest");
-    exceptionNameToErrorCode.put("RateLimitException", "rateLimit");
-    exceptionNameToErrorCode.put("APIException", "api");
+    exceptionClassToErrorCode.put(APIConnectionException.class, "apiConnection");
+    exceptionClassToErrorCode.put(StripeException.class, "stripe");
+    exceptionClassToErrorCode.put(CardException.class, "card");
+    exceptionClassToErrorCode.put(AuthenticationException.class, "authentication");
+    exceptionClassToErrorCode.put(PermissionException.class, "permission");
+    exceptionClassToErrorCode.put(InvalidRequestException.class, "invalidRequest");
+    exceptionClassToErrorCode.put(RateLimitException.class, "rateLimit");
+    exceptionClassToErrorCode.put(APIException.class, "api");
   }
 
   static String toErrorCode(@NonNull Exception exception) {
     ArgCheck.nonNull(exception);
-    String simpleName = exception.getClass().getSimpleName();
-    String errorCode = exceptionNameToErrorCode.get(simpleName);
-    ArgCheck.nonNull(errorCode, simpleName);
+    Class exceptionClass = exception.getClass();
+    String errorCode = exceptionClassToErrorCode.get(exceptionClass);
+
+    if (errorCode == null) {
+      throw exception
+    }
 
     return errorCode;
   }
