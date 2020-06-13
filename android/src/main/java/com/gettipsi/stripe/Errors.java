@@ -1,6 +1,6 @@
 package com.gettipsi.stripe;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.facebook.react.bridge.ReadableMap;
 import com.gettipsi.stripe.util.ArgCheck;
@@ -35,7 +35,7 @@ public final class Errors {
     String errorCode = exceptionClassToErrorCode.get(exceptionClass);
 
     if (errorCode == null) {
-      throw exception
+      throw new UnknownErrorCodeException("Unknown error code", exception);
     }
 
     return errorCode;
@@ -48,5 +48,10 @@ public final class Errors {
   static String getDescription(@NonNull ReadableMap errorCodes, @NonNull String errorKey) {
     return errorCodes.getMap(errorKey).getString("description");
   }
+}
 
+class UnknownErrorCodeException extends RuntimeException {
+  public UnknownErrorCodeException(String message, Throwable cause) {
+    super(message, cause);
+  }
 }
