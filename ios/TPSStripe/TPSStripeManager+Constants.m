@@ -8,7 +8,7 @@ TPSStripeBridgeTypeDefine(createPaymentMethod);
 TPSStripeBridgeKeyDeclare(createPaymentMethod, id);
 TPSStripeBridgeKeyDeclare(createPaymentMethod, billingDetails);
 TPSStripeBridgeKeyDeclare(createPaymentMethod, card);
-//TPSStripeBridgeKeyDeclare(createPaymentMethod, iDEAL);
+TPSStripeBridgeKeyDeclare(createPaymentMethod, iDEAL);
 TPSStripeBridgeKeyDeclare(createPaymentMethod, metadata);
 TPSStripeBridgeKeyDeclare(createPaymentMethod, customerId);
 
@@ -36,6 +36,9 @@ TPSStripeBridgeKeyDeclare(PaymentMethodBillingDetails, email);
 TPSStripeBridgeKeyDeclare(PaymentMethodBillingDetails, name);
 TPSStripeBridgeKeyDeclare(PaymentMethodBillingDetails, phone);
 
+TPSStripeBridgeTypeDefine(PaymentMethodiDEALDetails);
+TPSStripeBridgeKeyDeclare(PaymentMethodiDEALDetails, bankName);
+
 TPSStripeBridgeTypeDefine(PaymentMethodAddress);
 TPSStripeBridgeKeyDeclare(PaymentMethodAddress, city);
 TPSStripeBridgeKeyDeclare(PaymentMethodAddress, country);
@@ -43,6 +46,9 @@ TPSStripeBridgeKeyDeclare(PaymentMethodAddress, line1);
 TPSStripeBridgeKeyDeclare(PaymentMethodAddress, line2);
 TPSStripeBridgeKeyDeclare(PaymentMethodAddress, postalCode);
 TPSStripeBridgeKeyDeclare(PaymentMethodAddress, state);
+
+TPSStripeBridgeTypeDefine(iDEALParams);
+TPSStripeBridgeKeyDeclare(iDEALParams, bankName);
 
 TPSStripeBridgeTypeDefine(CardParams);
 TPSStripeBridgeKeyDeclare(CardParams, number);

@@ -954,6 +954,16 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     return result;
 }
 
+- (STPPaymentMethodiDEALParams *)extractIDEALParamsFromDictionary:(NSDictionary<TPSStripeType(PaymentMethodiDEALDetails), id>*)params {
+    if (!params) {return nil;}
+
+    STPPaymentMethodiDEALParams * result = [[STPPaymentMethodiDEALParams alloc] init];
+#define simpleUnpack(key) result.key = [RCTConvert NSString:params[TPSStripeParam(PaymentMethodiDEALDetails, key)]]
+    result.bankName = params[TPSStripeParam(PaymentMethodiDEALDetails, bankName)];
+#undef simpleUnpack
+    return result;
+}
+
 - (STPPaymentMethodBillingDetails *)extractPaymentMethodBillingDetailsFromDictionary:(NSDictionary<TPSStripeType(PaymentMethodBillingDetails), id>*)params {
     if (!params) {return nil;}
 
@@ -969,17 +979,28 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
 
 - (STPPaymentMethodParams*)extractCreatePaymentMethodParamsFromDictionary:(NSDictionary<TPSStripeType(createPaymentMethod), id>*)params {
     NSDictionary<TPSStripeType(CardParams), id> * cardParamsInput = params[TPSStripeParam(createPaymentMethod, card)];
-    if (!cardParamsInput && NSNull.null != (id)cardParamsInput) {return nil;}
+    NSDictionary<TPSStripeType(iDEALParams), id> * idealParamsInput = params[TPSStripeParam(createPaymentMethod, iDEAL)];
+    
+    if ((!cardParamsInput && NSNull.null != (id)cardParamsInput) && (!idealParamsInput && NSNull.null != (id)idealParamsInput)) {return nil;}
 
-    STPPaymentMethodCardParams * card = [self extractPaymentMethodCardParamsFromDictionary:cardParamsInput];
-    STPPaymentMethodBillingDetails * details = [self extractPaymentMethodBillingDetailsFromDictionary: params[TPSStripeParam(createPaymentMethod, billingDetails)]];
-    NSDictionary* metadata = params[TPSStripeParam(createPaymentMethod, metadata)];
+    // Initialize an empty payment method params object
 
-    // TODO: decide if we want to support iDEAL bank accounts
-    //    STPPaymentMethodiDEALParams * idealParams = [self extractIDEALParamsFromDictionary: params[TPSStripeParam(createPaymentMethod, iDEAL)]];
-    //    stpParams.iDEAL = idealParams;
+    if (cardParamsInput) {
+        // Insert card details
+        STPPaymentMethodCardParams * card = [self extractPaymentMethodCardParamsFromDictionary:cardParamsInput];
+        STPPaymentMethodBillingDetails * details = [self extractPaymentMethodBillingDetailsFromDictionary: params[TPSStripeParam(createPaymentMethod, billingDetails)]];
+        NSDictionary* metadata = params[TPSStripeParam(createPaymentMethod, metadata)];
+        
+        return [STPPaymentMethodParams paramsWithCard:card billingDetails:details metadata:metadata];
+    }
+    
+    if (idealParamsInput) {
+        // Insert ideal details
+        STPPaymentMethodiDEALParams * idealParams = [self extractIDEALParamsFromDictionary:idealParamsInput];
+        return [STPPaymentMethodParams paramsWithiDEAL:idealParams billingDetails:nil metadata:nil];
+    }
 
-    return [STPPaymentMethodParams paramsWithCard:card billingDetails:details metadata:metadata];
+    return [[STPPaymentMethodParams alloc] init];
 }
 
 - (STPPaymentIntentParams*)extractConfirmPaymentIntentParamsFromDictionary:(NSDictionary<TPSStripeType(confirmPaymentIntent), id> *)params {
