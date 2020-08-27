@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import android.text.TextUtils;
 
 import com.facebook.react.bridge.ActivityEventListener;
@@ -79,8 +81,8 @@ public class StripeModule extends ReactContextBaseJavaModule {
   // Relevant Docs:
   // - https://stripe.dev/stripe-ios/docs/Classes/STPAppInfo.html https://stripe.dev/stripe-android/com/stripe/android/AppInfo.html
   // - https://stripe.com/docs/building-plugins#setappinfo
-  private static final String APP_INFO_NAME    = "tipsi-stripe";
-  private static final String APP_INFO_URL     = "https://github.com/tipsi/tipsi-stripe";
+  private static final String APP_INFO_NAME = "tipsi-stripe";
+  private static final String APP_INFO_URL = "https://github.com/tipsi/tipsi-stripe";
   private static final String APP_INFO_VERSION = "8.x";
   public static final String CLIENT_SECRET = "clientSecret";
 
@@ -162,9 +164,11 @@ public class StripeModule extends ReactContextBaseJavaModule {
   private PayFlow getPayFlow() {
     if (mPayFlow == null) {
       mPayFlow = PayFlow.create(
-        new Fun0<Activity>() { public Activity call() {
-          return getCurrentActivity();
-        }}
+        new Fun0<Activity>() {
+          public Activity call() {
+            return getCurrentActivity();
+          }
+        }
       );
     }
 
@@ -209,6 +213,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
           public void onSuccess(Token token) {
             promise.resolve(convertTokenToWritableMap(token));
           }
+
           public void onError(Exception error) {
             error.printStackTrace();
             promise.reject(toErrorCode(error), error.getMessage());
@@ -233,6 +238,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
           public void onSuccess(Token token) {
             promise.resolve(convertTokenToWritableMap(token));
           }
+
           public void onError(Exception error) {
             error.printStackTrace();
             promise.reject(toErrorCode(error), error.getMessage());
@@ -281,12 +287,12 @@ public class StripeModule extends ReactContextBaseJavaModule {
             StripeIntent.Status resultingStatus = result.getIntent().getStatus();
 
             if (Succeeded.equals(resultingStatus) ||
-                RequiresCapture.equals(resultingStatus) ||
-                RequiresConfirmation.equals(resultingStatus)) {
+              RequiresCapture.equals(resultingStatus) ||
+              RequiresConfirmation.equals(resultingStatus)) {
               promise.resolve(convertPaymentIntentResultToWritableMap(result));
             } else {
               if (Canceled.equals(resultingStatus) ||
-                  RequiresAction.equals(resultingStatus)
+                RequiresAction.equals(resultingStatus)
               ) {
                 promise.reject(CANCELLED, CANCELLED);      // TODO - normalize the message
               } else {
@@ -453,8 +459,8 @@ public class StripeModule extends ReactContextBaseJavaModule {
             mCreatedSource = source;
             String redirectUrl = source.getRedirect().getUrl();
             Intent browserIntent = new Intent(currentActivity, OpenBrowserActivity.class)
-                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                .putExtra(OpenBrowserActivity.EXTRA_URL, redirectUrl);
+              .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP)
+              .putExtra(OpenBrowserActivity.EXTRA_URL, redirectUrl);
             currentActivity.startActivity(browserIntent);
           }
         } else {
@@ -470,7 +476,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
     String returnURL = getStringOrNull(options, "returnURL");
     String clientSecret = options.getString("clientSecret");
     ConfirmSetupIntentParams csip = null;
-    if (returnURL ==  null) {
+    if (returnURL == null) {
       returnURL = "stripejs://use_stripe_sdk/return_url";
     }
 
@@ -491,13 +497,11 @@ public class StripeModule extends ReactContextBaseJavaModule {
     String clientSecret = options.getString("clientSecret");
 
     ReadableMap paymentMethod = getMapOrNull(options, "paymentMethod");
-    String paymentMethodId = getStringOrNull(options,"paymentMethodId");
-
-    // ReadableMap source = options.getMap("source");
-    // String sourceId = getStringOrNull(options,"sourceId");
+    String paymentMethodId = getStringOrNull(options, "paymentMethodId");
 
     String returnURL = getStringOrNull(options, "returnURL");
-    if (returnURL ==  null) {
+
+    if (returnURL == null) {
       returnURL = "stripejs://use_stripe_sdk/return_url";
     }
     boolean savePaymentMethod = getBooleanOrNull(options, "savePaymentMethod", false);
@@ -511,39 +515,15 @@ public class StripeModule extends ReactContextBaseJavaModule {
       PaymentMethodCreateParams pmcp = extractPaymentMethodCreateParams(paymentMethod);
       cpip = ConfirmPaymentIntentParams.createWithPaymentMethodCreateParams(pmcp, clientSecret, returnURL, savePaymentMethod, extraParams);
 
-    // Create with Payment Method ID
+      // Create with Payment Method ID
     } else if (paymentMethodId != null) {
 
       cpip = ConfirmPaymentIntentParams.createWithPaymentMethodId(paymentMethodId, clientSecret, returnURL, savePaymentMethod, extraParams);
 
-    // Create with Source
-    /**
-    Support for creating a Source while confirming a PaymentIntent is not being included
-    at this time, however, for compatibility with existing saved Sources, you can still confirm
-    a payment intent using a pre-existing Source by specifying its 'sourceId', as shown in the next
-    branch
-    */
-    /*
-    } else if (source != null) {
-      SourceParams sourceParams = extractSourceParams(source);
-      cpip = ConfirmPaymentIntentParams.createWithSourceParams(sourceParams, clientSecret, returnURL, savePaymentMethod, extraParams);
-    */
-
-    // Create with Source ID
-    /**
-    If you have a sourceId, pass it into the paymentMethodId parameter instead!
-    The payment_method parameter of a payment intent is fully compatible with Sources.
-    Reference: https://stripe.com/docs/api/payment_intents/confirm#confirm_payment_intent-payment_method
-    */
-    /*
-    } else if (sourceId != null) {
-      cpip = ConfirmPaymentIntentParams.createWithSourceId(sourceId, clientSecret, returnURL, savePaymentMethod, extraParams);
-    */
-
-    /**
-    This branch can be used if the client secret refers to a payment intent that already
-    has payment method information and just needs to be confirmed.
-    */
+      /**
+       This branch can be used if the client secret refers to a payment intent that already
+       has payment method information and just needs to be confirmed.
+       */
     } else {
       cpip = ConfirmPaymentIntentParams.create(clientSecret, returnURL);
     }
@@ -556,10 +536,10 @@ public class StripeModule extends ReactContextBaseJavaModule {
   private PaymentMethodCreateParams extractPaymentMethodCreateParams(final ReadableMap options) {
 
     ReadableMap cardParams = getMapOrNull(options, "card");
+    ReadableMap iDEALParams = getMapOrNull(options, "iDEAL");
     ReadableMap billingDetailsParams = getMapOrNull(options, "billingDetails");
     ReadableMap metadataParams = getMapOrNull(options, "metadata");
 
-    PaymentMethodCreateParams.Card card = null;
     PaymentMethod.BillingDetails billingDetails = null;
     Address address = null;
     Map<String, String> metadata = new HashMap<>();
@@ -590,13 +570,15 @@ public class StripeModule extends ReactContextBaseJavaModule {
       billingDetails = new PaymentMethod.BillingDetails.Builder().
         setAddress(address).
         setEmail(getStringOrNull(billingDetailsParams, "email")).
-        setName(getStringOrNull(billingDetailsParams,"name")).
-        setPhone(getStringOrNull(billingDetailsParams,"phone")).
+        setName(getStringOrNull(billingDetailsParams, "name")).
+        setPhone(getStringOrNull(billingDetailsParams, "phone")).
         build();
     }
 
     if (cardParams != null) {
+      PaymentMethodCreateParams.Card card = null;
       String token = getStringOrNull(cardParams, "token");
+
       if (token != null) {
         card = PaymentMethodCreateParams.Card.create(token);
       } else {
@@ -607,10 +589,20 @@ public class StripeModule extends ReactContextBaseJavaModule {
           setNumber(cardParams.getString("number")).
           build();
       }
+
+      return PaymentMethodCreateParams.create(
+        card,
+        billingDetails,
+        metadata
+      );
     }
 
+    PaymentMethodCreateParams.Ideal ideal = null;
+
+    ideal = new PaymentMethodCreateParams.Ideal.Builder().setBank(iDEALParams.getString("bankName")).build();
+
     return PaymentMethodCreateParams.create(
-      card,
+      ideal,
       billingDetails,
       metadata
     );
