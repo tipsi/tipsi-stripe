@@ -670,6 +670,19 @@ public class StripeModule extends ReactContextBaseJavaModule {
         sourceParams = SourceParams.createCardParams(Converters.createCard(options));
         break;
     }
+
+    ReadableMap metadataParams = getMapOrNull(options, "metadata");
+    Map<String, String> metadata = new HashMap<>();
+
+    if (metadataParams != null) {
+      ReadableMapKeySetIterator iter = metadataParams.keySetIterator();
+      while (iter.hasNextKey()) {
+        String key = iter.nextKey();
+        metadata.put(key, metadataParams.getString(key));
+      }
+    }
+
+    sourceParams.setMetaData(metadata);
     return sourceParams;
   }
 
