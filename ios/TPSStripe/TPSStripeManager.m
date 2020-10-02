@@ -958,8 +958,9 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     if (!params) {return nil;}
 
     STPPaymentMethodBillingDetails * result = [[STPPaymentMethodBillingDetails alloc] init];
+    STPPaymentMethodAddress * address = [self extractPaymentMethodBillingDetailsAddressFromDictionary: params[TPSStripeParam(PaymentMethodBillingDetails, address)]];
 #define simpleUnpack(key) result.key = [RCTConvert NSString:params[TPSStripeParam(PaymentMethodBillingDetails, key)]]
-    result.address = params[TPSStripeParam(PaymentMethodBillingDetails, address)];
+    result.address = address;
     simpleUnpack(email);
     simpleUnpack(name);
     simpleUnpack(phone);
