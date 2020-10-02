@@ -12,13 +12,13 @@ Have no fear, it's on its way!
 
 It takes to much resources to release stable version but you can use beta release (and some companies already have been using it since september). It has support for SCA-ready API's and support for some newer features.
 
-Latest beta release is: [8.0.0-beta.10](/CHANGELOG.md)
+Latest beta release is: [8.0.0-beta.11](/CHANGELOG.md)
 
 To upgrade:
 
 ```
 # package.json
-"tipsi-stripe": "^8.0.0-beta.10"
+"tipsi-stripe": "^8.0.0-beta.11"
 
 # Make sure you are running Stripe 19.0.1 or later
 # ios/Podfile
