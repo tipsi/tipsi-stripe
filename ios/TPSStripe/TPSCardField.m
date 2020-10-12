@@ -24,6 +24,7 @@
         _isFirstResponder = NO;
         _paymentCardTextField = [[STPPaymentCardTextField alloc] initWithFrame:self.bounds];
         _paymentCardTextField.delegate = self;
+        _paymentCardTextField.postalCodeEntryEnabled = NO;
         [self addSubview:_paymentCardTextField];
         self.backgroundColor = [UIColor clearColor];
     }
