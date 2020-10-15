@@ -137,12 +137,11 @@ export default class PaymentCardTextField extends Component {
       : TextInputState.currentlyFocusedField()) === findNodeHandle(this.cardTextFieldRef)
 
   focus = () => {
-    // TextInputState.focusTextInput(findNodeHandle(this.cardTextFieldRef))
-    findNodeHandle(this.cardTextFieldRef).focus()
+    TextInputState.focusTextInput(findNodeHandle(this.cardTextFieldRef))
   }
 
   blur = () => {
-    findNodeHandle(this.cardTextFieldRef).focus()
+    TextInputState.blurTextInput(findNodeHandle(this.cardTextFieldRef))
   }
 
   handlePress = () => {
