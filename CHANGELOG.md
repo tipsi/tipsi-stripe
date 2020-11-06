@@ -1,6 +1,6 @@
 # Changelog
 
-## [8.0.0-beta.10] - 2020-10-02
+## [8.0.0-beta.11] - 2020-10-02
 
 - Fix ios billing address [#640](https://github.com/tipsi/tipsi-stripe/pull/640)
 
