@@ -451,6 +451,8 @@ RCT_EXPORT_METHOD(authenticatePaymentIntent:(NSDictionary<NSString*, id> *)untyp
     promiseResolver = resolve;
     promiseRejector = reject;
 
+    [[STPPaymentHandler sharedHandler] setApiClient: self.newAPIClient];
+
     // From example in step 3 of https://stripe.com/docs/payments/payment-intents/ios#manual-confirmation-ios
     [[STPPaymentHandler sharedHandler] handleNextActionForPayment:clientSecret
                                         withAuthenticationContext:self
