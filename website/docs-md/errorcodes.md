@@ -17,7 +17,7 @@ sidebar_label: Error Codes
 | **sourceStatusUnknown** | Source polling unknown error |
 | **noPaymentRequest** | Missing payment request |
 | **noMerchantIdentifier** | Missing merchant identifier |
-| **noAmount** | Amount should be greater than 0 |
+| **noAmount** | Amount should not be less than zero |
 | **parseResponse** | Failed to parse JSON |
 | **activityUnavailable** | Cannot continue with no current activity |
 | **playServicesUnavailable** | Play services are not available |

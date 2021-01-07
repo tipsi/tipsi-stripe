@@ -46,7 +46,7 @@ const errorCodes = {
   },
   noAmount: {
     errorCode: 'noAmount',
-    description: 'Amount should be greater than 0',
+    description: 'Amount should not be less than zero',
   },
   parseResponse: {
     errorCode: 'parseResponse',
