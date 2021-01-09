@@ -9,7 +9,7 @@
       android:launchMode="singleTask"
       android:theme="@android:style/Theme.Translucent.NoTitleBar" />
     <activity
-      android:exported="true"
+      android:exported="false"
       android:launchMode="singleTask"
       android:name=".RedirectUriReceiver"
       android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen">
