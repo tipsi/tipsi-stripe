@@ -1,4 +1,4 @@
-import processColor from 'react-native/Libraries/StyleSheet/processColor'
+import { processColor } from "react-native"
 
 export default function processTheme(theme = {}) {
   return Object.keys(theme).reduce((result, key) => {
