@@ -1,23 +1,15 @@
 # tipsi-stripe
 
+> ℹ️ Interested in future React Native libraries for the Stripe API? Fill our this interest form to keep up to date: [Stripe React Native Interest Form](https://app.smartsheet.com/b/form/b1a1053eaac7496eb0ae7892ebd68973)
+
+
 [![npm version](https://img.shields.io/npm/v/tipsi-stripe.svg?style=flat-square)](https://www.npmjs.com/package/tipsi-stripe)
 [![build status](https://img.shields.io/travis/tipsi/tipsi-stripe/master.svg?style=flat-square)](https://travis-ci.org/tipsi/tipsi-stripe)
 
-React Native Stripe binding for iOS/Android platforms
+## React Native Stripe binding for iOS/Android platforms
 
-## Strong Customer Authentication (SCA) support
-### PaymentIntents & SetupIntents
-
-Have no fear, it's on its way!
-  
-We are actively preparing for a September 1 stable release in time for the European SCA regulation deadline of September 14.
-
-In the meantime, if your company would like early access to the beta and help with the new changes,
-please sign up here and let us know what company it is for:  
-https://github.com/tipsi/tipsi-stripe/issues/448
-
-Then, join our Discord channel to access the beta, to get support from the contributors, and to help us 
-be aware of any issues you find.  Here is the invite link: https://discord.gg/8g6ppq2
+Join our Discord channel to access the beta, to get support from the contributors, and to help us 
+be aware of any issues you find.  Here is the invite link: https://discord.gg/vmBxnBw
 
 We'll make notifications on that channel as new beta releases are published, along with sharing
 documentation and handling questions.
