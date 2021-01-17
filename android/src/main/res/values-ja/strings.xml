@@ -1,0 +1,12 @@
+<resources>
+
+    <string name="CreditCardNumberHelp"/>
+    <string name="ExpirationDateHelp">有効期限 (月/年)</string>
+    <string name="SecurityCodeHelp">セキュリティーコード (CVC)</string>
+    <string name="ZipHelp">請求先郵便番号</string>
+    <string name="SecurityCodeFieldHint">セキュリティーコード</string>
+    <string name="ExpDateFieldHint">月/年</string>
+    <string name="ZipCodeFieldHint">   郵便番号   </string>
+    <string name="CreditCardFormCardNumberHint">1234 5678 9012 3456</string>
+
+</resources>
