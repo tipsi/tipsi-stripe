@@ -1,6 +1,10 @@
 # Changelog
 
-## [8.0.0] - 2019-09-01
+## [8.0.1] - 2021-01-17
+
+- #710 Android: japanese translation
+
+## [8.0.0] - 2021-01-16
 
 ### Android
 
