@@ -11,7 +11,7 @@
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
-#import <Stripe/Stripe.h>
+@import Stripe;
 
 @implementation AppDelegate
 
@@ -41,7 +41,7 @@
 
 // This method handles opening native URLs (e.g., "yourexampleapp://")
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
-  BOOL stripeHandled = [Stripe handleStripeURLCallbackWithURL:url];
+  BOOL stripeHandled = [StripeAPI handleStripeURLCallbackWithURL:url];
   if (stripeHandled) {
     return YES;
   } else {
