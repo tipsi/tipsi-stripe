@@ -40,7 +40,7 @@ npm run build-docs
 
 [Full changelog](/CHANGELOG.md)
 
-[[8.0.0] - 2019-01-08 **Breaking changes**](/CHANGELOG.md#800---2021-01-16)
+[[8.0.0] - 2021-01-16 **Breaking changes**](/CHANGELOG.md#800---2021-01-16)
 
 [[7.0.0] - 2019-01-08 **Breaking changes**](/CHANGELOG.md#700---2019-01-08)
 
