@@ -40,6 +40,8 @@ npm run build-docs
 
 [Full changelog](/CHANGELOG.md)
 
+[[9.0.0 - 2021-03-16 Bumped ios sdk and fixed xcode 12.5]](/CHANGELOG.md#900---2021-03-24)
+
 [[8.0.0] - 2021-01-16 **Breaking changes**](/CHANGELOG.md#800---2021-01-16)
 
 [[7.0.0] - 2019-01-08 **Breaking changes**](/CHANGELOG.md#700---2019-01-08)

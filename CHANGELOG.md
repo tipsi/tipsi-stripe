@@ -1,5 +1,10 @@
 # Changelog
 
+## [9.0.0] - 2021-03-24
+
+- #741
+- #730 ios: bump stripe-ios to v21
+
 ## [8.0.1] - 2021-01-17
 
 - #710 Android: japanese translation
