@@ -197,8 +197,8 @@
                 @"valid": @(_paymentCardTextField.isValid),
                 @"params": @{
                         @"number": _paymentCardTextField.cardParams.number?:@"",
-                        @"expMonth": _paymentCardTextField.cardParams.expMonth,
-                        @"expYear": _paymentCardTextField.cardParams.expYear,
+                        @"expMonth": _paymentCardTextField.cardParams.expMonth?:NSNull.null,
+                        @"expYear": _paymentCardTextField.cardParams.expYear?:NSNull.null,
                         @"cvc": _paymentCardTextField.cardParams.cvc?:@""
                         }
                 });
