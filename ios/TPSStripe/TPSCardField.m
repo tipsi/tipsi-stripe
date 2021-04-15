@@ -62,12 +62,6 @@
     }
 }
 
-- (void)keyboardWillShow:(NSNotification *)n {
-    if (!_jsRequestingFirstResponder && !_isFirstResponder) {
-        [_paymentCardTextField resignFirstResponder];
-    }
-}
-
 - (BOOL)becomeFirstResponder {
     _isFirstResponder = YES;
     return [_paymentCardTextField becomeFirstResponder];
