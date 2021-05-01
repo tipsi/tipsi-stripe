@@ -25,8 +25,8 @@ After that, API team will send you confirmation from `googlepay-api-support@goog
 When everything is done with a test application, you will need to enable the application by:
 
 
-* Please have the account owner login to <OWNER@EMAIL.HERE> and access our [sign-up link](https://payments.developers.google.com/signup)
-* To ensure you are logged into the right account, click [here](https://accounts.google.com/SignOutOptions?continue=https://payments.developers.google.com/signup)
+* Please have the account owner login to <OWNER@EMAIL.HERE> and access our [sign-up link](https://payments.developers.google.com/signup).
+* To ensure you are logged into the right account, click [here](https://accounts.google.com/SignOutOptions?continue=https://payments.developers.google.com/signup).
 * Complete a profile, then on the next page, scroll down to Enable applications and they’ll see the package name.
 * Only click Enable next to the corresponding package name and confirm with me once this has been completed.
 * Once complete, your selected APK has production access, and you can configure your Android  application to point to Environment_Production.

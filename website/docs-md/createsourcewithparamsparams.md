@@ -4,11 +4,11 @@ title: .createSourceWithParams(params) -> Promise
 sidebar_label: .createSourceWithParams()
 ---
 
-Creates source object based on params. Sources are used to create payments for a variety of [payment methods](https://stripe.com/docs/sources)
+Creates source object based on params. Sources are used to create payments for a variety of [payment methods](https://stripe.com/docs/sources).
 
-_NOTE_: For sources that require redirecting your customer to authorize the payment, you need to specify a return URL when you create the source. This allows your customer to be redirected back to your app after they have authorized the payment. For this return URL, you can either use a custom URL scheme or a universal link supported by your app.
+**_NOTE_**: For sources that require redirecting your customer to authorize the payment, you need to specify a return URL when you create the source. This allows your customer to be redirected back to your app after they have authorized the payment. For this return URL, you can either use a custom URL scheme or a universal link supported by your app.
 
-##### iOS
+### iOS
 
 For more information on registering and handling URLs in your app, refer to the Apple documentation:
 
@@ -17,7 +17,7 @@ For more information on registering and handling URLs in your app, refer to the 
 
 You also need to setup your `AppDelegate.m` app delegate to forward URLs to the Stripe SDK according to the [official iOS implementation](https://stripe.com/docs/mobile/ios/sources#redirecting-your-customer).
 
-##### Android
+### Android
 
 You have to declare your return url in application's `build.gradle` file.
 In order to do that, add the following code replacing `CUSTOM_SCHEME` with the your custom scheme inside the `android.defaultConfig` block.
@@ -36,7 +36,7 @@ android {
 ```
 > Example: if the return URL used is `my_custom_scheme://callback`, replace `CUSTOM_SCHEME` with `my_custom_scheme`.
 
-**NOTE**: the redirection will be automatically handled by tipsi-stripe **on its own activity**.
+**_NOTE_**: the redirection will be automatically handled by tipsi-stripe **on its own activity**.
 If your app makes use of its own custom URL scheme for other purpose than handling stripe payments, make sure that the `CUSTOM_SCHEME` value is not exactly the same as the one used in the rest of the app.
 
 > In such a case you might end up using `my_custom_scheme_tipsi://callback` as return URL and setting `CUSTOM_SCHEME` equal to `my_custom_scheme_tipsi`, following the previous example.
@@ -60,7 +60,7 @@ xmlns:tools="http://schemas.android.com/tools"
 ```
 as an attribute into the root node of your manifest.
 
-**NOTE**: This is **only** necessary if you are going to use Sources!
+**_NOTE_**: This is **only** necessary if you are going to use Sources!
 
 
 `params` — An object with the following keys:

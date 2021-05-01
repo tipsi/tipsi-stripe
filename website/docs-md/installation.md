@@ -18,6 +18,8 @@ yarn add tipsi-stripe
 
 Setup your `Podfile` like the included [example/ios/Podfile](https://github.com/tipsi/tipsi-stripe/blob/master/example/ios/Podfile) then run `pod install`.
 
+If your React Native version is < `0.60`, then:
+
 1. Open your project in Xcode workspace.
 2. Drag the following folder into your project:
    * `node_modules/tipsi-stripe/ios/TPSStripe/`
