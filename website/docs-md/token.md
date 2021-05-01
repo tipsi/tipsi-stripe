@@ -25,8 +25,8 @@ A `token object` returned from submitting payment details to the Stripe API via:
 | Key | Type | Description |
 | :--- | :--- | :--- |
 | cardId | String | The Stripe ID for the card |
-| brand | String | The card’s brand. Can be one of: **JCB **‖ **American Express **‖ **Visa **‖ **Discover **‖ **Diners Club **‖ **MasterCard **‖ **Unknown** |
-| funding (iOS) | String | The card’s funding. Can be one of: **debit **‖ **credit **‖ **prepaid **‖ **unknown** |
+| brand | String | The card’s brand. Can be one of: **JCB** ‖ **American Express** ‖ **Visa** ‖ **Discover** ‖ **Diners Club** ‖ **MasterCard** ‖ **Unknown** |
+| funding (iOS) | String | The card’s funding. Can be one of: **debit** ‖ **credit** ‖ **prepaid** ‖ **unknown** |
 | last4 | String | The last 4 digits of the card |
 | dynamicLast4&nbsp;(iOS) | String | For cards made with Apple Pay, this refers to the last 4 digits of the Device Account Number for the tokenized card |
 | isApplePayCard&nbsp;(iOS) | Bool | Whether or not the card originated from Apple Pay |

@@ -29,8 +29,8 @@ module.exports = {
 https://github.com/react-native-community/discussions-and-proposals/issues/129
 https://github.com/facebook/react-native-fbsdk/issues/429
 
-4. For build Android before building app use Jetify. 
-Run 
+4. For Android, before building the app, run [Jetifier](https://www.npmjs.com/package/jetifier):
+
 ```bash
 npx jetify
 ```
@@ -40,7 +40,7 @@ npx react-native run-android
 
 ## Troubleshooting 
 
-####Android
+#### Android
 
 Issue:
 ```
