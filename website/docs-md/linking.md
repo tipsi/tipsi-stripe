@@ -71,7 +71,7 @@ In your `android/app/src/main/java/com/%YOUR_APP_NAME%/MainApplication.java` add
 
 ```diff
 ...
-+ import com.gettipsi.stripe.StripeReactPackage;
++ import com.seatmonger.stripe.StripeReactPackage;
 ...
 protected List <ReactPackage> getPackages() {
   return Arrays.<ReactPackage>asList(

@@ -1,4 +1,4 @@
-package com.gettipsi.stripe.util;
+package com.seatmonger.stripe.util;
 
 /**
  * Created by ngoriachev on 13/03/2018.

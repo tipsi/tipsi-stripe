@@ -1,4 +1,4 @@
-package com.gettipsi.stripe;
+package com.seatmonger.stripe;
 
 import android.app.Activity;
 import android.os.Bundle;

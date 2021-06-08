@@ -16,11 +16,11 @@ const users = [
 ]
 
 const siteConfig = {
-  title: 'tipsi-stripe',
+  title: 'react-native-stripe',
   tagline: 'Stripe support for React-Native',
-  url: 'https://tipsi.github.io',
-  baseUrl: '/tipsi-stripe/',
-  projectName: 'tipsi-stripe',
+  url: 'https://seatmonger.github.io',
+  baseUrl: '/react-native-stripe/',
+  projectName: 'react-native-stripe',
   headerLinks: [
     { doc: 'index', label: 'Docs' },
     { blog: true, label: 'Blog' },
@@ -34,10 +34,10 @@ const siteConfig = {
   },
   copyright: `Copyright © ${new Date().getFullYear()} Tipsi`,
   customDocsPath: 'docs-md',
-  organizationName: 'tipsi',
+  organizationName: 'seatmonger',
   highlight: { theme: 'default' },
   scripts: ['https://buttons.github.io/buttons.js'],
-  repoUrl: 'https://github.com/tipsi/tipsi-stripe',
+  repoUrl: 'https://github.com/seatmonger/react-native-stripe',
 }
 
 module.exports = siteConfig

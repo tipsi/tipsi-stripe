@@ -1,11 +1,11 @@
-package com.gettipsi.stripe.util;
+package com.seatmonger.stripe.util;
 
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.content.Context;
 import android.widget.ImageView;
 
-import com.gettipsi.stripe.R;
+import com.seatmonger.stripe.R;
 
 /**
  * Created by dmitriy on 11/14/16

@@ -1,4 +1,4 @@
-package com.gettipsi.stripe;
+package com.seatmonger.stripe;
 
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.JavaScriptModule;

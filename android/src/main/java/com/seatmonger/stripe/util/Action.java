@@ -1,4 +1,4 @@
-package com.gettipsi.stripe.util;
+package com.seatmonger.stripe.util;
 
 public interface Action<T> {
   void call(T t);

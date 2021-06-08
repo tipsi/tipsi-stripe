@@ -1,4 +1,4 @@
-package com.gettipsi.stripe;
+package com.seatmonger.stripe;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,8 +7,8 @@ import android.util.Log;
 
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReadableMap;
-import com.gettipsi.stripe.util.ArgCheck;
-import com.gettipsi.stripe.util.Fun0;
+import com.seatmonger.stripe.util.ArgCheck;
+import com.seatmonger.stripe.util.Fun0;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.wallet.WalletConstants;

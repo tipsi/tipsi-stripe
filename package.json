@@ -1,7 +1,7 @@
 {
-  "name": "tipsi-stripe",
+  "name": "react-native-stripe",
   "version": "9.0.0",
-  "description": "React Native Stripe binding for iOS/Android platforms",
+  "description": "RN Stripe binding for iOS/Android platforms",
   "main": "src/index.js",
   "scripts": {
     "ci": "scripts/local-ci.sh",
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tipsi/tipsi-stripe.git"
+    "url": "git+https://github.com/seatmonger/react-native-stripe.git"
   },
   "keywords": [
     "react",
@@ -24,25 +24,25 @@
     "ios",
     "android"
   ],
-  "author": "Tipsi",
+  "author": "Igor Shmukler",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/tipsi/tipsi-stripe/issues"
+    "url": "https://github.com/seatmonger/react-native-stripe/issues"
   },
-  "homepage": "https://github.com/tipsi/tipsi-stripe#readme",
+  "homepage": "https://github.com/seatmonger/react-native-stripe#readme",
   "rnpm": {
     "commands": {
-      "prelink": "node_modules/tipsi-stripe/scripts/pre-link.sh",
-      "postlink": "node_modules/tipsi-stripe/scripts/post-link.sh"
+      "prelink": "node_modules/react-native-stripe/scripts/pre-link.sh",
+      "postlink": "node_modules/react-native-stripe/scripts/post-link.sh"
     }
   },
   "peerDependencies": {
     "react": ">=15.4.0 || >=16.x",
-    "react-native": ">=0.40"
+    "react-native": ">=0.62"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.2",
-    "docusaurus": "^1.11.1",
+    "docusaurus": "^1.14.7",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^17.1.1",
     "eslint-config-prettier": "^6.0.0",
@@ -51,9 +51,9 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-react": "^7.14.3",
-    "esm": "3.0.28",
+    "esm": "^3.2.25",
     "prettier": "1.18.x",
-    "prop-types": "15.6.1",
+    "prop-types": "^15.7.2",
     "tape": "4.9.0"
   }
 }

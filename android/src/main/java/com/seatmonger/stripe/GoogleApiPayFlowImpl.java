@@ -1,4 +1,4 @@
-package com.gettipsi.stripe;
+package com.seatmonger.stripe;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,9 +6,9 @@ import android.support.annotation.NonNull;
 
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReadableMap;
-import com.gettipsi.stripe.util.ArgCheck;
-import com.gettipsi.stripe.util.Converters;
-import com.gettipsi.stripe.util.Fun0;
+import com.seatmonger.stripe.util.ArgCheck;
+import com.seatmonger.stripe.util.Converters;
+import com.seatmonger.stripe.util.Fun0;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -30,17 +30,17 @@ import com.stripe.android.model.Token;
 import java.util.Arrays;
 import java.util.Collection;
 
-import static com.gettipsi.stripe.Errors.toErrorCode;
-import static com.gettipsi.stripe.util.Converters.convertTokenToWritableMap;
-import static com.gettipsi.stripe.util.Converters.getAllowedShippingCountryCodes;
-import static com.gettipsi.stripe.util.Converters.getBillingAddress;
-import static com.gettipsi.stripe.util.Converters.putExtraToTokenMap;
-import static com.gettipsi.stripe.util.PayParams.CURRENCY_CODE;
-import static com.gettipsi.stripe.util.PayParams.BILLING_ADDRESS_REQUIRED;
-import static com.gettipsi.stripe.util.PayParams.SHIPPING_ADDRESS_REQUIRED;
-import static com.gettipsi.stripe.util.PayParams.PHONE_NUMBER_REQUIRED;
-import static com.gettipsi.stripe.util.PayParams.EMAIL_REQUIRED;
-import static com.gettipsi.stripe.util.PayParams.TOTAL_PRICE;
+import static com.seatmonger.stripe.Errors.toErrorCode;
+import static com.seatmonger.stripe.util.Converters.convertTokenToWritableMap;
+import static com.seatmonger.stripe.util.Converters.getAllowedShippingCountryCodes;
+import static com.seatmonger.stripe.util.Converters.getBillingAddress;
+import static com.seatmonger.stripe.util.Converters.putExtraToTokenMap;
+import static com.seatmonger.stripe.util.PayParams.CURRENCY_CODE;
+import static com.seatmonger.stripe.util.PayParams.BILLING_ADDRESS_REQUIRED;
+import static com.seatmonger.stripe.util.PayParams.SHIPPING_ADDRESS_REQUIRED;
+import static com.seatmonger.stripe.util.PayParams.PHONE_NUMBER_REQUIRED;
+import static com.seatmonger.stripe.util.PayParams.EMAIL_REQUIRED;
+import static com.seatmonger.stripe.util.PayParams.TOTAL_PRICE;
 
 /**
  * Created by ngoriachev on 13/03/2018.

@@ -1,9 +1,9 @@
-package com.gettipsi.stripe;
+package com.seatmonger.stripe;
 
 import android.support.annotation.NonNull;
 
 import com.facebook.react.bridge.ReadableMap;
-import com.gettipsi.stripe.util.ArgCheck;
+import com.seatmonger.stripe.util.ArgCheck;
 
 import java.util.HashMap;
 import java.util.Map;

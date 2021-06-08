@@ -79,7 +79,7 @@ class HomeSplash extends React.Component {
         <div className="inner">
           <ProjectTitle />
           <PromoSection>
-            <Button href="https://github.com/tipsi/tipsi-stripe/tree/master/example">
+            <Button href="https://github.com/seatmonger/react-native-stripe/tree/master/example">
               Sample Project
             </Button>
           </PromoSection>
@@ -118,7 +118,7 @@ const Showcase = (props) => {
   return (
       <div className="productShowcaseSection paddingBottom">
       <h2>Quick navigation</h2>
-      <a href="/tipsi-stripe/docs/index.html">Start reading docs</a>
+      <a href="/react-native-stripe/docs/index.html">Start reading docs</a>
 
       <div className="logos">{showcase}</div>
     </div>

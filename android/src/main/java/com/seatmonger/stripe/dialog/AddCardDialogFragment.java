@@ -1,4 +1,4 @@
-package com.gettipsi.stripe.dialog;
+package com.seatmonger.stripe.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -20,11 +20,11 @@ import com.devmarvel.creditcardentry.fields.SecurityCodeText;
 import com.devmarvel.creditcardentry.library.CreditCard;
 import com.devmarvel.creditcardentry.library.CreditCardForm;
 import com.facebook.react.bridge.Promise;
-import com.gettipsi.stripe.R;
-import com.gettipsi.stripe.StripeModule;
-import com.gettipsi.stripe.util.CardFlipAnimator;
-import com.gettipsi.stripe.util.Converters;
-import com.gettipsi.stripe.util.Utils;
+import com.seatmonger.stripe.R;
+import com.seatmonger.stripe.StripeModule;
+import com.seatmonger.stripe.util.CardFlipAnimator;
+import com.seatmonger.stripe.util.Converters;
+import com.seatmonger.stripe.util.Utils;
 import com.stripe.android.ApiResultCallback;
 import com.stripe.android.model.Card;
 import com.stripe.android.model.PaymentMethod;

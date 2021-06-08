@@ -1,4 +1,4 @@
-package com.gettipsi.stripe;
+package com.seatmonger.stripe;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -17,10 +17,10 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableMapKeySetIterator;
-import com.gettipsi.stripe.dialog.AddCardDialogFragment;
-import com.gettipsi.stripe.util.ArgCheck;
-import com.gettipsi.stripe.util.Converters;
-import com.gettipsi.stripe.util.Fun0;
+import com.seatmonger.stripe.dialog.AddCardDialogFragment;
+import com.seatmonger.stripe.util.ArgCheck;
+import com.seatmonger.stripe.util.Converters;
+import com.seatmonger.stripe.util.Fun0;
 import com.google.android.gms.wallet.WalletConstants;
 import com.stripe.android.ApiResultCallback;
 import com.stripe.android.AppInfo;
@@ -43,27 +43,27 @@ import com.stripe.android.model.Token;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.gettipsi.stripe.Errors.AUTHENTICATION_FAILED;
-import static com.gettipsi.stripe.Errors.CANCELLED;
-import static com.gettipsi.stripe.Errors.FAILED;
-import static com.gettipsi.stripe.Errors.UNEXPECTED;
-import static com.gettipsi.stripe.Errors.getDescription;
-import static com.gettipsi.stripe.Errors.getErrorCode;
-import static com.gettipsi.stripe.Errors.toErrorCode;
-import static com.gettipsi.stripe.util.Converters.convertPaymentIntentResultToWritableMap;
-import static com.gettipsi.stripe.util.Converters.convertPaymentMethodToWritableMap;
-import static com.gettipsi.stripe.util.Converters.convertSetupIntentResultToWritableMap;
-import static com.gettipsi.stripe.util.Converters.convertSourceToWritableMap;
-import static com.gettipsi.stripe.util.Converters.convertTokenToWritableMap;
-import static com.gettipsi.stripe.util.Converters.createBankAccount;
-import static com.gettipsi.stripe.util.Converters.createCard;
-import static com.gettipsi.stripe.util.Converters.getBooleanOrNull;
-import static com.gettipsi.stripe.util.Converters.getMapOrNull;
-import static com.gettipsi.stripe.util.Converters.getStringOrNull;
-import static com.gettipsi.stripe.util.InitializationOptions.ANDROID_PAY_MODE_KEY;
-import static com.gettipsi.stripe.util.InitializationOptions.ANDROID_PAY_MODE_PRODUCTION;
-import static com.gettipsi.stripe.util.InitializationOptions.ANDROID_PAY_MODE_TEST;
-import static com.gettipsi.stripe.util.InitializationOptions.PUBLISHABLE_KEY;
+import static com.seatmonger.stripe.Errors.AUTHENTICATION_FAILED;
+import static com.seatmonger.stripe.Errors.CANCELLED;
+import static com.seatmonger.stripe.Errors.FAILED;
+import static com.seatmonger.stripe.Errors.UNEXPECTED;
+import static com.seatmonger.stripe.Errors.getDescription;
+import static com.seatmonger.stripe.Errors.getErrorCode;
+import static com.seatmonger.stripe.Errors.toErrorCode;
+import static com.seatmonger.stripe.util.Converters.convertPaymentIntentResultToWritableMap;
+import static com.seatmonger.stripe.util.Converters.convertPaymentMethodToWritableMap;
+import static com.seatmonger.stripe.util.Converters.convertSetupIntentResultToWritableMap;
+import static com.seatmonger.stripe.util.Converters.convertSourceToWritableMap;
+import static com.seatmonger.stripe.util.Converters.convertTokenToWritableMap;
+import static com.seatmonger.stripe.util.Converters.createBankAccount;
+import static com.seatmonger.stripe.util.Converters.createCard;
+import static com.seatmonger.stripe.util.Converters.getBooleanOrNull;
+import static com.seatmonger.stripe.util.Converters.getMapOrNull;
+import static com.seatmonger.stripe.util.Converters.getStringOrNull;
+import static com.seatmonger.stripe.util.InitializationOptions.ANDROID_PAY_MODE_KEY;
+import static com.seatmonger.stripe.util.InitializationOptions.ANDROID_PAY_MODE_PRODUCTION;
+import static com.seatmonger.stripe.util.InitializationOptions.ANDROID_PAY_MODE_TEST;
+import static com.seatmonger.stripe.util.InitializationOptions.PUBLISHABLE_KEY;
 import static com.stripe.android.model.StripeIntent.Status.Canceled;
 import static com.stripe.android.model.StripeIntent.Status.RequiresAction;
 import static com.stripe.android.model.StripeIntent.Status.RequiresCapture;
@@ -79,8 +79,8 @@ public class StripeModule extends ReactContextBaseJavaModule {
   // Relevant Docs:
   // - https://stripe.dev/stripe-ios/docs/Classes/STPAppInfo.html https://stripe.dev/stripe-android/com/stripe/android/AppInfo.html
   // - https://stripe.com/docs/building-plugins#setappinfo
-  private static final String APP_INFO_NAME    = "tipsi-stripe";
-  private static final String APP_INFO_URL     = "https://github.com/tipsi/tipsi-stripe";
+  private static final String APP_INFO_NAME    = "react-native-stripe";
+  private static final String APP_INFO_URL     = "https://github.com/seatmonger/react-native-stripe";
   private static final String APP_INFO_VERSION = "8.x";
   public static final String CLIENT_SECRET = "clientSecret";
 

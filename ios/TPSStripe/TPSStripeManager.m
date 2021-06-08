@@ -19,9 +19,9 @@
 // Relevant Docs:
 // - https://stripe.dev/stripe-ios/docs/Classes/STPAppInfo.html https://stripe.dev/stripe-android/com/stripe/android/AppInfo.html
 // - https://stripe.com/docs/building-plugins#setappinfo
-NSString * const TPSAppInfoName = @"tipsi-stripe";
-NSString * const TPSAppInfoPartnerId = @"tipsi-stripe";
-NSString * const TPSAppInfoURL = @"https://github.com/tipsi/tipsi-stripe";
+NSString * const TPSAppInfoName = @"react-native-stripe";
+NSString * const TPSAppInfoPartnerId = @"react-native-stripe";
+NSString * const TPSAppInfoURL = @"https://github.com/seatmonger/react-native-stripe";
 NSString * const TPSAppInfoVersion = @"8.x";
 
 typedef NSString * TPSErrorKey NS_EXTENSIBLE_STRING_ENUM;

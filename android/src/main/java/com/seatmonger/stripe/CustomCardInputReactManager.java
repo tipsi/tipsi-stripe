@@ -1,4 +1,4 @@
-package com.gettipsi.stripe;
+package com.seatmonger.stripe;
 
 import android.text.Editable;
 import android.text.TextWatcher;
