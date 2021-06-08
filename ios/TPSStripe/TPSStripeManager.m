@@ -15,7 +15,7 @@
 #import "TPSStripeManager+Constants.h"
 
 // If you change these, make sure to also change:
-//  android/src/main/java/com/gettipsi/stripe/StripeModule.java
+//  android/src/main/java/com/seatmonger/stripe/StripeModule.java
 // Relevant Docs:
 // - https://stripe.dev/stripe-ios/docs/Classes/STPAppInfo.html https://stripe.dev/stripe-android/com/stripe/android/AppInfo.html
 // - https://stripe.com/docs/building-plugins#setappinfo
