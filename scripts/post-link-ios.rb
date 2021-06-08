@@ -35,7 +35,7 @@ if File.exist? @podfile_path
       unless line =~ /^\s*(\#{0})use_frameworks!/
         temp_file.puts(@pod_dep) if line =~ /target\s+'#{escaped_target_name}'\s+do/
       else
-        puts 'Your project using use_frameworks! directive, please check README and issue https://github.com/tipsi/tipsi-stripe/issues/29'
+        puts 'Your project using use_frameworks! directive, please check README and issue https://github.com/seatmonger/react-native-stripe/issues/29'
       end
     end
     temp_file.close

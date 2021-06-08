@@ -79,8 +79,8 @@ public class StripeModule extends ReactContextBaseJavaModule {
   // Relevant Docs:
   // - https://stripe.dev/stripe-ios/docs/Classes/STPAppInfo.html https://stripe.dev/stripe-android/com/stripe/android/AppInfo.html
   // - https://stripe.com/docs/building-plugins#setappinfo
-  private static final String APP_INFO_NAME    = "tipsi-stripe";
-  private static final String APP_INFO_URL     = "https://github.com/tipsi/tipsi-stripe";
+  private static final String APP_INFO_NAME    = "react-native-stripe";
+  private static final String APP_INFO_URL     = "https://github.com/seatmonger/react-native-stripe";
   private static final String APP_INFO_VERSION = "8.x";
   public static final String CLIENT_SECRET = "clientSecret";
 
