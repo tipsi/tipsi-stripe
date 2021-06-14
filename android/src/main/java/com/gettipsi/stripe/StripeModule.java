@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.facebook.react.bridge.ActivityEventListener;
@@ -22,20 +22,17 @@ import com.gettipsi.stripe.util.ArgCheck;
 import com.gettipsi.stripe.util.Converters;
 import com.gettipsi.stripe.util.Fun0;
 import com.google.android.gms.wallet.WalletConstants;
-import com.stripe.android.ApiResultCallback;
 import com.stripe.android.AppInfo;
 import com.stripe.android.PaymentIntentResult;
 import com.stripe.android.SetupIntentResult;
-import com.stripe.android.SourceCallback;
+import com.stripe.android.ApiResultCallback;
 import com.stripe.android.Stripe;
-import com.stripe.android.TokenCallback;
 import com.stripe.android.model.Address;
 import com.stripe.android.model.ConfirmPaymentIntentParams;
 import com.stripe.android.model.ConfirmSetupIntentParams;
 import com.stripe.android.model.PaymentMethod;
 import com.stripe.android.model.PaymentMethodCreateParams;
 import com.stripe.android.model.Source;
-import com.stripe.android.model.Source.SourceStatus;
 import com.stripe.android.model.SourceParams;
 import com.stripe.android.model.StripeIntent;
 import com.stripe.android.model.Token;
@@ -55,7 +52,7 @@ import static com.gettipsi.stripe.util.Converters.convertPaymentMethodToWritable
 import static com.gettipsi.stripe.util.Converters.convertSetupIntentResultToWritableMap;
 import static com.gettipsi.stripe.util.Converters.convertSourceToWritableMap;
 import static com.gettipsi.stripe.util.Converters.convertTokenToWritableMap;
-import static com.gettipsi.stripe.util.Converters.createBankAccount;
+// import static com.gettipsi.stripe.util.Converters.createBankAccount;
 import static com.gettipsi.stripe.util.Converters.createCard;
 import static com.gettipsi.stripe.util.Converters.getBooleanOrNull;
 import static com.gettipsi.stripe.util.Converters.getMapOrNull;
@@ -202,46 +199,46 @@ public class StripeModule extends ReactContextBaseJavaModule {
       ArgCheck.nonNull(mStripe);
       ArgCheck.notEmptyString(mPublicKey);
 
-      mStripe.createToken(
-        createCard(cardData),
-        mPublicKey,
-        new TokenCallback() {
-          public void onSuccess(Token token) {
-            promise.resolve(convertTokenToWritableMap(token));
-          }
-          public void onError(Exception error) {
-            error.printStackTrace();
-            promise.reject(toErrorCode(error), error.getMessage());
-          }
-        });
+      // mStripe.createToken(
+      //   createCard(cardData),
+      //   mPublicKey,
+      //   new ApiResultCallback<Token>() {
+      //     public void onSuccess(Token token) {
+      //       promise.resolve(convertTokenToWritableMap(token));
+      //     }
+      //     public void onError(Exception error) {
+      //       error.printStackTrace();
+      //       promise.reject(toErrorCode(error), error.getMessage());
+      //     }
+      //   });
     } catch (Exception e) {
       promise.reject(toErrorCode(e), e.getMessage());
     }
   }
 
-  @ReactMethod
-  public void createTokenWithBankAccount(final ReadableMap accountData, final Promise promise) {
-    try {
-      ArgCheck.nonNull(mStripe);
-      ArgCheck.notEmptyString(mPublicKey);
+  // @ReactMethod
+  // public void createTokenWithBankAccount(final ReadableMap accountData, final Promise promise) {
+  //   try {
+  //     ArgCheck.nonNull(mStripe);
+  //     ArgCheck.notEmptyString(mPublicKey);
 
-      mStripe.createBankAccountToken(
-        createBankAccount(accountData),
-        mPublicKey,
-        null,
-        new TokenCallback() {
-          public void onSuccess(Token token) {
-            promise.resolve(convertTokenToWritableMap(token));
-          }
-          public void onError(Exception error) {
-            error.printStackTrace();
-            promise.reject(toErrorCode(error), error.getMessage());
-          }
-        });
-    } catch (Exception e) {
-      promise.reject(toErrorCode(e), e.getMessage());
-    }
-  }
+  //     mStripe.createBankAccountToken(
+  //       createBankAccount(accountData),
+  //       mPublicKey,
+  //       null,
+  //       new ApiResultCallback<Token>() {
+  //         public void onSuccess(Token token) {
+  //           promise.resolve(convertTokenToWritableMap(token));
+  //         }
+  //         public void onError(Exception error) {
+  //           error.printStackTrace();
+  //           promise.reject(toErrorCode(error), error.getMessage());
+  //         }
+  //       });
+  //   } catch (Exception e) {
+  //     promise.reject(toErrorCode(e), e.getMessage());
+  //   }
+  // }
 
   @ReactMethod
   public void paymentRequestWithCardForm(ReadableMap params, final Promise promise) {
@@ -433,7 +430,7 @@ public class StripeModule extends ReactContextBaseJavaModule {
 
     ArgCheck.nonNull(sourceParams);
 
-    mStripe.createSource(sourceParams, new SourceCallback() {
+    mStripe.createSource(sourceParams, new ApiResultCallback<Source>() {
       @Override
       public void onError(Exception error) {
         promise.reject(toErrorCode(error));
@@ -441,25 +438,25 @@ public class StripeModule extends ReactContextBaseJavaModule {
 
       @Override
       public void onSuccess(Source source) {
-        if (Source.SourceFlow.REDIRECT.equals(source.getFlow())) {
-          Activity currentActivity = getCurrentActivity();
-          if (currentActivity == null) {
-            promise.reject(
-              getErrorCode(mErrorCodes, "activityUnavailable"),
-              getDescription(mErrorCodes, "activityUnavailable")
-            );
-          } else {
-            mCreateSourcePromise = promise;
-            mCreatedSource = source;
-            String redirectUrl = source.getRedirect().getUrl();
-            Intent browserIntent = new Intent(currentActivity, OpenBrowserActivity.class)
-                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                .putExtra(OpenBrowserActivity.EXTRA_URL, redirectUrl);
-            currentActivity.startActivity(browserIntent);
-          }
-        } else {
-          promise.resolve(convertSourceToWritableMap(source));
-        }
+        // if (Source.Flow.REDIRECT.equals(source.getFlow())) {
+        //   Activity currentActivity = getCurrentActivity();
+        //   if (currentActivity == null) {
+        //     promise.reject(
+        //       getErrorCode(mErrorCodes, "activityUnavailable"),
+        //       getDescription(mErrorCodes, "activityUnavailable")
+        //     );
+        //   } else {
+        //     mCreateSourcePromise = promise;
+        //     mCreatedSource = source;
+        //     String redirectUrl = source.getRedirect().getUrl();
+        //     Intent browserIntent = new Intent(currentActivity, OpenBrowserActivity.class)
+        //         .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        //         .putExtra(OpenBrowserActivity.EXTRA_URL, redirectUrl);
+        //     currentActivity.startActivity(browserIntent);
+        //   }
+        // } else {
+        //   promise.resolve(convertSourceToWritableMap(source));
+        // }
       }
     });
   }
@@ -738,25 +735,25 @@ public class StripeModule extends ReactContextBaseJavaModule {
           return null;
         }
 
-        switch (source.getStatus()) {
-          case SourceStatus.CHARGEABLE:
-          case SourceStatus.CONSUMED:
-            promise.resolve(convertSourceToWritableMap(source));
-            break;
-          case SourceStatus.CANCELED:
-            promise.reject(
-              getErrorCode(mErrorCodes, "redirectCancelled"),
-              getDescription(mErrorCodes, "redirectCancelled")
-            );
-            break;
-          case SourceStatus.PENDING:
-          case SourceStatus.FAILED:
-          default:
-            promise.reject(
-              getErrorCode(mErrorCodes, "redirectFailed"),
-              getDescription(mErrorCodes, "redirectFailed")
-            );
-        }
+        // switch (source.getStatus()) {
+        //   case Source.Status.CHARGEABLE:
+        //   case Source.Status.CONSUMED:
+        //     promise.resolve(convertSourceToWritableMap(source));
+        //     break;
+        //   case Source.Status.CANCELED:
+        //     promise.reject(
+        //       getErrorCode(mErrorCodes, "redirectCancelled"),
+        //       getDescription(mErrorCodes, "redirectCancelled")
+        //     );
+        //     break;
+        //   case Source.Status.PENDING:
+        //   case Source.Status.FAILED:
+        //   default:
+        //     promise.reject(
+        //       getErrorCode(mErrorCodes, "redirectFailed"),
+        //       getDescription(mErrorCodes, "redirectFailed")
+        //     );
+        // }
         return null;
       }
     }.execute();
