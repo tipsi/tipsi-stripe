@@ -1,5 +1,8 @@
 # Changelog
 
+## [9.1.0] - 2021-06-17
+- #790 android: bump stripe-android to 16.10.0
+
 ## [9.0.0] - 2021-03-24
 
 - #741
