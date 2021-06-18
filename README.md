@@ -5,6 +5,10 @@ This library isn't actively maintained now. Please, consider usage of Stripe's o
 https://github.com/stripe/stripe-react-native
 
 
+If for some reason you cannot migrate to it now. And you can offer with testing new beta versions, please reach me in [discord](https://discord.gg/vmBxnBw) (name: cybergrind#4625). Just PM with github account name + platforms you can check will be enough.
+I will ping you when we have something to check.
+
+
 [![npm version](https://img.shields.io/npm/v/tipsi-stripe.svg?style=flat-square)](https://www.npmjs.com/package/tipsi-stripe)
 [![build status](https://img.shields.io/travis/tipsi/tipsi-stripe/master.svg?style=flat-square)](https://travis-ci.org/tipsi/tipsi-stripe)
 
