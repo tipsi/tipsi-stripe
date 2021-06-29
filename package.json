@@ -1,5 +1,5 @@
 {
-  "name": "tipsi-stripe",
+  "name": "@sccainsa/tipsi-stripe",
   "version": "9.1.1",
   "description": "React Native Stripe binding for iOS/Android platforms",
   "main": "src/index.js",
@@ -13,9 +13,12 @@
     "prettier": "prettier",
     "prettier:js": "prettier --write src/*.{js,jsx} src/**/*.{js,jsx} example/src/*.{js,jsx} example/src/**/*.{js,jsx}"
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tipsi/tipsi-stripe.git"
+    "url": "git+https://github.com/sccainsa/tipsi-stripe.git"
   },
   "keywords": [
     "react",
@@ -27,9 +30,9 @@
   "author": "Tipsi",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/tipsi/tipsi-stripe/issues"
+    "url": "https://github.com/sccainsa/tipsi-stripe/issues"
   },
-  "homepage": "https://github.com/tipsi/tipsi-stripe#readme",
+  "homepage": "https://github.com/sccainsa/tipsi-stripe#readme",
   "rnpm": {
     "commands": {
       "prelink": "node_modules/tipsi-stripe/scripts/pre-link.sh",
