@@ -899,7 +899,10 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     simpleUnpack(cvc);
 
     simpleUnpack(currency);
-    simpleUnpack(name);
+    NSObject *nameVal = params[@"name"];
+    if (nameVal != nil && ![nameVal isKindOfClass:[NSNull class]]) {
+        simpleUnpack(name);
+    }
 
 #undef simpleUnpack
 
