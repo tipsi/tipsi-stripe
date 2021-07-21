@@ -56,6 +56,7 @@ import static com.gettipsi.stripe.util.Converters.convertPaymentMethodToWritable
 import static com.gettipsi.stripe.util.Converters.convertSetupIntentResultToWritableMap;
 import static com.gettipsi.stripe.util.Converters.convertSourceToWritableMap;
 import static com.gettipsi.stripe.util.Converters.convertTokenToWritableMap;
+import static com.gettipsi.stripe.util.Converters.createBankAccountTokenParams;
 import static com.gettipsi.stripe.util.Converters.createCard;
 import static com.gettipsi.stripe.util.Converters.getBooleanOrNull;
 import static com.gettipsi.stripe.util.Converters.getMapOrNull;
@@ -225,6 +226,18 @@ public class StripeModule extends ReactContextBaseJavaModule {
     try {
       ArgCheck.nonNull(mStripe);
       ArgCheck.notEmptyString(mPublicKey);
+
+      mStripe.createBankAccountToken(
+        createBankAccountTokenParams(accountData),
+        new ApiResultCallback<Token>() {
+          public void onSuccess(Token token) {
+            promise.resolve(convertTokenToWritableMap(token));
+          }
+          public void onError(Exception error) {
+            error.printStackTrace();
+            promise.reject(toErrorCode(error), error.getMessage());
+          }
+      });
     } catch (Exception e) {
       promise.reject(toErrorCode(e), e.getMessage());
     }

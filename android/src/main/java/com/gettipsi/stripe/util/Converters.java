@@ -180,6 +180,28 @@ public class Converters {
     return allowedCountriesForShipping;
   }
 
+  public static BankAccountTokenParams.Type accountHolderTypeFromString(String value) {
+    if (value == "individual") {
+      return BankAccountTokenParams.Type.Individual;
+    }
+    if (value == "company") {
+      return BankAccountTokenParams.Type.Company;
+    }
+
+    return null;
+  }
+
+  public static BankAccountTokenParams createBankAccountTokenParams(final ReadableMap accountData) {
+    return new BankAccountTokenParams(
+      getValue(accountData, "countryCode"),
+      getValue(accountData, "currency"),
+      getValue(accountData, "accountNumber"),
+      accountHolderTypeFromString(getValue(accountData, "accountHolderType", "")),
+      getValue(accountData, "accountHolderName"),
+      getValue(accountData, "routingNumber")
+    );
+  }
+
   public static Card createCard(final ReadableMap cardData) {
     return new Card.Builder(
       cardData.getString("number"),
