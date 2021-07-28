@@ -181,10 +181,10 @@ public class Converters {
   }
 
   public static BankAccountTokenParams.Type accountHolderTypeFromString(String value) {
-    if (value == "individual") {
+    if (value.equals("individual")) {
       return BankAccountTokenParams.Type.Individual;
     }
-    if (value == "company") {
+    if (value.equals("company")) {
       return BankAccountTokenParams.Type.Company;
     }
 
