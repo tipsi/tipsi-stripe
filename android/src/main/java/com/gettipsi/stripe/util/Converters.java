@@ -19,6 +19,7 @@ import com.stripe.android.model.Address;
 import com.stripe.android.model.BankAccount;
 import com.stripe.android.model.BankAccountTokenParams;
 import com.stripe.android.model.Card;
+import com.stripe.android.model.CardBrand;
 import com.stripe.android.model.PaymentIntent;
 import com.stripe.android.model.PaymentMethod;
 import com.stripe.android.model.SetupIntent;
@@ -85,6 +86,8 @@ public class Converters {
 
     if (card == null) return result;
 
+    CardBrand brand = card.getBrand();
+
     result.putString("cardId", card.getId());
     result.putString("number", card.getNumber());
     result.putString("cvc", card.getCvc() );
@@ -97,6 +100,7 @@ public class Converters {
     result.putString("addressState", card.getAddressState() );
     result.putString("addressZip", card.getAddressZip() );
     result.putString("addressCountry", card.getAddressCountry() );
+    result.putString("brand", String.valueOf(brand) );
     result.putString("last4", card.getLast4() );
     result.putString("fingerprint", card.getFingerprint() );
     result.putString("country", card.getCountry() );
