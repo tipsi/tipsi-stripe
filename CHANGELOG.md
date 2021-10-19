@@ -1,5 +1,9 @@
 # Changelog
 
+## [9.2.0] - 2021-10-19
+
+- #554 Android: forward error code & message on failed confirmPaymentIntent
+
 ## [9.1.1] - 2021-06-18
 
 - #792 fix 3ds crash after upgrade to 16.10.0
