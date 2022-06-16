@@ -1,9 +1,8 @@
+# 🚨 This library is no longer maintained 🚨
+
+If you're building apps with React Native, please use [Stripe's official React Native library](https://github.com/stripe/stripe-react-native).
+
 # tipsi-stripe
-
-This library isn't actively maintained now. Please, consider usage of Stripe's official library:
-
-https://github.com/stripe/stripe-react-native
-
 
 If for some reason you cannot migrate to it now. And you can offer with testing new beta versions, please reach me in [discord](https://discord.gg/vmBxnBw) (name: cybergrind#4625). Just PM with github account name + platforms you can check will be enough.
 I will ping you when we have something to check.

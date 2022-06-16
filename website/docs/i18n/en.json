@@ -3,7 +3,7 @@
   "localized-strings": {
     "next": "Next",
     "previous": "Previous",
-    "tagline": "Stripe support for React-Native",
+    "tagline": "(Deprecated) Stripe support for React-Native",
     "docs": {
       "cancelapplepayrequest": {
         "title": ".cancelApplePayRequest() -> Promise",
@@ -82,8 +82,8 @@
         "sidebar_label": "Google Pay"
       },
       "index": {
-        "title": "Start here",
-        "sidebar_label": "Start here"
+        "title": "Deprecation Notice",
+        "sidebar_label": "Deprecation Notice"
       },
       "installation": {
         "title": "Installation",
@@ -145,6 +145,10 @@
         "title": "Source",
         "sidebar_label": "Source"
       },
+      "start": {
+        "title": "(Deprecated) Start here",
+        "sidebar_label": "(Deprecated) Start here"
+      },
       "tests-local-ci": {
         "title": "Local CI",
         "sidebar_label": "Local CI"
@@ -179,8 +183,7 @@
       }
     },
     "links": {
-      "Docs": "Docs",
-      "Blog": "Blog"
+      "Docs": "Docs"
     },
     "categories": {
       "Overview": "Overview",
