@@ -11,33 +11,30 @@ const users = [
     caption: 'Tipsi',
     image: '/tipsi-stripe/img/tipsi-logo.png',
     infoLink: 'https://www.gettipsi.com',
-    pinned: true,
-  },
-]
+    pinned: true
+  }
+];
 
 const siteConfig = {
   title: 'tipsi-stripe',
-  tagline: 'Stripe support for React-Native',
+  tagline: '(Deprecated) Stripe support for React-Native',
   url: 'https://tipsi.github.io',
   baseUrl: '/tipsi-stripe/',
   projectName: 'tipsi-stripe',
-  headerLinks: [
-    { doc: 'index', label: 'Docs' },
-    { blog: true, label: 'Blog' },
-  ],
+  headerLinks: [{ doc: 'index', label: 'Docs' }],
   users,
   headerIcon: 'img/favicon.png',
   favicon: 'img/favicon.png',
   colors: {
     primaryColor: '#6A3549',
-    secondaryColor: '#5B3A51',
+    secondaryColor: '#5B3A51'
   },
   copyright: `Copyright © ${new Date().getFullYear()} Tipsi`,
   customDocsPath: 'docs-md',
   organizationName: 'tipsi',
   highlight: { theme: 'default' },
   scripts: ['https://buttons.github.io/buttons.js'],
-  repoUrl: 'https://github.com/tipsi/tipsi-stripe',
-}
+  repoUrl: 'https://github.com/tipsi/tipsi-stripe'
+};
 
-module.exports = siteConfig
+module.exports = siteConfig;

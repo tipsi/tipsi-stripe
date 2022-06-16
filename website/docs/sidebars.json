@@ -2,6 +2,7 @@
   "docs": {
     "Overview": [
       "index",
+      "start",
       "compatibility",
       "installation",
       "linking",
@@ -14,11 +15,7 @@
       "migrationIssues",
       "changelog"
     ],
-    "Objects": [
-      "token",
-      "source",
-      "paymentMethod"
-    ],
+    "Objects": ["token", "source", "paymentMethod"],
     "Native Pay -  & G": [
       "canMakeNativePayPayments",
       "deviceSupportsNativePay",
@@ -32,10 +29,7 @@
     "Create Source Object With Params": ["createsourcewithparamsparams"],
     "Components": ["paymentcardtextfield"],
     "Error Codes": ["errorcodes"],
-    "Tests": [
-      "tests-local-ci",
-      "tests-manual"
-    ],
+    "Tests": ["tests-local-ci", "tests-manual"],
     "Troubleshooting": [
       "troubleshooting-android",
       "troubleshooting-jest",

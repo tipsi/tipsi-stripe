@@ -11,7 +11,8 @@
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "prettier": "prettier",
-    "prettier:js": "prettier --write src/*.{js,jsx} src/**/*.{js,jsx} example/src/*.{js,jsx} example/src/**/*.{js,jsx}"
+    "prettier:js": "prettier --write src/*.{js,jsx} src/**/*.{js,jsx} example/src/*.{js,jsx} example/src/**/*.{js,jsx}",
+    "postinstall": "node postinstall.js"
   },
   "repository": {
     "type": "git",
