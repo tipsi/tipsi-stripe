@@ -1,5 +1,17 @@
 # Changelog
 
+## [11.0.0] - 2023-03-31
+
+### Breaking changes:
+
+- #863 Update stripe-ios dependency to support building against iOS 16 SDK
+
+To support this change, the minimum iOS version has been increased from 11 to 12.
+
+## [10.0.0] - 2022-06-22
+
+- #840 Add deprecation notices to: library, readme, docs, CLI
+
 ## [9.2.0] - 2021-10-19
 
 - #554 Android: forward error code & message on failed confirmPaymentIntent
